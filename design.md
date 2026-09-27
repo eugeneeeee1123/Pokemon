@@ -1,6 +1,6 @@
 # 151 File — UI Design
 
-修订：2026-09-22。交互以 `interactions.md` 为准。砖单击进详情。无双击、无长按、无从 Dex 拖入。
+修订：2026-09-27。Apple 流体界面规则写入「触感与材质」。交互仍以 `interactions.md` 为准。砖单击进详情。无双击、无长按、无从 Dex 拖入。
 
 对象：关都 151 只的静态图鉴站。  
 读者：跟风做前端的人，不一定懂设定。  
@@ -25,7 +25,7 @@
    句子级、动词开头。按钮写结果：`Open #025`、`Add to belt`、`Close file`。禁止 Get started / Learn more / Unlock。
 
 5. **Motion**  
-   全站只承认三类画面动作：进站摇球一次、卡片小球 hover 晃、详情开合。禁止每张卡 scale、禁止每段 fade-up。开球短音默认关，见 File 开关。砖单击进详情，无双击、无长按、无从 Dex 拖入。
+   全站只承认三类编排：进站摇球一次、卡片小球 hover 晃、详情开合（可打断、从源点长出）。腰带槽拖拽是手势物理，不算第四套装饰动画。禁止每张卡 hover-scale、禁止每段 fade-up。开球短音默认关。按压反馈在 pointer-down，不在 click。
 
 ---
 
@@ -36,7 +36,7 @@
 | 居中 hero + pill badge + 双 CTA | SaaS 骨架 | 左栏标题，右栏大球即 CTA |
 | 三张均分推荐卡 + 圆角图标 | 功能卡模板 | 三只标本横滑，第一只宽一倍 |
 | 全站 `rounded-2xl shadow-lg` | 同一圆角同一阴影 | 档案 4px；球必须是正圆；按钮只切右下角 |
-| 玻璃拟态顶栏 | 无玻璃可透 | 不透明白条 + 2px 海军底边 |
+| 装饰性玻璃拟态（无内容可透） | slop | 仅当列表从顶栏下滚过时，顶栏才用轻霜；否则实色纸 |
 | 渐变字标题 | 无语义 | 实色海军字，编号用黄块衬底 |
 | Inter 或 Poppins | 训练均值 | Oxanium + Atkinson |
 | 每卡左边 4px 彩条 | Dashboard 梗 | 属性用方块色票，贴在名字下 |
@@ -186,7 +186,24 @@ TEAM
 
 ## 顶栏
 
-高 56px。不透明 `--paper`。底边 `2px solid var(--navy)`。
+高 56px + `env(safe-area-inset-top)`。`position: sticky; top: 0`。
+
+默认（内容未滚到顶栏下）：不透明 `--paper`，底边 `2px solid var(--navy)`。
+
+Dex / Regions 列表从顶栏下穿过时，才换成一层霜，不是装饰玻璃：
+
+```css
+.site-bar.is-over-content {
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid color-mix(in srgb, var(--navy) 28%, transparent);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .site-bar { background: var(--paper); backdrop-filter: none; }
+}
+```
+
+禁止第二层霜叠在第一层上。禁止整页毛玻璃。内容在顶栏下滚动，用 12px 渐隐遮罩代替第二条分割线。
 
 ```
 [32px pokeball]  151 FILE     Dex  Regions  Types  Belt  Lineup  File
@@ -265,14 +282,17 @@ TEAM
 
 ```css
 .btn-primary:hover   { background: #00284D; }
-.btn-primary:active  { transform: translate(0, 2px); box-shadow: none; }
+.btn-primary:active  { transform: scale(0.97) translate(0, 2px); box-shadow: none; }
 .btn-primary:disabled{ background: #8EB8D2; color: #F7FBFE; }
 .btn-primary:focus-visible { outline: 3px solid var(--mark); outline-offset: 3px; }
 ```
 
-主键静止带硬投影 `0 4px 0 #00284D`。按下投影消失、自身下移 2px。  
+反馈写在 `:active` / `pointerdown`，100ms `ease-out`，不要等 `click`。  
+命中垫 +10px。手指滑出再滑回可取消。  
+主键静止带硬投影 `0 4px 0 #00284D`。按下投影消失。  
 `btn-paper` 投影 `0 4px 0 var(--navy)`。  
-禁用不改透明度到看不清，改成浅青底。
+禁用不改透明度到看不清，改成浅青底。  
+芯片、砖、球按钮同样 pointer-down 缩到 `0.97`，松手回 `1`。砖禁止 hover 放大。
 
 ### 尺寸
 
@@ -338,15 +358,66 @@ Remove 在圆下，`btn-sm btn-slot`。
 
 ## 运动
 
-`prefers-reduced-motion: reduce` 时：取消摇、取消开合位移，详情直接显示，球静止。
+编排仍只三处装饰 + 一处手势物理。数值用 Apple 表，不自造曲线。
 
-允许：
+| 场景 | 工具 | 参数 |
+|---|---|---|
+| 按钮 / 芯片 / 砖按下 | CSS `transform` | `scale(0.97)`，100ms ease-out，pointer-down |
+| 首页进站摇球 | 一次性 rotate | ±8deg，最多 3 下，800ms 内停。无 overshoot 循环 |
+| 砖角小球 hover | rotate | -10deg / 120ms，离开回 0。reduced-motion 则静止 |
+| 详情开合（无手势中途） | 临界阻尼弹簧 | damping `1.0`，response `0.4`。路径：从被点砖的球心长出，关闭沿原路缩回同一砖 |
+| 开合中途再点 / Esc | 打断 | 从当前 transform 接着走，禁止等动画结束再反向 |
+| 腰带槽拖拽 | 1:1 + 松手弹簧 | 拖时跟手指；松手 damping `0.8`，response `0.3`；初速度 = 松手速度 |
+| 槽拖过两端 | rubberband | `overshoot * dim * 0.55 / (dim + 0.55 * \|overshoot\|)` |
+| 松手落点 | 动量投射 | `current + (v/1000)*0.998/(1-0.998)`，再吸到最近槽心 |
 
-1. 首页载入：球左右各 8deg，最多 3 次，800ms 内停，缩到顶栏
-2. 砖上小球 hover：`rotate(-10deg)` 120ms，离开回 0
-3. 详情开合 700–900ms，`cubic-bezier(0.22, 0.7, 0.3, 1)`
+开合禁止用不可打断的长 `@keyframes` 当唯一实现。无手势时可以用 CSS；一旦允许打断，改读实时 transform 再定向。只动 `transform` 与 `opacity`。
 
-禁止：卡片 hover scale、滚动显现、循环摇、闪光爆闪、进站以外的自动动画。
+`prefers-reduced-motion: reduce`：摇、开合位移、槽弹簧全部取消。详情 200ms 透明度交叉淡入。按压 `scale` 可留。
+
+禁止：卡片 hover scale、滚动 fade-up、循环摇、闪光爆闪、进站以外的自动动画、开合未完成时锁输入。
+
+---
+
+## 触感与材质（Apple 对齐，身份不换）
+
+目的：手感像按得到的物件。外观仍是青纸档案，不是 iOS 模板。
+
+**直接操纵**
+
+- 腰带换序：`pointerdown` 立刻高亮该槽，`setPointerCapture`，抓取点偏移保持，不吸到圆心。
+- 移动阈值 10px 才算开始拖，避免和单击进详情抢手势。
+- 松手用速度方向决定是否越过下一槽，不只看松开时的中心落在哪。
+- Dex 砖不拖。
+
+**空间一致**
+
+- 详情球从源砖中心长出，关闭缩回同一点。`Draw one` 从大球或 Dex 的 Draw 按钮长出。
+- 进从哪来，回从哪走。禁止开从中心放大、关往屏幕底滑走。
+
+**材质**
+
+- 页是实色青纸。详情打开时青纸仍可见，不盖 0.5 黑幕（非阻断式，保持流向）。
+- 顶栏仅在内容穿过时上霜，见顶栏节。
+- `prefers-reduced-transparency`：霜变实纸。
+- `prefers-contrast: more`：实底 + 2px `--navy` 边。
+
+**多通道**
+
+- 球音只在开合完成那一帧触发，且 `file151.sound === "on"`。
+- 无振动默认。有 Vibration API 也只在腰带槽吸住时一次，可关。
+
+**字**
+
+- H1：`letter-spacing: -0.02em`，`line-height: 1.08`
+- 正文：tracking `0`，`line-height: 1.45`
+- 编号 / 按钮 Oxanium：tracking `0.02em`
+- 间距用 `rem`，跟用户字号走
+
+**安全区**
+
+- 顶栏、页边吃 `safe-area-inset-*`
+- 触控主键高保持 44–48px
 
 ---
 
@@ -381,7 +452,9 @@ Remove 在圆下，`btn-sm btn-slot`。
 - 焦点环一律 3px `--mark`，offset 3px。不要 outline:none。
 - 球按钮若无字，`aria-label="Open the dex"`。
 - 属性色票旁仍写 type 英文，不只靠颜色。
-- 开合动画尊重 reduced-motion。
+- 开合动画尊重 `prefers-reduced-motion`。
+- 顶栏霜尊重 `prefers-reduced-transparency`。
+- 高对比模式下去掉霜，描边加实。
 
 ---
 
@@ -414,7 +487,8 @@ css/pages.css     分页骨架
 - [x] 每区一个主键，文案是结果
 - [x] 间距行距故意不均
 - [x] 图像来自立绘，图标来自 CSS 球
-- [x] 焦点、对比、reduced-motion 已写进规则
+- [x] 焦点、对比、reduced-motion / reduced-transparency 已写进规则
+- [x] 开合可打断、腰带拖拽 1:1 + rubberband，装饰动画仍只有三处
 - [x] 无 Unlock / Trusted by / Get started
 
 本文件管外观。页面清单与 API 次数仍以 `pokemon-web-project-plan.md` 为准。
