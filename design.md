@@ -1,19 +1,19 @@
 # 151 File — UI Design
 
-修订：2026-09-28d。整站重布（色、字锁定不动）。Dex 仍是井 + 尺 + K–N。交互以 `interactions.md` 为准。
+修订：2026-09-28e。夜档替换浅青纸。球红和编号黄没动。禁止第二套浅色主题。Dex 仍是井 + 尺 + K–N。交互以 `interactions.md` 为准。
 
 对象：关都 151 只的静态图鉴站。  
 读者：跟风做前端的人，不一定懂设定。  
 主任务：找一只、看数值、塞进 6 人队伍。
 
-视觉身份：午后关都天空下的手持图鉴。页面是纸质档案，精灵球是唯一的玩具物件。不是红白主题站，不是 SaaS 仪表盘。
+视觉身份：夜间关都天空下的手持图鉴（夜档）。页面是深色纸质档案，精灵球是唯一的玩具物件。不是红白主题站，不是 SaaS 仪表盘。
 
 ---
 
 ## 五轴
 
 1. **Color**  
-   轴是深蓝 → 白。浅青 `--sky` 可以做页底。页约 50% 浅青、30% 白档案、20% 海军字和键。红与黄只在球和编号。禁止 neon、禁止紫。
+   夜档色调。深蓝夜底 `--sky`（`#071422`）做页底，`--paper`（`#102338`）做档案与顶栏，主字 `--ink`（`#E4F1F8`），次字 `--ink-soft`（`#8EB8D2`）。主键用浅青底深字 `--navy-key`（`#D7EEF8`），深底上才压得住。红与黄只在球和编号。禁止 neon、禁止紫。禁止第二套浅色主题。
 
 2. **Type**  
    两套：Oxanium 管编号、按钮、能力值；Atkinson Hyperlegible 管标题和说明。不用 Inter / Roboto / Poppins / Geist / Space Grotesk。
@@ -47,29 +47,49 @@
 
 ## 色板
 
-写入 `css/tokens.css`。色值保持本表。间距与字号用下面 rem token，不要在组件里再写死 px。
+写入 `css/tokens.css`。色值保持本表。间距与字号用下面 rem token，不要在组件里再写死 px。夜档替换浅青纸，禁止第二套浅色主题。
+
+| token | 原来（浅） | 现在（夜） | 用在 |
+|---|---|---|---|
+| `--sky` | `#D7EEF8` | `#071422` | 页底 |
+| `--sky-deep` | `#B9DDF0` | `#0B1C2E` | 页顶过渡 |
+| `--paper` | `#F7FBFE` | `#102338` | 顶栏、档案砖 |
+| `--ink` | `#12324A` | `#E4F1F8` | 主字 |
+| `--ink-soft` | `#3A6A88` | `#8EB8D2` | 次字 |
+| `--navy` | `#003A70` | `#7EB6D9` | 链接 |
+| `--line` | `#8EB8D2` | `#1E3A55` | 描边、硬投影 |
+| `--ok` | `#2A7A4B` | `#7BC89A` | 成功一句 |
+| `--focus` | `#003A70` | `#FFCB05` | 焦点环 |
+| `--navy-key` | （没有） | `#D7EEF8` | 主键底 |
+| `--navy-key-ink` | （没有） | `#071422` | 主键字 |
+
+没改：
+- `--mark` `#FFCB05` 编号、当前导航
+- `--ball` `#EE1515` 精灵球上半
+- `--blue` `#3D7DCA` 尺格描边
 
 ```css
 :root {
-  --sky:        #D7EEF8; /* 页底，占面积 */
-  --sky-deep:   #B9DDF0; /* 页顶到页底的实色过渡，不是装饰光斑 */
-  --paper:      #F7FBFE; /* 档案底 */
-  --ink:        #12324A; /* 主字 */
-  --ink-soft:   #3A6A88; /* 次字 */
-  --navy:       #003A70; /* 主键、顶栏字、焦点 */
-  --mark:       #FFCB05; /* 编号块、当前导航条 */
-  --ball:       #EE1515; /* 只有球和「移除」的小点 */
-  --line:       #8EB8D2; /* 描边 */
-  --ok:         #2A7A4B; /* 加入成功，一条字，不用大绿块 */
-  --focus:      #003A70;
-  --blue:       #3D7DCA; /* 仅 hover / 当前尺格描边。不是页底，不是发光 */
+  --sky:          #071422; /* 页底 */
+  --sky-deep:     #0B1C2E; /* 页顶过渡 */
+  --paper:        #102338; /* 顶栏、档案砖 */
+  --ink:          #E4F1F8; /* 主字 */
+  --ink-soft:     #8EB8D2; /* 次字 */
+  --navy:         #7EB6D9; /* 链接、次高亮 */
+  --line:         #1E3A55; /* 描边、硬投影 */
+  --ok:           #7BC89A; /* 成功一句 */
+  --focus:        #FFCB05; /* 焦点环 */
+  --navy-key:     #D7EEF8; /* 主键底（浅青底，深底上才压得住） */
+  --navy-key-ink: #071422; /* 主键字（深字） */
+  --mark:         #FFCB05; /* 编号块、当前导航条 */
+  --ball:         #EE1515; /* 精灵球上半、移除小点 */
+  --blue:         #3D7DCA; /* 尺格描边、hover 边 */
 }
 ```
 
-色轴：深蓝 `#003A70` → 中蓝 `#3D7DCA`（仅 hover 描边）→ 浅青 `#D7EEF8`（页底）→ 白 `#F7FBFE`（档案）。  
-官方黄、球红不进这条轴。禁止反向：不要从浅蓝 hover 成更浅，只许往海军走。
+色轴：深夜蓝 `#071422`（页底）→ 档案深蓝 `#102338`（`--paper`）→ 描边 `#1E3A55`（`--line`）→ 次字/软墨 `#8EB8D2` → 亮字 `#E4F1F8`。主键底浅青 `#D7EEF8`。官方黄、球红不进这条轴。
 
-阴影只许一种：`0 10px 0 #8EB8D2`（硬投影，像压在档案上）。禁止 `rgba(0,0,0,.1)` 软雾。
+主键从海军底白字改成浅青底深字，深底上才压得住。阴影从 `0 10px 0 #8EB8D2` 改成 `0 10px 0 #1E3A55`（硬投影，像压在深色档案上）。禁止 `rgba(0,0,0,.1)` 软雾。禁止第二套浅色主题。
 
 ### 属性色票
 
@@ -131,7 +151,7 @@
 
 ## 布局概念
 
-档案夹打开放在青纸上。左订口 48px 空白当装订边（桌面）。内容左对齐。球是唯一正圆。
+档案夹打开放在深色夜档（`--sky`）上。左订口 48px 空白当装订边（桌面）。内容左对齐。球是唯一正圆。
 
 桌面栏宽：主栏 `min(1080px, calc(100% - 96px))`，左对齐到装订边，不水平居中整页。
 
@@ -182,10 +202,10 @@ TEAM
 
 层次不用万能卡片：
 
-- 页 = 青纸
-- 顶栏 = 白条 + 底边
-- 标本砖 = 白底、4px 圆角、硬投影；只有「一只宝可梦」用砖
-- 筛选条、克制表、说明文字直接铺在青纸上
+- 页 = 夜档（`--sky` `#071422`）
+- 顶栏 = `--paper` 条（`#102338`）+ 底边 `2px solid var(--navy)`
+- 标本砖 = `--paper` 底、4px 圆角、硬投影 `0 10px 0 #1E3A55`；只有「一只宝可梦」用砖
+- 筛选条、克制表、说明文字直接铺在夜档上
 
 ---
 
@@ -254,9 +274,9 @@ Dex / Regions 列表从顶栏下穿过时，才换成一层霜，不是装饰玻
 
 | 名 | 用途 | 面 | 字 | 边 |
 |---|---|---|---|---|
-| `btn-primary` | 页内主操作，一区一个 | `--navy` | `#F7FBFE` | 无 |
-| `btn-paper` | 次操作：Close file、Clear belt | `--paper` | `--navy` | 2px `--navy` |
-| `btn-mark` | 稀有强调：Open shiny | `--mark` | `--ink` | 无 |
+| `btn-primary` | 页内主操作，一区一个 | `--navy-key`（`#D7EEF8`） | `--navy-key-ink`（`#071422`） | 无 |
+| `btn-paper` | 次操作：Close file、Clear belt | `--paper`（`#102338`） | `--navy`（`#7EB6D9`） | 2px `--navy` |
+| `btn-mark` | 稀有强调：Open shiny | `--mark` | `--navy-key-ink` | 无 |
 | `btn-ball` | 首页入口、卡片角上的球 | 正圆，CSS 球 | 无字或一行 Oxanium | 黑中线 |
 | `btn-chip` | type 筛选 | 属性色或 `--paper` | 对比色 | 选中时 2px `--navy` |
 | `btn-slot` | 腰带移除 | 透明 | `--ink-soft` | 无。左边 6px `--ball` 圆点 |
@@ -286,17 +306,18 @@ Dex / Regions 列表从顶栏下穿过时，才换成一层霜，不是装饰玻
 ### 状态
 
 ```css
-.btn-primary:hover   { background: #00284D; }
+.btn-primary         { background: var(--navy-key); color: var(--navy-key-ink); box-shadow: 0 4px 0 var(--line); }
+.btn-primary:hover   { background: #B9DDF0; }
 .btn-primary:active  { transform: scale(0.97) translate(0, 2px); box-shadow: none; }
-.btn-primary:disabled{ background: #8EB8D2; color: #F7FBFE; }
-.btn-primary:focus-visible { outline: 3px solid var(--mark); outline-offset: 3px; }
+.btn-primary:disabled{ background: var(--line); color: var(--ink-soft); }
+.btn-primary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 ```
 
 反馈写在 `:active` / `pointerdown`，100ms `ease-out`，不要等 `click`。  
 命中垫 +10px。手指滑出再滑回可取消。  
-主键静止带硬投影 `0 4px 0 #00284D`。按下投影消失。  
-`btn-paper` 投影 `0 4px 0 var(--navy)`。  
-禁用不改透明度到看不清，改成浅青底。  
+主键从海军底白字改成浅青底深字（`--navy-key` / `--navy-key-ink`），深底上才压得住。静止带硬投影 `0 4px 0 var(--line)`（`#1E3A55`）。按下投影消失。  
+`btn-paper` 投影 `0 4px 0 var(--line)`。  
+禁用不改透明度到看不清，改成深色描边底。  
 芯片、砖、球按钮同样 pointer-down 缩到 `0.97`，松手回 `1`。砖禁止 hover 放大。
 
 ### 尺寸
@@ -321,7 +342,7 @@ Dex / Regions 列表从顶栏下穿过时，才换成一层霜，不是装饰玻
 
 井心 44px 开合。井环是转盘，不另画刻度。
 
-尺：横向一条，每格 `4.25rem`，白底、4px、硬投影。格内小立绘 + `#025`。当前格 2px `--navy` 边。看过编号用 `--ink-soft`。拖 1:1，松手投射后吸格。
+尺：横向一条，每格 `4.25rem`，`--paper` 底、4px、硬投影 `0 10px 0 #1E3A55`。格内小立绘 + `#025`。当前格 2px `--navy` 边。看过编号用 `--ink-soft`。拖 1:1，松手投射后吸格。
 
 书签齿：格顶 `0.75rem × 0.2rem` 的 `--mark` 条。编号缓冲：井右下 Oxanium，`#` + 数字，缺位 `_`。
 
@@ -335,18 +356,18 @@ Dex / Regions 列表从顶栏下穿过时，才换成一层霜，不是装饰玻
 
 未选：`--paper` + `--ink` + 1px `--line`  
 选中：该 type 填充 + 2px `--navy`  
-全部：`All types`，选中时海军底白字
+全部：`All types`，选中时 `--navy-key` 浅青底、`--navy-key-ink` 深字
 
 ### 搜索
 
-高 44px，白底，2px `--navy` 底边，左右无圆角胶囊感（圆角 4px）。  
+高 44px，`--paper` 底，2px `--navy` 底边，左右无圆角胶囊感（圆角 4px）。  
 占位：`name or number`。  
 字 Atkinson 16px。匹配计数用 Oxanium 写在框右：`12 / 151`。
 
 ### 详情舞台
 
-开合层 `position: fixed`，青纸仍隐约在后，不盖黑遮罩。  
-上半球 `--ball`，下半球白，中线 `--ink`，按钮圈黑。  
+开合层 `position: fixed`，夜档仍隐约在后，不盖黑遮罩。  
+上半球 `--ball`，下半球 `--paper`，中线 `--line`，按钮圈黑。  
 打开后左栏 artwork 最大 360px。右栏无卡片外壳，字段用 1px `--line` 横线隔开。
 
 字段序：编号 → 名 → 色票 → 身高体重同一行 → 能力六条 → abilities（hidden 在名后写 `hidden`，不用徽章）。
@@ -392,7 +413,7 @@ Remove 在圆下，`btn-sm btn-slot`。
 
 ## 触感与材质（Apple 对齐，身份不换）
 
-目的：手感像按得到的物件。外观仍是青纸档案，不是 iOS 模板。
+目的：手感像按得到的物件。外观仍是夜档档案，不是 iOS 模板。
 
 **直接操纵**
 
@@ -408,9 +429,9 @@ Remove 在圆下，`btn-sm btn-slot`。
 
 **材质**
 
-- 页是实色青纸。详情打开时青纸仍可见，不盖 0.5 黑幕（非阻断式，保持流向）。
+- 页是实色夜档（`--sky` `#071422`）。详情打开时夜档仍可见，不盖 0.5 黑幕（非阻断式，保持流向）。
 - 顶栏仅在内容穿过时上霜，见顶栏节。
-- `prefers-reduced-transparency`：霜变实纸。
+- `prefers-reduced-transparency`：霜变实底夜档（`--paper` `#102338`）。
 - `prefers-contrast: more`：实底 + 2px `--navy` 边。
 
 **多通道**
@@ -532,33 +553,33 @@ Apple：大字收字距、紧行高；小字略放字距；层级用字重+字�
 
 符合 skill：
 
-- 主色来自主题（青纸），不是 indigo 渐变
+- 主色来自主题（夜档深色），不是 indigo 渐变
 - 正文 `--ink` on `--sky` / `--paper` ≥ 4.5
 - 霜上的字用 `--ink` 700，不用浅灰
-- `prefers-contrast: more` 实底 + 2px 海军边
+- `prefers-contrast: more` 实底 + 2px `--navy` 边
 - 属性色只上色票，不上大面
 
 故意不合（身份优先于 iOS 材质）：
 
-- 不用系统分割线灰 `#C6C6C8`，用 `--line` 冷青
-- 阴影是硬投影 `0 0.625rem 0 var(--line)`，不是 Apple 软投影
-- 不做自动 Dark Mode。本站是午后青纸，夜间模式会毁身份。只响应 contrast / transparency / reduced-motion
+- 不用系统分割线灰 `#C6C6C8`，用 `--line`（`#1E3A55`）
+- 阴影是硬投影 `0 0.625rem 0 var(--line)`（`0 10px 0 #1E3A55`），不是 Apple 软投影
+- 本站为深色夜档档案。禁止第二套浅色主题，不做浅色/深色切换开关。只响应 contrast / transparency / reduced-motion
 - `--mark` 黄不当正文。只当编号底和导航条
 
 ---
 
-## 特效 / hover / 过渡（2026-09-28d）
+## 特效 / hover / 过渡（2026-09-28e）
 
-色轴锁定：海军 → 白，浅青可做底。  
-`--sky` `--paper` 只做底，不做 hover 目标。Hover 只许往 `--blue` 或 `--navy`。  
-禁止：提亮成更浅青、cyan 光晕、`box-shadow: 0 0 Npx`、电蓝渐变字。
+色轴锁定：夜底 `#071422` → `--paper` `#102338` → `--line` `#1E3A55` → 主键浅青 `#D7EEF8`。  
+`--sky` `--paper` 只做底，不做 hover 目标。Hover 只许往 `--blue` 或加深/高亮。  
+禁止：cyan 泛滥光晕、`box-shadow: 0 0 Npx`、电蓝渐变字。
 
 ### Hover 落点
 
 | 控件 | 静止 | hover | active |
 |---|---|---|---|
-| `btn-primary` | `--navy` 面 | `#00284D`（比 navy 更深，不是更亮） | scale 0.97 + 投影掉 |
-| `btn-paper` | 纸面 + 海军边 | 边和字改 `--blue`，面仍纸 | scale 0.97 |
+| `btn-primary` | `--navy-key` 面 + `--navy-key-ink` 字 | 面改 `#B9DDF0` | scale 0.97 + 投影掉 |
+| `btn-paper` | 纸面（`--paper`） + 边 2px `--navy` | 边和字改 `--blue`，面仍纸 | scale 0.97 |
 | 顶栏链 | `--ink` | 字 `--navy`，底仍 3px `--mark` 只给当前页 | 无下划线动画拉长 |
 | 尺格 | 纸 + 硬投影 `--line` | 边 2px `--blue`，投影改 `0 0.625rem 0 var(--navy)` | 当前格边 `--navy` |
 | 书签齿 | `--mark` | 仍黄，不要变蓝 | — |
@@ -566,7 +587,7 @@ Apple：大字收字距、紧行高；小字略放字距；层级用字重+字�
 | 井心 | 白钮 | 钮边 `--navy` | 开合 |
 | 名录/表行 | 透明 | 底 `color-mix(in srgb, var(--blue) 12%, var(--paper))` | 当前行 18% |
 | 芯片未选 | 纸 | 边 `--blue` | 选中仍属性色 |
-| 文字链 | `--navy` | `#00284D` 下划线 1px `--blue` | — |
+| 文字链 | `--navy` | 字 `#E4F1F8` 下划线 1px `--blue` | — |
 
 色变 ≤80ms 或即时。不要 300ms 浅蓝淡入深蓝。
 
@@ -632,7 +653,7 @@ css/pages.css     分页骨架
 
 ## 预交付核对
 
-- [x] 把站名换成别的行业，青纸+黄编号+右下切角键+正圆球会不对味
+- [x] 把站名换成别的行业，夜档+黄编号+右下切角键+正圆球会不对味
 - [x] 无紫渐变字、无 Inter/Poppins、无居中双 CTA、无三等分功能卡
 - [x] 卡片只装标本，不装说明和表
 - [x] 每区一个主键，文案是结果

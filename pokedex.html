@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dex — 151 File</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+        <span class="brand">151 FILE</span>
+      </a>
+      <nav>
+        <a href="pokedex.html" aria-current="page">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="team.html">Belt</a>
+        <a href="lineup.html">Lineup</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页面主体容器 -->
+  <main class="wrap">
+    <!-- 工具筛选条：地区切换、两种展示模式切换 (Ledger/Grid)、实时搜索框、常用属性芯片、随机抽取 -->
+    <div class="tools">
+      <select id="region-select" class="region-select" aria-label="Select Region">
+        <option value="all">All Regions (#001–#1025)</option>
+        <option value="kanto">Kanto (#001–#151)</option>
+        <option value="johto">Johto (#152–#251)</option>
+        <option value="hoenn">Hoenn (#252–#386)</option>
+        <option value="sinnoh">Sinnoh (#387–#493)</option>
+        <option value="unova">Unova (#494–#649)</option>
+        <option value="kalos">Kalos (#650–#721)</option>
+        <option value="alola">Alola (#722–#809)</option>
+        <option value="galar">Galar (#810–#898)</option>
+        <option value="hisui">Hisui (#899–#905)</option>
+        <option value="paldea">Paldea (#906–#1025)</option>
+      </select>
+
+      <div class="view-toggle" role="group" aria-label="Display mode">
+        <button type="button" class="view-btn is-active" id="btn-view-ledger" data-view="ledger" title="Ledger & Stage (台座名录)">
+          📑 Ledger
+        </button>
+        <button type="button" class="view-btn" id="btn-view-grid" data-view="grid" title="Visual Cards Grid (全景网格)">
+          ▦ Grid
+        </button>
+      </div>
+
+      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off">
+      <button class="chip" data-type="" data-on type="button">All types</button>
+      <button class="chip" data-type="fire" type="button">fire</button>
+      <button class="chip" data-type="water" type="button">water</button>
+      <button class="chip" data-type="grass" type="button">grass</button>
+      <button class="chip" data-type="electric" type="button">electric</button>
+      <button class="chip" data-type="psychic" type="button">psychic</button>
+      <button class="chip" id="draw" type="button">Draw one</button>
+      <span class="count-badge" id="count-badge"></span>
+    </div>
+
+    <!-- 模式 1：Dex 四区同屏布局 (Spine + Ledger + Stage + Film) -->
+    <div class="dex" id="dex-ledger-view">
+      <!-- 左脊：50 号一段分册导航 -->
+      <div class="spines" id="spines"></div>
+
+      <!-- 中名录：该分册过滤清单，记录 #编号 + 英文名 -->
+      <ul class="ledger" id="ledger"></ul>
+
+      <!-- 右台座：3D 模型立绘、属性色票、加入腰带与详情入口 -->
+      <div class="stage" id="stage"></div>
+
+      <!-- 底胶片尺：整份过滤列表滚动条，支持吸格对齐 -->
+      <div class="film" id="film"></div>
+    </div>
+
+    <!-- 模式 2：全景 3D 卡片网格布局 (Visual Cards Grid) -->
+    <div class="dex-grid" id="dex-grid-view" hidden></div>
+  </main>
+
+  <script src="js/regions-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/pokedex.js"></script>
+</body>
+</html>

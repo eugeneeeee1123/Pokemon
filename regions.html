@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regions — 151 File</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+        <span class="brand">151 FILE</span>
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html" aria-current="page">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="team.html">Belt</a>
+        <a href="lineup.html">Lineup</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页面主体容器 -->
+  <main class="wrap">
+    <h1 class="page-title">Regions</h1>
+    <p class="regions-lead">National Dex numbers. Official regional maps covering Kanto #001 through Paldea #1025. Forms are not separate files in v1. Click a region to open that slice of the dex.</p>
+
+    <!-- 10 官方地区地图画廊 (Atlas) -->
+    <div class="atlas" id="atlas"></div>
+  </main>
+
+  <script src="js/regions-data.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const atlasEl = document.getElementById("atlas");
+      if (!atlasEl || !window.REGIONS) return;
+
+      atlasEl.innerHTML = window.REGIONS.map(r => `
+        <a class="region-card" href="pokedex.html?region=${r.slug}">
+          <div class="map-thumb">
+            <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
+          </div>
+          <div class="region-info">
+            <p class="name">${r.name}</p>
+            <p class="ids">#${String(r.start).padStart(3, "0")}–${r.end}</p>
+            <p class="n">${r.count} files</p>
+          </div>
+        </a>
+      `).join("");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Types — 151 File</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+        <span class="brand">151 FILE</span>
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html" aria-current="page">Types</a>
+        <a href="team.html">Belt</a>
+        <a href="lineup.html">Lineup</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页面主体容器 -->
+  <main class="wrap">
+    <h1 class="page-title">Types</h1>
+    <p class="lead">Attack down the left, defense across the top. Dual defense is multiplied on Lineup, not here. Click a type or a cell to open the dex filtered by the defending type.</p>
+
+    <!-- 18 属性色票墙 -->
+    <div class="wall" id="wall"></div>
+
+    <!-- 18×18 属性对战矩阵板 -->
+    <div class="board">
+      <table class="types-table" id="chart"></table>
+    </div>
+
+    <!-- 图例说明 -->
+    <div class="types-legend">
+      <span><i class="dot" style="background:#3D7DCA"></i> 2× Super effective</span>
+      <span><i class="dot" style="background:#1E3A55"></i> ½ Not very effective</span>
+      <span><i class="dot" style="background:#071422; border:1px solid #1E3A55"></i> 0 Immune</span>
+    </div>
+  </main>
+
+  <script src="js/types-chart.js"></script>
+  <script src="js/types.js"></script>
+</body>
+</html>

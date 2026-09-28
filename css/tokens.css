@@ -1,0 +1,48 @@
+/* ==========================================================================
+   151 FILE — Design Tokens (Night Archive / 夜档规范)
+   ========================================================================== */
+
+:root {
+  /* Color Palette — 夜档深色系统 */
+  --sky:          #071422; /* 页底，占大面积 */
+  --sky-deep:     #0B1C2E; /* 页顶到页底过渡 */
+  --paper:        #102338; /* 顶栏底、档案标本砖底 */
+  --ink:          #E4F1F8; /* 主字（高对比亮色） */
+  --ink-soft:     #8EB8D2; /* 次字（软墨蓝） */
+  --navy:         #7EB6D9; /* 链接色、次高亮 */
+  --line:         #1E3A55; /* 结构描边、硬投影色 */
+  --ok:           #7BC89A; /* 成功状态单行说明 */
+  --focus:        #FFCB05; /* 键盘焦点环 */
+  --navy-key:     #D7EEF8; /* 主键底（浅青底，深底上压得住） */
+  --navy-key-ink: #071422; /* 主键字（深色墨） */
+  --mark:         #FFCB05; /* 官方黄：编号底块、当前导航下划线 */
+  --ball:         #EE1515; /* 精灵球红：球上半、移除小圆点 */
+  --blue:         #3D7DCA; /* 尺格描边、交互微悬停边 */
+
+  /* Spacing Scale (4px 步进 rem token) */
+  --s-1:  0.25rem;  /* 4px */
+  --s-2:  0.5rem;   /* 8px */
+  --s-3:  0.75rem;  /* 12px */
+  --s-4:  1rem;     /* 16px */
+  --s-5:  1.25rem;  /* 20px */
+  --s-6:  1.5rem;   /* 24px */
+  --s-7:  1.75rem;  /* 28px */
+  --s-8:  2rem;     /* 32px */
+  --s-10: 2.5rem;   /* 40px */
+  --s-12: 3rem;     /* 48px */
+  --s-14: 3.5rem;   /* 56px */
+
+  /* Typography Stacks */
+  --font-ui:  "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-num: "Oxanium", monospace, sans-serif;
+
+  /* Corner Radii */
+  --r-file: 4px;
+  --r-key:  4px 4px 14px 4px;
+  --r-ball: 50%;
+  --r-chip: 4px;
+
+  /* Shadows (硬投影) */
+  --shadow-file: 0 10px 0 var(--line);
+  --shadow-key:  0 4px 0 var(--line);
+}

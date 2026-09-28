@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>151 FILE — Kanto Archive</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+  
+  <!-- CSS 模块架构 (按照项目规划 §3 分离) -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航（最大宽度 72rem 对齐正文） -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+        <span class="brand">151 FILE</span>
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="team.html">Belt</a>
+        <a href="lineup.html">Lineup</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页面主体容器 -->
+  <main class="wrap">
+    <!-- Hero 区块：左文本与动作，右侧大型精灵球 CTA -->
+    <section class="hero">
+      <div>
+        <div class="meta-eyebrow">
+          <span>KANTO SPECIMENS</span>
+          <span>/</span>
+          <span>#001–#151</span>
+        </div>
+        <h1>Kanto file. 151 first.</h1>
+        <p>National Dex numbers. Open the Kanto 151 by default. Other regions live in Regions — not a second product.</p>
+        <div class="actions">
+          <a class="btn btn-primary btn-lg" href="pokedex.html?region=kanto">Open the dex</a>
+          <a class="link-action" href="regions.html">Open regions</a>
+        </div>
+      </div>
+
+      <!-- 大型精灵球：进站 wobble 最多 3 下，点击进 Dex -->
+      <button class="hero-ball-btn" id="hero-ball" type="button" aria-label="Open the dex">
+        <img src="assets/pokeball.png" alt="Open the dex" class="hero-ball-img">
+      </button>
+    </section>
+
+    <!-- 标本档案条：初阶御三家 + 皮卡丘 + 拉普拉斯（整砖可点） -->
+    <section class="specimens-section" aria-label="Pinned specimens">
+      <div class="specimens-header">
+        <span class="title">Pinned Specimens / 代表标本</span>
+        <span class="hint">Tap Pokémon for Cry · Click tile to open file</span>
+      </div>
+
+      <div class="specimens">
+        <!-- #025 Pikachu (加宽首发) -->
+        <a class="file-tile" href="pokemon.html?id=25" data-id="25" data-name="Pikachu">
+          <div class="file-tile-top">
+            <span class="id-badge">#025</span>
+            <div class="type-badges">
+              <span class="type-pill" style="background:#F8D030; color:#12324A;">ELEC</span>
+            </div>
+          </div>
+          <div class="img-stage" title="Click Pokémon to play Cry & interact">
+            <div class="stage-pedestal"></div>
+            <div class="stage-shadow"></div>
+            <div class="cry-ring"></div>
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png" alt="Pikachu" class="specimen-img" width="220" height="220" loading="eager">
+          </div>
+          <div class="file-tile-info">
+            <div class="file-tile-name">Pikachu</div>
+            <div class="file-tile-meta">Mouse Pokémon · 0.4m · 6.0kg</div>
+          </div>
+        </a>
+
+        <!-- #001 Bulbasaur (草系御三家) -->
+        <a class="file-tile" href="pokemon.html?id=1" data-id="1" data-name="Bulbasaur">
+          <div class="file-tile-top">
+            <span class="id-badge">#001</span>
+            <div class="type-badges">
+              <span class="type-pill" style="background:#78C850; color:#12324A;">GRASS</span>
+              <span class="type-pill" style="background:#A040A0; color:#fff;">POIS</span>
+            </div>
+          </div>
+          <div class="img-stage" title="Click Pokémon to play Cry & interact">
+            <div class="stage-pedestal"></div>
+            <div class="stage-shadow"></div>
+            <div class="cry-ring"></div>
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png" alt="Bulbasaur" class="specimen-img" width="180" height="180" loading="eager">
+          </div>
+          <div class="file-tile-info">
+            <div class="file-tile-name">Bulbasaur</div>
+            <div class="file-tile-meta">Seed Pokémon · 0.7m · 6.9kg</div>
+          </div>
+        </a>
+
+        <!-- #004 Charmander (火系御三家) -->
+        <a class="file-tile" href="pokemon.html?id=4" data-id="4" data-name="Charmander">
+          <div class="file-tile-top">
+            <span class="id-badge">#004</span>
+            <div class="type-badges">
+              <span class="type-pill" style="background:#F08030; color:#fff;">FIRE</span>
+            </div>
+          </div>
+          <div class="img-stage" title="Click Pokémon to play Cry & interact">
+            <div class="stage-pedestal"></div>
+            <div class="stage-shadow"></div>
+            <div class="cry-ring"></div>
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/4.png" alt="Charmander" class="specimen-img" width="180" height="180" loading="eager">
+          </div>
+          <div class="file-tile-info">
+            <div class="file-tile-name">Charmander</div>
+            <div class="file-tile-meta">Lizard Pokémon · 0.6m · 8.5kg</div>
+          </div>
+        </a>
+
+        <!-- #007 Squirtle (水系御三家) -->
+        <a class="file-tile" href="pokemon.html?id=7" data-id="7" data-name="Squirtle">
+          <div class="file-tile-top">
+            <span class="id-badge">#007</span>
+            <div class="type-badges">
+              <span class="type-pill" style="background:#6890F0; color:#fff;">WATER</span>
+            </div>
+          </div>
+          <div class="img-stage" title="Click Pokémon to play Cry & interact">
+            <div class="stage-pedestal"></div>
+            <div class="stage-shadow"></div>
+            <div class="cry-ring"></div>
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/7.png" alt="Squirtle" class="specimen-img" width="180" height="180" loading="eager">
+          </div>
+          <div class="file-tile-info">
+            <div class="file-tile-name">Squirtle</div>
+            <div class="file-tile-meta">Tiny Turtle · 0.5m · 9.0kg</div>
+          </div>
+        </a>
+
+        <!-- #131 Lapras (乘龙/拉普拉斯) -->
+        <a class="file-tile" href="pokemon.html?id=131" data-id="131" data-name="Lapras">
+          <div class="file-tile-top">
+            <span class="id-badge">#131</span>
+            <div class="type-badges">
+              <span class="type-pill" style="background:#6890F0; color:#fff;">WATER</span>
+              <span class="type-pill" style="background:#98D8D8; color:#12324A;">ICE</span>
+            </div>
+          </div>
+          <div class="img-stage" title="Click Pokémon to play Cry & interact">
+            <div class="stage-pedestal"></div>
+            <div class="stage-shadow"></div>
+            <div class="cry-ring"></div>
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/131.png" alt="Lapras" class="specimen-img" width="200" height="200" loading="eager">
+          </div>
+          <div class="file-tile-info">
+            <div class="file-tile-name">Lapras</div>
+            <div class="file-tile-meta">Transport · 2.5m · 220.0kg</div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/pokeball.js"></script>
+</body>
+</html>

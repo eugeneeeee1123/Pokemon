@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>File — 151 File</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+  
+  <!-- CSS 模块架构 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+        <span class="brand">151 FILE</span>
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="team.html">Belt</a>
+        <a href="lineup.html">Lineup</a>
+        <a href="about.html" aria-current="page">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页面主体容器：约束在舒适阅读行宽 (wrap-doc) -->
+  <main class="wrap wrap-doc">
+    <h1 class="page-title">File</h1>
+    <p class="page-desc">Unofficial Kanto-first dex. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+
+    <!-- 数据源与规则说明 -->
+    <section class="file-block" aria-labelledby="sources-heading">
+      <h2 id="sources-heading">Sources</h2>
+      <ul>
+        <li>Stats and names: <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a></li>
+        <li>Art: <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a></li>
+        <li>Search uses English names or National Dex numbers.</li>
+        <li>Belt lives in this browser as <span class="soft">file151.belt</span>. Nothing is uploaded.</li>
+        <li>Lineup reads species types only, not moves.</li>
+        <li>Regions slice National Dex ids. Forms are not separate files in v1.</li>
+      </ul>
+    </section>
+
+    <!-- 精灵球音效开关 -->
+    <section class="file-block" aria-labelledby="sound-heading">
+      <h2 id="sound-heading">Ball sound</h2>
+      <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. One shot on open. No loop.</p>
+      <button class="btn btn-paper" id="sound" type="button">Ball sound off</button>
+    </section>
+
+    <!-- 快捷键指南 -->
+    <section class="file-block" aria-labelledby="keys-heading">
+      <h2 id="keys-heading">Keys</h2>
+      <table class="keys-table">
+        <tbody>
+          <tr><td><kbd>/</kbd></td><td>Focus search on Dex / Lineup</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Close file or clear search</td></tr>
+          <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next in region on Detail; Film on Dex</td></tr>
+          <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
+          <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="js/pokeball.js"></script>
+  <script>
+    // file151.sound 开关控制逻辑
+    const SOUND_KEY = "file151.sound";
+    const soundBtn = document.getElementById("sound");
+
+    function renderSoundState() {
+      const isSoundOn = localStorage.getItem(SOUND_KEY) === "on";
+      soundBtn.textContent = isSoundOn ? "Ball sound on" : "Ball sound off";
+      soundBtn.setAttribute("aria-pressed", isSoundOn ? "true" : "false");
+    }
+
+    soundBtn.addEventListener("click", () => {
+      const current = localStorage.getItem(SOUND_KEY) === "on";
+      const next = current ? "off" : "on";
+      localStorage.setItem(SOUND_KEY, next);
+      renderSoundState();
+    });
+
+    renderSoundState();
+  </script>
+</body>
+</html>

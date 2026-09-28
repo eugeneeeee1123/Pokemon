@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lineup — 151 File</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+        <span class="brand">151 FILE</span>
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="team.html">Belt</a>
+        <a href="lineup.html" aria-current="page">Lineup</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页面主体容器 -->
+  <main class="wrap">
+    <h1 class="page-title">Lineup</h1>
+    <p class="lead">Typed as the species types, not moves. Coverage chips open Dex by attack type. Holes open Dex by <code>resist</code>.</p>
+
+    <!-- 腰带 6 槽缩略栏 -->
+    <h2 class="lineup-subheading">Belt</h2>
+    <div class="lineup-belt" id="belt"></div>
+    <p class="lineup-empty" id="belt-empty" hidden>Belt is empty. <a class="link-action" href="pokedex.html">Open the dex</a> and add up to 6.</p>
+
+    <!-- 打击面覆盖 (Coverage) -->
+    <h2 class="lineup-subheading">Coverage</h2>
+    <div class="wall" id="coverage"></div>
+
+    <!-- 防御盲点 (Holes) -->
+    <h2 class="lineup-subheading">Holes</h2>
+    <div class="wall" id="holes"></div>
+
+    <!-- 属性抵抗 (Resists) -->
+    <h2 class="lineup-subheading">Resists</h2>
+    <div class="wall" id="resists"></div>
+    <p class="lineup-dupes" id="dupes"></p>
+
+    <!-- 左右并排比对 (Side by side) -->
+    <h2 class="lineup-subheading">Side by side</h2>
+    <div class="lineup-pair">
+      <div class="lineup-pane" id="left"></div>
+      <div class="lineup-mid">
+        <button class="btn btn-paper" id="swap" type="button">Swap sides</button>
+        <button class="btn btn-paper" id="cl" type="button">Clear left</button>
+        <button class="btn btn-paper" id="cr" type="button">Clear right</button>
+        <button class="btn btn-paper" id="copy" type="button">Copy link</button>
+      </div>
+      <div class="lineup-pane" id="right"></div>
+    </div>
+  </main>
+
+  <!-- 脚本依赖 -->
+  <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/lineup.js"></script>
+</body>
+</html>

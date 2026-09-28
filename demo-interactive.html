@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon GO 风格 3D 交互实验台 · 151 FILE</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <style>
+    /* 实验台专属页面样式 */
+    .lab-layout {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 50% 30%, #0F2A44 0%, var(--sky) 70%);
+      color: var(--ink);
+      padding: var(--s-6) var(--s-6) var(--s-12);
+      box-sizing: border-box;
+    }
+
+    .lab-header {
+      max-width: 900px;
+      margin: 0 auto var(--s-6);
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--s-4);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: var(--s-4);
+    }
+
+    .lab-title h1 {
+      font-size: 1.5rem;
+      margin: 0 0 var(--s-1);
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .lab-title p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+
+    .lab-back-link {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--navy);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+    .lab-back-link:hover {
+      border-color: var(--navy);
+      color: var(--ink);
+    }
+
+    /* 快捷切换栏 */
+    .selector-bar {
+      max-width: 900px;
+      margin: 0 auto var(--s-6);
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .selector-label {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 4px;
+    }
+
+    .specimen-chip {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 0 var(--line);
+    }
+    .specimen-chip:hover {
+      border-color: var(--mark);
+      transform: translateY(-1px);
+    }
+    .specimen-chip.is-active {
+      background: var(--mark);
+      color: #071422;
+      border-color: #D4A700;
+      font-weight: 700;
+      box-shadow: 0 3px 0 #A88400;
+    }
+
+    .custom-id-input {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 4px 8px;
+      margin-left: auto;
+    }
+    .custom-id-input input {
+      background: transparent;
+      border: none;
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      width: 50px;
+      text-align: center;
+      outline: none;
+    }
+    .custom-id-input button {
+      background: var(--navy-key);
+      color: var(--navy-key-ink);
+      border: none;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* 主舞台区 */
+    .lab-main {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: var(--s-6);
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .lab-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 3D 舞台容器 */
+    .stage-wrapper {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: var(--s-8) var(--s-6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 0 var(--line);
+      perspective: 1000px;
+      overflow: hidden;
+      min-height: 440px;
+      user-select: none;
+    }
+
+    /* 舞台背景科技光标网格 */
+    .stage-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at center, rgba(126, 182, 217, 0.08) 0%, transparent 70%),
+        linear-gradient(to right, rgba(30, 58, 85, 0.25) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 58, 85, 0.25) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+      pointer-events: none;
+    }
+
+    /* 舞台顶部 HUD 状态 */
+    .stage-hud {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(7, 20, 34, 0.65);
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+    }
+    .hud-id {
+      color: var(--mark);
+      font-weight: 700;
+    }
+
+    /* 3D 互动卡体 */
+    .pokemon-card-3d {
+      width: 100%;
+      max-width: 380px;
+      height: 340px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      transition: transform 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+      cursor: grab;
+    }
+    .pokemon-card-3d:active {
+      cursor: grabbing;
+    }
+
+    /* 3D 地台光环与悬浮阴影（Pokémon GO 经典地台） */
+    .pokemon-pedestal {
+      position: absolute;
+      bottom: 20px;
+      width: 220px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(126, 182, 217, 0.35) 0%, rgba(126, 182, 217, 0.08) 50%, transparent 75%);
+      border: 1px solid rgba(126, 182, 217, 0.3);
+      transform: rotateX(65deg) translateZ(-10px);
+      box-shadow: 0 0 24px rgba(61, 125, 202, 0.3);
+      transition: all 0.2s ease;
+      pointer-events: none;
+    }
+
+    .pokemon-shadow {
+      position: absolute;
+      bottom: 28px;
+      width: 140px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.65);
+      filter: blur(8px);
+      transform: rotateX(65deg) translateZ(-5px);
+      transition: transform 0.1s ease, width 0.2s ease, opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    /* 宝可梦 3D 模型渲染图 */
+    .pokemon-model-img {
+      max-width: 260px;
+      max-height: 260px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
+      transform: translateZ(50px);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    /* 触碰光环波纹动效 */
+    .burst-ring {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--mark);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.2);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .burst-ring.is-animating {
+      animation: ring-pulse 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    }
+
+    @keyframes ring-pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0.9;
+        border-color: var(--mark);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.8);
+        opacity: 0;
+        border-color: rgba(255, 203, 5, 0);
+      }
+    }
+
+    /* 动作动画集合 (Animations) */
+    /* 1. 跃起攻击 (Attack Jump) */
+    .anim-attack {
+      animation: poke-attack 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    }
+    @keyframes poke-attack {
+      0% { transform: translateZ(50px) scale(1) translateY(0); }
+      30% { transform: translateZ(90px) scale(1.15) translateY(-36px) rotate(-6deg); }
+      60% { transform: translateZ(100px) scale(1.12) translateY(-20px) rotate(4deg); }
+      100% { transform: translateZ(50px) scale(1) translateY(0) rotate(0deg); }
+    }
+
+    /* 2. 欢呼旋转跳 (Cheer Spin Jump) */
+    .anim-cheer {
+      animation: poke-cheer 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+    @keyframes poke-cheer {
+      0% { transform: translateZ(50px) scale(1) translateY(0) rotateY(0deg); }
+      40% { transform: translateZ(80px) scale(1.1) translateY(-45px) rotateY(180deg); }
+      80% { transform: translateZ(70px) scale(1.05) translateY(-10px) rotateY(360deg); }
+      100% { transform: translateZ(50px) scale(1) translateY(0) rotateY(360deg); }
+    }
+
+    /* 3. 摇晃受击 (Wobble Shock) */
+    .anim-wobble {
+      animation: poke-wobble 0.5s ease-in-out forwards;
+    }
+    @keyframes poke-wobble {
+      0%, 100% { transform: translateZ(50px) translateX(0); }
+      20% { transform: translateZ(40px) translateX(-14px) rotate(-8deg); }
+      40% { transform: translateZ(60px) translateX(14px) rotate(8deg); }
+      60% { transform: translateZ(45px) translateX(-8px) rotate(-4deg); }
+      80% { transform: translateZ(55px) translateX(6px) rotate(3deg); }
+    }
+
+    /* 闪光星光粒子 (Shiny Sparkle) */
+    .sparkle-particle {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle, #FFF 10%, #FFCB05 60%, transparent 90%);
+      pointer-events: none;
+      z-index: 3;
+      clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+      animation: sparkle-fade 0.8s ease-out forwards;
+    }
+    @keyframes sparkle-fade {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      50% { transform: scale(1.3) rotate(90deg); opacity: 1; }
+      100% { transform: scale(0) rotate(180deg); opacity: 0; }
+    }
+
+    /* 提示条 */
+    .stage-hint {
+      position: absolute;
+      bottom: 12px;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(7, 20, 34, 0.7);
+      padding: 4px 10px;
+      border: 1px dashed var(--line);
+      pointer-events: none;
+    }
+
+    /* 右侧控制面板 */
+    .controls-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: var(--s-6);
+      box-shadow: 0 10px 0 var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-5);
+    }
+
+    .panel-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-btn {
+      background: #0B1C2E;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .action-btn:hover {
+      border-color: var(--navy);
+      background: #142F4C;
+      color: #FFF;
+    }
+    .action-btn:active {
+      transform: translateY(2px);
+    }
+    .action-btn .btn-icon {
+      font-size: 1.1rem;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      padding: 4px 0;
+    }
+
+    .toggle-switch {
+      background: #071422;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      width: 44px;
+      height: 24px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--ink-soft);
+      transition: all 0.2s ease;
+    }
+    .toggle-switch.is-on {
+      background: var(--navy);
+      border-color: var(--navy-key);
+    }
+    .toggle-switch.is-on::after {
+      left: 22px;
+      background: var(--mark);
+    }
+
+    /* 声音音量滑块 */
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .volume-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--mark);
+      background: #071422;
+    }
+    .volume-val {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      min-width: 32px;
+    }
+
+    /* 特性说明清单 */
+    .lab-notes {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      background: #0B1C2E;
+      padding: 12px;
+      border-left: 3px solid var(--mark);
+    }
+    .lab-notes strong {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body class="lab-layout">
+
+  <!-- 顶栏说明 -->
+  <header class="lab-header">
+    <div class="lab-title">
+      <h1>151 FILE · 交互实验台 (Interactive Lab)</h1>
+      <p>Pokémon GO 风格 3D 模型悬浮视差、触碰反应、闪光切换与原生叫声试验</p>
+    </div>
+    <a href="index.html" class="lab-back-link">← 返回 Home (主页)</a>
+  </header>
+
+  <!-- 标本快捷切换条 -->
+  <nav class="selector-bar" aria-label="Specimens Selector">
+    <span class="selector-label">快速选择:</span>
+    <button class="specimen-chip is-active" data-id="25" data-name="Pikachu" data-type="Electric">
+      <span>#025</span> Pikachu
+    </button>
+    <button class="specimen-chip" data-id="1" data-name="Bulbasaur" data-type="Grass/Poison">
+      <span>#001</span> Bulbasaur
+    </button>
+    <button class="specimen-chip" data-id="4" data-name="Charmander" data-type="Fire">
+      <span>#004</span> Charmander
+    </button>
+    <button class="specimen-chip" data-id="7" data-name="Squirtle" data-type="Water">
+      <span>#007</span> Squirtle
+    </button>
+    <button class="specimen-chip" data-id="94" data-name="Gengar" data-type="Ghost/Poison">
+      <span>#094</span> Gengar
+    </button>
+    <button class="specimen-chip" data-id="150" data-name="Mewtwo" data-type="Psychic">
+      <span>#150</span> Mewtwo
+    </button>
+
+    <div class="custom-id-input">
+      <span style="font-size:0.75rem; color:var(--ink-soft);">#</span>
+      <input type="number" id="customIdInput" min="1" max="151" placeholder="1-151" value="">
+      <button id="customIdBtn">Load</button>
+    </div>
+  </nav>
+
+  <!-- 核心主区域 -->
+  <main class="lab-main">
+    
+    <!-- 3D 互动舞台 -->
+    <section class="stage-wrapper" id="stageWrapper">
+      <div class="stage-grid-bg"></div>
+
+      <!-- HUD 信息 -->
+      <div class="stage-hud">
+        <div class="hud-badge">
+          <span class="hud-id" id="hudId">#025</span>
+          <span id="hudName" style="color:var(--ink); font-weight:700;">PIKACHU</span>
+          <span id="hudType" style="color:var(--ink-soft); font-size:0.75rem;">ELECTRIC</span>
+        </div>
+        <div class="hud-badge" id="hudShinyState">
+          <span style="color:var(--ink-soft);">NORMAL</span>
+        </div>
+      </div>
+
+      <!-- 3D 浮动卡体 -->
+      <div class="pokemon-card-3d" id="pokemonCard3D" title="移动鼠标查看 3D 视角，点击触发互动！">
+        <!-- 触碰波纹环 -->
+        <div class="burst-ring" id="burstRing"></div>
+
+        <!-- 3D 地台光环与阴影 -->
+        <div class="pokemon-pedestal" id="pedestal"></div>
+        <div class="pokemon-shadow" id="shadow"></div>
+
+        <!-- 3D 模型立绘 (Pokémon HOME 渲染图) -->
+        <img 
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png" 
+          alt="Pikachu 3D Render" 
+          class="pokemon-model-img" 
+          id="pokemonModelImg"
+          draggable="false"
+        >
+      </div>
+
+      <!-- 底部操作提示 -->
+      <div class="stage-hint">
+        <span>💡 <b>在卡片内移动鼠标</b>感受 3D 悬浮视角 · <b>单击立绘</b>触碰反应与叫声</span>
+      </div>
+    </section>
+
+    <!-- 右侧互动控制台 -->
+    <aside class="controls-panel">
+      <h2 class="panel-section-title">
+        <span>触碰动作测试</span>
+        <span style="font-size:0.7rem; color:var(--mark);">TAP ACTIONS</span>
+      </h2>
+
+      <div class="action-btn-grid">
+        <button class="action-btn" id="btnAttack">
+          <span class="btn-icon">⚡</span>
+          <span>Attack (突击)</span>
+        </button>
+        <button class="action-btn" id="btnCheer">
+          <span class="btn-icon">✨</span>
+          <span>Cheer (翻转)</span>
+        </button>
+        <button class="action-btn" id="btnWobble">
+          <span class="btn-icon">💢</span>
+          <span>Wobble (受击)</span>
+        </button>
+        <button class="action-btn" id="btnCryOnly">
+          <span class="btn-icon">🔊</span>
+          <span>Play Cry (叫声)</span>
+        </button>
+      </div>
+
+      <h2 class="panel-section-title">
+        <span>形态与视觉选项</span>
+        <span style="font-size:0.7rem; color:var(--mark);">APPEARANCE</span>
+      </h2>
+
+      <!-- 闪光形态开关 -->
+      <div class="toggle-row">
+        <span>✨ 闪光形态 (Shiny Form)</span>
+        <div class="toggle-switch" id="shinyToggle" role="switch" aria-checked="false"></div>
+      </div>
+
+      <!-- 3D 视差微动开关 -->
+      <div class="toggle-row">
+        <span>📐 3D 空间跟随 (Tilt Effect)</span>
+        <div class="toggle-switch is-on" id="tiltToggle" role="switch" aria-checked="true"></div>
+      </div>
+
+      <!-- 声音控制 -->
+      <h2 class="panel-section-title">
+        <span>叫声音效 (Official Cry)</span>
+        <span style="font-size:0.7rem; color:var(--mark);">AUDIO</span>
+      </h2>
+
+      <div class="toggle-row">
+        <span>互动发声 (file151.sound)</span>
+        <div class="toggle-switch is-on" id="soundToggle" role="switch" aria-checked="true"></div>
+      </div>
+
+      <div class="volume-row">
+        <span style="font-size:0.8rem;">音量</span>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.35">
+        <span class="volume-val" id="volumeVal">35%</span>
+      </div>
+
+      <!-- 机制说明 -->
+      <div class="lab-notes">
+        <strong>架构说明：</strong><br>
+        1. 采用 Pokémon HOME 512×512 官方 3D 渲染图（原生支持普通形态与闪光形态）。<br>
+        2. 原生 CSS 3D `perspective` 透视矩阵，配合光标坐标计算倾角，零外部 3D 库，极速流畅。<br>
+        3. 叫声直连 PokeAPI 官方音频库，完全符合 `pokemon-web-project-plan.md` 规范。
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    // 状态机
+    const state = {
+      id: 25,
+      name: 'Pikachu',
+      type: 'Electric',
+      isShiny: false,
+      enableTilt: true,
+      soundEnabled: true,
+      volume: 0.35,
+      isActionRunning: false
+    };
+
+    // DOM 元素引用
+    const stageWrapper = document.getElementById('stageWrapper');
+    const card = document.getElementById('pokemonCard3D');
+    const modelImg = document.getElementById('pokemonModelImg');
+    const shadow = document.getElementById('shadow');
+    const pedestal = document.getElementById('pedestal');
+    const burstRing = document.getElementById('burstRing');
+    const hudId = document.getElementById('hudId');
+    const hudName = document.getElementById('hudName');
+    const hudType = document.getElementById('hudType');
+    const hudShinyState = document.getElementById('hudShinyState');
+
+    const shinyToggle = document.getElementById('shinyToggle');
+    const tiltToggle = document.getElementById('tiltToggle');
+    const soundToggle = document.getElementById('soundToggle');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeVal = document.getElementById('volumeVal');
+
+    const btnAttack = document.getElementById('btnAttack');
+    const btnCheer = document.getElementById('btnCheer');
+    const btnWobble = document.getElementById('btnWobble');
+    const btnCryOnly = document.getElementById('btnCryOnly');
+
+    // 生成图片与叫声 URL
+    function getModelUrl(id, isShiny) {
+      const folder = isShiny ? 'home/shiny' : 'home';
+      return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/${folder}/${id}.png`;
+    }
+
+    function getCryUrl(id) {
+      return `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
+    }
+
+    // 播放官方 Cry 叫声
+    function playCry() {
+      if (!state.soundEnabled) return;
+      try {
+        const audio = new Audio(getCryUrl(state.id));
+        audio.volume = state.volume;
+        audio.play().catch(err => {
+          console.log('Audio autoplay prevented or error:', err);
+        });
+      } catch (e) {
+        console.warn('Audio play failed', e);
+      }
+    }
+
+    // 触发波纹爆发环
+    function triggerBurstRing() {
+      burstRing.classList.remove('is-animating');
+      void burstRing.offsetWidth; // 触发重绘
+      burstRing.classList.add('is-animating');
+    }
+
+    // 触发闪光粒子
+    function createSparkles() {
+      const rect = card.getBoundingClientRect();
+      for (let i = 0; i < 7; i++) {
+        const p = document.createElement('div');
+        p.className = 'sparkle-particle';
+        const offsetX = (Math.random() - 0.5) * 180;
+        const offsetY = (Math.random() - 0.5) * 180;
+        p.style.left = `calc(50% + ${offsetX}px)`;
+        p.style.top = `calc(50% + ${offsetY}px)`;
+        stageWrapper.appendChild(p);
+        setTimeout(() => p.remove(), 800);
+      }
+    }
+
+    // 触发动作
+    function triggerAction(animClass) {
+      if (state.isActionRunning) return;
+      state.isActionRunning = true;
+
+      // 播放叫声与光环
+      playCry();
+      triggerBurstRing();
+      if (state.isShiny) {
+        createSparkles();
+      }
+
+      modelImg.classList.add(animClass);
+
+      // 地台与阴影联动
+      shadow.style.transform = 'rotateX(65deg) translateZ(-5px) scale(0.7)';
+      shadow.style.opacity = '0.35';
+
+      setTimeout(() => {
+        modelImg.classList.remove(animClass);
+        shadow.style.transform = 'rotateX(65deg) translateZ(-5px) scale(1)';
+        shadow.style.opacity = '0.65';
+        state.isActionRunning = false;
+      }, 650);
+    }
+
+    // 更新宝可梦展示
+    function loadPokemon(id, name, type) {
+      state.id = parseInt(id, 10);
+      state.name = name || `Pokemon #${id}`;
+      state.type = type || 'Unknown';
+
+      hudId.textContent = `#${String(state.id).padStart(3, '0')}`;
+      hudName.textContent = state.name.toUpperCase();
+      hudType.textContent = state.type.toUpperCase();
+
+      modelImg.src = getModelUrl(state.id, state.isShiny);
+      modelImg.alt = `${state.name} 3D Render`;
+
+      // 切换标本时轻微欢呼提示
+      triggerAction('anim-attack');
+    }
+
+    // 3D 鼠标跟随视差效果 (Tilt & Perspective)
+    stageWrapper.addEventListener('mousemove', (e) => {
+      if (!state.enableTilt || state.isActionRunning) return;
+
+      const rect = stageWrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // 计算倾角（限制在 -15deg 到 15deg）
+      const rotateX = ((centerY - y) / centerY) * 14;
+      const rotateY = ((x - centerX) / centerX) * 16;
+
+      card.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+      
+      // 阴影与地台微位移反向运动增强景深
+      shadow.style.transform = `rotateX(65deg) translateZ(-5px) translateX(${(-rotateY * 1.5).toFixed(1)}px)`;
+      pedestal.style.transform = `rotateX(65deg) translateZ(-10px) translateX(${(-rotateY * 0.8).toFixed(1)}px)`;
+    });
+
+    stageWrapper.addEventListener('mouseleave', () => {
+      if (!state.enableTilt) return;
+      card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      shadow.style.transform = 'rotateX(65deg) translateZ(-5px) translateX(0)';
+      pedestal.style.transform = 'rotateX(65deg) translateZ(-10px) translateX(0)';
+    });
+
+    // 点击立绘或卡体触发受碰动作
+    card.addEventListener('click', () => {
+      const actions = ['anim-attack', 'anim-cheer', 'anim-wobble'];
+      const randomAction = actions[Math.floor(Math.random() * actions.length)];
+      triggerAction(randomAction);
+    });
+
+    // 快捷切换按钮事件
+    document.querySelectorAll('.specimen-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.specimen-chip').forEach(c => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        loadPokemon(chip.dataset.id, chip.dataset.name, chip.dataset.type);
+      });
+    });
+
+    // 自定义编号输入
+    const customIdInput = document.getElementById('customIdInput');
+    const customIdBtn = document.getElementById('customIdBtn');
+    function handleCustomId() {
+      const val = parseInt(customIdInput.value, 10);
+      if (val >= 1 && val <= 151) {
+        document.querySelectorAll('.specimen-chip').forEach(c => c.classList.remove('is-active'));
+        loadPokemon(val, `Specimen #${val}`, 'Kanto 151');
+      } else {
+        alert('请输入 1 到 151 之间的编号');
+      }
+    }
+    customIdBtn.addEventListener('click', handleCustomId);
+    customIdInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleCustomId();
+    });
+
+    // 控制台按钮事件
+    btnAttack.addEventListener('click', (e) => { e.stopPropagation(); triggerAction('anim-attack'); });
+    btnCheer.addEventListener('click', (e) => { e.stopPropagation(); triggerAction('anim-cheer'); });
+    btnWobble.addEventListener('click', (e) => { e.stopPropagation(); triggerAction('anim-wobble'); });
+    btnCryOnly.addEventListener('click', (e) => { e.stopPropagation(); playCry(); triggerBurstRing(); });
+
+    // 闪光切换
+    shinyToggle.addEventListener('click', () => {
+      state.isShiny = !state.isShiny;
+      shinyToggle.classList.toggle('is-on', state.isShiny);
+      shinyToggle.setAttribute('aria-checked', state.isShiny);
+
+      hudShinyState.innerHTML = state.isShiny 
+        ? '<span style="color:var(--mark); font-weight:700;">✨ SHINY</span>' 
+        : '<span style="color:var(--ink-soft);">NORMAL</span>';
+
+      modelImg.src = getModelUrl(state.id, state.isShiny);
+      if (state.isShiny) {
+        createSparkles();
+      }
+      playCry();
+    });
+
+    // 3D 跟随开关
+    tiltToggle.addEventListener('click', () => {
+      state.enableTilt = !state.enableTilt;
+      tiltToggle.classList.toggle('is-on', state.enableTilt);
+      tiltToggle.setAttribute('aria-checked', state.enableTilt);
+      if (!state.enableTilt) {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      }
+    });
+
+    // 声音开关
+    soundToggle.addEventListener('click', () => {
+      state.soundEnabled = !state.soundEnabled;
+      soundToggle.classList.toggle('is-on', state.soundEnabled);
+      soundToggle.setAttribute('aria-checked', state.soundEnabled);
+    });
+
+    // 音量滑块
+    volumeSlider.addEventListener('input', (e) => {
+      state.volume = parseFloat(e.target.value);
+      volumeVal.textContent = `${Math.round(state.volume * 100)}%`;
+    });
+  </script>
+</body>
+</html>

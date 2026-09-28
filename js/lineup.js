@@ -1,0 +1,315 @@
+/**
+ * 151 FILE — Lineup Page Logic (Coverage + Holes + Side-by-side comparison)
+ * 遵循 pokemon-web-project-plan.md §4.4 与 AGENTS.md 约束
+ * - 腰带键名固定：file151.belt (id 数组，最长 6)
+ * - 纯种族属性相克推演，不含招式
+ * - 左右并排比对：URL 参数 ?a= & ?b=
+ * - Holes 链接使用 ?resist=，禁止复用 ?type=
+ */
+
+(function () {
+  const tc = window.TYPES_CHART;
+  const api = window.pokeApi;
+
+  const q = new URLSearchParams(location.search);
+  let leftId = q.get("a") ? Number(q.get("a")) || q.get("a") : null;
+  let rightId = q.get("b") ? Number(q.get("b")) || q.get("b") : null;
+  let pickSide = "left";
+
+  let leftMon = null;
+  let rightMon = null;
+
+  // 读取本地腰带
+  function getBeltIds() {
+    try {
+      const saved = localStorage.getItem("file151.belt");
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed.map(Number).filter(n => n > 0 && n <= 1025).slice(0, 6) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  // 获取宝可梦数据 (优先走 api.getPokemon，具备 localStorage 缓存与保底)
+  async function fetchPokemon(idOrName) {
+    if (!idOrName) return null;
+    const query = String(idOrName).trim().toLowerCase();
+
+    // 1. 如果有 api.js，使用带有 6 项基础能力的完整数据
+    if (api && api.getPokemon) {
+      try {
+        const mon = await api.getPokemon(query);
+        if (mon) {
+          // 整理 stats 为便捷 key-value 对象
+          const statsMap = {};
+          if (Array.isArray(mon.stats)) {
+            mon.stats.forEach(s => { statsMap[s.name] = s.value; });
+          }
+          return {
+            id: mon.id,
+            name: mon.name,
+            types: mon.types || [],
+            stats: statsMap,
+            art: api.artUrl(mon.id)
+          };
+        }
+      } catch (_) {}
+    }
+
+    // 2. 本地 regions-data.js 离线保底
+    if (window.getSpeciesById) {
+      const num = parseInt(query, 10);
+      const spec = num ? window.getSpeciesById(num) : (window.ALL_SPECIES || []).find(s => s.name.toLowerCase() === query);
+      if (spec) {
+        return {
+          id: spec.id,
+          name: spec.name,
+          types: spec.types || [],
+          stats: { hp: 50, attack: 50, defense: 50, "special-attack": 50, "special-defense": 50, speed: 50 },
+          art: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${spec.id}.png`
+        };
+      }
+    }
+
+    return null;
+  }
+
+  // 渲染属性色票芯片
+  function renderChips(list, makeHref) {
+    if (!list || list.length === 0) {
+      return `<span class="lineup-empty">None</span>`;
+    }
+    return list.map(t => {
+      const bg = tc ? tc.TYPE_COLORS[t] || '#3A6A88' : '#3A6A88';
+      const isWhite = tc ? tc.WHITE_TEXT_TYPES.has(t) : false;
+      return `<a class="chip ${isWhite ? 'w' : ''}" style="background:${bg}" href="${makeHref(t)}">${t}</a>`;
+    }).join("");
+  }
+
+  // 计算腰带覆盖度与盲点
+  function calculateCoverage(mons) {
+    const cover = [];
+    const holes = [];
+    const resists = [];
+    const validMons = mons.filter(Boolean);
+    if (validMons.length === 0 || !tc) return { cover, holes, resists };
+
+    tc.TYPES.forEach(t => {
+      // 进攻覆盖面 (Coverage)：队伍中有任一宝可梦的原生属性克制目标防御属性 (2×)
+      const canHit = validMons.some(m => m.types.some(st => tc.getEffectiveness(st, t) === 2));
+      if (canHit) cover.push(t);
+
+      // 防御盲点 (Holes)：当该属性进攻时，队伍中受到最高伤害的宝可梦受到 >= 2× 伤害
+      const worstDef = Math.max(...validMons.map(m => tc.getDefensiveMultiplier(t, m.types)));
+      if (worstDef >= 2) holes.push(t);
+
+      // 抵抗覆盖 (Resists)：当该属性进攻时，队伍中至少有一只宝可梦可以抵抗 (<= 0.5×)
+      const bestDef = Math.min(...validMons.map(m => tc.getDefensiveMultiplier(t, m.types)));
+      if (bestDef <= 0.5) resists.push(t);
+    });
+
+    return { cover, holes, resists };
+  }
+
+  // 更新当前 URL 查询参数
+  function updateUrl() {
+    if (typeof location === "undefined" || !location.href) return;
+    try {
+      const u = new URL(location.href);
+      if (leftId) u.searchParams.set("a", leftId); else u.searchParams.delete("a");
+      if (rightId) u.searchParams.set("b", rightId); else u.searchParams.delete("b");
+      if (typeof history !== "undefined" && history.replaceState) {
+        history.replaceState(null, "", u.toString());
+      }
+    } catch (_) {}
+  }
+
+  // 渲染单侧对比面板
+  function renderPaneHtml(side, mon, other) {
+    if (!mon) {
+      return `
+        <input data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" />
+        <p class="lineup-empty" style="text-align:center; padding: 2rem 0;">Empty side. Search above or tap a Pokémon on the belt.</p>
+      `;
+    }
+
+    const statFields = [
+      { key: "hp", label: "HP" },
+      { key: "attack", label: "Attack" },
+      { key: "defense", label: "Defense" },
+      { key: "special-attack", label: "Sp. Atk" },
+      { key: "special-defense", label: "Sp. Def" },
+      { key: "speed", label: "Speed" }
+    ];
+
+    const typesText = (mon.types || []).join(" · ");
+
+    return `
+      <input data-side="${side}" value="${mon.name} (#${mon.id})" aria-label="${side} Pokemon: ${mon.name}" />
+      <img src="${mon.art}" alt="${mon.name} 3D Model" />
+      <p class="types-tag">${typesText}</p>
+      <div class="lineup-stats">
+        ${statFields.map(s => {
+          const v = mon.stats?.[s.key] || 0;
+          const ov = other?.stats?.[s.key];
+          const hasLead = ov != null && v > ov;
+          const isFaster = s.key === "speed" && ov != null && v > ov;
+          const pct = Math.min(100, Math.round((v / 255) * 100));
+
+          return `
+            <div class="lineup-stat">
+              <span class="stat-name">${s.label}</span>
+              <div class="bar">
+                <span class="${hasLead ? 'stat-lead' : ''}" style="width: ${pct}%"></span>
+              </div>
+              <span class="stat-val ${isFaster ? 'faster' : ''}">${v}${isFaster ? ' ★' : ''}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  // 全量渲染主函数
+  async function render() {
+    const beltIds = getBeltIds();
+    const beltBox = document.getElementById("belt");
+    const emptyBox = document.getElementById("belt-empty");
+
+    if (!beltIds.length) {
+      if (beltBox) beltBox.innerHTML = "";
+      if (emptyBox) {
+        emptyBox.hidden = false;
+        emptyBox.innerHTML = `Belt is empty. <a class="link-action" href="pokedex.html">Open the dex</a> and add up to 6.`;
+      }
+      document.getElementById("coverage").innerHTML = `<span class="lineup-empty">None</span>`;
+      document.getElementById("holes").innerHTML = `<span class="lineup-empty">None</span>`;
+      document.getElementById("resists").innerHTML = `<span class="lineup-empty">None</span>`;
+      document.getElementById("dupes").textContent = "";
+    } else {
+      if (emptyBox) emptyBox.hidden = true;
+
+      // 并发拉取腰带 6 只数据
+      const beltMons = await Promise.all(beltIds.map(fetchPokemon));
+      const validBelt = beltMons.filter(Boolean);
+
+      // 渲染腰带缩略图
+      if (beltBox) {
+        beltBox.innerHTML = validBelt.map(m => {
+          const isOn = (leftId === m.id || rightId === m.id);
+          return `
+            <button class="mini" type="button" data-id="${m.id}" ${isOn ? 'data-on' : ''} title="${m.name} (#${m.id})">
+              <img src="${m.art}" alt="${m.name}" loading="lazy" />
+            </button>
+          `;
+        }).join("");
+      }
+
+      // 计算并渲染覆盖面、弱点与抵抗
+      const { cover, holes, resists } = calculateCoverage(validBelt);
+      document.getElementById("coverage").innerHTML = renderChips(cover, t => `pokedex.html?type=${t}`);
+      document.getElementById("holes").innerHTML = renderChips(holes, t => `pokedex.html?resist=${t}`);
+      document.getElementById("resists").innerHTML = renderChips(resists, t => `pokedex.html?resist=${t}`);
+
+      // 重复属性统计
+      const typeCounts = {};
+      validBelt.forEach(m => {
+        m.types.forEach(t => { typeCounts[t] = (typeCounts[t] || 0) + 1; });
+      });
+      const dupTypes = Object.entries(typeCounts).filter(([, count]) => count >= 2).map(([t, count]) => `${t} (×${count})`);
+      document.getElementById("dupes").textContent = dupTypes.length ? "Repeated defensive types: " + dupTypes.join(", ") : "";
+    }
+
+    // 左右并排比对
+    leftMon = leftId ? await fetchPokemon(leftId) : null;
+    rightMon = rightId ? await fetchPokemon(rightId) : null;
+
+    const leftPane = document.getElementById("left");
+    const rightPane = document.getElementById("right");
+    if (leftPane) leftPane.innerHTML = renderPaneHtml("left", leftMon, rightMon);
+    if (rightPane) rightPane.innerHTML = renderPaneHtml("right", rightMon, leftMon);
+
+    updateUrl();
+  }
+
+  // 事件监听与委托
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. 点击腰带迷你球
+    document.getElementById("belt")?.addEventListener("click", e => {
+      const btn = e.target.closest("[data-id]");
+      if (!btn) return;
+      const id = Number(btn.dataset.id);
+
+      if (!leftId) {
+        leftId = id;
+      } else if (!rightId) {
+        rightId = id;
+      } else {
+        if (pickSide === "left") {
+          leftId = id;
+          pickSide = "right";
+        } else {
+          rightId = id;
+          pickSide = "left";
+        }
+      }
+      render();
+    });
+
+    // 2. 左右两侧搜索输入 (Enter 确认)
+    document.querySelector(".lineup-pair")?.addEventListener("keydown", async e => {
+      if (e.key !== "Enter") return;
+      const targetInput = e.target;
+      const side = targetInput.dataset.side;
+      if (!side) return;
+
+      const val = targetInput.value.replace(/^#/, "").replace(/\(.*?\)/, "").trim();
+      if (!val) return;
+
+      const found = await fetchPokemon(val);
+      if (found) {
+        if (side === "left") leftId = found.id;
+        else rightId = found.id;
+        render();
+      } else {
+        targetInput.style.borderColor = "var(--ball)";
+        setTimeout(() => { targetInput.style.borderColor = ""; }, 1200);
+      }
+    });
+
+    // 3. 交换两侧
+    document.getElementById("swap")?.addEventListener("click", () => {
+      const temp = leftId;
+      leftId = rightId;
+      rightId = temp;
+      render();
+    });
+
+    // 4. 清除单侧
+    document.getElementById("cl")?.addEventListener("click", () => {
+      leftId = null;
+      render();
+    });
+
+    document.getElementById("cr")?.addEventListener("click", () => {
+      rightId = null;
+      render();
+    });
+
+    // 5. 复制链接
+    document.getElementById("copy")?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        const copyBtn = document.getElementById("copy");
+        if (copyBtn) {
+          copyBtn.textContent = "Copied!";
+          setTimeout(() => { copyBtn.textContent = "Copy link"; }, 1500);
+        }
+      } catch (_) {}
+    });
+
+    // 初始化渲染
+    render();
+  });
+})();

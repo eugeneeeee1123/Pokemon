@@ -1,0 +1,237 @@
+/* ==========================================================================
+   151 FILE — Pokeball Component & Motion (Night Archive)
+   ========================================================================== */
+
+/* 精灵球：上红下白、黑中线、中心钮。全站正圆唯独给球 */
+.ball {
+  --size: 32px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  position: relative;
+  display: block;
+  border: 0;
+  padding: 0;
+  background: #F7FBFE;
+  box-shadow: inset 0 0 0 3px #1a1a1a;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 100ms ease-out, filter 150ms ease;
+}
+
+.ball:active {
+  transform: scale(0.97);
+}
+
+/* 上半球红 */
+.ball .t {
+  position: absolute;
+  inset: 0 0 50% 0;
+  background: var(--ball);
+  border-radius: 999px 999px 0 0;
+}
+
+/* 黑腰带中线 */
+.ball .band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 2px);
+  height: 4px;
+  background: #1a1a1a;
+}
+
+/* 中心开合按钮 */
+.ball .btn {
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  left: 36%;
+  top: 36%;
+  background: #f4f4f4;
+  box-shadow: 0 0 0 3px #1a1a1a;
+}
+
+/* 大号球（首页入口 / 220–280px） */
+.ball.lg {
+  --size: clamp(13rem, 30vw, 17.5rem);
+  box-shadow: inset 0 0 0 8px #1a1a1a, 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+.ball.lg .band {
+  top: calc(50% - 6px);
+  height: 12px;
+}
+
+.ball.lg .btn {
+  box-shadow: 0 0 0 6px #1a1a1a;
+}
+
+/* 首页图片精灵球按钮 */
+.hero-ball-btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 100ms ease-out;
+}
+
+.hero-ball-btn:active {
+  transform: scale(0.97);
+}
+
+.hero-ball-img {
+  width: clamp(12rem, 24vw, 16.5rem);
+  height: clamp(12rem, 24vw, 16.5rem);
+  object-fit: contain;
+  display: block;
+  border-radius: 50%;
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.5));
+  transition: transform 100ms ease-out;
+}
+
+/* 首页进站摇球：±8deg，最多 3 下，800ms 内平滑停住 */
+@keyframes wobble {
+  0%, 100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(8deg);
+  }
+}
+
+.ball.is-wobble,
+.hero-ball-btn.is-wobble {
+  animation: wobble 0.26s ease-in-out 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ball.is-wobble,
+  .hero-ball-btn.is-wobble {
+    animation: none;
+  }
+}
+
+/* 腰带空槽虚线球 */
+.ball-slot-empty {
+  width: var(--size, 7.5rem);
+  height: var(--size, 7.5rem);
+  border-radius: 50%;
+  border: 2px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  background: transparent;
+}
+
+/* ==========================================================================
+   Detail Page Stage Ball (开合球动画)
+   ========================================================================== */
+.stage-ball {
+  width: min(22rem, 85vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  border: 6px solid #1a1a1a;
+  background: #102338;
+  cursor: pointer;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+.stage-ball img {
+  width: 76%;
+  height: 76%;
+  object-fit: contain;
+  position: absolute;
+  left: 12%;
+  top: 12%;
+  z-index: 1;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.stage-ball:hover img {
+  transform: scale(1.05);
+}
+
+.stage-ball .lid-t,
+.stage-ball .lid-b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  transition: transform 500ms cubic-bezier(0.22, 0.7, 0.3, 1);
+}
+
+.stage-ball .lid-t {
+  top: 0;
+  height: 50%;
+  background: var(--ball);
+}
+
+.stage-ball .lid-b {
+  bottom: 0;
+  height: 50%;
+  background: #F7FBFE;
+}
+
+.stage-ball .lid-band {
+  position: absolute;
+  top: calc(50% - 7px);
+  left: 0;
+  right: 0;
+  height: 14px;
+  background: #1a1a1a;
+  z-index: 3;
+  transition: opacity 300ms ease;
+}
+
+.stage-ball .lid-btn {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #f2f2f2;
+  border: 6px solid #1a1a1a;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
+  z-index: 4;
+  transition: opacity 300ms ease;
+}
+
+.stage-ball.is-open .lid-t {
+  transform: translateY(-58%);
+}
+
+.stage-ball.is-open .lid-b {
+  transform: translateY(58%);
+}
+
+.stage-ball.is-open .lid-band,
+.stage-ball.is-open .lid-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-ball .lid-t,
+  .stage-ball .lid-b {
+    transition: opacity 200ms ease;
+    transform: none !important;
+  }
+}
+

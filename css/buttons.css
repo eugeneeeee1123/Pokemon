@@ -1,0 +1,118 @@
+/* ==========================================================================
+   151 FILE — Buttons & Controls (Night Archive)
+   ========================================================================== */
+
+/* 基础装置按钮规范：只切右下角 (4px 4px 14px 4px) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 var(--s-5);
+  border: 0;
+  border-radius: var(--r-key);
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 100ms ease-out, background-color 80ms ease, border-color 80ms ease, box-shadow 100ms ease;
+}
+
+.btn:active {
+  transform: scale(0.97) translateY(2px);
+  box-shadow: none;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* 主操作按钮：浅青底深字，深底上压得住 */
+.btn-primary {
+  background: var(--navy-key);
+  color: var(--navy-key-ink);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+.btn-primary:hover {
+  background: #B9DDF0;
+}
+
+.btn-primary:active {
+  transform: scale(0.97) translateY(2px);
+  box-shadow: none;
+}
+
+.btn-primary:disabled {
+  background: var(--line);
+  color: var(--ink-soft);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* 次操作按钮：深色档案纸底 + 2px 边框 */
+.btn-paper {
+  background: var(--paper);
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+.btn-paper:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.btn-paper:active {
+  transform: scale(0.97) translateY(2px);
+  box-shadow: none;
+}
+
+/* 稀有强调按钮：黄底深字 */
+.btn-mark {
+  background: var(--mark);
+  color: var(--navy-key-ink);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+.btn-mark:hover {
+  background: #FFE066;
+}
+
+/* 尺寸变体 */
+.btn-lg {
+  height: 3.25rem;
+  padding: 0 1.375rem;
+  font-size: 1rem;
+}
+
+.btn-sm {
+  height: 2rem;
+  padding: 0 var(--s-3);
+  font-size: 0.75rem;
+}
+
+/* 文字动作链接 */
+.link-action {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 80ms ease;
+}
+
+.link-action:hover {
+  color: var(--ink);
+}
