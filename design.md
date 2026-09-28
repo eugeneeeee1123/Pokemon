@@ -1,6 +1,6 @@
 # 151 File — UI Design
 
-修订：2026-09-27。Apple 流体界面规则写入「触感与材质」。交互仍以 `interactions.md` 为准。砖单击进详情。无双击、无长按、无从 Dex 拖入。
+修订：2026-09-28d。整站重布（色、字锁定不动）。Dex 仍是井 + 尺 + K–N。交互以 `interactions.md` 为准。
 
 对象：关都 151 只的静态图鉴站。  
 读者：跟风做前端的人，不一定懂设定。  
@@ -13,13 +13,13 @@
 ## 五轴
 
 1. **Color**  
-   主色是天空冷青，不是 Tailwind sky、不是紫蓝渐变。红与黄只出现在球和编号上。页面 60% 青纸、30% 白档案、10% 海军+球红。
+   轴是深蓝 → 白。浅青 `--sky` 可以做页底。页约 50% 浅青、30% 白档案、20% 海军字和键。红与黄只在球和编号。禁止 neon、禁止紫。
 
 2. **Type**  
    两套：Oxanium 管编号、按钮、能力值；Atkinson Hyperlegible 管标题和说明。不用 Inter / Roboto / Poppins / Geist / Space Grotesk。
 
 3. **Layout**  
-   左对齐档案。首页左文右球，球本身是入口。图鉴不是三列均分功能卡。详情左大图右数据，不用套娃卡片。
+   书桌，不是居中栏目。装订边是结构。井偏左坐在桌上，尺通栏贴视口底。球允许切出右缘。禁止把每页收进 1080 居中卡片里。
 
 4. **Copy**  
    句子级、动词开头。按钮写结果：`Open #025`、`Add to belt`、`Close file`。禁止 Get started / Learn more / Unlock。
@@ -47,7 +47,7 @@
 
 ## 色板
 
-写入 `css/tokens.css`。
+写入 `css/tokens.css`。色值保持本表。间距与字号用下面 rem token，不要在组件里再写死 px。
 
 ```css
 :root {
@@ -62,10 +62,12 @@
   --line:       #8EB8D2; /* 描边 */
   --ok:         #2A7A4B; /* 加入成功，一条字，不用大绿块 */
   --focus:      #003A70;
+  --blue:       #3D7DCA; /* 仅 hover / 当前尺格描边。不是页底，不是发光 */
 }
 ```
 
-品牌对照：官方黄 `#FFCB05`、蓝 `#3D7DCA`、海军 `#003A70` 只借海军和黄。页面青纸比官方蓝浅两档，避免整站变 logo 色。
+色轴：深蓝 `#003A70` → 中蓝 `#3D7DCA`（仅 hover 描边）→ 浅青 `#D7EEF8`（页底）→ 白 `#F7FBFE`（档案）。  
+官方黄、球红不进这条轴。禁止反向：不要从浅蓝 hover 成更浅，只许往海军走。
 
 阴影只许一种：`0 10px 0 #8EB8D2`（硬投影，像压在档案上）。禁止 `rgba(0,0,0,.1)` 软雾。
 
@@ -146,10 +148,13 @@ HOME
 
 DEX
 +--+----------------------------------------------+
-|  | 151 FILE     [find name or number]    n/151  |
-|  | fire water grass ...                         |
-|  | #001 tile  #002 tile  #003 tile  #004 tile   |
-|  | art in circle tray, number stamped top-left  |
+|  | [find]  fire water …   Kanto · 151           |
+|  |                                              |
+|  |              (  well / ball )                |
+|  |              Open #025   Add                 |
+|  |                                              |
+|  |  [#001][#002][#003][#004][#025][#026] →      |
+|  |                 film strip                   |
 +--+----------------------------------------------+
 
 DETAIL
@@ -171,9 +176,9 @@ TEAM
 
 断点：
 
-- `<720px`：装订边取消。首页球改到标题下。Dex 两列。详情上图下数据。
-- `720–1080`：Dex 三列。
-- `>1080`：Dex 四列。装订边恢复。
+- `<720px`：装订边取消。首页球改到标题下。井缩小到 220px。尺一格 56px。详情上图下数据。
+- `≥720px`：井 280px。尺一格 68px。装订边恢复。
+- Dex 永不回到多列砖网格。
 
 层次不用万能卡片：
 
@@ -310,15 +315,21 @@ Dex / Regions 列表从顶栏下穿过时，才换成一层霜，不是装饰玻
 
 ## 分页组件
 
-### 标本砖（Dex / 首页推荐）
+### Dex：井 + 尺
 
-- 白底、4px 圆角、`0 10px 0 #8EB8D2`
-- 左上编号黄块：`--mark` 底 + Oxanium `--ink`，格式 `#025`
-- 中：直径 72% 的浅青圆托盘，artwork 居中，不裁成圆
-- 下：名字 Atkinson 700 16px + 一排色票
-- 右上 32px 小球，hover 才晃
-- 整砖是链接。不要砖内再套按钮
-- 首页第一只砖宽 `2fr`，后两只 `1fr`。禁止三等分
+井：正圆，直径 220–280px。合上是全站同一套球，井内立绘 `filter: brightness(0)`。打开上半球上移、下半球下移，同一帧去掉滤镜上色。开合弹簧 damping 1.0 / response 0.4。禁止黑幕。
+
+井心 44px 开合。井环是转盘，不另画刻度。
+
+尺：横向一条，每格 `4.25rem`，白底、4px、硬投影。格内小立绘 + `#025`。当前格 2px `--navy` 边。看过编号用 `--ink-soft`。拖 1:1，松手投射后吸格。
+
+书签齿：格顶 `0.75rem × 0.2rem` 的 `--mark` 条。编号缓冲：井右下 Oxanium，`#` + 数字，缺位 `_`。
+
+井下主按钮一颗：`Open #025`。`Add to belt` 用 `btn-paper`。
+
+### 首页标本
+
+三只横排小尺，不是网格。第一只格加宽。点格进详情。
 
 ### 筛选芯片
 
@@ -436,13 +447,153 @@ Remove 在圆下，`btn-sm btn-slot`。
 
 ## 间距尺度
 
-不要全站一个 `gap`。
+根字号 `16px`。全部间距用 `rem`，跟系统字号走。底格 `0.25rem`（4px @16）。禁止再写散 px，安全区和 1px 发丝除外。
 
-- 页边：桌面左 48px 装订 + 右 24px；移动 16px
-- 顶栏下到标题：32px（Home 56px）
-- 砖网格：列距 16px，行距 28px（行更疏，像档案行距）
-- 详情字段块：12px；能力条之间 8px
-- 按钮组：主键和下一控件 16px，不均分 flex 拉满
+```css
+:root {
+  --s-1: 0.25rem;  /* 4  发丝间隙、色票内边 */
+  --s-2: 0.5rem;   /* 8  能力条距、芯片内边 */
+  --s-3: 0.75rem;  /* 12 详情字段块、砖内边竖 */
+  --s-4: 1rem;     /* 16 页边移动、砖列距、按钮组 */
+  --s-5: 1.25rem;  /* 20 按钮左右垫 */
+  --s-6: 1.5rem;   /* 24 页边桌面右 */
+  --s-7: 1.75rem;  /* 28 砖行距（行 > 列，档案行距） */
+  --s-8: 2rem;     /* 32 顶栏下到内页标题 */
+  --s-10: 2.5rem;  /* 40 */
+  --s-12: 3rem;    /* 48 桌面左装订 */
+  --s-14: 3.5rem;  /* 56 Home 标题上空、顶栏高 */
+}
+```
+
+映射：
+
+| 位置 | token |
+|---|---|
+| 移动页边 | `max(var(--s-4), env(safe-area-inset-*))` |
+| 桌面左装订 | `var(--s-12)` |
+| 桌面右 | `var(--s-6)` |
+| 顶栏高 | `calc(var(--s-14) + env(safe-area-inset-top))` |
+| 顶栏下 → 内页 H1 | `var(--s-8)` |
+| 顶栏下 → Home H1 | `var(--s-14)` |
+| 砖列距 | `var(--s-4)` |
+| 砖行距 | `var(--s-7)` |
+| 砖内垫 | `var(--s-3) var(--s-4)` |
+| 详情字段 | `var(--s-3)` |
+| 能力条距 | `var(--s-2)` |
+| 按钮组 | `var(--s-4)` |
+| 按钮左右 | `.btn` `var(--s-5)` / `.btn-lg` `1.375rem` / `.btn-sm` `var(--s-3)` |
+
+控件最小高：`.btn` 2.75rem（44px @16）、触控 `.btn` 3rem、芯片 1.75rem。不要全站一个 `gap`。
+
+---
+
+## 字号尺度
+
+Apple：大字收字距、紧行高；小字略放字距；层级用字重+字号+行高一起变。
+
+```css
+:root {
+  --font-ui: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+  --font-num: "Oxanium", ui-sans-serif, system-ui, sans-serif;
+}
+.h1-home {
+  font: 700 clamp(2.25rem, 6vw, 4.5rem)/1.08 var(--font-ui);
+  letter-spacing: -0.022em;
+}
+.h1-page {
+  font: 700 2rem/1.12 var(--font-ui);
+  letter-spacing: -0.018em;
+}
+.body {
+  font: 400 1.0625rem/1.45 var(--font-ui); /* 17px @16 */
+  letter-spacing: 0;
+  max-width: 42rem;
+}
+.nav {
+  font: 400 0.9375rem/1.3 var(--font-ui);
+  letter-spacing: 0.01em;
+}
+.num {
+  font: 700 1rem/1 var(--font-num);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.chip-type {
+  font: 500 0.75rem/1 var(--font-num); /* 12px，不用 11px */
+  letter-spacing: 0.04em;
+}
+```
+
+自定义字体保留：Oxanium 是图鉴编号，不是「换掉 system-ui 装高级」。正文仍挂 `system-ui` 垫底。
+
+---
+
+## 色：什么符合 / 什么故意不合
+
+符合 skill：
+
+- 主色来自主题（青纸），不是 indigo 渐变
+- 正文 `--ink` on `--sky` / `--paper` ≥ 4.5
+- 霜上的字用 `--ink` 700，不用浅灰
+- `prefers-contrast: more` 实底 + 2px 海军边
+- 属性色只上色票，不上大面
+
+故意不合（身份优先于 iOS 材质）：
+
+- 不用系统分割线灰 `#C6C6C8`，用 `--line` 冷青
+- 阴影是硬投影 `0 0.625rem 0 var(--line)`，不是 Apple 软投影
+- 不做自动 Dark Mode。本站是午后青纸，夜间模式会毁身份。只响应 contrast / transparency / reduced-motion
+- `--mark` 黄不当正文。只当编号底和导航条
+
+---
+
+## 特效 / hover / 过渡（2026-09-28d）
+
+色轴锁定：海军 → 白，浅青可做底。  
+`--sky` `--paper` 只做底，不做 hover 目标。Hover 只许往 `--blue` 或 `--navy`。  
+禁止：提亮成更浅青、cyan 光晕、`box-shadow: 0 0 Npx`、电蓝渐变字。
+
+### Hover 落点
+
+| 控件 | 静止 | hover | active |
+|---|---|---|---|
+| `btn-primary` | `--navy` 面 | `#00284D`（比 navy 更深，不是更亮） | scale 0.97 + 投影掉 |
+| `btn-paper` | 纸面 + 海军边 | 边和字改 `--blue`，面仍纸 | scale 0.97 |
+| 顶栏链 | `--ink` | 字 `--navy`，底仍 3px `--mark` 只给当前页 | 无下划线动画拉长 |
+| 尺格 | 纸 + 硬投影 `--line` | 边 2px `--blue`，投影改 `0 0.625rem 0 var(--navy)` | 当前格边 `--navy` |
+| 书签齿 | `--mark` | 仍黄，不要变蓝 | — |
+| 井环 | 无描边 | 2px `--blue` 环，无 glow | 转盘中不改色 |
+| 井心 | 白钮 | 钮边 `--navy` | 开合 |
+| 名录/表行 | 透明 | 底 `color-mix(in srgb, var(--blue) 12%, var(--paper))` | 当前行 18% |
+| 芯片未选 | 纸 | 边 `--blue` | 选中仍属性色 |
+| 文字链 | `--navy` | `#00284D` 下划线 1px `--blue` | — |
+
+色变 ≤80ms 或即时。不要 300ms 浅蓝淡入深蓝。
+
+### 特效白名单（只有这些）
+
+1. 进站摇球一次（已有）  
+2. 井开合弹簧 + 剪影去滤镜（开的那一帧去掉 `brightness(0)`，不要闪白）  
+3. 尺 / 转盘跟手 + 松手吸格  
+4. 按压 `scale(0.97)` 100ms ease-out  
+5. 硬投影颜色在 hover 时从 `--line` 换成 `--navy`（100ms）  
+6. 顶栏仅在内容穿过时上霜  
+
+禁止当特效：粒子、霓虹描边、扫描线循环、卡片漂浮、光斑、blur 整页、hover 放大立绘。
+
+### 过渡白名单
+
+| 属性 | 何时 | 时长 / 曲线 |
+|---|---|---|
+| `transform`（scale 0.97） | pointer-down / up | 100ms ease-out |
+| `transform`（开合、尺、槽、转盘松手） | 弹簧 | damping 1.0 默认；有动量 0.8；response 0.3–0.4 |
+| `opacity` | reduced-motion 交叉淡入 | 200ms ease |
+| `filter`（剪影 → 彩色） | 井打开 | 与开合同步，response 0.4 |
+| `backdrop-filter` + 顶栏底 | 内容穿过顶栏 | 180ms ease |
+| `box-shadow` 色 | hover 投影改海军 | 100ms ease |
+| `border-color` | 尺格 / 纸按钮 hover | ≤80ms |
+
+禁止：`transition: all`、对 `background-color` 做 300ms、width/height 布局动画、每段 fade-up、hover 放大砖或井。
 
 ---
 

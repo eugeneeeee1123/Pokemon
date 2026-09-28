@@ -125,15 +125,23 @@
 
 ### 4.2 `pokedex.html`
 
-- 搜索：英文名或编号，slug 小写。
-- 属性芯片：18 type，单选。
-- 当前地区标签：读 `?region=`，默认 `kanto`。可点回 Regions。
-- 卡片：编号、名字、立绘、色票、右上 32px 球。
+呈现锁定：**Spine + Ledger + Film** 同屏。禁止标本砖网格、Well、Stack。代码见 `dex-presentation.md`。
+
+- 左脊：50 号一段，当前区裁切。点脊展开该段名录。
+- 中名录：该段 ∩ 过滤结果。点行换台座。无焦点时 a–z 跳该段首字母。
+- 右台座：当前立绘 + 名 + 色票 + `Add to belt` + `Open #id`。
+- 底胶片尺：整份过滤列表。拖 / 滚轮 / 点格 / `←` `→`，松手吸格。
+- 搜索：英文名或编号。唯一匹配 `selectIndex`。
+- 属性芯片：单选，滤 `state.list`。`?resist=` 仍生效。
+- `?resist=` 同样只过滤尺。
+- 地区标签：`?region=`，默认 `kanto`，点回 Regions。
 - 列表按地区区间请求，禁止循环打全区详情。
-- 首屏 30 张，其余「加载更多」或分页。
-- 点击 → `pokemon.html?id={id}`
-- 砖上可「Add to belt」（满员则显示 `Belt full (6/6)`）
+- 井开着时主按钮：`Open #025` → `pokemon.html?id=`
+- 井旁：`Add to belt`；满员 `Belt full (6/6)`
+- `Draw one`：随机当前过滤结果，尺滚到该格并开井（不直接跳详情）
+- 看过：尺上编号降对比（`file151.seen`）
 - 状态：loading / empty / error
+- 首屏先画当前地区尺摘要；立绘按官方 artwork URL，不逐只打详情 JSON
 
 ### 4.3 `pokemon.html`
 
@@ -239,20 +247,20 @@
 做：全局 1–5、各页 6–31、腰带槽内换序 32、Lineup 33–39、File 40、以及 A B F G H I J。  
 不做：C 从 Dex 拖砖、D 双击 Add、E 长按预览。
 
-砖上指针只有一条路：单击砖或角上球 → 详情。加入腰带只用 `Add to belt` 键。
+Dex 指针：点胶片格 = 选中进井；点球/井 = 开合；`Open #id` 才进详情。加入只用 `Add to belt`。
 
 | 编号 | 行为 |
 |---|---|
 | 1–5 | 顶栏、后退合球、`/` 聚焦搜索、`Esc` 关详情或清空搜索、reduced-motion 关动画 |
 | 6–9 | Home 大球进 Dex、三标本进详情、链去 Regions、进站摇一次 |
-| 10–16 | Dex 即时搜、回车进唯一匹配、type 单选、地区标签回 Regions、加载更多、单击进详情、Add 键、小球 hover |
+| 10–16 | Dex 即时搜、回车进唯一匹配并开井、type 单选滤尺、地区标签回 Regions、点格选中、井开合、`Open #id` 进详情、Add、尺拖吸格 |
 | 17–20 | 开合球、Add、shiny、Compare in lineup 带当前 id |
 | 21–23 | Types 色票/表头/单元格点防御或攻击 type → Dex `?type=` |
 | 24–26 | Regions 点行或 ↑↓+Enter 进 Dex `?region=` |
 | 27–32 | Belt 点槽详情、Remove 左移补位、Clear、空槽去 Dex、Check lineup、**仅六槽内部**拖拽换序 |
 | 33–39 | Lineup 点腰带填左右、搜索填槽、query 预填、Swap、Clear 左/右、Coverage 走 `?type=`、Holes 走 `?resist=`、Speed 标 `faster` |
 | 40 | File 外链新标签 |
-| A | `Draw one`：当前地区随机 id，开球进详情。Home 与 Dex 各一颗 |
+| A | `Draw one`：Home 仍开详情；Dex 随机当前过滤结果，尺吸格并开井 |
 | B | 详情 `←` `→` 切同地区上一只/下一只 |
 | F | 详情与 Lineup：`Copy link` → `clipboard.writeText(location.href)` |
 | G | 进过详情的 id 写入 `file151.seen`；Dex 编号降对比，不另开收藏页 |

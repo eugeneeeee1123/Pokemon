@@ -109,7 +109,8 @@ Home, Dex, Detail, Types, Belt, Lineup, Regions, File
 
 - 腰带键名固定：`file151.belt`，值为 id 数组，最长 6。
 - 看过：`file151.seen`。声音：`file151.sound`，默认 `"off"`。
-- Dex 禁止拖砖进腰带、双击 Add、长按预览。
+- Dex 呈现只准 Well + Film，外加 K 转盘、L 编号键、M 书签齿、N 剪影。禁止改回砖网格。
+- Dex 禁止拖砖进腰带、双击 Add、长按预览。尺拖与井环转盘只换当前只。井心 tap 才开合。
 - Holes 跳转用 `?resist=`，禁止复用 `?type=`。
 - Lineup 只读种族 type + `types-chart.js`。不加招式伤害。
 - Regions 用 `regions-data.js` 写死区间。不改表除非用户改计划。

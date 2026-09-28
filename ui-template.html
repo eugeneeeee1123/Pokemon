@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head><script type="application/json" data-od-external-dependencies>["https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"]</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>界面模板</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: color-mix(in oklch, #1677ff 10%, #ffffff);
+      --surface: color-mix(in oklch, #1677ff 18%, #ffffff);
+      --surface-deep: color-mix(in oklch, #1677ff 28%, #ffffff);
+      --fg: #111111;
+      --muted: #6b7280;
+      --border: color-mix(in oklch, #1677ff 40%, #ffffff);
+      --accent: #1677ff;
+      --press: color-mix(in oklch, #1677ff 58%, #111111);
+      --radius: 8px;
+      --line: 1px;
+      --step: 8px;
+      --font: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --fast: 160ms ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #111111;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    :focus {
+      outline: 2px solid #1677ff;
+      outline-offset: 2px;
+    }
+
+    :focus:not(:focus-visible) { outline: none; }
+
+    :focus-visible {
+      outline: 2px solid #1677ff;
+      outline-offset: 2px;
+    }
+
+    .skip {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      z-index: 5;
+      transform: translateY(-140%);
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--press);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 160ms ease;
+    }
+
+    .skip:focus { transform: translateY(0); }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 64px;
+    }
+
+    .brand {
+      margin: 0;
+      color: #111111;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: #111111;
+      font-size: 16px;
+      font-weight: 400;
+      text-decoration: none;
+      transition: background-color 160ms ease, border-color 160ms ease;
+    }
+
+    .nav-link:hover {
+      background: var(--surface-deep);
+      border-color: var(--border);
+      color: #111111;
+    }
+
+    main { padding-bottom: 64px; }
+
+    section { padding-top: 48px; }
+
+    .hero { padding-top: 40px; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #111111;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1, h2, h3, p { overflow-wrap: anywhere; }
+
+    h1 {
+      margin: 0;
+      max-width: 16ch;
+      color: #111111;
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      color: #111111;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      color: #111111;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .lead {
+      max-width: 62ch;
+      margin: 16px 0 0;
+      color: #111111;
+      font-size: 16px;
+    }
+
+    .note {
+      margin: 8px 0 0;
+      color: #111111;
+      font-size: 14px;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    .swatch {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .chip {
+      display: flex;
+      align-items: flex-end;
+      height: 64px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .chip-bg { background: var(--bg); color: #111111; }
+    .chip-surface { background: var(--surface); color: #111111; }
+    .chip-border { background: var(--border); color: #111111; }
+    .chip-accent { background: #1677ff; color: #ffffff; }
+    .chip-fg { background: #111111; color: #ffffff; }
+    .chip-paper { background: #ffffff; color: #111111; }
+
+    .swatch-name {
+      margin: 8px 0 0;
+      color: #111111;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .swatch-hex {
+      margin: 0;
+      color: #111111;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .section-head { max-width: 68ch; margin-bottom: 24px; }
+
+    .type-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .type-row {
+      display: grid;
+      grid-template-columns: 120px 88px minmax(0, 1fr);
+      gap: 16px;
+      align-items: baseline;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .type-meta {
+      margin: 0;
+      color: #111111;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .sample-display {
+      margin: 0;
+      color: #111111;
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .sample-title {
+      margin: 0;
+      color: #111111;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .sample-body {
+      margin: 0;
+      color: #111111;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .sample-meta {
+      margin: 0;
+      color: #111111;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .btn-primary {
+      min-height: 48px;
+      padding: 12px 22px;
+      border-color: #1677ff;
+      background: #1677ff;
+      color: #ffffff;
+      font-size: 20px;
+    }
+
+    .btn-primary:hover {
+      border-color: var(--press);
+      background: var(--press);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      border-color: var(--press);
+      background: var(--press);
+      color: #ffffff;
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      background: var(--surface);
+      color: #111111;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--press);
+      background: var(--surface-deep);
+      color: #111111;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:active {
+      border-color: var(--press);
+      background: var(--surface-deep);
+      color: #111111;
+      transform: translateY(0);
+    }
+
+    .btn-ghost {
+      border-color: transparent;
+      background: transparent;
+      color: #111111;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border);
+      background: var(--surface);
+      color: #111111;
+    }
+
+    .btn:disabled,
+    .btn:disabled:hover {
+      border-color: var(--border);
+      background: var(--surface);
+      color: #6b7280;
+      transform: none;
+      cursor: not-allowed;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: #111111;
+      transition: border-color 160ms ease, transform 160ms ease, background-color 160ms ease;
+    }
+
+    .card:hover {
+      border-color: var(--press);
+      background: var(--surface-deep);
+      transform: translateY(-2px);
+    }
+
+    .card p { margin: 0; color: #111111; }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      min-height: 44px;
+      color: #111111;
+      font-weight: 700;
+      text-underline-offset: 4px;
+      transition: background-color 160ms ease;
+    }
+
+    .text-link:hover {
+      background: var(--surface-deep);
+      color: #111111;
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+      max-width: 560px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .field { display: grid; gap: 8px; }
+
+    label {
+      color: #111111;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: #111111;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      transition: border-color 160ms ease, background-color 160ms ease;
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    input::placeholder, textarea::placeholder { color: #111111; }
+
+    input:hover, select:hover, textarea:hover {
+      border-color: var(--press);
+      background: var(--bg);
+      color: #111111;
+    }
+
+    input:focus-visible, select:focus-visible, textarea:focus-visible {
+      border-color: #1677ff;
+      background: var(--bg);
+      color: #111111;
+    }
+
+    .hint { margin: 0; color: #111111; font-size: 14px; }
+
+    .token-block {
+      margin: 24px 0 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: #111111;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .foot {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: #111111;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      h1 { font-size: 32px; }
+      .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .type-row { grid-template-columns: 1fr; gap: 4px; }
+      .cards { grid-template-columns: 1fr; }
+      .topnav-inner { align-items: flex-start; flex-direction: column; padding: 8px 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content" data-od-id="skip-link">跳到内容</a>
+  <header class="topnav" data-od-id="site-nav">
+    <div class="wrap topnav-inner">
+      <a class="brand" href="#content" data-od-id="brand">界面模板</a>
+      <nav aria-label="页内导航">
+        <ul class="nav-links">
+          <li><a class="nav-link" href="#colors" data-od-id="nav-colors">色彩</a></li>
+          <li><a class="nav-link" href="#type" data-od-id="nav-type">字体</a></li>
+          <li><a class="nav-link" href="#buttons" data-od-id="nav-buttons">按钮</a></li>
+          <li><a class="nav-link" href="#cards" data-od-id="nav-cards">卡片</a></li>
+          <li><a class="nav-link" href="#form" data-od-id="nav-form">表单</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+    <div class="wrap">
+      <section class="hero" data-od-id="hero">
+        <p class="eyebrow" data-od-id="hero-eyebrow">色彩 · 字体 · 按钮</p>
+        <h1 data-od-id="hero-title">按钮、字体与色彩</h1>
+        <p class="lead" data-od-id="hero-lead">页面由同一支蓝的深浅铺开。近黑和白色只用来写字：浅底上是近黑，实心按钮上是白色。悬停改的是蓝的深浅、边框和位置。</p>
+      </section>
+
+      <section id="colors" data-od-id="colors">
+        <div class="section-head">
+          <h2 data-od-id="colors-title">色彩</h2>
+          <p class="note">浅底、表面、描边都从强调蓝混出。近黑和反白不拿来铺底，色板里这两格只说明文字颜色。</p>
+        </div>
+        <div class="swatches">
+          <article class="swatch" data-od-id="swatch-bg">
+            <div class="chip chip-bg" role="img" aria-label="浅蓝画布">底</div>
+            <p class="swatch-name">浅底</p>
+            <p class="swatch-hex">蓝 10%</p>
+          </article>
+          <article class="swatch" data-od-id="swatch-surface">
+            <div class="chip chip-surface" role="img" aria-label="蓝色表面">面</div>
+            <p class="swatch-name">表面</p>
+            <p class="swatch-hex">蓝 18%</p>
+          </article>
+          <article class="swatch" data-od-id="swatch-border">
+            <div class="chip chip-border" role="img" aria-label="蓝色分割线">线</div>
+            <p class="swatch-name">描边</p>
+            <p class="swatch-hex">蓝 40%</p>
+          </article>
+          <article class="swatch" data-od-id="swatch-accent">
+            <div class="chip chip-accent" role="img" aria-label="强调蓝">钮</div>
+            <p class="swatch-name">强调</p>
+            <p class="swatch-hex">#1677ff</p>
+          </article>
+          <article class="swatch" data-od-id="swatch-fg">
+            <div class="chip chip-fg" role="img" aria-label="近黑文字">字</div>
+            <p class="swatch-name">文字</p>
+            <p class="swatch-hex">#111111</p>
+          </article>
+          <article class="swatch" data-od-id="swatch-paper">
+            <div class="chip chip-paper" role="img" aria-label="反白文字">字</div>
+            <p class="swatch-name">反白</p>
+            <p class="swatch-hex">#ffffff</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="type" data-od-id="type">
+        <div class="section-head">
+          <h2 data-od-id="type-title">字体</h2>
+          <p class="note">展示和正文都用 Inter。字重只有 400 和 700。浅底上的字一律近黑，不靠变灰来区分层级。</p>
+        </div>
+        <ul class="type-list">
+          <li class="type-row" data-od-id="type-display">
+            <p class="type-meta">展示 · 40</p>
+            <p class="type-meta">700</p>
+            <p class="sample-display">图鉴条目</p>
+          </li>
+          <li class="type-row" data-od-id="type-heading">
+            <p class="type-meta">标题 · 28</p>
+            <p class="type-meta">700</p>
+            <p class="sample-title">关都地区</p>
+          </li>
+          <li class="type-row" data-od-id="type-body">
+            <p class="type-meta">正文 · 16</p>
+            <p class="type-meta">400</p>
+            <p class="sample-body">记录按编号排列。每条保留属性、身高和栖息地。正文停在近黑，悬停不把字变浅。</p>
+          </li>
+          <li class="type-row" data-od-id="type-caption">
+            <p class="type-meta">注释 · 14</p>
+            <p class="type-meta">400</p>
+            <p class="sample-meta">编号 001–151 · 注释靠字号区分，颜色仍是近黑</p>
+          </li>
+        </ul>
+      </section>
+
+      <section id="buttons" data-od-id="buttons">
+        <div class="section-head">
+          <h2 data-od-id="buttons-title">按钮</h2>
+          <p class="note">全页只有一颗实心主按钮。悬停时白字留在原处，底色从强调蓝收到更深的蓝，并上移 2 像素。</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" data-od-id="btn-primary">主要按钮</button>
+          <button class="btn btn-secondary" type="button" data-od-id="btn-secondary">次要按钮</button>
+          <button class="btn btn-ghost" type="button" data-od-id="btn-ghost">文字按钮</button>
+          <button class="btn btn-secondary" type="button" disabled data-od-id="btn-disabled">禁用</button>
+        </div>
+      </section>
+
+      <section id="cards" data-od-id="cards">
+        <div class="section-head">
+          <h2 data-od-id="cards-title">卡片</h2>
+          <p class="note">表面是更深一档的蓝，描边 1 像素，圆角 8 像素。悬停时蓝再深一档，卡片上移，正文仍是近黑。</p>
+        </div>
+        <div class="cards">
+          <article class="card" data-od-id="card-entry">
+            <p class="eyebrow">条目</p>
+            <h3>妙蛙种子</h3>
+            <p>草 / 毒。卡片本身不放第二颗主按钮，下一步用文字链接。</p>
+            <a class="text-link" href="#form" data-od-id="card-entry-link">查看记录</a>
+          </article>
+          <article class="card" data-od-id="card-habitat">
+            <p class="eyebrow">栖息地</p>
+            <h3>常青森林</h3>
+            <p>同一套悬停：边框收到深蓝，底从表面色再加深，不回到白底。</p>
+            <a class="text-link" href="#colors" data-od-id="card-habitat-link">回到色板</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="form" data-od-id="form">
+        <div class="section-head">
+          <h2 data-od-id="form-title">表单</h2>
+          <p class="note">输入框停在浅底上。悬停只把描边收到深蓝。焦点环用强调蓝。提交用次要按钮，避免和主按钮抢同一动作。</p>
+        </div>
+        <form data-od-id="entry-form" action="#form">
+          <div class="field">
+            <label for="entry-name">条目名称</label>
+            <input id="entry-name" name="entry-name" type="text" required autocomplete="off" placeholder="例如：妙蛙种子">
+          </div>
+          <div class="field">
+            <label for="entry-region">地区</label>
+            <select id="entry-region" name="entry-region">
+              <option>关都</option>
+              <option>城都</option>
+              <option>丰缘</option>
+              <option>神奥</option>
+              <option>合众</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="entry-note">备注</label>
+            <textarea id="entry-note" name="entry-note" placeholder="属性、身高、栖息地"></textarea>
+            <p class="hint">必填项只有名称。未填写时，浏览器会拦住提交。</p>
+          </div>
+          <button class="btn btn-secondary" type="submit" data-od-id="form-submit">保存备注</button>
+        </form>
+        <pre class="token-block" data-od-id="token-snippet">:root {
+  --bg: color-mix(in oklch, #1677ff 10%, #ffffff);
+  --surface: color-mix(in oklch, #1677ff 18%, #ffffff);
+  --surface-deep: color-mix(in oklch, #1677ff 28%, #ffffff);
+  --fg: #111111;
+  --border: color-mix(in oklch, #1677ff 40%, #ffffff);
+  --accent: #1677ff;
+  --press: color-mix(in oklch, #1677ff 58%, #111111);
+  --radius: 8px;
+  --font: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}</pre>
+        <p class="foot" data-od-id="footer-note">组件样式都在这份文件里。蓝的深浅从 #1677ff 混出。Inter 加载失败时使用系统无衬线。</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
