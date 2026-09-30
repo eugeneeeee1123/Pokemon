@@ -64,11 +64,25 @@
 
       <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off">
       <button class="chip" data-type="" data-on type="button">All types</button>
+      <button class="chip" data-type="normal" type="button">normal</button>
       <button class="chip" data-type="fire" type="button">fire</button>
       <button class="chip" data-type="water" type="button">water</button>
-      <button class="chip" data-type="grass" type="button">grass</button>
       <button class="chip" data-type="electric" type="button">electric</button>
+      <button class="chip" data-type="grass" type="button">grass</button>
+      <button class="chip" data-type="ice" type="button">ice</button>
+      <button class="chip" data-type="fighting" type="button">fighting</button>
+      <button class="chip" data-type="poison" type="button">poison</button>
+      <button class="chip" data-type="ground" type="button">ground</button>
+      <button class="chip" data-type="flying" type="button">flying</button>
       <button class="chip" data-type="psychic" type="button">psychic</button>
+      <button class="chip" data-type="bug" type="button">bug</button>
+      <button class="chip" data-type="rock" type="button">rock</button>
+      <button class="chip" data-type="ghost" type="button">ghost</button>
+      <button class="chip" data-type="dragon" type="button">dragon</button>
+      <button class="chip" data-type="dark" type="button">dark</button>
+      <button class="chip" data-type="steel" type="button">steel</button>
+      <button class="chip" data-type="fairy" type="button">fairy</button>
+      <button class="chip" id="resist-chip" type="button" hidden></button>
       <button class="chip" id="draw" type="button">Draw one</button>
       <span class="count-badge" id="count-badge"></span>
     </div>
@@ -92,7 +106,9 @@
     <div class="dex-grid" id="dex-grid-view" hidden></div>
   </main>
 
+  <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
   <script src="js/pokedex.js"></script>
 </body>

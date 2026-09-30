@@ -21,58 +21,22 @@
 
   // 读取本地腰带
   function getBeltIds() {
-    try {
-      const saved = localStorage.getItem("file151.belt");
-      if (!saved) return [];
-      const parsed = JSON.parse(saved);
-      return Array.isArray(parsed) ? parsed.map(Number).filter(n => n > 0 && n <= 1025).slice(0, 6) : [];
-    } catch (_) {
-      return [];
-    }
+    return window.store.belt();
   }
 
-  // 获取宝可梦数据 (优先走 api.getPokemon，具备 localStorage 缓存与保底)
+  // 获取宝可梦数据。请求失败时返回 null，页面明确显示“没拿到数据”，
+  // 不再用 50/50/50 的假数据冒充（之前离线时会把 6 项能力都显示成 50）。
   async function fetchPokemon(idOrName) {
-    if (!idOrName) return null;
-    const query = String(idOrName).trim().toLowerCase();
-
-    // 1. 如果有 api.js，使用带有 6 项基础能力的完整数据
-    if (api && api.getPokemon) {
-      try {
-        const mon = await api.getPokemon(query);
-        if (mon) {
-          // 整理 stats 为便捷 key-value 对象
-          const statsMap = {};
-          if (Array.isArray(mon.stats)) {
-            mon.stats.forEach(s => { statsMap[s.name] = s.value; });
-          }
-          return {
-            id: mon.id,
-            name: mon.name,
-            types: mon.types || [],
-            stats: statsMap,
-            art: api.artUrl(mon.id)
-          };
-        }
-      } catch (_) {}
+    if (!idOrName || !api) return null;
+    try {
+      const mon = await api.getPokemon(String(idOrName).trim());
+      if (!mon) return null;
+      const statsMap = {};
+      mon.stats.forEach(s => { statsMap[s.name] = s.value; });
+      return { id: mon.id, name: mon.name, types: mon.types, stats: statsMap, art: api.artUrl(mon.id) };
+    } catch (_) {
+      return null;
     }
-
-    // 2. 本地 regions-data.js 离线保底
-    if (window.getSpeciesById) {
-      const num = parseInt(query, 10);
-      const spec = num ? window.getSpeciesById(num) : (window.ALL_SPECIES || []).find(s => s.name.toLowerCase() === query);
-      if (spec) {
-        return {
-          id: spec.id,
-          name: spec.name,
-          types: spec.types || [],
-          stats: { hp: 50, attack: 50, defense: 50, "special-attack": 50, "special-defense": 50, speed: 50 },
-          art: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${spec.id}.png`
-        };
-      }
-    }
-
-    return null;
   }
 
   // 渲染属性色票芯片
@@ -126,11 +90,14 @@
   }
 
   // 渲染单侧对比面板
-  function renderPaneHtml(side, mon, other) {
+  function renderPaneHtml(side, mon, other, requested) {
     if (!mon) {
+      const msg = requested
+        ? "No data for that Pokémon. Check the name or number, or try again if PokeAPI is down."
+        : "Empty side. Search above or tap a Pokémon on the belt.";
       return `
         <input data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" />
-        <p class="lineup-empty" style="text-align:center; padding: 2rem 0;">Empty side. Search above or tap a Pokémon on the belt.</p>
+        <p class="lineup-empty" style="text-align:center; padding: 2rem 0;">${msg}</p>
       `;
     }
 
@@ -193,6 +160,10 @@
       // 并发拉取腰带 6 只数据
       const beltMons = await Promise.all(beltIds.map(fetchPokemon));
       const validBelt = beltMons.filter(Boolean);
+      if (validBelt.length < beltIds.length && emptyBox) {
+        emptyBox.hidden = false;
+        emptyBox.textContent = "Some belt Pokémon could not load. Coverage below only counts the ones that did.";
+      }
 
       // 渲染腰带缩略图
       if (beltBox) {
@@ -218,7 +189,7 @@
         m.types.forEach(t => { typeCounts[t] = (typeCounts[t] || 0) + 1; });
       });
       const dupTypes = Object.entries(typeCounts).filter(([, count]) => count >= 2).map(([t, count]) => `${t} (×${count})`);
-      document.getElementById("dupes").textContent = dupTypes.length ? "Repeated defensive types: " + dupTypes.join(", ") : "";
+      document.getElementById("dupes").textContent = dupTypes.length ? "Repeated types: " + dupTypes.join(", ") : "";
     }
 
     // 左右并排比对
@@ -227,8 +198,8 @@
 
     const leftPane = document.getElementById("left");
     const rightPane = document.getElementById("right");
-    if (leftPane) leftPane.innerHTML = renderPaneHtml("left", leftMon, rightMon);
-    if (rightPane) rightPane.innerHTML = renderPaneHtml("right", rightMon, leftMon);
+    if (leftPane) leftPane.innerHTML = renderPaneHtml("left", leftMon, rightMon, leftId);
+    if (rightPane) rightPane.innerHTML = renderPaneHtml("right", rightMon, leftMon, rightId);
 
     updateUrl();
   }

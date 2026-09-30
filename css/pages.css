@@ -492,7 +492,7 @@
   letter-spacing: 0.04em;
   cursor: pointer;
   color: var(--ink);
-  transition: all 0.1s ease;
+  transition: border-color 100ms ease, background 100ms ease, color 100ms ease;
 }
 
 .chip:hover {
@@ -538,7 +538,7 @@
   font: 700 0.75rem/1 var(--font-num);
   cursor: pointer;
   border-left: 3px solid transparent;
-  transition: all 0.1s ease;
+  transition: border-color 100ms ease, background 100ms ease, color 100ms ease;
 }
 
 .spines button:hover:not(:disabled) {
@@ -1060,7 +1060,6 @@
   font-family: var(--font-num);
   font-weight: 700;
   font-size: 1rem;
-  outline: none;
   border-radius: 4px 4px 0 0;
   transition: border-color 100ms ease, background 100ms ease;
 }
@@ -1213,7 +1212,6 @@
   font-weight: 700;
   font-size: 0.8125rem;
   cursor: pointer;
-  outline: none;
   transition: border-color 100ms ease;
 }
 
@@ -1340,7 +1338,7 @@
   color: var(--ink-soft);
   border-radius: 3px;
   cursor: pointer;
-  transition: all 100ms ease;
+  transition: border-color 100ms ease, background 100ms ease, color 100ms ease;
 }
 
 .dex-card .card-belt-btn:hover {
@@ -1559,3 +1557,47 @@
 
 
 
+
+
+/* ---------- 详情页能力条（之前只有 .lineup-stat 有样式） ---------- */
+.stat {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 2.5rem;
+  align-items: center;
+  gap: var(--s-3, 0.75rem);
+  margin: 0.4rem 0;
+  font: 700 0.8125rem var(--font-num);
+  color: var(--ink);
+}
+.stat > span:last-child { text-align: right; }
+.stat .bar {
+  height: 8px;
+  background: #071422;
+  border-radius: 2px 0 0 0;
+  overflow: hidden;
+}
+.stat .bar i {
+  display: block;
+  height: 100%;
+}
+
+/* ---------- 腰带槽：左右挪动按钮 ---------- */
+.slot-tools {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  justify-content: center;
+}
+.slot .mv {
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0 0.4rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font: 700 0.75rem var(--font-num);
+  cursor: pointer;
+}
+.slot .mv:disabled { opacity: 0.35; cursor: default; }
+.slot .mv:not(:disabled):hover { border-color: var(--blue); }

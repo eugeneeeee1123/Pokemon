@@ -8,22 +8,11 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const KEY = "file151.belt";
   const slotsEl = document.getElementById("slots");
   const clearBtn = document.getElementById("clear");
 
-  function load() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(KEY) || "[]");
-      return Array.isArray(raw) ? raw.map(Number).filter(n => n > 0 && n <= 1025).slice(0, 6) : [];
-    } catch (_) {
-      return [];
-    }
-  }
-
-  function save(ids) {
-    localStorage.setItem(KEY, JSON.stringify(ids));
-  }
+  const load = () => window.store.belt();
+  const save = (ids) => window.store.setBelt(ids);
 
   function art(id) {
     return window.pokeApi
@@ -58,7 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
           </a>
           <span class="id">#${String(id).padStart(3, "0")}</span>
           <p class="name">${name}</p>
-          <button class="rm" type="button" data-rm="${i}" title="Remove ${name} from belt">Remove</button>
+          <div class="slot-tools">
+            <button class="mv" type="button" data-mv="-1" data-i="${i}" aria-label="Move ${name} left" ${i === 0 ? "disabled" : ""}>◀</button>
+            <button class="rm" type="button" data-rm="${i}" title="Remove ${name} from belt">Remove</button>
+            <button class="mv" type="button" data-mv="1" data-i="${i}" aria-label="Move ${name} right" ${i === ids.length - 1 ? "disabled" : ""}>▶</button>
+          </div>
         </article>
       `);
     }
@@ -101,8 +94,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 槽位事件监听（移除单只）
+  // 槽位事件监听（移除单只 / 左右挪动）。挪动按钮同时解决手机上 HTML5 拖拽无效和键盘无法换序。
   slotsEl?.addEventListener("click", e => {
+    const mv = e.target.closest("[data-mv]");
+    if (mv && !mv.disabled) {
+      const from = Number(mv.dataset.i);
+      const to = from + Number(mv.dataset.mv);
+      if (to < 0 || to >= ids.length) return;
+      const next = ids.slice();
+      [next[from], next[to]] = [next[to], next[from]];
+      ids = next;
+      save(ids);
+      render();
+      // 重画后把焦点放回同一只的同方向按钮，方便连续按
+      slotsEl.querySelector(`[data-mv="${mv.dataset.mv}"][data-i="${to}"]`)?.focus();
+      return;
+    }
     const btn = e.target.closest("[data-rm]");
     if (!btn) return;
     const idx = Number(btn.dataset.rm);

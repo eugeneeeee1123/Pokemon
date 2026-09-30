@@ -55,9 +55,9 @@
 
     <!-- 精灵球音效开关 -->
     <section class="file-block" aria-labelledby="sound-heading">
-      <h2 id="sound-heading">Ball sound</h2>
-      <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. One shot on open. No loop.</p>
-      <button class="btn btn-paper" id="sound" type="button">Ball sound off</button>
+      <h2 id="sound-heading">Sound</h2>
+      <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. When on, a cry plays once as a file opens or when you press Draw one. Tapping a Pokémon always plays its cry.</p>
+      <button class="btn btn-paper" id="sound" type="button">Sound off</button>
     </section>
 
     <!-- 快捷键指南 -->
@@ -67,7 +67,7 @@
         <tbody>
           <tr><td><kbd>/</kbd></td><td>Focus search on Dex / Lineup</td></tr>
           <tr><td><kbd>Esc</kbd></td><td>Close file or clear search</td></tr>
-          <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next in region on Detail; Film on Dex</td></tr>
+          <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next number on Detail; Film on Dex</td></tr>
           <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
           <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
         </tbody>
@@ -75,22 +75,20 @@
     </section>
   </main>
 
+  <script src="js/store.js"></script>
   <script src="js/pokeball.js"></script>
   <script>
     // file151.sound 开关控制逻辑
-    const SOUND_KEY = "file151.sound";
     const soundBtn = document.getElementById("sound");
 
     function renderSoundState() {
-      const isSoundOn = localStorage.getItem(SOUND_KEY) === "on";
-      soundBtn.textContent = isSoundOn ? "Ball sound on" : "Ball sound off";
+      const isSoundOn = window.store.soundOn();
+      soundBtn.textContent = isSoundOn ? "Sound on" : "Sound off";
       soundBtn.setAttribute("aria-pressed", isSoundOn ? "true" : "false");
     }
 
     soundBtn.addEventListener("click", () => {
-      const current = localStorage.getItem(SOUND_KEY) === "on";
-      const next = current ? "off" : "on";
-      localStorage.setItem(SOUND_KEY, next);
+      window.store.setSound(!window.store.soundOn());
       renderSoundState();
     });
 
