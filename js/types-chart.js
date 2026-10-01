@@ -20,7 +20,7 @@
   };
 
   const WHITE_TEXT_TYPES = new Set([
-    "fire", "water", "fighting", "poison", "psychic", "ghost", "dragon", "dark"
+    "fighting", "poison", "ghost", "dragon", "dark"
   ]);
 
   /* 攻击方 -> 防御方 -> 倍率 (缺省值为 1) */
@@ -90,10 +90,20 @@
     return "";
   }
 
+  /**
+   * 属性胶囊的内联样式（背景色 + 对比文字色），Dex 与详情页共用
+   */
+  function getTypeStyle(t) {
+    const bg = TYPE_COLORS[t] || "#3A6A88";
+    const white = WHITE_TEXT_TYPES.has(t);
+    return `background:${bg}; color:${white ? "#ffffff" : "#071422"};`;
+  }
+
   const typesChart = {
     TYPES,
     TYPE_COLORS,
     WHITE_TEXT_TYPES,
+    getTypeStyle,
     ATTACK_MULTIPLIERS,
     getEffectiveness,
     getDefensiveMultiplier,

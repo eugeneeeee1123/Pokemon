@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moves — 151 File</title>
+  <meta name="description" content="Browse Pokémon moves by type, category and battle properties.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html" aria-current="page">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Moves</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
+      Browse Pokémon battle moves by type, damage category, power, and accuracy.
+    </p>
+
+    <div class="tools-bar">
+      <input
+        id="move-search"
+        type="search"
+        placeholder="Search move name..."
+        autocomplete="off"
+        style="min-width: 14rem;"
+      >
+
+      <select id="move-type">
+        <option value="">All types</option>
+      </select>
+
+      <select id="move-category">
+        <option value="">All categories</option>
+        <option value="physical">Physical</option>
+        <option value="special">Special</option>
+        <option value="status">Status</option>
+      </select>
+    </div>
+
+    <div id="move-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading moves database...</div>
+    <div id="move-grid" class="dex-grid"></div>
+    <div id="move-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+  </main>
+
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/moves.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>

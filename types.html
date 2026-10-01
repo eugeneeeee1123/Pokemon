@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Types — 151 File</title>
+  <meta name="description" content="The full 18×18 type effectiveness chart, with attacking and defending views.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Types — 151 File">
+  <meta property="og:description" content="The full 18×18 type effectiveness chart, with attacking and defending views.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,26 +22,30 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html" aria-current="page">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <h1 class="page-title">Types</h1>
     <p class="lead">Attack down the left, defense across the top. Dual defense is multiplied on Lineup, not here. Click a type or a cell to open the dex filtered by the defending type.</p>
 
@@ -54,9 +63,16 @@
       <span><i class="dot" style="background:#1E3A55"></i> ½ Not very effective</span>
       <span><i class="dot" style="background:#071422; border:1px solid #1E3A55"></i> 0 Immune</span>
     </div>
+
+    <!-- 当前选中属性与腰带克制推演 (Belt vs Type) -->
+    <div id="belt-vs-box" class="belt-vs-box" aria-live="polite"></div>
   </main>
 
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/types.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>

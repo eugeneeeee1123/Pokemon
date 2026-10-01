@@ -3,3 +3,6 @@ Icon?
 Icon\r
 .Spotlight-V100
 .Trashes
+node_modules/
+files/
+files.zip

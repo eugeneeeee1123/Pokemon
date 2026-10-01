@@ -5,16 +5,128 @@
  */
 
 const REGIONS = [
-  { slug: "kanto", name: "Kanto", start: 1, end: 151, count: 151, preview: 25, offset: 0, limit: 151 },
-  { slug: "johto", name: "Johto", start: 152, end: 251, count: 100, preview: 155, offset: 151, limit: 100 },
-  { slug: "hoenn", name: "Hoenn", start: 252, end: 386, count: 135, preview: 255, offset: 251, limit: 135 },
-  { slug: "sinnoh", name: "Sinnoh", start: 387, end: 493, count: 107, preview: 392, offset: 386, limit: 107 },
-  { slug: "unova", name: "Unova", start: 494, end: 649, count: 156, preview: 495, offset: 493, limit: 156 },
-  { slug: "kalos", name: "Kalos", start: 650, end: 721, count: 72, preview: 656, offset: 649, limit: 72 },
-  { slug: "alola", name: "Alola", start: 722, end: 809, count: 88, preview: 722, offset: 721, limit: 88 },
-  { slug: "galar", name: "Galar", start: 810, end: 898, count: 89, preview: 810, offset: 809, limit: 89 },
-  { slug: "hisui", name: "Hisui", start: 899, end: 905, count: 7, preview: 899, offset: 898, limit: 7 },
-  { slug: "paldea", name: "Paldea", start: 906, end: 1025, count: 120, preview: 906, offset: 905, limit: 120 }
+  {
+    slug: "kanto",
+    name: "Kanto",
+    start: 1, end: 151, count: 151, preview: 25, offset: 0, limit: 151,
+    line: "Indigo plateau. First file.",
+    landmarks: [
+      { name: "Pallet Town", x: 26, y: 78, type: "Starting Town", desc: "Oak Pokémon Research Lab & quiet sea shores.", pokemons: [1, 4, 7] },
+      { name: "Viridian Forest", x: 26, y: 52, type: "Temperate Canopy", desc: "Dense woodland labyrinth buzzing with electric & bug specimens.", pokemons: [25, 10, 13] },
+      { name: "Mt. Moon", x: 44, y: 28, type: "Craggy Mountain", desc: "Meteorite craters home to moonlight dancers & subterranean flocks.", pokemons: [35, 41, 74] },
+      { name: "Power Plant", x: 80, y: 35, type: "Industrial Ruins", desc: "Decommissioned high-voltage plant humming with electric fury.", pokemons: [145, 100, 125] },
+      { name: "Seafoam Islands", x: 48, y: 88, type: "Glacial Cavern", desc: "Freezing twin ocean caverns housing glacial avian majesty.", pokemons: [144, 79, 86] },
+      { name: "Cerulean Cave", x: 57, y: 22, type: "Restricted Hollow", desc: "Dangerous secret dungeon concealing the pinnacle psychic anomaly.", pokemons: [150, 64, 112] }
+    ]
+  },
+  {
+    slug: "johto",
+    name: "Johto",
+    start: 152, end: 251, count: 100, preview: 155, offset: 151, limit: 100,
+    line: "Bell tower and Whirl Islands. Connected west.",
+    landmarks: [
+      { name: "New Bark Town", x: 84, y: 72, type: "Windy Meadow", desc: "Where the winds of a new journey blow.", pokemons: [152, 155, 158] },
+      { name: "Ilex Forest", x: 38, y: 76, type: "Ancient Shrine Wood", desc: "Dense overgrown forest guarded by the forest time protector.", pokemons: [251, 163, 167] },
+      { name: "Bell Tower", x: 42, y: 28, type: "Historic Spire", desc: "Sacred rainbow pagoda where the legendary bird descends.", pokemons: [250, 197, 196] },
+      { name: "Whirl Islands", x: 22, y: 74, type: "Ocean Vortex", desc: "Four treacherous islands guarded by whirlpools and ocean guardian.", pokemons: [249, 226, 223] },
+      { name: "Lake of Rage", x: 56, y: 18, type: "Highland Reservoir", desc: "Vast rainfall crater lake famous for the red gyarados sighting.", pokemons: [130, 129, 211] }
+    ]
+  },
+  {
+    slug: "hoenn",
+    name: "Hoenn",
+    start: 252, end: 386, count: 135, preview: 255, offset: 251, limit: 135,
+    line: "Two oceans and an active volcano.",
+    landmarks: [
+      { name: "Littleroot Town", x: 24, y: 76, type: "Southern Haven", desc: "Birch Pokémon ecology institute.", pokemons: [252, 255, 258] },
+      { name: "Mt. Chimney", x: 42, y: 32, type: "Active Volcano", desc: "Fiery volcanic caldera shrouded in ash and magma.", pokemons: [322, 324, 383] },
+      { name: "Sootopolis City", x: 74, y: 54, type: "Sunken Crater Basin", desc: "Dazzling white city nestled inside an extinct volcanic crater.", pokemons: [382, 349, 350] },
+      { name: "Sky Pillar", x: 68, y: 82, type: "Skyward Spire", desc: "Ancient weathered stone tower ascending into the ozone layer.", pokemons: [384, 277, 334] }
+    ]
+  },
+  {
+    slug: "sinnoh",
+    name: "Sinnoh",
+    start: 387, end: 493, count: 107, preview: 392, offset: 386, limit: 107,
+    line: "Mount Coronet divides east and west.",
+    landmarks: [
+      { name: "Twinleaf Town", x: 18, y: 78, type: "Lakeside Village", desc: "Peaceful snow-bordered town beside Lake Verity.", pokemons: [387, 390, 393] },
+      { name: "Mt. Coronet & Spear Pillar", x: 50, y: 44, type: "Continental Backbone", desc: "High-altitude shrine where space and time converge.", pokemons: [483, 484, 487] },
+      { name: "Eterna Forest", x: 30, y: 36, type: "Mossy Old Growth", desc: "Old chateau nestled under mossy ancient trees.", pokemons: [407, 479, 427] },
+      { name: "Snowpoint Temple", x: 52, y: 12, type: "Glacial Sanctum", desc: "Frozen ancestral sanctuary housing the colossal titan.", pokemons: [486, 459, 460] }
+    ]
+  },
+  {
+    slug: "unova",
+    name: "Unova",
+    start: 494, end: 649, count: 156, preview: 495, offset: 493, limit: 156,
+    line: "Castelia bridges and metropolitan coast.",
+    landmarks: [
+      { name: "Nuvema Town", x: 64, y: 84, type: "Riverside Outset", desc: "Coastal rural gateway to the greater metropolis.", pokemons: [495, 498, 501] },
+      { name: "Castelia City", x: 48, y: 68, type: "Mega Port City", desc: "Towering art deco skyscrapers and sea piers.", pokemons: [540, 546, 570] },
+      { name: "Dragonspiral Tower", x: 48, y: 22, type: "Mythic Spire", desc: "The oldest structure in Unova, where ideals and truth awaken.", pokemons: [643, 644, 621] },
+      { name: "Giant Chasm", x: 74, y: 34, type: "Meteor Impact Crater", desc: "Frigid forested basin containing alien absolute zero power.", pokemons: [646, 624, 626] }
+    ]
+  },
+  {
+    slug: "kalos",
+    name: "Kalos",
+    start: 650, end: 721, count: 72, preview: 656, offset: 649, limit: 72,
+    line: "Lumiose radial star. Coastal cliffs and dolmens.",
+    landmarks: [
+      { name: "Vaniville Town", x: 62, y: 84, type: "Provincial Hamlet", desc: "Quaint European starting village.", pokemons: [650, 653, 656] },
+      { name: "Lumiose City & Prism Tower", x: 50, y: 46, type: "Central Radial Metropolis", desc: "The City of Light, center of Kalos culture and Mega Evolution.", pokemons: [678, 667, 716] },
+      { name: "Reflection Cave", x: 28, y: 52, type: "Crystal Mirror Cavern", desc: "Glimmering mirrored walls reflecting hidden psychic paths.", pokemons: [703, 688, 708] },
+      { name: "Geosenge Town Menhirs", x: 26, y: 38, type: "Ancient Monoliths", desc: "Mysterious standing stones concealing the ancient ultimate weapon.", pokemons: [717, 718, 680] }
+    ]
+  },
+  {
+    slug: "alola",
+    name: "Alola",
+    start: 722, end: 809, count: 88, preview: 722, offset: 721, limit: 88,
+    line: "Four natural islands and one artificial reef.",
+    landmarks: [
+      { name: "Melemele Island", x: 22, y: 52, type: "Island of Dawn", desc: "Iki Town and Hau'oli City, protected by Tapu Koko.", pokemons: [722, 725, 728] },
+      { name: "Akala Island & Wela Volcano", x: 44, y: 36, type: "Volcanic Island", desc: "Fiery peaks and lush trial grounds under Tapu Lele.", pokemons: [757, 776, 759] },
+      { name: "Aether Paradise", x: 50, y: 56, type: "Floating Eco-Facility", desc: "Man-made floating haven harboring ultra space wormholes.", pokemons: [772, 773, 791] },
+      { name: "Ula'ula Island & Mt. Lanakila", x: 68, y: 46, type: "Sub-Zero Peak", desc: "Highest frozen summit and site of the Alola League.", pokemons: [792, 739, 782] }
+    ]
+  },
+  {
+    slug: "galar",
+    name: "Galar",
+    start: 810, end: 898, count: 89, preview: 810, offset: 809, limit: 89,
+    line: "Industrial crown and open Wild Area.",
+    landmarks: [
+      { name: "Postwick & Slumbering Weald", x: 46, y: 88, type: "Mist-Veiled Sacred Grove", desc: "Ancient misty forest where the rusted sword and shield sleep.", pokemons: [810, 813, 816] },
+      { name: "The Wild Area", x: 48, y: 64, type: "Vast Natural Expanse", desc: "Unbounded wilderness dotted with glowing Dynamax dens.", pokemons: [833, 840, 856] },
+      { name: "Motostoke", x: 48, y: 50, type: "Steam Industrial Hub", desc: "Red brick railways, steam pipes and the opening gym challenge.", pokemons: [850, 837, 854] },
+      { name: "Wyndon & Rose Tower", x: 48, y: 16, type: "Championship Citadel", desc: "Grand stadium arena holding the Galar Championship cup.", pokemons: [888, 889, 890] }
+    ]
+  },
+  {
+    slug: "hisui",
+    name: "Hisui",
+    start: 899, end: 905, count: 7, preview: 899, offset: 898, limit: 7,
+    line: "Ancient Coronet wilderness before towns.",
+    landmarks: [
+      { name: "Jubilife Village", x: 30, y: 58, type: "Pioneer Settlement", desc: "The Galaxy Expedition Team's frontier outpost.", pokemons: [899, 900, 901] },
+      { name: "Obsidian Fieldlands", x: 40, y: 70, type: "Verdant Wilderness", desc: "Untamed plains roaming with wild Alpha beasts.", pokemons: [902, 903, 904] },
+      { name: "Coronet Highlands", x: 50, y: 42, type: "Sacred Mountain Crags", desc: "Ancient prehistoric peaks piercing the temporal sky rift.", pokemons: [905, 487, 493] }
+    ]
+  },
+  {
+    slug: "paldea",
+    name: "Paldea",
+    start: 906, end: 1025, count: 120, preview: 906, offset: 905, limit: 120,
+    line: "Great Crater of Paldea open plateau.",
+    landmarks: [
+      { name: "Cabo Poco & Mesagoza", x: 48, y: 70, type: "Academy Terraces", desc: "Historic academy and sprawling central terrace city.", pokemons: [906, 909, 912] },
+      { name: "The Great Crater (Area Zero)", x: 50, y: 50, type: "Terastal Spiral Abyss", desc: "Forbidden prehistoric / futuristic crater core glowing with Tera energy.", pokemons: [1007, 1008, 1024] },
+      { name: "Glaseado Mountain", x: 52, y: 22, type: "Sub-Alpine Summit", desc: "Highest icy mountain in the region with steep ski slopes.", pokemons: [974, 975, 996] },
+      { name: "Casseroya Lake", x: 30, y: 30, type: "Massive Freshwater Basin", desc: "Enormous inland lake housing colossal titan fish.", pokemons: [977, 978, 1004] }
+    ]
+  }
 ];
 
 /**

@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dex — 151 File</title>
+  <meta name="description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dex — 151 File">
+  <meta property="og:description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,28 +22,34 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html" aria-current="page">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
-    <!-- 工具筛选条：地区切换、两种展示模式切换 (Ledger/Grid)、实时搜索框、常用属性芯片、随机抽取 -->
+  <main id="main" class="wrap dex-page">
+    <h1 class="sr-only">Dex</h1>
+    <!-- 工具条两行：控制一行，18 属性永远一行（窄屏只在这一行里横滑） -->
     <div class="tools">
+      <div class="tools-bar">
       <select id="region-select" class="region-select" aria-label="Select Region">
         <option value="all">All Regions (#001–#1025)</option>
         <option value="kanto">Kanto (#001–#151)</option>
@@ -62,7 +73,11 @@
         </button>
       </div>
 
-      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off">
+      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off" aria-label="Search by name or number">
+      <button class="chip" id="draw" type="button">Draw one</button>
+      <span class="count-badge" id="count-badge"></span>
+      </div>
+      <div class="type-row" role="toolbar" aria-label="Filter by type">
       <button class="chip" data-type="" data-on type="button">All types</button>
       <button class="chip" data-type="normal" type="button">normal</button>
       <button class="chip" data-type="fire" type="button">fire</button>
@@ -83,8 +98,7 @@
       <button class="chip" data-type="steel" type="button">steel</button>
       <button class="chip" data-type="fairy" type="button">fairy</button>
       <button class="chip" id="resist-chip" type="button" hidden></button>
-      <button class="chip" id="draw" type="button">Draw one</button>
-      <span class="count-badge" id="count-badge"></span>
+      </div>
     </div>
 
     <!-- 模式 1：Dex 四区同屏布局 (Spine + Ledger + Stage + Film) -->
@@ -93,7 +107,7 @@
       <div class="spines" id="spines"></div>
 
       <!-- 中名录：该分册过滤清单，记录 #编号 + 英文名 -->
-      <ul class="ledger" id="ledger"></ul>
+      <ul class="ledger" id="ledger" role="listbox" aria-label="Pokémon in this range"></ul>
 
       <!-- 右台座：3D 模型立绘、属性色票、加入腰带与详情入口 -->
       <div class="stage" id="stage"></div>
@@ -111,5 +125,6 @@
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
   <script src="js/pokedex.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>

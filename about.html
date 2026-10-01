@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>File — 151 File</title>
+  <meta name="description" content="About 151 FILE: data sources, credits and a fan-project disclaimer.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="File — 151 File">
+  <meta property="og:description" content="About 151 FILE: data sources, credits and a fan-project disclaimer.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,40 +22,64 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html" aria-current="page">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器：约束在舒适阅读行宽 (wrap-doc) -->
-  <main class="wrap wrap-doc">
+  <main id="main" class="wrap wrap-doc">
     <h1 class="page-title">File</h1>
     <p class="page-desc">Unofficial Kanto-first dex. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
 
-    <!-- 数据源与规则说明 -->
-    <section class="file-block" aria-labelledby="sources-heading">
-      <h2 id="sources-heading">Sources</h2>
+    <!-- 这站存什么 / 不存什么 -->
+    <section class="file-block">
+      <h2>这站存什么</h2>
+      <p style="margin-bottom:0.75rem; line-height:1.6;">只用你浏览器的 <code>localStorage</code>，存 4 样东西，全在本地：</p>
       <ul>
-        <li>Stats and names: <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a></li>
-        <li>Art: <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a></li>
-        <li>Search uses English names or National Dex numbers.</li>
-        <li>Belt lives in this browser as <span class="soft">file151.belt</span>. Nothing is uploaded.</li>
-        <li>Lineup reads species types only, not moves.</li>
-        <li>Regions slice National Dex ids. Forms are not separate files in v1.</li>
+        <li><code>file151.belt</code>：你的 6 槽腰带名单（编号数组）。</li>
+        <li><code>file151.seen</code>：你看过哪些宝可梦，在 Dex 网格角落留记号。</li>
+        <li><code>file151.last</code>：上次打开的文件编号，首页直接一键继续。</li>
+        <li><code>file151.sound</code>：叫声自动播放偏好（默认 <code>off</code>）。</li>
       </ul>
+    </section>
+
+    <section class="file-block">
+      <h2>不存什么</h2>
+      <p style="line-height:1.6;">没有账号，没有登录，没有追踪 Cookie，没有服务器后台，也没有数据分析打点。你关掉浏览器或清理本地缓存，记录就清零。没有任何数据会传到这台电脑之外。</p>
+    </section>
+
+    <!-- 数据从哪来 -->
+    <section class="file-block">
+      <h2>数据从哪来</h2>
+      <ul>
+        <li>种族基础数值、属性、特性、英文种属与描述：来自开放数据接口 <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a>。</li>
+        <li>3D 立绘渲染模型：来自官方立绘归档 <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a>（HOME 渲染图与 192px 缩略图）。</li>
+        <li>叫声音频：来自 <a href="https://github.com/PokeAPI/cries" target="_blank" rel="noopener">PokeAPI/cries</a> 原生音频归档。</li>
+      </ul>
+    </section>
+
+    <!-- 腰带在这台机器 -->
+    <section class="file-block">
+      <h2>腰带在这台机器</h2>
+      <p style="line-height:1.6;">你的六只腰带搭档只保存在当前这台设备的当前浏览器中。不会同步到其他设备，也不会因为换台机器而泄漏。它是你私人的一份野外记录。</p>
     </section>
 
     <!-- 精灵球音效开关 -->
@@ -94,5 +123,6 @@
 
     renderSoundState();
   </script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>

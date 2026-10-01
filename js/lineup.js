@@ -97,7 +97,7 @@
         : "Empty side. Search above or tap a Pokémon on the belt.";
       return `
         <input data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" />
-        <p class="lineup-empty" style="text-align:center; padding: 2rem 0;">${msg}</p>
+        <p class="lineup-empty" ${requested ? 'role="alert"' : ""} style="text-align:center; padding: 2rem 0;">${msg}</p>
       `;
     }
 
@@ -201,7 +201,48 @@
     if (leftPane) leftPane.innerHTML = renderPaneHtml("left", leftMon, rightMon, leftId);
     if (rightPane) rightPane.innerHTML = renderPaneHtml("right", rightMon, leftMon, rightId);
 
+    renderVerdict();
     updateUrl();
+  }
+
+  let focusType = null;
+
+  function renderVerdict() {
+    const verdictEl = document.getElementById("lineup-verdict");
+    if (!verdictEl) return;
+    if (!leftMon || !rightMon) {
+      verdictEl.hidden = true;
+      verdictEl.innerHTML = "";
+      return;
+    }
+
+    const aSpe = leftMon.stats?.speed ?? 0;
+    const bSpe = rightMon.stats?.speed ?? 0;
+    const faster = aSpe === bSpe
+      ? "Both have the same speed"
+      : (aSpe > bSpe ? `${leftMon.name} is faster (${aSpe} vs ${bSpe})` : `${rightMon.name} is faster (${bSpe} vs ${aSpe})`);
+
+    let tank = "";
+    if (focusType && tc) {
+      const la = tc.getDefensiveMultiplier(focusType, leftMon.types);
+      const lb = tc.getDefensiveMultiplier(focusType, rightMon.types);
+      tank = la === lb
+        ? `Both take ${la}× from ${focusType}`
+        : (la < lb ? `${leftMon.name} resists ${focusType} better (${la}× vs ${lb}×)` : `${rightMon.name} resists ${focusType} better (${lb}× vs ${la}×)`);
+    } else {
+      tank = "Pick an attack type below to compare resistance";
+    }
+
+    const verdictText = `${faster}. ${tank}.`;
+
+    verdictEl.hidden = false;
+    verdictEl.innerHTML = `
+      <p style="margin:0 0 0.5rem; font-size:1rem; color:var(--ink); font-weight:700;">${verdictText}</p>
+      <div style="display:flex; gap:0.3rem; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:0.75rem; color:var(--ink-soft); font-family:var(--font-num);">Compare vs attack:</span>
+        ${tc ? tc.TYPES.map(t => `<button type="button" class="chip ${t === focusType ? 'is-focus' : ''}" data-focus="${t}" style="${tc.getTypeStyle(t)} font-size:0.7rem; border:${t === focusType ? '2px solid var(--ink)' : 'none'}; cursor:pointer; padding:0.15rem 0.4rem; border-radius:3px;">${t}</button>`).join("") : ""}
+      </div>
+    `;
   }
 
   // 事件监听与委托
@@ -278,6 +319,15 @@
           setTimeout(() => { copyBtn.textContent = "Copy link"; }, 1500);
         }
       } catch (_) {}
+    });
+
+    // 6. 点击对比攻击属性
+    document.getElementById("lineup-verdict")?.addEventListener("click", e => {
+      const btn = e.target.closest("[data-focus]");
+      if (!btn) return;
+      const t = btn.dataset.focus;
+      focusType = (focusType === t) ? null : t;
+      renderVerdict();
     });
 
     // 初始化渲染

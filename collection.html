@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collection — 151 File</title>
+  <meta name="description" content="Track your Pokémon discovery progress across the National Dex and 10 official regions.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html" aria-current="page">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Collection</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">Archive progress ledger. Track specimen discoveries across National Dex and all 10 regions, stored locally.</p>
+
+    <section class="collection-summary">
+      <div>
+        <span id="seen-count">0</span>
+        <small>/ 1025 SEEN</small>
+      </div>
+
+      <div>
+        <span id="favorite-count">0</span>
+        <small>FAVORITES</small>
+      </div>
+
+      <div>
+        <span id="belt-count">0</span>
+        <small>IN BELT</small>
+      </div>
+    </section>
+
+    <section style="margin-bottom:2.25rem;">
+      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">National Dex</h2>
+      <div class="progress" style="height:12px; margin-bottom:0.5rem;">
+        <div id="national-progress"></div>
+      </div>
+      <p id="national-text" style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;"></p>
+    </section>
+
+    <section>
+      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">Regions Breakdown</h2>
+      <div id="region-progress"></div>
+    </section>
+
+    <!-- 勋章成就系统 (Achievements) -->
+    <section id="achievements" style="margin-top:2.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Archive Achievements</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Unlock commemorative badges as your specimen collection and field mastery progress.</p>
+        </div>
+        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 12 UNLOCKED</span>
+      </div>
+      <div class="badge-grid" id="badge-grid"></div>
+    </section>
+  </main>
+
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/collection.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>

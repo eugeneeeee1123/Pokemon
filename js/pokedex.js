@@ -10,11 +10,7 @@ const KANTO_PRESET = (typeof window !== "undefined" && window.getRegionPokemon ?
 
 // 属性色票与字色统一来自 types-chart.js（这里不再维护第二份，之前漏了 dark）
 const tc = window.TYPES_CHART;
-function typeStyle(t) {
-  const bg = (tc && tc.TYPE_COLORS[t]) || "#3A6A88";
-  const white = tc ? tc.WHITE_TEXT_TYPES.has(t) : true;
-  return `background:${bg}; color:${white ? "#ffffff" : "#071422"};`;
-}
+const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
 
 // URL 查询参数
 const params = new URLSearchParams(location.search);
@@ -115,6 +111,15 @@ function addBelt(id) {
 
 const pad3 = (n) => String(n).padStart(3, "0");
 const artOf = (id) => window.pokeApi.artUrl(id);
+// 列表/网格只显示 ~96px：优先用本地 192px 缩略图（scripts/make-thumbs.mjs 生成），缺失时回退到远程大图
+const thumbOf = (id) => `assets/thumbs/${id}.webp`;
+// 注意：api.js 的全局兜底已占用 data-fallback，这里用 data-full；且只处理“缩略图”失败，别截断它的兜底链
+document.addEventListener("error", (e) => {
+  const img = e.target;
+  if (img.tagName !== "IMG" || !img.dataset.full) return;
+  if (!(img.getAttribute("src") || "").startsWith("assets/thumbs/")) return;
+  img.src = img.dataset.full;
+}, true);
 
 // 网格里的“看过 / 在腰带上”标记就地更新，不重画 1025 张卡
 function syncGridMarks() {
@@ -125,8 +130,21 @@ function syncGridMarks() {
   gridEl.querySelectorAll(".dex-card").forEach(card => {
     const id = Number(card.dataset.id);
     const on = onBelt.has(id);
-    card.classList.toggle("seen", saw.has(id));
+    const hasSeen = saw.has(id);
+    card.classList.toggle("seen", hasSeen);
     card.classList.toggle("on-belt", on);
+
+    // 角落点：已看过点 (navy)、腰带点 (ball red)
+    let dots = card.querySelector(".card-dots");
+    if (!dots) {
+      card.insertAdjacentHTML("afterbegin", '<div class="card-dots"><i class="dot seen" title="seen"></i><i class="dot belt" title="belt"></i></div>');
+      dots = card.querySelector(".card-dots");
+    }
+    const dotSeen = dots.querySelector(".dot.seen");
+    const dotBelt = dots.querySelector(".dot.belt");
+    if (dotSeen) dotSeen.style.display = hasSeen ? "inline-block" : "none";
+    if (dotBelt) dotBelt.style.display = on ? "inline-block" : "none";
+
     const badge = card.querySelector(".belt-badge");
     if (on && !badge) card.insertAdjacentHTML("afterbegin", '<span class="belt-badge" title="On the belt"></span>');
     if (!on && badge) badge.remove();
@@ -145,14 +163,19 @@ function renderFilm(p) {
   // 列表没变就只切换当前格，不重建 1025 个按钮
   if (filmRev !== state.listRev) {
     filmEl.innerHTML = state.list.map(m =>
-      `<button type="button" data-id="${m.id}" title="${m.name} (#${m.id})" aria-label="${m.name} #${m.id}"><img src="${artOf(m.id)}" alt="" loading="lazy" /><span class="id">#${m.id}</span></button>`
+      `<button type="button" tabindex="-1" data-id="${m.id}" title="${m.name} (#${m.id})" aria-label="${m.name} #${m.id}"><img src="${thumbOf(m.id)}" data-full="${artOf(m.id)}" alt="" loading="lazy" /><span class="id">#${m.id}</span></button>`
     ).join("");
     filmRev = state.listRev;
   }
-  filmEl.querySelector("[data-on]")?.removeAttribute("data-on");
+  const prevCell = filmEl.querySelector("[data-on]");
+  prevCell?.removeAttribute("data-on");
+  prevCell?.removeAttribute("aria-current");
+  prevCell?.setAttribute("tabindex", "-1");
+  const cell = p ? filmEl.querySelector(`[data-id="${p.id}"]`) : filmEl.firstElementChild;
+  cell?.setAttribute("tabindex", "0"); // 1025 个按钮只留一个 Tab 停靠点，其余靠方向键
   if (p) {
-    const cell = filmEl.querySelector(`[data-id="${p.id}"]`);
     cell?.setAttribute("data-on", "");
+    cell?.setAttribute("aria-current", "true");
     cell?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
   }
 }
@@ -162,15 +185,23 @@ function renderGrid(gridViewEl) {
     if (!state.list.length) {
       gridViewEl.innerHTML = `<p class="empty" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">No Pokémon found in this filter.</p>`;
     } else {
+      const onBelt = new Set(belt());
+      const saw = new Set(seen());
       gridViewEl.innerHTML = state.list.map(m => {
         const typesHtml = m.types.map(t => `<span class="dex-card-type" style="${typeStyle(t)}">${t}</span>`).join("");
+        const hasSeen = saw.has(m.id);
+        const on = onBelt.has(m.id);
         return `
-          <article class="dex-card" data-id="${m.id}" tabindex="0" role="link" title="Open #${m.id} ${m.name}">
+          <article class="dex-card" data-id="${m.id}">
+            <div class="card-dots">
+              <i class="dot seen" title="seen" style="${hasSeen ? '' : 'display:none;'}"></i>
+              <i class="dot belt" title="belt" style="${on ? '' : 'display:none;'}"></i>
+            </div>
             <span class="dex-card-id">#${pad3(m.id)}</span>
             <div class="dex-card-thumb">
-              <img src="${artOf(m.id)}" alt="${m.name}" loading="lazy" width="96" height="96" />
+              <img src="${thumbOf(m.id)}" data-full="${artOf(m.id)}" alt="" loading="lazy" width="96" height="96" />
             </div>
-            <p class="dex-card-name">${m.name}</p>
+            <p class="dex-card-name"><a class="dex-card-link" href="pokemon.html?id=${m.id}">${m.name}</a></p>
             <div class="dex-card-types">${typesHtml}</div>
             <button class="card-belt-btn" type="button" data-belt-id="${m.id}">+ Belt</button>
           </article>`;
@@ -232,9 +263,24 @@ function render() {
     }).join("");
 
     // 1.2 中名录 (Ledger)
-    document.getElementById("ledger").innerHTML = rows.length
-      ? rows.map(m => `<li class="${m.id === p?.id ? 'is-on' : ''} ${saw.includes(m.id) ? 'seen' : ''}" data-id="${m.id}" tabindex="0" role="button"><span class="id">#${pad3(m.id)}</span>${m.name}</li>`).join("")
-      : `<li class="empty">No file in this spine.</li>`;
+    const ledgerEl = document.getElementById("ledger");
+    const ledgerHadFocus = ledgerEl.contains(document.activeElement); // 重绘会销毁焦点元素，先记下来
+    const tabStopId = rows.some(m => m.id === p?.id) ? p.id : rows[0]?.id; // 只有一个 Tab 停靠点（roving tabindex）
+    ledgerEl.innerHTML = rows.length
+      ? rows.map(m => {
+          const typeNames = (m.types || []).join(" · ");
+          return `<li class="${m.id === p?.id ? 'is-on' : ''} ${saw.includes(m.id) ? 'seen' : ''}" data-id="${m.id}" role="option" aria-selected="${m.id === p?.id}" aria-label="#${pad3(m.id)} ${m.name}${typeNames ? ", " + typeNames : ""}" tabindex="${m.id === tabStopId ? 0 : -1}"><span class="id">#${pad3(m.id)}</span><span class="ledger-name">${m.name}</span>${typeNames ? `<span class="ledger-types">${typeNames}</span>` : ""}</li>`;
+        }).join("")
+      : `<li class="empty" role="option" aria-disabled="true">No file in this spine.</li>`;
+    if (ledgerHadFocus) ledgerEl.querySelector('li[tabindex="0"]')?.focus();
+    // 只滚名录自己，避免方向键把整页拽下去
+    const onRow = ledgerEl.querySelector("li.is-on");
+    if (onRow) {
+      const pane = ledgerEl.getBoundingClientRect();
+      const row = onRow.getBoundingClientRect();
+      if (row.top < pane.top) ledgerEl.scrollTop -= pane.top - row.top;
+      else if (row.bottom > pane.bottom) ledgerEl.scrollTop += row.bottom - pane.bottom;
+    }
 
     // 1.3 右台座 (Stage)
     const stageEl = document.getElementById("stage");
@@ -251,10 +297,32 @@ function render() {
         <p><span class="id">#${pad3(p.id)}</span></p>
         <p class="name">${p.name}</p>
         <p id="stageTypes">${p.types.map(t => `<span class="type" style="${typeStyle(t)}">${t}</span>`).join("")}</p>
+        <div class="stage-meta" id="stageMeta"><p class="soft" style="font-size:0.8125rem;">#${pad3(p.id)}</p></div>
         <div class="actions">
-          ${full && !has ? `<span class="empty">Belt full (6/6)</span>` : `<button class="btn-primary" id="add" ${has ? 'disabled' : ''}>${has ? 'On the belt' : 'Add to belt'}</button>`}
-          <a class="btn-paper" href="pokemon.html?id=${p.id}">Open #${pad3(p.id)}</a>
+          ${full && !has ? `<span class="empty">Belt full (6/6)</span>` : `<button class="btn btn-primary" id="add" ${has ? 'disabled' : ''}>${has ? 'On the belt' : 'Add to belt'}</button>`}
+          <a class="btn btn-paper" href="pokemon.html?id=${p.id}">Open #${pad3(p.id)}</a>
         </div>`;
+
+      // 异步加载当前只的三行死数据：种属、身高体重、本区编号
+      (async () => {
+        const curId = p.id;
+        try {
+          const [mon, spec] = await Promise.all([
+            window.pokeApi ? window.pokeApi.getPokemon(curId).catch(() => null) : null,
+            window.pokeApi ? window.pokeApi.getSpecies(curId).catch(() => null) : null
+          ]);
+          const metaBox = document.getElementById("stageMeta");
+          if (!metaBox || current()?.id !== curId) return;
+          const h = mon?.height != null ? `${Number(mon.height).toFixed(1)} m` : "";
+          const w = mon?.weight != null ? `${Number(mon.weight).toFixed(1)} kg` : "";
+          const hw = [h, w].filter(Boolean).join(" · ");
+          metaBox.innerHTML = `
+            ${spec?.genus ? `<p class="stage-genus" style="font-size:0.875rem; margin:0.15rem 0;">${spec.genus}</p>` : ""}
+            ${hw ? `<p class="soft" style="font-size:0.8125rem; font-family:var(--font-num); color:var(--ink-soft); margin:0.15rem 0;">${hw}</p>` : ""}
+            <p class="soft" style="font-size:0.8125rem; font-family:var(--font-num); color:var(--ink-soft); margin:0.15rem 0;">${state.region.name} #${pad3(curId)}</p>
+          `;
+        } catch (_) {}
+      })();
 
       document.getElementById("add")?.addEventListener("click", () => addBelt(p.id));
       document.getElementById("stageImgBox")?.addEventListener("click", () => {
@@ -384,12 +452,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // 卡片里是真链接：这里只记“看过”，跳转交给浏览器（Ctrl/中键/右键“新标签页打开”都可用）
     const card = e.target.closest(".dex-card[data-id]");
-    if (card) {
-      const id = Number(card.dataset.id);
-      markSeen(id);
-      location.href = `pokemon.html?id=${id}`;
-    }
+    if (card) markSeen(Number(card.dataset.id));
   });
 
   // 7. 搜索输入
@@ -434,7 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ["ledger", "dex-grid-view"].forEach(id => {
     document.getElementById(id)?.addEventListener("keydown", e => {
       if (e.key !== "Enter" && e.key !== " ") return;
-      if (e.target.closest("button")) return; // 卡片里的 + Belt 按钮自己处理
+      if (e.target.closest("button, a")) return; // 卡片里的 + Belt 按钮和链接自己处理
       const row = e.target.closest("[data-id]");
       if (!row) return;
       e.preventDefault();

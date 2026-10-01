@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pack Lab — 151 File</title>
+  <meta name="description" content="Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html" aria-current="page">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap pack-lab-wrap">
+    <div style="margin-bottom:1.5rem;">
+      <h1 class="page-title">Booster Pack Lab</h1>
+      <p class="lead" style="color:var(--ink-soft); margin-bottom:1.25rem;">
+        Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.
+      </p>
+
+      <!-- 记分看板：采用全站统一结构与Oxanium等宽数字 -->
+      <div class="quiz-score-board" style="grid-template-columns: repeat(3, 1fr); margin-bottom:0;">
+        <div class="quiz-score-card">
+          <span id="stat-packs-opened">0</span>
+          <small>PACKS OPENED</small>
+        </div>
+        <div class="quiz-score-card">
+          <span id="stat-cards-collected">0</span>
+          <small>UNIQUE SPECIMENS</small>
+        </div>
+        <div class="quiz-score-card">
+          <span id="pack-set-meta-total">161</span>
+          <small id="pack-set-meta-name">30TH CELEBRATION</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡包控制栏与选择器 -->
+    <section class="pack-controls-bar">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+        <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); font-weight:700; letter-spacing:0.05em;">
+          FEATURED EXPANSIONS
+        </span>
+        <span id="pack-set-meta" style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">
+          30th Celebration · 161 Cards
+        </span>
+      </div>
+
+      <!-- 快速预设按钮组：使用全站原生 .type-row 与 .chip 样式规范 -->
+      <div class="type-row" id="pack-featured-chips">
+        <button class="chip" data-set-id="me55" data-on>30th Celebration · 2026</button>
+        <button class="chip" data-set-id="sv3pt5">Pokémon 151 · 2023</button>
+        <button class="chip" data-set-id="base1">Base Set · 1999</button>
+        <button class="chip" data-set-id="sv8pt5">Prismatic Evolutions · 2025</button>
+        <button class="chip" data-set-id="swsh7">Evolving Skies · 2021</button>
+      </div>
+
+      <!-- 全系列下拉框 -->
+      <div class="pack-selector-row">
+        <div class="pack-select-group">
+          <label for="pack-set-select">All Expansions:</label>
+          <select id="pack-set-select" class="pack-set-select">
+            <option value="me55">[2026] 30th Celebration (161 cards) — 30th Anniversary</option>
+            <option value="me55c">[2026] 30th Celebration: Classic Collection (30 cards)</option>
+            <option value="me1">[2025] Mega Evolution (188 cards)</option>
+            <option value="sv10">[2025] Destined Rivals (244 cards)</option>
+            <option value="sv9">[2025] Journey Together (190 cards)</option>
+            <option value="sv8pt5">[2025] Prismatic Evolutions (180 cards)</option>
+            <option value="sv8">[2024] Surging Sparks (252 cards)</option>
+            <option value="sv7">[2024] Stellar Crown (175 cards)</option>
+            <option value="sv6">[2024] Twilight Masquerade (226 cards)</option>
+            <option value="sv4pt5">[2024] Paldean Fates (245 cards)</option>
+            <option value="sv3pt5" selected>[2023] 151 (207 cards) — Classic 151 Modern Art</option>
+            <option value="sv1">[2023] Scarlet & Violet Base (258 cards)</option>
+            <option value="swsh12pt5">[2023] Crown Zenith (160 cards)</option>
+            <option value="swsh7">[2021] Evolving Skies (237 cards)</option>
+            <option value="swsh45">[2021] Shining Fates (73 cards)</option>
+            <option value="base1">[1999] Base Set (102 cards) — 1999 Original First Edition</option>
+            <option value="base2">[1999] Jungle (64 cards)</option>
+            <option value="base3">[1999] Fossil (62 cards)</option>
+            <option value="base5">[2000] Team Rocket (83 cards)</option>
+            <option value="gym1">[2000] Gym Heroes (132 cards)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="pack-open-trigger-btn" type="button">
+          Tear pack
+        </button>
+      </div>
+    </section>
+
+    <!-- 拆包交互主舞台 -->
+    <section class="pack-stage-container" id="pack-stage">
+      <!-- 初始/封包状态：铝箔卡包展示 -->
+      <div id="pack-sealed-view" style="display:flex; flex-direction:column; align-items:center;">
+        <div class="pack-foil-wrapper" id="pack-foil-pack" title="Tear pack">
+          <!-- 实体铝箔卡包完整包装封画 -->
+          <img id="pack-cover-img" class="pack-cover-img" src="assets/packs/me55.jpg" alt="Official Booster Pack Packaging">
+          <!-- 拟真铝箔金属高光覆层 -->
+          <div class="pack-foil-sheen"></div>
+          <!-- 撕包微交互浮标 -->
+          <div class="pack-tear-tab">
+            <span class="pack-tear-arrow">◀</span>
+            <span class="pack-tear-label">TEAR TO OPEN</span>
+            <span class="pack-tear-arrow">▶</span>
+          </div>
+        </div>
+
+        <p style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink-soft); margin-top:1.5rem; text-align:center;">
+          Tap the foil pack or press Tear pack to reveal 10 specimens.
+        </p>
+      </div>
+
+      <!-- 开包状态：10 张卡牌揭晓展示区（默认隐藏） -->
+      <div id="pack-opened-view" style="display:none; width:100%;">
+        <div class="pack-cards-grid" id="pack-cards-grid">
+          <!-- 10 张卡牌由 JS 动态生成 -->
+        </div>
+
+        <!-- 揭晓后续操作栏 -->
+        <div class="pack-actions-bar">
+          <button class="btn btn-primary" id="pack-again-btn" type="button">
+            Tear another pack
+          </button>
+          <button class="btn btn-paper" id="pack-reveal-all-btn" type="button">
+            Reveal all
+          </button>
+          <button class="btn btn-paper" id="pack-toggle-binder-btn" type="button">
+            Open binder
+          </button>
+        </div>
+      </div>
+
+      <!-- 加载提示浮层 -->
+      <div id="pack-loading-overlay" class="pack-loading-overlay">
+        <p style="font-family:var(--font-num); font-size:0.875rem; color:var(--ink);" id="pack-loading-msg">Fetching expansion card ledger...</p>
+      </div>
+    </section>
+
+    <!-- 卡册抽屉（Binder Section，默认可折叠） -->
+    <section class="pack-binder-section" id="pack-binder-section">
+      <div class="pack-binder-header" id="pack-binder-header">
+        <h2>
+          <span>Specimen Binder</span>
+          <span id="binder-count-badge" style="font-family:var(--font-num); font-size:0.75rem; background:var(--sky); color:var(--mark); padding:0.15rem 0.5rem; border-radius:2px; font-weight:700;">
+            0 Cards
+          </span>
+        </h2>
+        <span class="pack-binder-toggle-icon">▼</span>
+      </div>
+
+      <div class="pack-binder-body">
+        <div class="pack-binder-filters">
+          <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); font-weight:700; margin-right:0.25rem;">
+            FILTER:
+          </span>
+          <button class="chip" data-filter="all" data-on>All Cards</button>
+          <button class="chip" data-filter="sar">Special Illustration</button>
+          <button class="chip" data-filter="ultra">Ultra Rare / ex</button>
+          <button class="chip" data-filter="rare">Rare / Holo</button>
+          <button class="chip" data-filter="uncommon">Uncommon</button>
+          <button class="chip" data-filter="common">Common</button>
+        </div>
+
+        <div class="pack-binder-grid" id="pack-binder-grid">
+          <!-- 收集卡牌缩略图由 JS 动态生成 -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 高清大卡预览 Modal -->
+  <div class="tcg-modal-backdrop" id="tcg-modal">
+    <div class="tcg-modal-card-wrap">
+      <img id="tcg-modal-img" class="tcg-modal-card-img" src="" alt="High resolution card preview">
+      <div class="tcg-modal-info">
+        <h3 id="tcg-modal-name">Pokémon Name</h3>
+        <p id="tcg-modal-meta">#001 · Illustration Rare · Yuu Nishida</p>
+      </div>
+      <button class="btn btn-paper" id="tcg-modal-close-btn" type="button" style="margin-top:0.5rem;">
+        Close file
+      </button>
+    </div>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>

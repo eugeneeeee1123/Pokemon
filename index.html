@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>151 FILE — Kanto Archive</title>
+  <meta name="description" content="151 FILE is a night-archive Pokédex: browse all 1025 species by region and type, build a six-Pokémon belt and compare lineups.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="151 FILE — Kanto Archive">
+  <meta property="og:description" content="151 FILE is a night-archive Pokédex: browse all 1025 species by region and type, build a six-Pokémon belt and compare lineups.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,26 +22,30 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航（最大宽度 72rem 对齐正文） -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <!-- Hero 区块：左文本与动作，右侧大型精灵球 CTA -->
     <section class="hero">
       <div>
@@ -45,11 +54,14 @@
           <span>/</span>
           <span>#001–#151</span>
         </div>
-        <h1>Kanto file. 151 first.</h1>
+        <h1 style="margin:0 0 var(--s-3); line-height:1;">
+          <img src="assets/pokemon-logo.svg" alt="Pokémon" class="hero-pokemon-logo">
+        </h1>
         <p>National Dex numbers. Open the Kanto 151 by default. Other regions live in Regions — not a second product.</p>
         <div class="actions">
           <a class="btn btn-primary btn-lg" href="pokedex.html?region=kanto">Open the dex</a>
           <a class="link-action" href="regions.html">Open regions</a>
+          <button class="btn btn-paper" id="random-btn" type="button" style="margin-left:0.5rem;">Draw specimen</button>
         </div>
       </div>
 
@@ -59,11 +71,70 @@
       </button>
     </section>
 
+    <!-- Daily Specimen 今日标本 -->
+    <section class="daily-specimen-section" id="daily-specimen" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1.25rem 1.5rem; margin-top:1.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem; margin-bottom:1rem;">
+        <div class="meta-eyebrow" style="margin:0;">
+          <span>TODAY'S SPECIMEN</span>
+          <span>/</span>
+          <span id="daily-date"></span>
+        </div>
+        <span id="daily-seen-tag" style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft);">Checking archive...</span>
+      </div>
+
+      <div id="daily-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.25rem;">
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+          <div id="daily-img-wrap" style="width:80px; height:80px; display:flex; align-items:center; justify-content:center; background:var(--sky-deep); border:1px solid var(--line); border-radius:4px;">
+            <span style="font-size:0.75rem; color:var(--ink-soft);">Loading...</span>
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+              <span class="id-badge" id="daily-id">#000</span>
+              <h3 id="daily-name" style="font-family:var(--font-ui); font-size:1.25rem; font-weight:700; color:var(--ink); margin:0; text-transform:capitalize;">—</h3>
+            </div>
+            <div id="daily-types" style="display:flex; gap:0.35rem;"></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:0.75rem; align-items:center;">
+          <a class="btn btn-primary" id="daily-open-link" href="#">Open file →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Archive Status 概览 -->
+    <section class="collection-summary" style="margin-top:1.5rem; margin-bottom:1.5rem;">
+      <div>
+        <span id="home-seen-count">0</span>
+        <small>/ 1025 SEEN</small>
+        <div class="progress" style="margin-top:0.6rem; height:6px;">
+          <div id="home-seen-progress"></div>
+        </div>
+      </div>
+      <div>
+        <span id="home-fav-count">0</span>
+        <small>FAVORITES</small>
+        <div style="margin-top:0.6rem;">
+          <a href="collection.html" style="font-family:var(--font-num); font-size:0.8125rem; color:var(--mark); text-decoration:none;">View collection →</a>
+        </div>
+      </div>
+      <div>
+        <span id="home-belt-count">0</span>
+        <small>/ 6 IN BELT</small>
+        <div style="margin-top:0.6rem;">
+          <a href="team.html" style="font-family:var(--font-num); font-size:0.8125rem; color:var(--blue); text-decoration:none;">Manage belt →</a>
+        </div>
+      </div>
+    </section>
+
     <!-- 标本档案条：初阶御三家 + 皮卡丘 + 拉普拉斯（整砖可点） -->
     <section class="specimens-section" aria-label="Pinned specimens">
       <div class="specimens-header">
         <span class="title">Pinned Specimens / 代表标本</span>
         <span class="hint">Tap Pokémon for Cry · Click tile to open file</span>
+      </div>
+
+      <div style="margin-bottom: 0.75rem;">
+        <a id="resume" class="link-action" hidden href="#">Open last file</a>
       </div>
 
       <div class="specimens">
@@ -113,7 +184,7 @@
           <div class="file-tile-top">
             <span class="id-badge">#004</span>
             <div class="type-badges">
-              <span class="type-pill" style="background:#F08030; color:#fff;">FIRE</span>
+              <span class="type-pill" style="background:#F08030; color:#071422;">FIRE</span>
             </div>
           </div>
           <div class="img-stage" title="Click Pokémon to play Cry & interact">
@@ -133,7 +204,7 @@
           <div class="file-tile-top">
             <span class="id-badge">#007</span>
             <div class="type-badges">
-              <span class="type-pill" style="background:#6890F0; color:#fff;">WATER</span>
+              <span class="type-pill" style="background:#6890F0; color:#071422;">WATER</span>
             </div>
           </div>
           <div class="img-stage" title="Click Pokémon to play Cry & interact">
@@ -153,7 +224,7 @@
           <div class="file-tile-top">
             <span class="id-badge">#131</span>
             <div class="type-badges">
-              <span class="type-pill" style="background:#6890F0; color:#fff;">WATER</span>
+              <span class="type-pill" style="background:#6890F0; color:#071422;">WATER</span>
               <span class="type-pill" style="background:#98D8D8; color:#12324A;">ICE</span>
             </div>
           </div>
@@ -172,6 +243,97 @@
     </section>
   </main>
 
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/pokeball.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const id = window.store?.lastId();
+      if (id) {
+        const a = document.getElementById("resume");
+        if (a) {
+          a.hidden = false;
+          a.href = `pokemon.html?id=${id}`;
+          a.textContent = `Open last file #${String(id).padStart(3, "0")}`;
+        }
+      }
+
+      const seen = window.store?.seen?.() || [];
+      const favs = window.store?.favoriteIds?.() || [];
+      const belt = window.store?.belt?.() || [];
+
+      const seenEl = document.getElementById("home-seen-count");
+      if (seenEl) seenEl.textContent = seen.length;
+      const seenProg = document.getElementById("home-seen-progress");
+      if (seenProg) seenProg.style.width = `${Math.min(100, (seen.length / 1025) * 100)}%`;
+
+      const favEl = document.getElementById("home-fav-count");
+      if (favEl) favEl.textContent = favs.length;
+
+      const beltEl = document.getElementById("home-belt-count");
+      if (beltEl) beltEl.textContent = belt.length;
+
+      document.getElementById("random-btn")?.addEventListener("click", () => {
+        const randId = Math.floor(Math.random() * 1025) + 1;
+        location.href = `pokemon.html?id=${randId}`;
+      });
+
+      // Daily Specimen Logic
+      function dailyId() {
+        const d = new Date();
+        const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+        return ((seed * 2654435761) >>> 0) % 1025 + 1;
+      }
+
+      async function renderDailySpecimen() {
+        const d = new Date();
+        const dateStr = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        const dateEl = document.getElementById("daily-date");
+        if (dateEl) dateEl.textContent = dateStr.toUpperCase();
+
+        const curId = dailyId();
+        const isSeen = (window.store?.seen?.() || []).includes(curId);
+
+        const seenTag = document.getElementById("daily-seen-tag");
+        if (seenTag) {
+          seenTag.textContent = isSeen ? "SEEN IN ARCHIVE" : "UNDISCOVERED";
+          seenTag.style.color = isSeen ? "var(--mark)" : "var(--ink-soft)";
+        }
+
+        const idBadge = document.getElementById("daily-id");
+        if (idBadge) idBadge.textContent = `#${String(curId).padStart(3, "0")}`;
+
+        const openLink = document.getElementById("daily-open-link");
+        if (openLink) openLink.href = `pokemon.html?id=${curId}`;
+
+        try {
+          if (!window.pokeApi) return;
+          const mon = await window.pokeApi.getPokemon(curId);
+          if (!mon) return;
+
+          const nameEl = document.getElementById("daily-name");
+          if (nameEl) nameEl.textContent = mon.name;
+
+          const imgWrap = document.getElementById("daily-img-wrap");
+          if (imgWrap) {
+            imgWrap.innerHTML = `<img src="${window.pokeApi.artUrl(curId)}" alt="${mon.name}" width="72" height="72" style="object-fit:contain; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3));" loading="lazy">`;
+          }
+
+          const typesWrap = document.getElementById("daily-types");
+          if (typesWrap && mon.types) {
+            typesWrap.innerHTML = mon.types.map(t => {
+              const style = window.TYPES_CHART ? window.TYPES_CHART.getTypeStyle(t) : "background:#3A6A88; color:#fff;";
+              return `<span class="chip" style="${style} font-size:0.75rem;">${t}</span>`;
+            }).join("");
+          }
+        } catch (_) {}
+      }
+
+      renderDailySpecimen();
+    });
+  </script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>

@@ -1,13 +1,13 @@
 # 151 FILE — All-In-One Codebase
 
 > 本文件汇集了 **151 File**（宝可梦纯原生前端 Web 站点）的全部源码。
-> 包含 8 个主页面、5 个全局样式表、11 个前端 JS 核心模块、矢量资源与参考样板。
+> 包含 8 个主页面、5 个全局样式表、10 个前端 JS 核心模块、辅助脚本、矢量资源与参考样板。
 
 ---
 
 ## 目录 (Table of Contents)
 
-**汇总统计**: 共打包 **28** 个文件 | **7,289** 行代码 | **225,551** 字节
+**汇总统计**: 共打包 **39** 个文件 | **11,276** 行代码 | **369,202** 字节
 
 ---
 
@@ -18,9 +18,14 @@
 - [1.3 `pokemon.html` (Detail / 详情与开球展台)](#13-pokemonhtml-detail-详情与开球展台)
 - [1.4 `regions.html` (Regions / 10 官方地区地图)](#14-regionshtml-regions-10-官方地区地图)
 - [1.5 `types.html` (Types / 18 属性矩阵克制表)](#15-typeshtml-types-18-属性矩阵克制表)
-- [1.6 `team.html` (Belt / 6 槽腰带编成)](#16-teamhtml-belt-6-槽腰带编成)
-- [1.7 `lineup.html` (Lineup / 战力与属性缺口分析)](#17-lineuphtml-lineup-战力与属性缺口分析)
-- [1.8 `about.html` (File / 架构说明与数据源)](#18-abouthtml-file-架构说明与数据源)
+- [1.6 `moves.html` (Moves / 招式数据库与战斗属性)](#16-moveshtml-moves-招式数据库与战斗属性)
+- [1.7 `abilities.html` (Abilities / 特性效果与宝可梦索引)](#17-abilitieshtml-abilities-特性效果与宝可梦索引)
+- [1.8 `collection.html` (Collection / 全图鉴与地区收集进度)](#18-collectionhtml-collection-全图鉴与地区收集进度)
+- [1.9 `team.html` (Belt / 6 槽腰带编成)](#19-teamhtml-belt-6-槽腰带编成)
+- [1.10 `lineup.html` (Lineup / 战力与属性缺口分析)](#110-lineuphtml-lineup-战力与属性缺口分析)
+- [1.11 `battle-lab.html` (Battle Lab / 双宝可梦对战推演)](#111-battle-labhtml-battle-lab-双宝可梦对战推演)
+- [1.12 `about.html` (File / 架构说明与数据源)](#112-abouthtml-file-架构说明与数据源)
+- [1.13 `quiz.html` (Quiz / 剪影猜谜辨识小游戏)](#113-quizhtml-quiz-剪影猜谜辨识小游戏)
 
 ### 2. CSS 样式模块 (CSS Stylesheets)
 
@@ -36,18 +41,24 @@
 - [3.2 `js/regions-data.js` (10 地区编号区间字典)](#32-jsregions-datajs-10-地区编号区间字典)
 - [3.3 `js/types-chart.js` (18×18 属性克制常数矩阵)](#33-jstypes-chartjs-18×18-属性克制常数矩阵)
 - [3.4 `js/pokeball.js` (精灵球开合音效与转场控制)](#34-jspokeballjs-精灵球开合音效与转场控制)
-- [3.5 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)](#35-jspokedexjs-名录胶片双视图全1025只图鉴渲染)
+- [3.5 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)](#35-jspokedexjs-名录+胶片双视图全1025只图鉴渲染)
 - [3.6 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)](#36-jspokemonjs-详情页标本台3d模型shiny切换)
-- [3.7 `js/regions.js` (地区列表逻辑)](#37-jsregionsjs-地区列表逻辑)
-- [3.8 `js/types.js` (属性色票与矩阵交互)](#38-jstypesjs-属性色票与矩阵交互)
-- [3.9 `js/team.js` (腰带存储与拖拽排序)](#39-jsteamjs-腰带存储与拖拽排序)
-- [3.10 `js/lineup.js` (弱点缺口计算与两只对比)](#310-jslineupjs-弱点缺口计算与两只对比)
-- [3.11 `js/store.js` (本地存储与安全缓存管理)](#311-jsstorejs-本地存储与安全缓存管理)
+- [3.7 `js/types.js` (属性色票与矩阵交互)](#37-jstypesjs-属性色票与矩阵交互)
+- [3.8 `js/team.js` (腰带存储与拖拽排序)](#38-jsteamjs-腰带存储与拖拽排序)
+- [3.9 `js/lineup.js` (弱点缺口计算与两只对比)](#39-jslineupjs-弱点缺口计算与两只对比)
+- [3.10 `js/moves.js` (招式库检索与分页渲染)](#310-jsmovesjs-招式库检索与分页渲染)
+- [3.11 `js/abilities.js` (特性库检索与宝可梦索引)](#311-jsabilitiesjs-特性库检索与宝可梦索引)
+- [3.12 `js/collection.js` (图鉴与地区收集度统计)](#312-jscollectionjs-图鉴与地区收集度统计)
+- [3.13 `js/battle-lab.js` (对战实验室与克制比对)](#313-jsbattle-labjs-对战实验室与克制比对)
+- [3.14 `js/store.js` (本地存储与安全缓存管理)](#314-jsstorejs-本地存储与安全缓存管理)
+- [3.15 `js/quiz.js` (猜谜逻辑与连胜成就积分)](#315-jsquizjs-猜谜逻辑与连胜成就积分)
+- [3.16 `js/global-search.js` (全局命令面板快捷检索)](#316-jsglobal-searchjs-全局命令面板快捷检索)
 
-### 4. 矢量资源与配置 (Assets & Config)
+### 4. 矢量资源、脚本与配置 (Assets, Scripts & Config)
 
-- [4.1 `assets/favicon.svg` (精灵球矢量图标)](#41-assetsfaviconsvg-精灵球矢量图标)
-- [4.2 `.gitignore` (版本控制忽略文件)](#42-gitignore-版本控制忽略文件)
+- [4.1 `scripts/make-thumbs.mjs` (缩略图离线生成脚本)](#41-scriptsmake-thumbsmjs-缩略图离线生成脚本)
+- [4.2 `assets/favicon.svg` (精灵球矢量图标)](#42-assetsfaviconsvg-精灵球矢量图标)
+- [4.3 `.gitignore` (版本控制忽略文件)](#43-gitignore-版本控制忽略文件)
 
 ### 5. 附录参考模板 (Appendix & Demos)
 
@@ -61,8 +72,8 @@
 ### 1.1 `index.html` (Home / 青纸首页)
 
 - **文件路径**: `index.html`  
-- **代码行数**: 177 行  
-- **文件大小**: 8,235 字节  
+- **代码行数**: 339 行  
+- **文件大小**: 15,943 字节  
 
 ```html
 <!DOCTYPE html>
@@ -71,6 +82,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>151 FILE — Kanto Archive</title>
+  <meta name="description" content="151 FILE is a night-archive Pokédex: browse all 1025 species by region and type, build a six-Pokémon belt and compare lineups.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="151 FILE — Kanto Archive">
+  <meta property="og:description" content="151 FILE is a night-archive Pokédex: browse all 1025 species by region and type, build a six-Pokémon belt and compare lineups.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,26 +100,30 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航（最大宽度 72rem 对齐正文） -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <!-- Hero 区块：左文本与动作，右侧大型精灵球 CTA -->
     <section class="hero">
       <div>
@@ -112,11 +132,14 @@
           <span>/</span>
           <span>#001–#151</span>
         </div>
-        <h1>Kanto file. 151 first.</h1>
+        <h1 style="margin:0 0 var(--s-3); line-height:1;">
+          <img src="assets/pokemon-logo.svg" alt="Pokémon" class="hero-pokemon-logo">
+        </h1>
         <p>National Dex numbers. Open the Kanto 151 by default. Other regions live in Regions — not a second product.</p>
         <div class="actions">
           <a class="btn btn-primary btn-lg" href="pokedex.html?region=kanto">Open the dex</a>
           <a class="link-action" href="regions.html">Open regions</a>
+          <button class="btn btn-paper" id="random-btn" type="button" style="margin-left:0.5rem;">Draw specimen</button>
         </div>
       </div>
 
@@ -126,11 +149,70 @@
       </button>
     </section>
 
+    <!-- Daily Specimen 今日标本 -->
+    <section class="daily-specimen-section" id="daily-specimen" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1.25rem 1.5rem; margin-top:1.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem; margin-bottom:1rem;">
+        <div class="meta-eyebrow" style="margin:0;">
+          <span>TODAY'S SPECIMEN</span>
+          <span>/</span>
+          <span id="daily-date"></span>
+        </div>
+        <span id="daily-seen-tag" style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft);">Checking archive...</span>
+      </div>
+
+      <div id="daily-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.25rem;">
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+          <div id="daily-img-wrap" style="width:80px; height:80px; display:flex; align-items:center; justify-content:center; background:var(--sky-deep); border:1px solid var(--line); border-radius:4px;">
+            <span style="font-size:0.75rem; color:var(--ink-soft);">Loading...</span>
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+              <span class="id-badge" id="daily-id">#000</span>
+              <h3 id="daily-name" style="font-family:var(--font-ui); font-size:1.25rem; font-weight:700; color:var(--ink); margin:0; text-transform:capitalize;">—</h3>
+            </div>
+            <div id="daily-types" style="display:flex; gap:0.35rem;"></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:0.75rem; align-items:center;">
+          <a class="btn btn-primary" id="daily-open-link" href="#">Open file →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Archive Status 概览 -->
+    <section class="collection-summary" style="margin-top:1.5rem; margin-bottom:1.5rem;">
+      <div>
+        <span id="home-seen-count">0</span>
+        <small>/ 1025 SEEN</small>
+        <div class="progress" style="margin-top:0.6rem; height:6px;">
+          <div id="home-seen-progress"></div>
+        </div>
+      </div>
+      <div>
+        <span id="home-fav-count">0</span>
+        <small>FAVORITES</small>
+        <div style="margin-top:0.6rem;">
+          <a href="collection.html" style="font-family:var(--font-num); font-size:0.8125rem; color:var(--mark); text-decoration:none;">View collection →</a>
+        </div>
+      </div>
+      <div>
+        <span id="home-belt-count">0</span>
+        <small>/ 6 IN BELT</small>
+        <div style="margin-top:0.6rem;">
+          <a href="team.html" style="font-family:var(--font-num); font-size:0.8125rem; color:var(--blue); text-decoration:none;">Manage belt →</a>
+        </div>
+      </div>
+    </section>
+
     <!-- 标本档案条：初阶御三家 + 皮卡丘 + 拉普拉斯（整砖可点） -->
     <section class="specimens-section" aria-label="Pinned specimens">
       <div class="specimens-header">
         <span class="title">Pinned Specimens / 代表标本</span>
         <span class="hint">Tap Pokémon for Cry · Click tile to open file</span>
+      </div>
+
+      <div style="margin-bottom: 0.75rem;">
+        <a id="resume" class="link-action" hidden href="#">Open last file</a>
       </div>
 
       <div class="specimens">
@@ -180,7 +262,7 @@
           <div class="file-tile-top">
             <span class="id-badge">#004</span>
             <div class="type-badges">
-              <span class="type-pill" style="background:#F08030; color:#fff;">FIRE</span>
+              <span class="type-pill" style="background:#F08030; color:#071422;">FIRE</span>
             </div>
           </div>
           <div class="img-stage" title="Click Pokémon to play Cry & interact">
@@ -200,7 +282,7 @@
           <div class="file-tile-top">
             <span class="id-badge">#007</span>
             <div class="type-badges">
-              <span class="type-pill" style="background:#6890F0; color:#fff;">WATER</span>
+              <span class="type-pill" style="background:#6890F0; color:#071422;">WATER</span>
             </div>
           </div>
           <div class="img-stage" title="Click Pokémon to play Cry & interact">
@@ -220,7 +302,7 @@
           <div class="file-tile-top">
             <span class="id-badge">#131</span>
             <div class="type-badges">
-              <span class="type-pill" style="background:#6890F0; color:#fff;">WATER</span>
+              <span class="type-pill" style="background:#6890F0; color:#071422;">WATER</span>
               <span class="type-pill" style="background:#98D8D8; color:#12324A;">ICE</span>
             </div>
           </div>
@@ -239,10 +321,100 @@
     </section>
   </main>
 
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/pokeball.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const id = window.store?.lastId();
+      if (id) {
+        const a = document.getElementById("resume");
+        if (a) {
+          a.hidden = false;
+          a.href = `pokemon.html?id=${id}`;
+          a.textContent = `Open last file #${String(id).padStart(3, "0")}`;
+        }
+      }
+
+      const seen = window.store?.seen?.() || [];
+      const favs = window.store?.favoriteIds?.() || [];
+      const belt = window.store?.belt?.() || [];
+
+      const seenEl = document.getElementById("home-seen-count");
+      if (seenEl) seenEl.textContent = seen.length;
+      const seenProg = document.getElementById("home-seen-progress");
+      if (seenProg) seenProg.style.width = `${Math.min(100, (seen.length / 1025) * 100)}%`;
+
+      const favEl = document.getElementById("home-fav-count");
+      if (favEl) favEl.textContent = favs.length;
+
+      const beltEl = document.getElementById("home-belt-count");
+      if (beltEl) beltEl.textContent = belt.length;
+
+      document.getElementById("random-btn")?.addEventListener("click", () => {
+        const randId = Math.floor(Math.random() * 1025) + 1;
+        location.href = `pokemon.html?id=${randId}`;
+      });
+
+      // Daily Specimen Logic
+      function dailyId() {
+        const d = new Date();
+        const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+        return ((seed * 2654435761) >>> 0) % 1025 + 1;
+      }
+
+      async function renderDailySpecimen() {
+        const d = new Date();
+        const dateStr = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        const dateEl = document.getElementById("daily-date");
+        if (dateEl) dateEl.textContent = dateStr.toUpperCase();
+
+        const curId = dailyId();
+        const isSeen = (window.store?.seen?.() || []).includes(curId);
+
+        const seenTag = document.getElementById("daily-seen-tag");
+        if (seenTag) {
+          seenTag.textContent = isSeen ? "SEEN IN ARCHIVE" : "UNDISCOVERED";
+          seenTag.style.color = isSeen ? "var(--mark)" : "var(--ink-soft)";
+        }
+
+        const idBadge = document.getElementById("daily-id");
+        if (idBadge) idBadge.textContent = `#${String(curId).padStart(3, "0")}`;
+
+        const openLink = document.getElementById("daily-open-link");
+        if (openLink) openLink.href = `pokemon.html?id=${curId}`;
+
+        try {
+          if (!window.pokeApi) return;
+          const mon = await window.pokeApi.getPokemon(curId);
+          if (!mon) return;
+
+          const nameEl = document.getElementById("daily-name");
+          if (nameEl) nameEl.textContent = mon.name;
+
+          const imgWrap = document.getElementById("daily-img-wrap");
+          if (imgWrap) {
+            imgWrap.innerHTML = `<img src="${window.pokeApi.artUrl(curId)}" alt="${mon.name}" width="72" height="72" style="object-fit:contain; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3));" loading="lazy">`;
+          }
+
+          const typesWrap = document.getElementById("daily-types");
+          if (typesWrap && mon.types) {
+            typesWrap.innerHTML = mon.types.map(t => {
+              const style = window.TYPES_CHART ? window.TYPES_CHART.getTypeStyle(t) : "background:#3A6A88; color:#fff;";
+              return `<span class="chip" style="${style} font-size:0.75rem;">${t}</span>`;
+            }).join("");
+          }
+        } catch (_) {}
+      }
+
+      renderDailySpecimen();
+    });
+  </script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -250,8 +422,8 @@
 ### 1.2 `pokedex.html` (Dex / 双视图全 1025 图鉴)
 
 - **文件路径**: `pokedex.html`  
-- **代码行数**: 115 行  
-- **文件大小**: 5,558 字节  
+- **代码行数**: 130 行  
+- **文件大小**: 6,498 字节  
 
 ```html
 <!DOCTYPE html>
@@ -260,6 +432,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dex — 151 File</title>
+  <meta name="description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dex — 151 File">
+  <meta property="og:description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -273,28 +450,34 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html" aria-current="page">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
-    <!-- 工具筛选条：地区切换、两种展示模式切换 (Ledger/Grid)、实时搜索框、常用属性芯片、随机抽取 -->
+  <main id="main" class="wrap dex-page">
+    <h1 class="sr-only">Dex</h1>
+    <!-- 工具条两行：控制一行，18 属性永远一行（窄屏只在这一行里横滑） -->
     <div class="tools">
+      <div class="tools-bar">
       <select id="region-select" class="region-select" aria-label="Select Region">
         <option value="all">All Regions (#001–#1025)</option>
         <option value="kanto">Kanto (#001–#151)</option>
@@ -318,7 +501,11 @@
         </button>
       </div>
 
-      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off">
+      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off" aria-label="Search by name or number">
+      <button class="chip" id="draw" type="button">Draw one</button>
+      <span class="count-badge" id="count-badge"></span>
+      </div>
+      <div class="type-row" role="toolbar" aria-label="Filter by type">
       <button class="chip" data-type="" data-on type="button">All types</button>
       <button class="chip" data-type="normal" type="button">normal</button>
       <button class="chip" data-type="fire" type="button">fire</button>
@@ -339,8 +526,7 @@
       <button class="chip" data-type="steel" type="button">steel</button>
       <button class="chip" data-type="fairy" type="button">fairy</button>
       <button class="chip" id="resist-chip" type="button" hidden></button>
-      <button class="chip" id="draw" type="button">Draw one</button>
-      <span class="count-badge" id="count-badge"></span>
+      </div>
     </div>
 
     <!-- 模式 1：Dex 四区同屏布局 (Spine + Ledger + Stage + Film) -->
@@ -349,7 +535,7 @@
       <div class="spines" id="spines"></div>
 
       <!-- 中名录：该分册过滤清单，记录 #编号 + 英文名 -->
-      <ul class="ledger" id="ledger"></ul>
+      <ul class="ledger" id="ledger" role="listbox" aria-label="Pokémon in this range"></ul>
 
       <!-- 右台座：3D 模型立绘、属性色票、加入腰带与详情入口 -->
       <div class="stage" id="stage"></div>
@@ -367,9 +553,9 @@
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
   <script src="js/pokedex.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -377,8 +563,8 @@
 ### 1.3 `pokemon.html` (Detail / 详情与开球展台)
 
 - **文件路径**: `pokemon.html`  
-- **代码行数**: 49 行  
-- **文件大小**: 1,750 字节  
+- **代码行数**: 59 行  
+- **文件大小**: 2,387 字节  
 
 ```html
 <!DOCTYPE html>
@@ -387,6 +573,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>File — 151 File</title>
+  <meta name="description" content="Base stats, abilities, type matchups and official art for a single Pokémon file.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="File — 151 File">
+  <meta property="og:description" content="Base stats, abilities, type matchups and official art for a single Pokémon file.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -400,26 +591,30 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap wide">
+  <main id="main" class="wrap wide">
     <div id="file"></div>
   </main>
 
@@ -428,9 +623,9 @@
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
   <script src="js/pokemon.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -438,8 +633,8 @@
 ### 1.4 `regions.html` (Regions / 10 官方地区地图)
 
 - **文件路径**: `regions.html`  
-- **代码行数**: 68 行  
-- **文件大小**: 2,659 字节  
+- **代码行数**: 262 行  
+- **文件大小**: 12,113 字节  
 
 ```html
 <!DOCTYPE html>
@@ -448,6 +643,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Regions — 151 File</title>
+  <meta name="description" content="Every region from Kanto to Paldea, with dex ranges and official maps.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Regions — 151 File">
+  <meta property="og:description" content="Every region from Kanto to Paldea, with dex ranges and official maps.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -461,29 +661,70 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html" aria-current="page">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <h1 class="page-title">Regions</h1>
     <p class="regions-lead">National Dex numbers. Official regional maps covering Kanto #001 through Paldea #1025. Forms are not separate files in v1. Click a region to open that slice of the dex.</p>
 
+    <!-- 交互实地探索地图展台 (Interactive Regional Field Map) -->
+    <section class="interactive-map-section" id="interactive-map-section" style="margin-bottom:2.5rem; background:var(--paper); border:1px solid var(--line); border-radius:6px; padding:1.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+        <div>
+          <div class="meta-eyebrow" style="margin:0 0 0.25rem;">FIELD RECON ATLAS / 地区实地调查</div>
+          <h2 id="current-region-title" style="font-family:var(--font-ui); font-size:1.5rem; color:var(--ink); margin:0 0 0.25rem;">Kanto Map & Habitat Pins</h2>
+          <p id="current-region-desc" style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Click glowing survey beacons to inspect landmark ecology and resident Pokémon specimens.</p>
+        </div>
+        <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+          <select id="region-selector" class="btn btn-paper" style="padding:0.5rem 0.85rem; font-family:var(--font-ui); font-weight:700; cursor:pointer;" aria-label="Select Region"></select>
+          <a id="open-region-dex-btn" class="btn btn-primary" href="pokedex.html?region=kanto">Explore Region Dex →</a>
+        </div>
+      </div>
+
+      <!-- 地图舞台与呼吸坐标点 -->
+      <div class="field-map-stage" id="map-stage">
+        <img id="active-map-img" class="field-map-img" src="assets/maps/kanto.webp" alt="Regional Map">
+        <div class="pins-layer" id="pins-layer"></div>
+
+        <!-- 浮动调查情报弹窗 (Recon Popover) -->
+        <div class="recon-popover" id="recon-popover" hidden>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; margin-bottom:0.4rem;">
+            <span class="recon-type-tag" id="recon-type">Habitat Type</span>
+            <button class="recon-close-btn" id="recon-close-btn" type="button" aria-label="Close reconnaissance popup">✕</button>
+          </div>
+          <h3 class="recon-name" id="recon-name">Pallet Town</h3>
+          <p class="recon-desc" id="recon-desc">Oak Pokémon Research Lab & quiet shores.</p>
+          <div class="recon-pokemons-title">OBSERVED SPECIMENS / 栖息标本</div>
+          <div class="recon-pokemons-list" id="recon-pokemons"></div>
+        </div>
+      </div>
+    </section>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <h2 style="font-size:1.15rem; margin:0;">All 10 Regional Territories</h2>
+      <span style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink-soft);">Select card to inspect map</span>
+    </div>
     <!-- 10 官方地区地图画廊 (Atlas) -->
     <div class="atlas" id="atlas"></div>
   </main>
@@ -492,25 +733,172 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const atlasEl = document.getElementById("atlas");
-      if (!atlasEl || !window.REGIONS) return;
+      const selector = document.getElementById("region-selector");
+      const mapImg = document.getElementById("active-map-img");
+      const titleEl = document.getElementById("current-region-title");
+      const descEl = document.getElementById("current-region-desc");
+      const dexBtn = document.getElementById("open-region-dex-btn");
+      const pinsLayer = document.getElementById("pins-layer");
+      const popover = document.getElementById("recon-popover");
+      const popoverClose = document.getElementById("recon-close-btn");
+      const popoverType = document.getElementById("recon-type");
+      const popoverName = document.getElementById("recon-name");
+      const popoverDesc = document.getElementById("recon-desc");
+      const popoverPokes = document.getElementById("recon-pokemons");
 
-      atlasEl.innerHTML = window.REGIONS.map(r => `
-        <a class="region-card" href="pokedex.html?region=${r.slug}">
-          <div class="map-thumb">
-            <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
+      if (!window.REGIONS) return;
+
+      function getSpeciesName(id) {
+        const item = (window.ALL_SPECIES_DATA || []).find(s => s[0] === id);
+        return item ? item[1] : `#${id}`;
+      }
+
+      if (selector) {
+        selector.innerHTML = window.REGIONS.map(r => `
+          <option value="${r.slug}">${r.name} (#${String(r.start).padStart(3, "0")}–${r.end})</option>
+        `).join("");
+      }
+
+      function renderInteractiveMap(region) {
+        if (selector) selector.value = region.slug;
+        if (mapImg) {
+          mapImg.src = `assets/maps/${region.slug}.webp`;
+          mapImg.alt = `${region.name} Regional Map`;
+        }
+        if (titleEl) titleEl.textContent = `${region.name} Habitat Recon`;
+        if (descEl) descEl.textContent = region.line || `Detailed geographical survey covering #${region.start} through #${region.end}.`;
+        if (dexBtn) {
+          dexBtn.href = `pokedex.html?region=${region.slug}`;
+          dexBtn.textContent = `Explore ${region.name} Dex →`;
+        }
+
+        closePopover();
+
+        const landmarks = region.landmarks || [];
+        if (pinsLayer) {
+          pinsLayer.innerHTML = landmarks.map((lm, idx) => `
+            <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}">
+              <span class="map-pin-pulse"></span>
+              <span class="map-pin-core"></span>
+              <span class="map-pin-label">${lm.name}</span>
+            </button>
+          `).join("");
+
+          pinsLayer.querySelectorAll(".map-pin").forEach(pinBtn => {
+            pinBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const idx = Number(pinBtn.dataset.idx);
+              const lm = landmarks[idx];
+              if (!lm) return;
+              showPopover(lm);
+            });
+          });
+        }
+      }
+
+      function showPopover(lm) {
+        if (!popover) return;
+        if (popoverType) popoverType.textContent = lm.type || "Habitat";
+        if (popoverName) popoverName.textContent = lm.name;
+        if (popoverDesc) popoverDesc.textContent = lm.desc || "";
+
+        if (popoverPokes) {
+          popoverPokes.innerHTML = (lm.pokemons || []).map(id => {
+            const name = getSpeciesName(id);
+            const artUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+            return `
+              <a class="recon-poke-card" href="pokemon.html?id=${id}" title="Open #${id} ${name}">
+                <img src="${artUrl}" alt="${name}" loading="lazy">
+                <span class="id">#${String(id).padStart(3, "0")}</span>
+                <span class="name">${name}</span>
+              </a>
+            `;
+          }).join("");
+        }
+
+        const pinLeft = lm.x;
+        const pinTop = lm.y;
+
+        if (pinLeft > 55) {
+          popover.style.right = `${100 - pinLeft + 3}%`;
+          popover.style.left = "auto";
+        } else {
+          popover.style.left = `${pinLeft + 3}%`;
+          popover.style.right = "auto";
+        }
+
+        if (pinTop > 60) {
+          popover.style.bottom = `${100 - pinTop}%`;
+          popover.style.top = "auto";
+        } else {
+          popover.style.top = `${Math.max(5, pinTop - 5)}%`;
+          popover.style.bottom = "auto";
+        }
+
+        popover.hidden = false;
+      }
+
+      function closePopover() {
+        if (popover) popover.hidden = true;
+      }
+
+      popoverClose?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closePopover();
+      });
+
+      document.getElementById("map-stage")?.addEventListener("click", (e) => {
+        if (!e.target.closest(".recon-popover") && !e.target.closest(".map-pin")) {
+          closePopover();
+        }
+      });
+
+      selector?.addEventListener("change", (e) => {
+        const slug = e.target.value;
+        const found = window.REGIONS.find(r => r.slug === slug);
+        if (found) renderInteractiveMap(found);
+      });
+
+      if (atlasEl) {
+        atlasEl.innerHTML = window.REGIONS.map(r => `
+          <div class="region-card" data-slug="${r.slug}" style="cursor:pointer;">
+            <div class="map-thumb">
+              <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
+            </div>
+            <div class="region-info">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+                <div>
+                  <p class="name">${r.name}</p>
+                  <p class="ids">#${String(r.start).padStart(3, "0")}–${r.end} · ${r.count} files</p>
+                </div>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${r.preview}.png" alt="" width="48" height="48" loading="lazy" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3)); flex-shrink:0;">
+              </div>
+              <p class="soft" style="font-size:0.8125rem; margin-top:0.4rem; color:var(--ink-soft); line-height:1.4;">${r.line}</p>
+              <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
+                <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">Inspect Recon Map ↗</span>
+              </div>
+            </div>
           </div>
-          <div class="region-info">
-            <p class="name">${r.name}</p>
-            <p class="ids">#${String(r.start).padStart(3, "0")}–${r.end}</p>
-            <p class="n">${r.count} files</p>
-          </div>
-        </a>
-      `).join("");
+        `).join("");
+
+        atlasEl.querySelectorAll(".region-card").forEach(card => {
+          card.addEventListener("click", () => {
+            const slug = card.dataset.slug;
+            const r = window.REGIONS.find(x => x.slug === slug);
+            if (r) {
+              renderInteractiveMap(r);
+              document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        });
+      }
+
+      renderInteractiveMap(window.REGIONS[0]);
     });
   </script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -518,8 +906,8 @@
 ### 1.5 `types.html` (Types / 18 属性矩阵克制表)
 
 - **文件路径**: `types.html`  
-- **代码行数**: 62 行  
-- **文件大小**: 2,399 字节  
+- **代码行数**: 78 行  
+- **文件大小**: 3,289 字节  
 
 ```html
 <!DOCTYPE html>
@@ -528,6 +916,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Types — 151 File</title>
+  <meta name="description" content="The full 18×18 type effectiveness chart, with attacking and defending views.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Types — 151 File">
+  <meta property="og:description" content="The full 18×18 type effectiveness chart, with attacking and defending views.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -541,26 +934,30 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html" aria-current="page">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <h1 class="page-title">Types</h1>
     <p class="lead">Attack down the left, defense across the top. Dual defense is multiplied on Lineup, not here. Click a type or a cell to open the dex filtered by the defending type.</p>
 
@@ -578,22 +975,28 @@
       <span><i class="dot" style="background:#1E3A55"></i> ½ Not very effective</span>
       <span><i class="dot" style="background:#071422; border:1px solid #1E3A55"></i> 0 Immune</span>
     </div>
+
+    <!-- 当前选中属性与腰带克制推演 (Belt vs Type) -->
+    <div id="belt-vs-box" class="belt-vs-box" aria-live="polite"></div>
   </main>
 
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/types.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
 
-### 1.6 `team.html` (Belt / 6 槽腰带编成)
+### 1.6 `moves.html` (Moves / 招式数据库与战斗属性)
 
-- **文件路径**: `team.html`  
-- **代码行数**: 58 行  
-- **文件大小**: 2,283 字节  
+- **文件路径**: `moves.html`  
+- **代码行数**: 80 行  
+- **文件大小**: 2,996 字节  
 
 ```html
 <!DOCTYPE html>
@@ -601,7 +1004,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Belt — 151 File</title>
+  <title>Moves — 151 File</title>
+  <meta name="description" content="Browse Pokémon moves by type, category and battle properties.">
+  <meta name="theme-color" content="#071422">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -615,26 +1020,309 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
-  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html" aria-current="page">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Moves</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
+      Browse Pokémon battle moves by type, damage category, power, and accuracy.
+    </p>
+
+    <div class="tools-bar">
+      <input
+        id="move-search"
+        type="search"
+        placeholder="Search move name..."
+        autocomplete="off"
+        style="min-width: 14rem;"
+      >
+
+      <select id="move-type">
+        <option value="">All types</option>
+      </select>
+
+      <select id="move-category">
+        <option value="">All categories</option>
+        <option value="physical">Physical</option>
+        <option value="special">Special</option>
+        <option value="status">Status</option>
+      </select>
+    </div>
+
+    <div id="move-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading moves database...</div>
+    <div id="move-grid" class="dex-grid"></div>
+    <div id="move-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+  </main>
+
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/moves.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>
+```
+
+---
+
+### 1.7 `abilities.html` (Abilities / 特性效果与宝可梦索引)
+
+- **文件路径**: `abilities.html`  
+- **代码行数**: 68 行  
+- **文件大小**: 2,643 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abilities — 151 File</title>
+  <meta name="description" content="Browse Pokémon abilities, combat effects and specimen rosters.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html" aria-current="page">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Abilities</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
+      Browse passive and combat abilities and inspect Pokémon that possess them.
+    </p>
+
+    <div class="tools-bar">
+      <input
+        id="ability-search"
+        type="search"
+        placeholder="Search ability name..."
+        autocomplete="off"
+        style="min-width: 14rem;"
+      >
+    </div>
+
+    <div id="ability-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading abilities index...</div>
+    <div id="ability-grid" class="dex-grid"></div>
+    <div id="ability-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/abilities.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>
+```
+
+---
+
+### 1.8 `collection.html` (Collection / 全图鉴与地区收集进度)
+
+- **文件路径**: `collection.html`  
+- **代码行数**: 95 行  
+- **文件大小**: 3,865 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collection — 151 File</title>
+  <meta name="description" content="Track your Pokémon discovery progress across the National Dex and 10 official regions.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html" aria-current="page">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Collection</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">Archive progress ledger. Track specimen discoveries across National Dex and all 10 regions, stored locally.</p>
+
+    <section class="collection-summary">
+      <div>
+        <span id="seen-count">0</span>
+        <small>/ 1025 SEEN</small>
+      </div>
+
+      <div>
+        <span id="favorite-count">0</span>
+        <small>FAVORITES</small>
+      </div>
+
+      <div>
+        <span id="belt-count">0</span>
+        <small>IN BELT</small>
+      </div>
+    </section>
+
+    <section style="margin-bottom:2.25rem;">
+      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">National Dex</h2>
+      <div class="progress" style="height:12px; margin-bottom:0.5rem;">
+        <div id="national-progress"></div>
+      </div>
+      <p id="national-text" style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;"></p>
+    </section>
+
+    <section>
+      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">Regions Breakdown</h2>
+      <div id="region-progress"></div>
+    </section>
+
+    <!-- 勋章成就系统 (Achievements) -->
+    <section id="achievements" style="margin-top:2.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Archive Achievements</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Unlock commemorative badges as your specimen collection and field mastery progress.</p>
+        </div>
+        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 12 UNLOCKED</span>
+      </div>
+      <div class="badge-grid" id="badge-grid"></div>
+    </section>
+  </main>
+
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/collection.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>
+```
+
+---
+
+### 1.9 `team.html` (Belt / 6 槽腰带编成)
+
+- **文件路径**: `team.html`  
+- **代码行数**: 100 行  
+- **文件大小**: 4,804 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Belt — 151 File</title>
+  <meta name="description" content="Your six-slot Pokémon belt, saved in this browser.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Belt — 151 File">
+  <meta property="og:description" content="Your six-slot Pokémon belt, saved in this browser.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html" aria-current="page">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <h1 class="page-title">Belt</h1>
     <p class="lead">Six slots. Stored as <code>file151.belt</code> in this browser. Drag a filled slot onto another, or use the ◀ ▶ buttons, to reorder. Empty slot opens the dex.</p>
 
@@ -646,24 +1334,56 @@
 
     <!-- 6 槽位网格 -->
     <div class="slots" id="slots"></div>
+
+    <!-- 满 6 只出现的一行分析：重复 type、最快、最慢 -->
+    <div class="belt-summary" id="belt-summary" hidden></div>
+
+    <!-- 满 6 只出现的数据诊断面板：六维雷达图与 18 属性防御热力 -->
+    <section class="team-analysis-section" id="team-analysis" hidden style="margin-top:2rem; background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1.5rem;">
+      <h2 style="font-family:var(--font-ui); font-size:1.35rem; color:var(--ink); margin:0 0 0.5rem;">
+        Team Defense & Stat Diagnostics
+      </h2>
+      <p style="font-size:0.875rem; color:var(--ink-soft); margin-bottom:1.5rem;">
+        Composite radar showing the average baseline stats of your 6-specimen belt, alongside team defense coverage across all 18 types.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(20rem, 1fr)); gap:2rem; align-items:start;">
+        <!-- 六维雷达图 -->
+        <div style="display:flex; flex-direction:column; align-items:center; background:var(--sky-deep); border:1px solid var(--line); border-radius:4px; padding:1.25rem;">
+          <h3 style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 1rem;">
+            Base Stat Radar (Average)
+          </h3>
+          <canvas id="radar-canvas" width="300" height="300" style="max-width:100%; height:auto;"></canvas>
+        </div>
+
+        <!-- 18 属性防御热力条 -->
+        <div>
+          <h3 style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 1rem;">
+            18-Type Team Best Resistance
+          </h3>
+          <div id="defense-heatmap" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
   <script src="js/team.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
 
-### 1.7 `lineup.html` (Lineup / 战力与属性缺口分析)
+### 1.10 `lineup.html` (Lineup / 战力与属性缺口分析)
 
 - **文件路径**: `lineup.html`  
-- **代码行数**: 82 行  
-- **文件大小**: 3,252 字节  
+- **代码行数**: 95 行  
+- **文件大小**: 4,047 字节  
 
 ```html
 <!DOCTYPE html>
@@ -672,6 +1392,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lineup — 151 File</title>
+  <meta name="description" content="Check a six-Pokémon belt for type coverage, holes and resistances, or compare two Pokémon side by side.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Lineup — 151 File">
+  <meta property="og:description" content="Check a six-Pokémon belt for type coverage, holes and resistances, or compare two Pokémon side by side.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -685,26 +1410,30 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html" aria-current="page">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main class="wrap">
+  <main id="main" class="wrap">
     <h1 class="page-title">Lineup</h1>
     <p class="lead">Typed as the species types, not moves. Coverage chips open Dex by attack type. Holes open Dex by <code>resist</code>.</p>
 
@@ -738,6 +1467,9 @@
       </div>
       <div class="lineup-pane" id="right"></div>
     </div>
+
+    <!-- 文字比对结论 (Verdict) -->
+    <div class="lineup-verdict" id="lineup-verdict" hidden aria-live="polite"></div>
   </main>
 
   <!-- 脚本依赖 -->
@@ -746,18 +1478,108 @@
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
   <script src="js/lineup.js"></script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
 
-### 1.8 `about.html` (File / 架构说明与数据源)
+### 1.11 `battle-lab.html` (Battle Lab / 双宝可梦对战推演)
+
+- **文件路径**: `battle-lab.html`  
+- **代码行数**: 79 行  
+- **文件大小**: 3,508 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Battle Lab — 151 File</title>
+  <meta name="description" content="Compare two Pokémon specimens, base stats, speed tier and dual-type matchups.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html" aria-current="page">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Battle Lab</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
+      Specimen matchup laboratory. Compare two Pokémon side-by-side, analyze base stat differences, speed advantage and type effectiveness.
+    </p>
+
+    <section class="lineup-pair">
+      <div class="lineup-pane">
+        <label for="battle-left" style="font-family:var(--font-num); font-size:0.875rem; color:var(--ink-soft); font-weight:700;">SPECIMEN A</label>
+        <input id="battle-left" type="search" placeholder="Type name or # (e.g. 25, Charizard) & Enter..." autocomplete="off">
+        <div id="battle-left-card">
+          <p class="soft" style="font-size:0.875rem; color:var(--ink-soft); padding:1rem 0;">Search or load a specimen on the left.</p>
+        </div>
+      </div>
+
+      <div class="lineup-mid">VS</div>
+
+      <div class="lineup-pane">
+        <label for="battle-right" style="font-family:var(--font-num); font-size:0.875rem; color:var(--ink-soft); font-weight:700;">SPECIMEN B</label>
+        <input id="battle-right" type="search" placeholder="Type name or # (e.g. 130, Lapras) & Enter..." autocomplete="off">
+        <div id="battle-right-card">
+          <p class="soft" style="font-size:0.875rem; color:var(--ink-soft); padding:1rem 0;">Search or load a specimen on the right.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="battle-result" style="margin-top:2rem;"></section>
+  </main>
+
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/battle-lab.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>
+```
+
+---
+
+### 1.12 `about.html` (File / 架构说明与数据源)
 
 - **文件路径**: `about.html`  
-- **代码行数**: 98 行  
-- **文件大小**: 4,202 字节  
+- **代码行数**: 128 行  
+- **文件大小**: 6,116 字节  
 
 ```html
 <!DOCTYPE html>
@@ -766,6 +1588,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>File — 151 File</title>
+  <meta name="description" content="About 151 FILE: data sources, credits and a fan-project disclaimer.">
+  <meta name="theme-color" content="#071422">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="File — 151 File">
+  <meta property="og:description" content="About 151 FILE: data sources, credits and a fan-project disclaimer.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -779,40 +1606,64 @@
   <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <!-- 共享顶栏：32px 精灵球 + 站名 + 六链导航 -->
   <header class="site-bar">
     <div class="site-bar-inner">
       <a class="site-bar-brand" href="index.html" aria-label="151 File home">
         <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
-        <span class="brand">151 FILE</span>
       </a>
       <nav>
         <a href="pokedex.html">Dex</a>
         <a href="regions.html">Regions</a>
         <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
         <a href="team.html">Belt</a>
-        <a href="lineup.html">Lineup</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
         <a href="about.html" aria-current="page">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器：约束在舒适阅读行宽 (wrap-doc) -->
-  <main class="wrap wrap-doc">
+  <main id="main" class="wrap wrap-doc">
     <h1 class="page-title">File</h1>
     <p class="page-desc">Unofficial Kanto-first dex. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
 
-    <!-- 数据源与规则说明 -->
-    <section class="file-block" aria-labelledby="sources-heading">
-      <h2 id="sources-heading">Sources</h2>
+    <!-- 这站存什么 / 不存什么 -->
+    <section class="file-block">
+      <h2>这站存什么</h2>
+      <p style="margin-bottom:0.75rem; line-height:1.6;">只用你浏览器的 <code>localStorage</code>，存 4 样东西，全在本地：</p>
       <ul>
-        <li>Stats and names: <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a></li>
-        <li>Art: <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a></li>
-        <li>Search uses English names or National Dex numbers.</li>
-        <li>Belt lives in this browser as <span class="soft">file151.belt</span>. Nothing is uploaded.</li>
-        <li>Lineup reads species types only, not moves.</li>
-        <li>Regions slice National Dex ids. Forms are not separate files in v1.</li>
+        <li><code>file151.belt</code>：你的 6 槽腰带名单（编号数组）。</li>
+        <li><code>file151.seen</code>：你看过哪些宝可梦，在 Dex 网格角落留记号。</li>
+        <li><code>file151.last</code>：上次打开的文件编号，首页直接一键继续。</li>
+        <li><code>file151.sound</code>：叫声自动播放偏好（默认 <code>off</code>）。</li>
       </ul>
+    </section>
+
+    <section class="file-block">
+      <h2>不存什么</h2>
+      <p style="line-height:1.6;">没有账号，没有登录，没有追踪 Cookie，没有服务器后台，也没有数据分析打点。你关掉浏览器或清理本地缓存，记录就清零。没有任何数据会传到这台电脑之外。</p>
+    </section>
+
+    <!-- 数据从哪来 -->
+    <section class="file-block">
+      <h2>数据从哪来</h2>
+      <ul>
+        <li>种族基础数值、属性、特性、英文种属与描述：来自开放数据接口 <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a>。</li>
+        <li>3D 立绘渲染模型：来自官方立绘归档 <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a>（HOME 渲染图与 192px 缩略图）。</li>
+        <li>叫声音频：来自 <a href="https://github.com/PokeAPI/cries" target="_blank" rel="noopener">PokeAPI/cries</a> 原生音频归档。</li>
+      </ul>
+    </section>
+
+    <!-- 腰带在这台机器 -->
+    <section class="file-block">
+      <h2>腰带在这台机器</h2>
+      <p style="line-height:1.6;">你的六只腰带搭档只保存在当前这台设备的当前浏览器中。不会同步到其他设备，也不会因为换台机器而泄漏。它是你私人的一份野外记录。</p>
     </section>
 
     <!-- 精灵球音效开关 -->
@@ -856,12 +1707,109 @@
 
     renderSoundState();
   </script>
+  <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
+
+### 1.13 `quiz.html` (Quiz / 剪影猜谜辨识小游戏)
+
+- **文件路径**: `quiz.html`  
+- **代码行数**: 88 行  
+- **文件大小**: 3,562 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz — 151 File</title>
+  <meta name="description" content="Who's that Pokémon? Identify specimens from their official silhouettes and test your field knowledge.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+
+  <!-- 共享样式模块 -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html" aria-current="page">Quiz</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap" style="max-width:48rem; margin:0 auto;">
+    <h1 class="page-title">Who's That Pokémon?</h1>
+    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
+      Silhouette recognition lab. Guess the specimen to unlock its archive entry and build your knowledge streak.
+    </p>
+
+    <!-- 计分看板 -->
+    <div class="quiz-score-board">
+      <div class="quiz-score-card">
+        <span id="streak-count">0</span>
+        <small>CURRENT STREAK</small>
+      </div>
+      <div class="quiz-score-card">
+        <span id="best-streak-count">0</span>
+        <small>RECORD BEST</small>
+      </div>
+      <div class="quiz-score-card">
+        <span id="total-count">0</span>
+        <small>TOTAL CORRECT</small>
+      </div>
+    </div>
+
+    <!-- 猜谜展台 -->
+    <section class="quiz-stage-box" id="quiz-stage">
+      <div class="quiz-silhouette-wrap">
+        <img id="quiz-img" src="" alt="Mystery specimen" class="quiz-img-silhouette" width="220" height="220">
+      </div>
+
+      <div id="quiz-feedback" class="quiz-feedback-banner" hidden></div>
+
+      <form id="quiz-form" class="quiz-controls-form" autocomplete="off">
+        <input id="quiz-input" type="text" placeholder="Type Pokémon name and press Enter..." autocomplete="off" spellcheck="false">
+        <button class="btn btn-primary" id="quiz-submit" type="submit">Submit Guess</button>
+        <button class="btn btn-paper" id="quiz-skip" type="button">Reveal / Skip</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/store.js"></script>
+  <script src="js/regions-data.js"></script>
+  <script src="js/types-chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/global-search.js"></script>
+</body>
+</html>
+```
 
 ---
 
@@ -922,7 +1870,6 @@
   --shadow-file: 0 10px 0 var(--line);
   --shadow-key:  0 4px 0 var(--line);
 }
-
 ```
 
 ---
@@ -930,8 +1877,8 @@
 ### 2.2 `css/base.css` (全局排版与基础样式)
 
 - **文件路径**: `css/base.css`  
-- **代码行数**: 159 行  
-- **文件大小**: 3,716 字节  
+- **代码行数**: 225 行  
+- **文件大小**: 5,259 字节  
 
 ```css
 /* ==========================================================================
@@ -1044,6 +1991,7 @@ a:hover {
   letter-spacing: -0.018em;
   color: var(--navy);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .site-bar nav {
@@ -1084,6 +2032,7 @@ a:hover {
     padding-right: max(var(--s-4), env(safe-area-inset-right));
   }
   .site-bar-inner {
+    gap: var(--s-3);
     padding-left: max(var(--s-4), 1rem);
     padding-right: max(var(--s-4), 1rem);
   }
@@ -1093,7 +2042,70 @@ a:hover {
   }
 }
 
+/* 手机窄屏：品牌 + 6 个导航项在 375px 放不下，品牌收成纯图标（链接已有 aria-label） */
+@media (max-width: 34rem) {
+  .site-bar .brand {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .site-bar-inner {
+    gap: var(--s-2);
+    padding-left: max(var(--s-3), env(safe-area-inset-left));
+    padding-right: max(var(--s-3), env(safe-area-inset-right));
+  }
+  .site-bar nav {
+    gap: var(--s-2);
+    min-width: 0;
+  }
+}
 
+/* 带 hidden 属性的元素必须真的隐藏：否则 .dex 等自带的 display 会盖过浏览器默认样式，
+   被隐藏的名录视图仍占 ~656px，桌面端切到 Grid 后首屏是一片空白 */
+[hidden] {
+  display: none !important;
+}
+
+/* 无障碍：仅供读屏的文字、跳转到主内容、正文链接不能只靠颜色区分 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--s-4);
+  top: -4rem;
+  z-index: 100;
+  padding: var(--s-2) var(--s-4);
+  background: var(--mark);
+  color: var(--sky);
+  font-weight: 700;
+  border-radius: var(--r-key);
+  transition: top 120ms ease;
+}
+
+.skip-link:focus {
+  top: var(--s-2);
+  color: var(--sky);
+}
+
+main p a:not([class]),
+main li a:not([class]),
+.link-action {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
 ```
 
 ---
@@ -1223,7 +2235,6 @@ a:hover {
 .link-action:hover {
   color: var(--ink);
 }
-
 ```
 
 ---
@@ -1471,8 +2482,6 @@ a:hover {
     transform: none !important;
   }
 }
-
-
 ```
 
 ---
@@ -1480,8 +2489,8 @@ a:hover {
 ### 2.5 `css/pages.css` (各页面专用布局与响应式样式)
 
 - **文件路径**: `css/pages.css`  
-- **代码行数**: 1,603 行  
-- **文件大小**: 32,673 字节  
+- **代码行数**: 2,696 行  
+- **文件大小**: 55,024 字节  
 
 ```css
 /* ==========================================================================
@@ -1530,6 +2539,15 @@ a:hover {
   letter-spacing: -0.022em;
   margin: 0 0 var(--s-3);
   color: var(--ink);
+}
+
+.hero-pokemon-logo {
+  max-width: clamp(220px, 32vw, 360px);
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--s-1) 0 var(--s-3);
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
 }
 
 .hero p {
@@ -1943,17 +2961,77 @@ a:hover {
 /* ==========================================================================
    Dex Page (pokedex.html — Spine + Ledger + Stage + Film)
    ========================================================================== */
+/* 名录页底部只留一条窄边，胶片停在首屏里、并离窗口底边一点 */
+.wrap.dex-page {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* 宽屏把顶栏 + 本页锁进视口：名录和胶片在内部滚，页面本身不滚 */
+@media (min-width: 45.01rem) {
+  body:has(.dex-page) {
+    height: 100dvh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body:has(.dex-page) .site-bar,
+  body:has(.dex-page) .tools {
+    flex: none;
+  }
+  body:has(.dex-page) .wrap.dex-page {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body:has(.dex-page) .dex,
+  body:has(.dex-page) .dex-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+  }
+  body:has(.dex-page) .dex-grid {
+    overflow: auto;
+  }
+}
+
 .tools {
   display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.tools-bar {
+  display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
   align-items: center;
-  margin-bottom: var(--s-4);
+  gap: 0.5rem 0.65rem;
+}
+
+/* 18 个属性固定一行。宽屏排得下；窄了只在这一行横滑，页面不再被挤高 */
+.type-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.35rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  padding-block: 2px;
+}
+
+.type-row .chip {
+  flex: 0 0 auto;
 }
 
 .tools input {
-  height: 2.75rem;
-  min-width: 14rem;
+  height: 2.5rem;
+  flex: 1 1 12rem;
+  min-width: min(100%, 12rem);
   border: 0;
   border-bottom: 2px solid var(--navy);
   background: var(--paper);
@@ -1963,21 +3041,32 @@ a:hover {
   font: 400 1rem/1 var(--font-ui);
 }
 
+.tools-bar #draw {
+  height: 2.5rem;
+  padding-inline: 0.75rem;
+}
+
 .tools input:focus {
   outline: 3px solid var(--mark);
   outline-offset: 3px;
 }
 
 .chip {
-  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.625rem;
   padding: 0 0.6rem;
   border: 1px solid var(--line);
   background: var(--paper);
   border-radius: 4px;
-  font: 500 0.75rem/1 var(--font-num);
+  font: 500 0.75rem var(--font-num);
+  line-height: 1;
   letter-spacing: 0.04em;
   cursor: pointer;
   color: var(--ink);
+  text-decoration: none;
+  vertical-align: middle;
   transition: border-color 100ms ease, background 100ms ease, color 100ms ease;
 }
 
@@ -2002,10 +3091,11 @@ a:hover {
 
 .dex {
   display: grid;
-  grid-template-columns: 7.5rem minmax(14rem, 20rem) 1fr;
-  grid-template-rows: 1fr auto;
-  gap: 1rem;
-  min-height: calc(100dvh - 9rem);
+  grid-template-columns: 7.5rem minmax(16rem, 22rem) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  column-gap: 0.85rem;
+  row-gap: 0.35rem;
+  min-height: 0;
 }
 
 .spines {
@@ -2013,11 +3103,13 @@ a:hover {
   flex-direction: column;
   gap: 0.35rem;
   grid-row: 1 / 3;
+  min-height: 0;
+  overflow: auto;
 }
 
 .spines button {
   border: 0;
-  background: #0B1C2E;
+  background: var(--sky-deep);
   color: var(--ink);
   text-align: left;
   padding: 0.7rem 0.5rem;
@@ -2028,12 +3120,12 @@ a:hover {
 }
 
 .spines button:hover:not(:disabled) {
-  background: #102338;
+  background: var(--paper);
 }
 
 .spines button[data-on] {
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   border-left-color: #D4A700;
 }
 
@@ -2046,38 +3138,86 @@ a:hover {
   list-style: none;
   margin: 0;
   padding: 0;
+  min-height: 0;
+  height: 100%;
   overflow: auto;
   border-top: 2px solid var(--navy);
-  max-height: 52dvh;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
 .ledger li {
-  display: flex;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.55rem;
   align-items: center;
-  padding: 0.55rem 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.15rem 0.55rem 0.15rem 0.4rem;
   border-bottom: 1px solid var(--line);
+  border-left: 3px solid transparent;
   cursor: pointer;
-  transition: background 0.1s ease;
+  transition: background 100ms ease, border-color 100ms ease;
 }
 
-.ledger li:hover {
-  background: rgba(126, 182, 217, 0.08);
+.ledger li:hover:not(.is-on) {
+  background: color-mix(in srgb, var(--navy) 14%, transparent);
 }
 
 .ledger li.is-on {
   background: var(--paper);
-  box-shadow: 0 0.4rem 0 var(--line);
+  border-left-color: var(--mark);
 }
 
-.ledger li.seen .id {
-  opacity: 0.45;
+.ledger li.is-on .ledger-name {
+  font-weight: 700;
+}
+
+.ledger li.seen:not(.is-on) .ledger-name {
+  color: var(--ink-soft);
+}
+
+.ledger li.empty {
+  display: block;
+  border-left-color: transparent;
+  cursor: default;
+}
+
+/* 未选中只留等宽编号，名字才是扫读目标；选中行才点上黄标 */
+.ledger .id {
+  min-width: 2.7rem;
+  text-align: right;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.1rem 0.2rem;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger li.is-on .id {
+  background: var(--mark);
+  color: var(--sky);
+}
+
+.ledger-name {
+  font: 500 0.9375rem/1.2 var(--font-ui);
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ledger-types {
+  font: 500 0.75rem/1 var(--font-num);
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 .id {
   font: 700 0.8rem/1 var(--font-num);
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.12rem 0.3rem;
   border-radius: 2px;
 }
@@ -2087,8 +3227,10 @@ a:hover {
   justify-items: center;
   align-content: start;
   text-align: center;
-  padding: 1rem;
+  padding: 0.35rem 1rem 0.25rem;
   position: relative;
+  min-height: 0;
+  overflow: auto;
 }
 
 .stage .stage-img-box {
@@ -2102,7 +3244,7 @@ a:hover {
 
 .stage img {
   width: 100%;
-  max-height: 16rem;
+  max-height: min(14rem, 30vh);
   object-fit: contain;
   filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -2143,7 +3285,7 @@ a:hover {
   gap: 0.35rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 0.5rem 0 1rem;
+  padding: 0.15rem 0 0;
 }
 
 .film button {
@@ -2165,7 +3307,7 @@ a:hover {
 }
 
 .film button[data-on] {
-  border-color: #3D7DCA;
+  border-color: var(--blue);
 }
 
 .film img {
@@ -2188,17 +3330,32 @@ a:hover {
 @media (max-width: 45rem) {
   .dex {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+    min-height: 0;
   }
   .spines {
     grid-row: auto;
     flex-direction: row;
     overflow-x: auto;
   }
+  .ledger {
+    height: auto;
+    max-height: 46dvh;
+  }
+  .stage {
+    overflow: visible;
+  }
+  .stage img {
+    max-height: 14rem;
+  }
   .film {
     position: sticky;
     bottom: 0;
     background: var(--sky);
     grid-column: 1;
+    margin-top: 0;
+    padding: 0.35rem 0;
   }
 }
 
@@ -2215,15 +3372,26 @@ a:hover {
 
 .atlas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  gap: 1.25rem 1.25rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 68rem) {
+  .atlas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 36rem) {
+  .atlas {
+    grid-template-columns: 1fr;
+  }
 }
 
 .region-card {
-  display: grid;
-  grid-template-columns: 8.5rem 1fr;
-  gap: 0.85rem;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   background: var(--paper);
   box-shadow: 0 10px 0 var(--line);
   border: 1px solid var(--line);
@@ -2248,12 +3416,12 @@ a:hover {
 }
 
 .region-card .map-thumb {
-  width: 8.5rem;
-  height: 5.8rem;
+  width: 100%;
+  height: 6.5rem;
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #0B1C2E;
+  background: var(--sky-deep);
   position: relative;
 }
 
@@ -2323,7 +3491,7 @@ a:hover {
   line-height: 1.75rem;
   letter-spacing: 0.04em;
   text-decoration: none;
-  color: #071422;
+  color: var(--sky);
   transition: transform 100ms ease, filter 100ms ease;
   display: inline-flex;
   align-items: center;
@@ -2372,7 +3540,7 @@ a:hover {
 .types-table th {
   color: var(--ink-soft);
   font-weight: 500;
-  background: #0B1C2E;
+  background: var(--sky-deep);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.65rem;
@@ -2410,7 +3578,7 @@ a:hover {
 
 .types-table td.x0 {
   background: #071422;
-  color: #5A7A90;
+  color: #688A9F;
 }
 
 .types-table tr.hi th,
@@ -2541,7 +3709,7 @@ a:hover {
   margin: 0.25rem 0 0.75rem;
   border: 0;
   border-bottom: 2px solid var(--navy);
-  background: #0B1C2E;
+  background: var(--sky-deep);
   color: var(--ink);
   font-family: var(--font-num);
   font-weight: 700;
@@ -2590,7 +3758,7 @@ a:hover {
 
 .lineup-stat .bar {
   height: 8px;
-  background: #071422;
+  background: var(--sky);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -2598,7 +3766,7 @@ a:hover {
 .lineup-stat .bar > span {
   display: block;
   height: 100%;
-  background: #1E3A55;
+  background: var(--line);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -2652,7 +3820,7 @@ a:hover {
    ========================================================================== */
 .view-toggle {
   display: inline-flex;
-  background: #0B1C2E;
+  background: var(--sky-deep);
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 2px;
@@ -2730,6 +3898,10 @@ a:hover {
   transition: transform 120ms ease, border-color 100ms ease, box-shadow 120ms ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  /* Grid 一次渲染 1025 张：离屏卡片跳过布局/绘制（实测 layout+style 115ms→36ms）。
+     12.68rem = 卡片实高 14.3rem 扣掉 padding+border，占位高度与真实高度基本一致 */
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 12.68rem;
 }
 
 .dex-card:hover {
@@ -2778,7 +3950,7 @@ a:hover {
   font-weight: 700;
   font-size: 0.75rem;
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.1rem 0.35rem;
   border-radius: 2px;
   margin-bottom: 0.3rem;
@@ -2863,15 +4035,44 @@ a:hover {
    Detail (Pokemon) Page Styles
    ========================================================================== */
 .wrap.wide {
-  max-width: 68rem;
+  max-width: 84rem;
 }
 
 .detail {
   display: grid;
   grid-template-columns: minmax(18rem, 24rem) 1fr;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: start;
   margin-top: 1rem;
+}
+
+.detail-art-stage {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 0.625rem 0 var(--line);
+  border-radius: var(--r-file);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.detail-art-stage:active {
+  transform: scale(0.98);
+}
+
+.detail-art-stage img {
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  max-height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
 }
 
 .fields {
@@ -2879,17 +4080,45 @@ a:hover {
   border: 1px solid var(--line);
   box-shadow: 0 0.625rem 0 var(--line);
   border-radius: var(--r-file);
-  padding: 1.5rem;
+  padding: 1.5rem 1.75rem;
 }
 
-.fields p {
-  margin: 0;
-  padding: 0.75rem 0;
+.fields-top {
+  padding-bottom: 0.5rem;
+}
+
+.field-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--ink);
+  margin: 0 0 0.4rem 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 2rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-.fields p:last-child {
-  border-bottom: 0;
+.fields-col {
+  min-width: 0;
+}
+
+.fields-bottom {
+  padding-top: 0.85rem;
+}
+
+@media (max-width: 58rem) {
+  .fields-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 }
 
 .id-badge {
@@ -2897,7 +4126,7 @@ a:hover {
   font-weight: 700;
   font-size: 0.875rem;
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.15rem 0.45rem;
   border-radius: 3px;
   display: inline-block;
@@ -2908,7 +4137,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  padding-top: 1.25rem;
+  padding-top: 0.5rem;
 }
 
 /* ==========================================================================
@@ -2970,11 +4199,6 @@ a:hover {
   object-fit: contain;
   margin-bottom: 0.5rem;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
-  transition: transform 120ms ease;
-}
-
-.slot:hover img {
-  transform: scale(1.08);
 }
 
 .slot .id {
@@ -2982,7 +4206,7 @@ a:hover {
   font-weight: 700;
   font-size: 0.75rem;
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.1rem 0.35rem;
   border-radius: 2px;
 }
@@ -3058,7 +4282,7 @@ a:hover {
 .stat > span:last-child { text-align: right; }
 .stat .bar {
   height: 8px;
-  background: #071422;
+  background: var(--sky);
   border-radius: 2px 0 0 0;
   overflow: hidden;
 }
@@ -3088,9 +4312,880 @@ a:hover {
 .slot .mv:disabled { opacity: 0.35; cursor: default; }
 .slot .mv:not(:disabled):hover { border-color: var(--blue); }
 
-```
+/* 触屏：view-btn / 腰带挪动按钮撑到 44px；筛选 chip 视觉不变，只外扩点按热区（受行距限制约 39px，桌面不变） */
+@media (pointer: coarse) {
+  .view-btn,
+  .slot .mv {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+  .dex-card .card-belt-btn {
+    position: relative;
+  }
+  .dex-card .card-belt-btn::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem -0.25rem;
+  }
+  .chip {
+    position: relative;
+  }
+  .chip::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem 0;
+  }
+}
 
----
+/* Grid 卡片：名字是真链接，用 ::after 拉伸到整张卡；+ Belt 按钮抬高一层保持可点 */
+.dex-card .dex-card-link,
+.dex-card .dex-card-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.dex-card .dex-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.dex-card .dex-card-link:focus-visible {
+  outline: none;
+}
+.dex-card:has(.dex-card-link:focus-visible) {
+  outline: 3px solid var(--mark);
+  outline-offset: 2px;
+}
+.dex-card .card-belt-btn {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dex Grid 卡片角标：已看过点、腰带点 */
+.dex-card .card-dots {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  z-index: 2;
+}
+.dex-card .card-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dex-card .card-dots .dot.seen {
+  background: var(--navy);
+}
+.dex-card .card-dots .dot.belt {
+  background: var(--ball);
+}
+
+/* Detail 标本档案详情扩展 */
+.flavor {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0.6rem 0;
+  border-left: 2px solid var(--mark);
+  padding-left: 0.65rem;
+}
+
+.abilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.35rem 0;
+  font-size: 0.875rem;
+}
+.abilities-list li {
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+.abilities-list b {
+  text-transform: capitalize;
+  color: var(--ink);
+}
+.abilities-list .hidden-tag {
+  color: var(--mark);
+  font-size: 0.75rem;
+  font-family: var(--font-num);
+  font-weight: 700;
+  margin-left: 0.2rem;
+}
+
+.evo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.35rem 0;
+  flex-wrap: wrap;
+}
+.evo-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.evo-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--mark);
+}
+.evo-link.current {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+.evo-link img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+.evo-link span {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+}
+
+/* Types: Belt vs Type 结果卡片 */
+.belt-vs-card {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 4px;
+}
+
+/* Belt: 满 6 只统计栏 */
+.belt-summary {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 4px;
+  font-family: var(--font-num);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+/* Lineup: 文字结论 */
+.lineup-verdict {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Collection System
+   ========================================================================== */
+.collection-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.collection-summary > div {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+  border-radius: 4px;
+}
+
+.collection-summary span {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 2rem;
+  color: var(--mark);
+}
+
+.collection-summary small {
+  font-family: var(--font-num);
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.progress {
+  width: 100%;
+  height: 10px;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress > div {
+  height: 100%;
+  width: 0;
+  background: var(--mark);
+  border-radius: 4px;
+  transition: width 300ms ease;
+}
+
+.region-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .4rem;
+  font-family: var(--font-num);
+  font-size: 0.875rem;
+}
+
+.collection-region {
+  margin-bottom: 1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+}
+
+.evo-node {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.evo-children {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Moves & Abilities & Battle Lab
+   ========================================================================== */
+.tools-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tools-bar input,
+.tools-bar select {
+  padding: 0.5rem 0.85rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  border-radius: 4px;
+}
+
+.tools-bar input:focus,
+.tools-bar select:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.lineup-pair {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+
+.lineup-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--mark);
+  padding-top: 5rem;
+}
+
+.lineup-pane {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lineup-pane input {
+  padding: 0.5rem 0.75rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  border-radius: 4px;
+}
+
+.lineup-pane input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.matchup-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin-top: 1rem;
+  font-family: var(--font-num);
+}
+
+.matchup-multiplier {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mark);
+}
+
+@media (max-width: 700px) {
+  .collection-summary {
+    grid-template-columns: 1fr;
+  }
+  .lineup-pair {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .lineup-mid {
+    padding-top: 0;
+  }
+}
+
+/* ==========================================================================
+   Global Quick Search (Command Palette)
+   ========================================================================== */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 20, 34, 0.78);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10vh 1rem 2rem;
+  animation: fadeIn 120ms ease;
+}
+
+.search-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--navy);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 36rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--sky-deep);
+}
+
+.search-panel-header input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.05rem;
+  outline: none;
+}
+
+.search-panel-header input::placeholder {
+  color: var(--ink-soft);
+}
+
+.search-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+.search-close-btn:hover {
+  color: var(--ink);
+  background: var(--sky);
+}
+
+.search-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  transition: background 80ms ease;
+}
+
+.search-item:hover,
+.search-item.active {
+  background: var(--sky-deep);
+}
+
+.search-item-title {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  color: var(--ink);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.search-item-tag {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+  background: var(--sky);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+}
+
+.search-item-tag.pokémon {
+  background: rgba(255, 203, 5, 0.15);
+  color: var(--mark);
+  border-color: rgba(255, 203, 5, 0.35);
+}
+
+.search-item-tag.move {
+  background: rgba(61, 125, 202, 0.15);
+  color: var(--blue);
+  border-color: rgba(61, 125, 202, 0.35);
+}
+
+.search-item-tag.ability {
+  background: rgba(120, 200, 80, 0.15);
+  color: #78C850;
+  border-color: rgba(120, 200, 80, 0.35);
+}
+
+.search-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.search-panel-footer {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--line);
+  background: var(--sky);
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+}
+
+.search-panel-footer kbd {
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.1rem 0.3rem;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Who's That Pokémon Quiz
+   ========================================================================== */
+.quiz-score-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-score-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+
+.quiz-score-card span {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--mark);
+}
+
+.quiz-score-card small {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+
+.quiz-stage-box {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quiz-silhouette-wrap {
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, var(--sky-deep) 0%, rgba(11, 28, 46, 0.4) 70%, transparent 100%);
+  margin-bottom: 1.5rem;
+}
+
+.quiz-img-silhouette {
+  filter: brightness(0);
+  transition: filter 400ms ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.quiz-img-revealed {
+  filter: brightness(1) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+  animation: revealPulse 500ms ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@keyframes revealPulse {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.quiz-controls-form {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 32rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.quiz-controls-form input {
+  flex: 1;
+  min-width: 14rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+.quiz-controls-form input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.quiz-feedback-banner {
+  width: 100%;
+  max-width: 32rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  animation: fadeIn 150ms ease;
+}
+
+.quiz-feedback-banner.success {
+  background: rgba(120, 200, 80, 0.15);
+  border: 1px solid rgba(120, 200, 80, 0.4);
+  color: #78C850;
+}
+
+.quiz-feedback-banner.warning {
+  background: rgba(240, 128, 48, 0.15);
+  border: 1px solid rgba(240, 128, 48, 0.4);
+  color: #F08030;
+}
+
+.quiz-feedback-banner.error {
+  background: rgba(238, 21, 21, 0.15);
+  border: 1px solid rgba(238, 21, 21, 0.4);
+  color: #EE1515;
+}
+
+/* ==========================================================================
+   Achievement Badges
+   ========================================================================== */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.badge-card {
+  padding: 1.15rem;
+  border-radius: 4px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 120ms ease, border-color 120ms ease;
+}
+
+.badge-card.earned {
+  border-color: var(--mark);
+  box-shadow: 0 4px 12px rgba(255, 203, 5, 0.1);
+}
+
+.badge-card.earned:hover {
+  transform: translateY(-2px);
+}
+
+.badge-card.locked {
+  opacity: 0.55;
+  filter: grayscale(0.8);
+  border-style: dashed;
+}
+
+@media (max-width: 900px) {
+  .badge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .quiz-score-board {
+    grid-template-columns: 1fr;
+  }
+  .badge-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Interactive Regional Field Map
+   ========================================================================== */
+.field-map-stage {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.field-map-img {
+  width: 100%;
+  height: auto;
+  max-height: 580px;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: contrast(1.05) saturate(1.1);
+  transition: opacity 200ms ease;
+}
+
+.pins-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+  z-index: 10;
+}
+
+.map-pin-core {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--mark);
+  border: 2px solid #071422;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.map-pin:hover .map-pin-core,
+.map-pin.active .map-pin-core {
+  transform: scale(1.15);
+  background: #FFF;
+}
+
+.map-pin-pulse {
+  display: none;
+}
+
+.map-pin-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: rgba(7, 20, 34, 0.85);
+  border: 1px solid var(--line);
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  margin-top: 4px;
+  pointer-events: none;
+  opacity: 0.9;
+  letter-spacing: 0.02em;
+}
+
+/* Recon Popover */
+.recon-popover {
+  position: absolute;
+  z-index: 50;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  border-radius: var(--r-file);
+  padding: 1.15rem 1.25rem;
+  width: 290px;
+  max-width: 90vw;
+  animation: fadeIn 120ms ease;
+}
+
+.recon-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  line-height: 1;
+  border-radius: 2px;
+}
+.recon-close-btn:hover {
+  color: var(--ink);
+  background: var(--sky);
+}
+
+.recon-type-tag {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--mark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.recon-name {
+  font-family: var(--font-ui);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0.2rem 0 0.35rem;
+}
+
+.recon-desc {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin: 0 0 0.85rem;
+}
+
+.recon-pokemons-title {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.5rem;
+}
+
+.recon-pokemons-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.recon-poke-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.4rem 0.25rem;
+  text-decoration: none;
+  transition: transform 100ms ease, border-color 100ms ease;
+}
+.recon-poke-card:hover {
+  border-color: var(--mark);
+}
+
+.recon-poke-card img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+.recon-poke-card span.id {
+  font-family: var(--font-num);
+  font-size: 0.625rem;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.recon-poke-card span.name {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  color: var(--ink);
+  font-weight: 700;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+```
 
 ---
 
@@ -3099,8 +5194,8 @@ a:hover {
 ### 3.1 `js/api.js` (PokeAPI 异步请求与缓存)
 
 - **文件路径**: `js/api.js`  
-- **代码行数**: 223 行  
-- **文件大小**: 7,160 字节  
+- **代码行数**: 441 行  
+- **文件大小**: 14,873 字节  
 
 ```javascript
 /**
@@ -3128,14 +5223,17 @@ a:hover {
   // 内存缓存
   const listMemoryCache = new Map();
   const pokemonMemoryCache = new Map();
+  const speciesMemoryCache = new Map();
+  const abilityMemoryCache = new Map();
+  const evoMemoryCache = new Map();
 
   /**
    * 把名字或编号统一成 PokeAPI 能识别的 key。
    * 有本地名录时一律转成编号：Mr. Mime、Type: Null、Nidoran♀ 这类名字直接请求会 404。
    */
   function resolveKey(idOrName) {
-    const raw = String(idOrName).trim().toLowerCase();
-    if (/^\d+$/.test(raw)) return raw;
+    const raw = String(idOrName).trim().toLowerCase().replace(/^#+/, "");
+    if (/^\d+$/.test(raw)) return String(parseInt(raw, 10));
     // ♀/♂ 先换成 f/m，否则 Nidoran♀ 和 Nidoran♂ 会被当成同一个名字
     const norm = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/♀/g, "f").replace(/♂/g, "m").replace(/[^a-z0-9]/g, "");
     if (window.ALL_SPECIES) {
@@ -3267,43 +5365,252 @@ a:hover {
         }
       } catch (_) {}
 
-      // 3. 网络请求
-      const resp = await fetch(`${API_BASE}/pokemon/${encodeURIComponent(key)}`);
-      if (!resp.ok) {
-        throw new Error(`Pokemon not found: ${idOrName}`);
+      // 3. 网络请求 (带超时与自动重试)
+      let data = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+          const timer = controller ? setTimeout(() => controller.abort(), 5000) : null;
+          const resp = await fetch(`${API_BASE}/pokemon/${encodeURIComponent(key)}`, {
+            signal: controller ? controller.signal : undefined
+          });
+          if (timer) clearTimeout(timer);
+          if (resp.ok) {
+            data = await resp.json();
+            break;
+          }
+        } catch (_) {
+          if (attempt === 0) await new Promise((r) => setTimeout(r, 300));
+        }
       }
-      const data = await resp.json();
 
-      // 显示名优先用本地名录（Mr. Mime），API 的 slug 是 mr-mime
-      const local = window.getSpeciesById ? window.getSpeciesById(data.id) : null;
-      const result = {
-        id: data.id,
-        name: local ? local.name : data.name.charAt(0).toUpperCase() + data.name.slice(1),
-        types: data.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
-        height: data.height / 10, // 分米转米
-        weight: data.weight / 10, // 百克转千克
-        stats: data.stats.map((s) => ({
-          name: s.stat.name,
-          value: s.base_stat
-        })),
-        abilities: data.abilities.map((a) => ({
-          name: a.ability.name,
-          is_hidden: a.is_hidden
-        }))
-      };
+      if (data) {
+        // 显示名优先用本地名录（Mr. Mime），API 的 slug 是 mr-mime
+        const local = window.getSpeciesById ? window.getSpeciesById(data.id) : null;
+        const result = {
+          id: data.id,
+          name: local ? local.name : data.name.charAt(0).toUpperCase() + data.name.slice(1),
+          types: (data.types || []).sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
+          height: (data.height || 0) / 10, // 分米转米
+          weight: (data.weight || 0) / 10, // 百克转千克
+          stats: (data.stats || []).map((s) => ({
+            name: s.stat.name,
+            value: s.base_stat
+          })),
+          abilities: (data.abilities || []).map((a) => ({
+            name: a.ability.name,
+            is_hidden: a.is_hidden
+          }))
+        };
 
-      // 存入内存与本地存储
-      pokemonMemoryCache.set(key, result);
-      pokemonMemoryCache.set(String(result.id), result);
+        // 存入内存与本地存储
+        pokemonMemoryCache.set(key, result);
+        pokemonMemoryCache.set(String(result.id), result);
+        try {
+          localStorage.setItem(`${CACHE_PREFIX}p_${result.id}`, JSON.stringify(result));
+        } catch (_) {}
+
+        return result;
+      }
+
+      // 4. 网络故障/超时时的优雅降级（本地档案兜底，确保页面永不白屏/空壳）
+      const localSpec = /^\d+$/.test(key)
+        ? (window.getSpeciesById ? window.getSpeciesById(Number(key)) : null)
+        : (window.ALL_SPECIES || []).find((s) => s.name.toLowerCase() === key.toLowerCase());
+
+      if (localSpec) {
+        const fallback = {
+          id: localSpec.id,
+          name: localSpec.name,
+          types: localSpec.types || [],
+          height: 1.0,
+          weight: 10.0,
+          stats: [
+            { name: "hp", value: 70 },
+            { name: "attack", value: 70 },
+            { name: "defense", value: 70 },
+            { name: "special-attack", value: 70 },
+            { name: "special-defense", value: 70 },
+            { name: "speed", value: 70 }
+          ],
+          abilities: [],
+          isOffline: true
+        };
+        return fallback;
+      }
+
+      throw new Error(`Pokemon not found: ${idOrName}`);
+    },
+
+    /**
+     * 获取种族元数据：英文种属、100字以内 flavor、进化链 URL
+     */
+    async getSpecies(id) {
+      if (!id) return null;
+      const num = parseInt(id, 10);
+      if (!num) return null;
+      const cacheKey = `${CACHE_PREFIX}sp_${num}`;
+      if (speciesMemoryCache.has(num)) return speciesMemoryCache.get(num);
       try {
-        localStorage.setItem(`${CACHE_PREFIX}p_${result.id}`, JSON.stringify(result));
+        const local = localStorage.getItem(cacheKey);
+        if (local) {
+          const parsed = JSON.parse(local);
+          speciesMemoryCache.set(num, parsed);
+          return parsed;
+        }
       } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/pokemon-species/${num}`);
+        if (!resp.ok) return null;
+        const j = await resp.json();
+        const flavor = (j.flavor_text_entries || []).find((x) => x.language && x.language.name === "en");
+        const genus = (j.genera || []).find((x) => x.language && x.language.name === "en");
+        const row = {
+          id: j.id,
+          genus: genus ? genus.genus : "",
+          flavor: flavor ? flavor.flavor_text.replace(/\s+/g, " ").trim() : "",
+          evoUrl: j.evolution_chain?.url || null
+        };
+        speciesMemoryCache.set(num, row);
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(row));
+        } catch (_) {}
+        return row;
+      } catch (_) {
+        return null;
+      }
+    },
 
-      return result;
+    /**
+     * 获取特性简明说明 (short_effect)
+     */
+    async getAbilityText(name) {
+      if (!name) return "";
+      const clean = String(name).toLowerCase().trim();
+      const cacheKey = `${CACHE_PREFIX}ab_${clean}`;
+      if (abilityMemoryCache.has(clean)) return abilityMemoryCache.get(clean);
+      try {
+        const local = localStorage.getItem(cacheKey);
+        if (local) {
+          abilityMemoryCache.set(clean, local);
+          return local;
+        }
+      } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/ability/${clean}`);
+        if (!resp.ok) return "";
+        const j = await resp.json();
+        const en = (j.effect_entries || []).find((x) => x.language && x.language.name === "en");
+        const text = en ? en.short_effect : (j.flavor_text_entries || []).find((x) => x.language && x.language.name === "en")?.flavor_text || "";
+        const cleaned = text.replace(/\s+/g, " ").trim();
+        abilityMemoryCache.set(clean, cleaned);
+        try {
+          localStorage.setItem(cacheKey, cleaned);
+        } catch (_) {}
+        return cleaned;
+      } catch (_) {
+        return "";
+      }
+    },
+
+    /**
+     * 获取同进化线关联种族的 ID 列表 (最多 8 只，包含分支)
+     */
+    async getEvoIds(evoUrl) {
+      if (!evoUrl) return [];
+      if (evoMemoryCache.has(evoUrl)) return evoMemoryCache.get(evoUrl);
+      try {
+        const resp = await fetch(evoUrl);
+        if (!resp.ok) return [];
+        const j = await resp.json();
+        function chainIds(node, acc = []) {
+          if (!node || !node.species || !node.species.url) return acc;
+          const m = node.species.url.match(/\/(\d+)\/$/);
+          const id = m ? Number(m[1]) : 0;
+          if (id) acc.push(id);
+          (node.evolves_to || []).forEach((n) => chainIds(n, acc));
+          return acc;
+        }
+        const ids = [...new Set(chainIds(j.chain))].slice(0, 8);
+        evoMemoryCache.set(evoUrl, ids);
+        return ids;
+      } catch (_) {
+        return [];
+      }
+    },
+
+    /**
+     * 获取招式详情与战斗属性
+     */
+    async getMove(nameOrId) {
+      if (!nameOrId) return null;
+      const key = String(nameOrId).trim().toLowerCase();
+      const cacheKey = `${CACHE_PREFIX}move.${key}`;
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) return JSON.parse(cached);
+      } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/move/${encodeURIComponent(key)}`);
+        if (!resp.ok) return null;
+        const data = await resp.json();
+        const move = {
+          id: data.id,
+          name: data.name,
+          type: data.type?.name || "",
+          category: data.damage_class?.name || "",
+          power: data.power,
+          accuracy: data.accuracy,
+          pp: data.pp,
+          priority: data.priority,
+          description: data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || ""
+        };
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(move));
+        } catch (_) {}
+        return move;
+      } catch (_) {
+        return null;
+      }
+    },
+
+    /**
+     * 获取特性完整信息及对应宝可梦列表
+     */
+    async getAbility(nameOrId) {
+      if (!nameOrId) return null;
+      const key = String(nameOrId).trim().toLowerCase();
+      const cacheKey = `${CACHE_PREFIX}ability_full.${key}`;
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) return JSON.parse(cached);
+      } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/ability/${encodeURIComponent(key)}`);
+        if (!resp.ok) return null;
+        const data = await resp.json();
+        const res = {
+          id: data.id,
+          name: data.name,
+          description: (data.effect_entries || []).find(x => x.language?.name === "en")?.short_effect ||
+            data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || "",
+          pokemon: (data.pokemon || []).map(x => ({
+            name: x.pokemon.name,
+            url: x.pokemon.url
+          }))
+        };
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(res));
+        } catch (_) {}
+        return res;
+      } catch (_) {
+        return null;
+      }
     }
   };
 
   window.pokeApi = api;
+  window.api = api;
 
   /**
    * 全站立绘兜底：HOME 缺图时换官方立绘，仍失败就隐藏，避免破图图标。
@@ -3320,13 +5627,18 @@ a:hover {
         img.dataset.fallback = "1";
         img.src = api.officialUrl(m[1]);
       } else if (img.src.includes("/sprites/")) {
-        img.style.visibility = "hidden";
+        const num = m ? m[1] : (img.src.match(/\/(\d+)\.png$/) || [])[1];
+        if (num && !img.dataset.localFallback) {
+          img.dataset.localFallback = "1";
+          img.src = `assets/thumbs/${num}.webp`;
+        } else {
+          img.style.visibility = "hidden";
+        }
       }
     },
     true
   );
 })(window);
-
 ```
 
 ---
@@ -3334,8 +5646,8 @@ a:hover {
 ### 3.2 `js/regions-data.js` (10 地区编号区间字典)
 
 - **文件路径**: `js/regions-data.js`  
-- **代码行数**: 1,104 行  
-- **文件大小**: 38,782 字节  
+- **代码行数**: 1,216 行  
+- **文件大小**: 46,745 字节  
 
 ```javascript
 /**
@@ -3345,16 +5657,128 @@ a:hover {
  */
 
 const REGIONS = [
-  { slug: "kanto", name: "Kanto", start: 1, end: 151, count: 151, preview: 25, offset: 0, limit: 151 },
-  { slug: "johto", name: "Johto", start: 152, end: 251, count: 100, preview: 155, offset: 151, limit: 100 },
-  { slug: "hoenn", name: "Hoenn", start: 252, end: 386, count: 135, preview: 255, offset: 251, limit: 135 },
-  { slug: "sinnoh", name: "Sinnoh", start: 387, end: 493, count: 107, preview: 392, offset: 386, limit: 107 },
-  { slug: "unova", name: "Unova", start: 494, end: 649, count: 156, preview: 495, offset: 493, limit: 156 },
-  { slug: "kalos", name: "Kalos", start: 650, end: 721, count: 72, preview: 656, offset: 649, limit: 72 },
-  { slug: "alola", name: "Alola", start: 722, end: 809, count: 88, preview: 722, offset: 721, limit: 88 },
-  { slug: "galar", name: "Galar", start: 810, end: 898, count: 89, preview: 810, offset: 809, limit: 89 },
-  { slug: "hisui", name: "Hisui", start: 899, end: 905, count: 7, preview: 899, offset: 898, limit: 7 },
-  { slug: "paldea", name: "Paldea", start: 906, end: 1025, count: 120, preview: 906, offset: 905, limit: 120 }
+  {
+    slug: "kanto",
+    name: "Kanto",
+    start: 1, end: 151, count: 151, preview: 25, offset: 0, limit: 151,
+    line: "Indigo plateau. First file.",
+    landmarks: [
+      { name: "Pallet Town", x: 26, y: 78, type: "Starting Town", desc: "Oak Pokémon Research Lab & quiet sea shores.", pokemons: [1, 4, 7] },
+      { name: "Viridian Forest", x: 26, y: 52, type: "Temperate Canopy", desc: "Dense woodland labyrinth buzzing with electric & bug specimens.", pokemons: [25, 10, 13] },
+      { name: "Mt. Moon", x: 44, y: 28, type: "Craggy Mountain", desc: "Meteorite craters home to moonlight dancers & subterranean flocks.", pokemons: [35, 41, 74] },
+      { name: "Power Plant", x: 80, y: 35, type: "Industrial Ruins", desc: "Decommissioned high-voltage plant humming with electric fury.", pokemons: [145, 100, 125] },
+      { name: "Seafoam Islands", x: 48, y: 88, type: "Glacial Cavern", desc: "Freezing twin ocean caverns housing glacial avian majesty.", pokemons: [144, 79, 86] },
+      { name: "Cerulean Cave", x: 57, y: 22, type: "Restricted Hollow", desc: "Dangerous secret dungeon concealing the pinnacle psychic anomaly.", pokemons: [150, 64, 112] }
+    ]
+  },
+  {
+    slug: "johto",
+    name: "Johto",
+    start: 152, end: 251, count: 100, preview: 155, offset: 151, limit: 100,
+    line: "Bell tower and Whirl Islands. Connected west.",
+    landmarks: [
+      { name: "New Bark Town", x: 84, y: 72, type: "Windy Meadow", desc: "Where the winds of a new journey blow.", pokemons: [152, 155, 158] },
+      { name: "Ilex Forest", x: 38, y: 76, type: "Ancient Shrine Wood", desc: "Dense overgrown forest guarded by the forest time protector.", pokemons: [251, 163, 167] },
+      { name: "Bell Tower", x: 42, y: 28, type: "Historic Spire", desc: "Sacred rainbow pagoda where the legendary bird descends.", pokemons: [250, 197, 196] },
+      { name: "Whirl Islands", x: 22, y: 74, type: "Ocean Vortex", desc: "Four treacherous islands guarded by whirlpools and ocean guardian.", pokemons: [249, 226, 223] },
+      { name: "Lake of Rage", x: 56, y: 18, type: "Highland Reservoir", desc: "Vast rainfall crater lake famous for the red gyarados sighting.", pokemons: [130, 129, 211] }
+    ]
+  },
+  {
+    slug: "hoenn",
+    name: "Hoenn",
+    start: 252, end: 386, count: 135, preview: 255, offset: 251, limit: 135,
+    line: "Two oceans and an active volcano.",
+    landmarks: [
+      { name: "Littleroot Town", x: 24, y: 76, type: "Southern Haven", desc: "Birch Pokémon ecology institute.", pokemons: [252, 255, 258] },
+      { name: "Mt. Chimney", x: 42, y: 32, type: "Active Volcano", desc: "Fiery volcanic caldera shrouded in ash and magma.", pokemons: [322, 324, 383] },
+      { name: "Sootopolis City", x: 74, y: 54, type: "Sunken Crater Basin", desc: "Dazzling white city nestled inside an extinct volcanic crater.", pokemons: [382, 349, 350] },
+      { name: "Sky Pillar", x: 68, y: 82, type: "Skyward Spire", desc: "Ancient weathered stone tower ascending into the ozone layer.", pokemons: [384, 277, 334] }
+    ]
+  },
+  {
+    slug: "sinnoh",
+    name: "Sinnoh",
+    start: 387, end: 493, count: 107, preview: 392, offset: 386, limit: 107,
+    line: "Mount Coronet divides east and west.",
+    landmarks: [
+      { name: "Twinleaf Town", x: 18, y: 78, type: "Lakeside Village", desc: "Peaceful snow-bordered town beside Lake Verity.", pokemons: [387, 390, 393] },
+      { name: "Mt. Coronet & Spear Pillar", x: 50, y: 44, type: "Continental Backbone", desc: "High-altitude shrine where space and time converge.", pokemons: [483, 484, 487] },
+      { name: "Eterna Forest", x: 30, y: 36, type: "Mossy Old Growth", desc: "Old chateau nestled under mossy ancient trees.", pokemons: [407, 479, 427] },
+      { name: "Snowpoint Temple", x: 52, y: 12, type: "Glacial Sanctum", desc: "Frozen ancestral sanctuary housing the colossal titan.", pokemons: [486, 459, 460] }
+    ]
+  },
+  {
+    slug: "unova",
+    name: "Unova",
+    start: 494, end: 649, count: 156, preview: 495, offset: 493, limit: 156,
+    line: "Castelia bridges and metropolitan coast.",
+    landmarks: [
+      { name: "Nuvema Town", x: 64, y: 84, type: "Riverside Outset", desc: "Coastal rural gateway to the greater metropolis.", pokemons: [495, 498, 501] },
+      { name: "Castelia City", x: 48, y: 68, type: "Mega Port City", desc: "Towering art deco skyscrapers and sea piers.", pokemons: [540, 546, 570] },
+      { name: "Dragonspiral Tower", x: 48, y: 22, type: "Mythic Spire", desc: "The oldest structure in Unova, where ideals and truth awaken.", pokemons: [643, 644, 621] },
+      { name: "Giant Chasm", x: 74, y: 34, type: "Meteor Impact Crater", desc: "Frigid forested basin containing alien absolute zero power.", pokemons: [646, 624, 626] }
+    ]
+  },
+  {
+    slug: "kalos",
+    name: "Kalos",
+    start: 650, end: 721, count: 72, preview: 656, offset: 649, limit: 72,
+    line: "Lumiose radial star. Coastal cliffs and dolmens.",
+    landmarks: [
+      { name: "Vaniville Town", x: 62, y: 84, type: "Provincial Hamlet", desc: "Quaint European starting village.", pokemons: [650, 653, 656] },
+      { name: "Lumiose City & Prism Tower", x: 50, y: 46, type: "Central Radial Metropolis", desc: "The City of Light, center of Kalos culture and Mega Evolution.", pokemons: [678, 667, 716] },
+      { name: "Reflection Cave", x: 28, y: 52, type: "Crystal Mirror Cavern", desc: "Glimmering mirrored walls reflecting hidden psychic paths.", pokemons: [703, 688, 708] },
+      { name: "Geosenge Town Menhirs", x: 26, y: 38, type: "Ancient Monoliths", desc: "Mysterious standing stones concealing the ancient ultimate weapon.", pokemons: [717, 718, 680] }
+    ]
+  },
+  {
+    slug: "alola",
+    name: "Alola",
+    start: 722, end: 809, count: 88, preview: 722, offset: 721, limit: 88,
+    line: "Four natural islands and one artificial reef.",
+    landmarks: [
+      { name: "Melemele Island", x: 22, y: 52, type: "Island of Dawn", desc: "Iki Town and Hau'oli City, protected by Tapu Koko.", pokemons: [722, 725, 728] },
+      { name: "Akala Island & Wela Volcano", x: 44, y: 36, type: "Volcanic Island", desc: "Fiery peaks and lush trial grounds under Tapu Lele.", pokemons: [757, 776, 759] },
+      { name: "Aether Paradise", x: 50, y: 56, type: "Floating Eco-Facility", desc: "Man-made floating haven harboring ultra space wormholes.", pokemons: [772, 773, 791] },
+      { name: "Ula'ula Island & Mt. Lanakila", x: 68, y: 46, type: "Sub-Zero Peak", desc: "Highest frozen summit and site of the Alola League.", pokemons: [792, 739, 782] }
+    ]
+  },
+  {
+    slug: "galar",
+    name: "Galar",
+    start: 810, end: 898, count: 89, preview: 810, offset: 809, limit: 89,
+    line: "Industrial crown and open Wild Area.",
+    landmarks: [
+      { name: "Postwick & Slumbering Weald", x: 46, y: 88, type: "Mist-Veiled Sacred Grove", desc: "Ancient misty forest where the rusted sword and shield sleep.", pokemons: [810, 813, 816] },
+      { name: "The Wild Area", x: 48, y: 64, type: "Vast Natural Expanse", desc: "Unbounded wilderness dotted with glowing Dynamax dens.", pokemons: [833, 840, 856] },
+      { name: "Motostoke", x: 48, y: 50, type: "Steam Industrial Hub", desc: "Red brick railways, steam pipes and the opening gym challenge.", pokemons: [850, 837, 854] },
+      { name: "Wyndon & Rose Tower", x: 48, y: 16, type: "Championship Citadel", desc: "Grand stadium arena holding the Galar Championship cup.", pokemons: [888, 889, 890] }
+    ]
+  },
+  {
+    slug: "hisui",
+    name: "Hisui",
+    start: 899, end: 905, count: 7, preview: 899, offset: 898, limit: 7,
+    line: "Ancient Coronet wilderness before towns.",
+    landmarks: [
+      { name: "Jubilife Village", x: 30, y: 58, type: "Pioneer Settlement", desc: "The Galaxy Expedition Team's frontier outpost.", pokemons: [899, 900, 901] },
+      { name: "Obsidian Fieldlands", x: 40, y: 70, type: "Verdant Wilderness", desc: "Untamed plains roaming with wild Alpha beasts.", pokemons: [902, 903, 904] },
+      { name: "Coronet Highlands", x: 50, y: 42, type: "Sacred Mountain Crags", desc: "Ancient prehistoric peaks piercing the temporal sky rift.", pokemons: [905, 487, 493] }
+    ]
+  },
+  {
+    slug: "paldea",
+    name: "Paldea",
+    start: 906, end: 1025, count: 120, preview: 906, offset: 905, limit: 120,
+    line: "Great Crater of Paldea open plateau.",
+    landmarks: [
+      { name: "Cabo Poco & Mesagoza", x: 48, y: 70, type: "Academy Terraces", desc: "Historic academy and sprawling central terrace city.", pokemons: [906, 909, 912] },
+      { name: "The Great Crater (Area Zero)", x: 50, y: 50, type: "Terastal Spiral Abyss", desc: "Forbidden prehistoric / futuristic crater core glowing with Tera energy.", pokemons: [1007, 1008, 1024] },
+      { name: "Glaseado Mountain", x: 52, y: 22, type: "Sub-Alpine Summit", desc: "Highest icy mountain in the region with steep ski slopes.", pokemons: [974, 975, 996] },
+      { name: "Casseroya Lake", x: 30, y: 30, type: "Massive Freshwater Basin", desc: "Enormous inland lake housing colossal titan fish.", pokemons: [977, 978, 1004] }
+    ]
+  }
 ];
 
 /**
@@ -4442,7 +6866,6 @@ function getSpeciesById(id) {
 window.ALL_SPECIES = ALL_SPECIES;
 window.getRegionPokemon = getRegionPokemon;
 window.getSpeciesById = getSpeciesById;
-
 ```
 
 ---
@@ -4450,8 +6873,8 @@ window.getSpeciesById = getSpeciesById;
 ### 3.3 `js/types-chart.js` (18×18 属性克制常数矩阵)
 
 - **文件路径**: `js/types-chart.js`  
-- **代码行数**: 107 行  
-- **文件大小**: 4,178 字节  
+- **代码行数**: 117 行  
+- **文件大小**: 4,464 字节  
 
 ```javascript
 /**
@@ -4476,7 +6899,7 @@ window.getSpeciesById = getSpeciesById;
   };
 
   const WHITE_TEXT_TYPES = new Set([
-    "fire", "water", "fighting", "poison", "psychic", "ghost", "dragon", "dark"
+    "fighting", "poison", "ghost", "dragon", "dark"
   ]);
 
   /* 攻击方 -> 防御方 -> 倍率 (缺省值为 1) */
@@ -4546,10 +6969,20 @@ window.getSpeciesById = getSpeciesById;
     return "";
   }
 
+  /**
+   * 属性胶囊的内联样式（背景色 + 对比文字色），Dex 与详情页共用
+   */
+  function getTypeStyle(t) {
+    const bg = TYPE_COLORS[t] || "#3A6A88";
+    const white = WHITE_TEXT_TYPES.has(t);
+    return `background:${bg}; color:${white ? "#ffffff" : "#071422"};`;
+  }
+
   const typesChart = {
     TYPES,
     TYPE_COLORS,
     WHITE_TEXT_TYPES,
+    getTypeStyle,
     ATTACK_MULTIPLIERS,
     getEffectiveness,
     getDefensiveMultiplier,
@@ -4561,7 +6994,6 @@ window.getSpeciesById = getSpeciesById;
   window.TYPES = TYPES;
   window.TYPE_COLORS = TYPE_COLORS;
 })(typeof window !== "undefined" ? window : global);
-
 ```
 
 ---
@@ -4710,7 +7142,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
 ```
 
 ---
@@ -4718,8 +7149,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.5 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)
 
 - **文件路径**: `js/pokedex.js`  
-- **代码行数**: 486 行  
-- **文件大小**: 18,217 字节  
+- **代码行数**: 551 行  
+- **文件大小**: 22,616 字节  
 
 ```javascript
 /**
@@ -4734,11 +7165,7 @@ const KANTO_PRESET = (typeof window !== "undefined" && window.getRegionPokemon ?
 
 // 属性色票与字色统一来自 types-chart.js（这里不再维护第二份，之前漏了 dark）
 const tc = window.TYPES_CHART;
-function typeStyle(t) {
-  const bg = (tc && tc.TYPE_COLORS[t]) || "#3A6A88";
-  const white = tc ? tc.WHITE_TEXT_TYPES.has(t) : true;
-  return `background:${bg}; color:${white ? "#ffffff" : "#071422"};`;
-}
+const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
 
 // URL 查询参数
 const params = new URLSearchParams(location.search);
@@ -4839,6 +7266,15 @@ function addBelt(id) {
 
 const pad3 = (n) => String(n).padStart(3, "0");
 const artOf = (id) => window.pokeApi.artUrl(id);
+// 列表/网格只显示 ~96px：优先用本地 192px 缩略图（scripts/make-thumbs.mjs 生成），缺失时回退到远程大图
+const thumbOf = (id) => `assets/thumbs/${id}.webp`;
+// 注意：api.js 的全局兜底已占用 data-fallback，这里用 data-full；且只处理“缩略图”失败，别截断它的兜底链
+document.addEventListener("error", (e) => {
+  const img = e.target;
+  if (img.tagName !== "IMG" || !img.dataset.full) return;
+  if (!(img.getAttribute("src") || "").startsWith("assets/thumbs/")) return;
+  img.src = img.dataset.full;
+}, true);
 
 // 网格里的“看过 / 在腰带上”标记就地更新，不重画 1025 张卡
 function syncGridMarks() {
@@ -4849,8 +7285,21 @@ function syncGridMarks() {
   gridEl.querySelectorAll(".dex-card").forEach(card => {
     const id = Number(card.dataset.id);
     const on = onBelt.has(id);
-    card.classList.toggle("seen", saw.has(id));
+    const hasSeen = saw.has(id);
+    card.classList.toggle("seen", hasSeen);
     card.classList.toggle("on-belt", on);
+
+    // 角落点：已看过点 (navy)、腰带点 (ball red)
+    let dots = card.querySelector(".card-dots");
+    if (!dots) {
+      card.insertAdjacentHTML("afterbegin", '<div class="card-dots"><i class="dot seen" title="seen"></i><i class="dot belt" title="belt"></i></div>');
+      dots = card.querySelector(".card-dots");
+    }
+    const dotSeen = dots.querySelector(".dot.seen");
+    const dotBelt = dots.querySelector(".dot.belt");
+    if (dotSeen) dotSeen.style.display = hasSeen ? "inline-block" : "none";
+    if (dotBelt) dotBelt.style.display = on ? "inline-block" : "none";
+
     const badge = card.querySelector(".belt-badge");
     if (on && !badge) card.insertAdjacentHTML("afterbegin", '<span class="belt-badge" title="On the belt"></span>');
     if (!on && badge) badge.remove();
@@ -4869,14 +7318,19 @@ function renderFilm(p) {
   // 列表没变就只切换当前格，不重建 1025 个按钮
   if (filmRev !== state.listRev) {
     filmEl.innerHTML = state.list.map(m =>
-      `<button type="button" data-id="${m.id}" title="${m.name} (#${m.id})" aria-label="${m.name} #${m.id}"><img src="${artOf(m.id)}" alt="" loading="lazy" /><span class="id">#${m.id}</span></button>`
+      `<button type="button" tabindex="-1" data-id="${m.id}" title="${m.name} (#${m.id})" aria-label="${m.name} #${m.id}"><img src="${thumbOf(m.id)}" data-full="${artOf(m.id)}" alt="" loading="lazy" /><span class="id">#${m.id}</span></button>`
     ).join("");
     filmRev = state.listRev;
   }
-  filmEl.querySelector("[data-on]")?.removeAttribute("data-on");
+  const prevCell = filmEl.querySelector("[data-on]");
+  prevCell?.removeAttribute("data-on");
+  prevCell?.removeAttribute("aria-current");
+  prevCell?.setAttribute("tabindex", "-1");
+  const cell = p ? filmEl.querySelector(`[data-id="${p.id}"]`) : filmEl.firstElementChild;
+  cell?.setAttribute("tabindex", "0"); // 1025 个按钮只留一个 Tab 停靠点，其余靠方向键
   if (p) {
-    const cell = filmEl.querySelector(`[data-id="${p.id}"]`);
     cell?.setAttribute("data-on", "");
+    cell?.setAttribute("aria-current", "true");
     cell?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
   }
 }
@@ -4886,15 +7340,23 @@ function renderGrid(gridViewEl) {
     if (!state.list.length) {
       gridViewEl.innerHTML = `<p class="empty" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">No Pokémon found in this filter.</p>`;
     } else {
+      const onBelt = new Set(belt());
+      const saw = new Set(seen());
       gridViewEl.innerHTML = state.list.map(m => {
         const typesHtml = m.types.map(t => `<span class="dex-card-type" style="${typeStyle(t)}">${t}</span>`).join("");
+        const hasSeen = saw.has(m.id);
+        const on = onBelt.has(m.id);
         return `
-          <article class="dex-card" data-id="${m.id}" tabindex="0" role="link" title="Open #${m.id} ${m.name}">
+          <article class="dex-card" data-id="${m.id}">
+            <div class="card-dots">
+              <i class="dot seen" title="seen" style="${hasSeen ? '' : 'display:none;'}"></i>
+              <i class="dot belt" title="belt" style="${on ? '' : 'display:none;'}"></i>
+            </div>
             <span class="dex-card-id">#${pad3(m.id)}</span>
             <div class="dex-card-thumb">
-              <img src="${artOf(m.id)}" alt="${m.name}" loading="lazy" width="96" height="96" />
+              <img src="${thumbOf(m.id)}" data-full="${artOf(m.id)}" alt="" loading="lazy" width="96" height="96" />
             </div>
-            <p class="dex-card-name">${m.name}</p>
+            <p class="dex-card-name"><a class="dex-card-link" href="pokemon.html?id=${m.id}">${m.name}</a></p>
             <div class="dex-card-types">${typesHtml}</div>
             <button class="card-belt-btn" type="button" data-belt-id="${m.id}">+ Belt</button>
           </article>`;
@@ -4956,9 +7418,24 @@ function render() {
     }).join("");
 
     // 1.2 中名录 (Ledger)
-    document.getElementById("ledger").innerHTML = rows.length
-      ? rows.map(m => `<li class="${m.id === p?.id ? 'is-on' : ''} ${saw.includes(m.id) ? 'seen' : ''}" data-id="${m.id}" tabindex="0" role="button"><span class="id">#${pad3(m.id)}</span>${m.name}</li>`).join("")
-      : `<li class="empty">No file in this spine.</li>`;
+    const ledgerEl = document.getElementById("ledger");
+    const ledgerHadFocus = ledgerEl.contains(document.activeElement); // 重绘会销毁焦点元素，先记下来
+    const tabStopId = rows.some(m => m.id === p?.id) ? p.id : rows[0]?.id; // 只有一个 Tab 停靠点（roving tabindex）
+    ledgerEl.innerHTML = rows.length
+      ? rows.map(m => {
+          const typeNames = (m.types || []).join(" · ");
+          return `<li class="${m.id === p?.id ? 'is-on' : ''} ${saw.includes(m.id) ? 'seen' : ''}" data-id="${m.id}" role="option" aria-selected="${m.id === p?.id}" aria-label="#${pad3(m.id)} ${m.name}${typeNames ? ", " + typeNames : ""}" tabindex="${m.id === tabStopId ? 0 : -1}"><span class="id">#${pad3(m.id)}</span><span class="ledger-name">${m.name}</span>${typeNames ? `<span class="ledger-types">${typeNames}</span>` : ""}</li>`;
+        }).join("")
+      : `<li class="empty" role="option" aria-disabled="true">No file in this spine.</li>`;
+    if (ledgerHadFocus) ledgerEl.querySelector('li[tabindex="0"]')?.focus();
+    // 只滚名录自己，避免方向键把整页拽下去
+    const onRow = ledgerEl.querySelector("li.is-on");
+    if (onRow) {
+      const pane = ledgerEl.getBoundingClientRect();
+      const row = onRow.getBoundingClientRect();
+      if (row.top < pane.top) ledgerEl.scrollTop -= pane.top - row.top;
+      else if (row.bottom > pane.bottom) ledgerEl.scrollTop += row.bottom - pane.bottom;
+    }
 
     // 1.3 右台座 (Stage)
     const stageEl = document.getElementById("stage");
@@ -4975,10 +7452,32 @@ function render() {
         <p><span class="id">#${pad3(p.id)}</span></p>
         <p class="name">${p.name}</p>
         <p id="stageTypes">${p.types.map(t => `<span class="type" style="${typeStyle(t)}">${t}</span>`).join("")}</p>
+        <div class="stage-meta" id="stageMeta"><p class="soft" style="font-size:0.8125rem;">#${pad3(p.id)}</p></div>
         <div class="actions">
-          ${full && !has ? `<span class="empty">Belt full (6/6)</span>` : `<button class="btn-primary" id="add" ${has ? 'disabled' : ''}>${has ? 'On the belt' : 'Add to belt'}</button>`}
-          <a class="btn-paper" href="pokemon.html?id=${p.id}">Open #${pad3(p.id)}</a>
+          ${full && !has ? `<span class="empty">Belt full (6/6)</span>` : `<button class="btn btn-primary" id="add" ${has ? 'disabled' : ''}>${has ? 'On the belt' : 'Add to belt'}</button>`}
+          <a class="btn btn-paper" href="pokemon.html?id=${p.id}">Open #${pad3(p.id)}</a>
         </div>`;
+
+      // 异步加载当前只的三行死数据：种属、身高体重、本区编号
+      (async () => {
+        const curId = p.id;
+        try {
+          const [mon, spec] = await Promise.all([
+            window.pokeApi ? window.pokeApi.getPokemon(curId).catch(() => null) : null,
+            window.pokeApi ? window.pokeApi.getSpecies(curId).catch(() => null) : null
+          ]);
+          const metaBox = document.getElementById("stageMeta");
+          if (!metaBox || current()?.id !== curId) return;
+          const h = mon?.height != null ? `${Number(mon.height).toFixed(1)} m` : "";
+          const w = mon?.weight != null ? `${Number(mon.weight).toFixed(1)} kg` : "";
+          const hw = [h, w].filter(Boolean).join(" · ");
+          metaBox.innerHTML = `
+            ${spec?.genus ? `<p class="stage-genus" style="font-size:0.875rem; margin:0.15rem 0;">${spec.genus}</p>` : ""}
+            ${hw ? `<p class="soft" style="font-size:0.8125rem; font-family:var(--font-num); color:var(--ink-soft); margin:0.15rem 0;">${hw}</p>` : ""}
+            <p class="soft" style="font-size:0.8125rem; font-family:var(--font-num); color:var(--ink-soft); margin:0.15rem 0;">${state.region.name} #${pad3(curId)}</p>
+          `;
+        } catch (_) {}
+      })();
 
       document.getElementById("add")?.addEventListener("click", () => addBelt(p.id));
       document.getElementById("stageImgBox")?.addEventListener("click", () => {
@@ -5108,12 +7607,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // 卡片里是真链接：这里只记“看过”，跳转交给浏览器（Ctrl/中键/右键“新标签页打开”都可用）
     const card = e.target.closest(".dex-card[data-id]");
-    if (card) {
-      const id = Number(card.dataset.id);
-      markSeen(id);
-      location.href = `pokemon.html?id=${id}`;
-    }
+    if (card) markSeen(Number(card.dataset.id));
   });
 
   // 7. 搜索输入
@@ -5158,7 +7654,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ["ledger", "dex-grid-view"].forEach(id => {
     document.getElementById(id)?.addEventListener("keydown", e => {
       if (e.key !== "Enter" && e.key !== " ") return;
-      if (e.target.closest("button")) return; // 卡片里的 + Belt 按钮自己处理
+      if (e.target.closest("button, a")) return; // 卡片里的 + Belt 按钮和链接自己处理
       const row = e.target.closest("[data-id]");
       if (!row) return;
       e.preventDefault();
@@ -5208,7 +7704,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 启动执行
   initDex();
 });
-
 ```
 
 ---
@@ -5216,8 +7711,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.6 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)
 
 - **文件路径**: `js/pokemon.js`  
-- **代码行数**: 235 行  
-- **文件大小**: 9,538 字节  
+- **代码行数**: 300 行  
+- **文件大小**: 13,019 字节  
 
 ```javascript
 /**
@@ -5239,11 +7734,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // 属性色与字色统一来自 types-chart.js
-  function typeStyle(t) {
-    const bg = (tc && tc.TYPE_COLORS[t]) || "#3A6A88";
-    const white = tc ? tc.WHITE_TEXT_TYPES.has(t) : true;
-    return `background:${bg}; color:${white ? "#ffffff" : "#071422"};`;
-  }
+  const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
 
   // 页面里所有由 URL 或 API 带来的文本先转义再放进 innerHTML
   function esc(text) {
@@ -5298,8 +7789,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (btn) btn.textContent = on ? "Show default" : "Show shiny";
   }
 
-  function render(mon) {
+  async function render(mon) {
     const region = getRegion(mon.id);
+    const spec = await window.pokeApi.getSpecies(mon.id).catch(() => null);
+    const abilityTexts = await Promise.all((mon.abilities || []).map(a => window.pokeApi.getAbilityText(a.name)));
+    const evoIds = spec?.evoUrl ? await window.pokeApi.getEvoIds(spec.evoUrl).catch(() => []) : [];
 
     const statFields = [
       { key: "hp", label: "HP" },
@@ -5313,73 +7807,122 @@ document.addEventListener("DOMContentLoaded", async () => {
     root.innerHTML = `
       <div class="detail">
         <div style="display:flex; flex-direction:column; align-items:center;">
-          <button class="stage-ball ${reduce ? "is-open" : ""}" id="well" type="button" aria-label="Toggle Pokeball / Play Cry" title="Tap to toggle Pokéball or hear official cry">
-            <div class="lid-t"></div>
-            <div class="lid-band"></div>
-            <div class="lid-b"></div>
-            <div class="lid-btn"></div>
+          <button class="detail-art-stage" id="well" type="button" aria-label="Play Cry" title="Tap to play official cry">
             <img id="art" src="${defaultArt(mon.id)}" alt="${esc(mon.name)} 3D Model" />
           </button>
           <p id="art-caption" style="color:var(--ink-soft); font-size:0.75rem; font-family:var(--font-num); margin-top:0.75rem;">Default Form (HOME 3D)</p>
         </div>
 
         <div class="fields">
-          <p><span class="id-badge">#${String(mon.id).padStart(3, "0")}</span></p>
-          <h1 style="font-family:var(--font-ui); font-size:1.85rem; font-weight:700; margin:0 0 0.4rem; letter-spacing:-0.02em; color:var(--ink);">${esc(mon.name)}</h1>
-          <p>
-            ${mon.types.map(t =>
-              `<a class="chip" style="${typeStyle(t)} margin-right:0.4rem;" href="pokedex.html?type=${t}" title="Filter Dex by ${t}">${t}</a>`
-            ).join("")}
-          </p>
-          <p style="font-family:var(--font-num); font-weight:700; font-size:0.9rem; color:var(--ink-soft);">
-            ${Number(mon.height).toFixed(1)} m · ${Number(mon.weight).toFixed(1)} kg
-          </p>
-          <p style="font-family:var(--font-ui); font-size:0.9375rem; color:var(--ink);">
-            <strong>Abilities:</strong> ${mon.abilities.map(a => `<span style="text-transform:capitalize;">${esc(a.name.replace(/-/g, " "))}</span>${a.is_hidden ? " (hidden)" : ""}`).join(" · ") || "None"}
-          </p>
+          ${mon.isOffline ? `
+            <div style="margin-bottom:0.75rem; padding:0.5rem 0.75rem; background:rgba(238,21,21,0.08); border:1px solid rgba(238,21,21,0.25); border-radius:4px; font-size:0.75rem; color:var(--paper); display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-num); font-weight:700; letter-spacing:0.04em;">[OFFLINE ARCHIVE] Live PokeAPI sync failed</span>
+              <button class="btn btn-sm btn-paper" id="retry-sync" type="button">Retry sync</button>
+            </div>
+          ` : ""}
 
-          <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--line);">
-            ${statFields.map(s => {
-              const statObj = mon.stats.find(st => st.name === s.key);
-              const v = statObj ? statObj.value : 0;
-              const pct = Math.min(100, Math.round((v / 255) * 100));
-              return `
-                <div class="stat">
-                  <span>${s.label}</span>
-                  <div class="bar"><i style="width:${pct}%; background:${barColor(v)}"></i></div>
-                  <span>${v}</span>
-                </div>`;
-            }).join("")}
+          <div class="fields-top">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.4rem;">
+              <div>
+                <span class="id-badge">#${String(mon.id).padStart(3, "0")}</span>
+                <h1 style="font-family:var(--font-ui); font-size:1.85rem; font-weight:700; margin:0.25rem 0 0.1rem; letter-spacing:-0.02em; color:var(--ink);">${esc(mon.name)}</h1>
+                ${spec?.genus ? `<span class="soft" style="font-size:0.875rem; color:var(--ink-soft);">${esc(spec.genus)}</span>` : ""}
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
+                <div>
+                  ${mon.types.map(t =>
+                    `<a class="chip" style="${typeStyle(t)} margin-left:0.4rem;" href="pokedex.html?type=${t}" title="Filter Dex by ${t}">${t}</a>`
+                  ).join("")}
+                </div>
+                <span style="font-family:var(--font-num); font-weight:700; font-size:0.875rem; color:var(--ink-soft);">
+                  ${Number(mon.height).toFixed(1)} m · ${Number(mon.weight).toFixed(1)} kg
+                </span>
+              </div>
+            </div>
+            ${spec?.flavor ? `<p class="flavor" style="margin:0; padding:0.4rem 0 0; border:0;">${esc(spec.flavor)}</p>` : ""}
           </div>
 
-          <p style="color:var(--ink-soft); font-family:var(--font-num); font-size:0.8125rem;">
-            ${region.name} #${region.start}–${region.end}
-          </p>
+          <div class="fields-grid">
+            <div class="fields-col">
+              <div style="margin-bottom: 0.85rem;">
+                <p class="field-title">Abilities</p>
+                <ul class="abilities-list">
+                  ${mon.abilities.map((a, i) =>
+                    `<li><b>${esc(a.name.replace(/-/g, " "))}</b>${a.is_hidden ? ' <span class="hidden-tag">(hidden)</span>' : ""} — ${esc(abilityTexts[i] || "No description")}</li>`
+                  ).join("")}
+                </ul>
+              </div>
 
-          <div class="detail-actions">
-            <span id="belt-ctl">${beltControl(mon)}</span>
-            <button class="btn btn-mark" id="shiny" type="button">Show shiny</button>
-            <a class="btn btn-paper" href="lineup.html?a=${mon.id}">Compare in lineup</a>
-            <button class="btn btn-paper" id="copy" type="button">Copy link</button>
-            <a class="btn btn-paper" href="pokedex.html?region=${region.slug}">Close file</a>
+              ${evoIds.length > 1 ? `
+                <div>
+                  <p class="field-title">Evolution Line</p>
+                  <div class="evo-row">
+                    ${evoIds.map(eid => `
+                      <a class="evo-link ${eid === mon.id ? 'current' : ''}" href="pokemon.html?id=${eid}" title="#${eid}">
+                        <img src="${defaultArt(eid)}" alt="#${eid}" width="48" height="48" loading="lazy">
+                        <span>#${String(eid).padStart(3, "0")}</span>
+                      </a>
+                    `).join("")}
+                  </div>
+                </div>
+              ` : ""}
+            </div>
+
+            <div class="fields-col">
+              <p class="field-title">Base Stats</p>
+              <div class="stats-list">
+                ${statFields.map(s => {
+                  const statObj = mon.stats.find(st => st.name === s.key);
+                  const v = statObj ? statObj.value : 0;
+                  const pct = Math.min(100, Math.round((v / 255) * 100));
+                  return `
+                    <div class="stat">
+                      <span>${s.label}</span>
+                      <div class="bar"><i style="width:${pct}%; background:${barColor(v)}"></i></div>
+                      <span>${v}</span>
+                    </div>`;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+
+          <div class="fields-bottom">
+            <p style="color:var(--ink-soft); font-family:var(--font-num); font-size:0.8125rem; margin:0 0 0.4rem 0; padding:0; border:0;">
+              ${region.name} #${region.start}–${region.end}
+            </p>
+
+            <div class="detail-actions">
+              <span id="belt-ctl">${beltControl(mon)}</span>
+              <button class="btn btn-paper" id="favorite" type="button" aria-pressed="${store.isFavorite(mon.id)}">${store.isFavorite(mon.id) ? "★ Favorited" : "☆ Favorite"}</button>
+              <button class="btn btn-paper" id="cry" type="button">Play cry</button>
+              <button class="btn btn-paper" id="shiny" type="button">Show shiny</button>
+              <a class="btn btn-paper" href="battle-lab.html?left=${mon.id}">Battle Lab</a>
+              <a class="btn btn-paper" href="lineup.html?a=${mon.id}">Compare in lineup</a>
+              <button class="btn btn-paper" id="copy" type="button">Copy link</button>
+              <a class="btn btn-paper" href="pokedex.html?region=${region.slug}">Close file</a>
+            </div>
           </div>
         </div>
       </div>
     `;
 
     const well = document.getElementById("well");
-    if (!reduce && well) {
-      setTimeout(() => { well.classList.add("is-open"); }, 60);
-    } else if (well) {
-      well.classList.add("is-open");
-    }
-
     well?.addEventListener("click", () => {
-      well.classList.toggle("is-open");
-      window.pokeApi.playCry(mon.id); // 用户主动点击，不受声音开关限制
+      window.pokeApi.playCry(mon.id);
     });
 
     bindBeltControl(mon);
+
+    const favBtn = document.getElementById("favorite");
+    favBtn?.addEventListener("click", () => {
+      const active = store.toggleFavorite(mon.id);
+      favBtn.textContent = active ? "★ Favorited" : "☆ Favorite";
+      favBtn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    document.getElementById("cry")?.addEventListener("click", () => {
+      window.pokeApi.playCry(mon.id);
+    });
 
     const shinyBtn = document.getElementById("shiny");
     shinyBtn?.addEventListener("click", () => setShiny(mon, !isShiny));
@@ -5402,10 +7945,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       } catch (_) {}
     });
+
+    document.getElementById("retry-sync")?.addEventListener("click", () => {
+      location.reload();
+    });
+
+    // 如果是离线名录降级模式，后台静默重试 1 次拉取实时数据，拉到后无缝更新
+    if (mon.isOffline) {
+      setTimeout(async () => {
+        try {
+          const fresh = await window.pokeApi.getPokemon(mon.id);
+          if (fresh && !fresh.isOffline) {
+            await render(fresh);
+          }
+        } catch (_) {}
+      }, 2500);
+    }
   }
 
   function showMessage(html) {
-    root.innerHTML = `<p class="empty" style="text-align:center; padding:4rem;">${html}</p>`;
+    root.innerHTML = `<h1 class="sr-only">Pokémon file</h1><p class="empty" role="alert" style="text-align:center; padding:4rem;">${html}</p>`;
   }
 
   // 页面主入口
@@ -5433,9 +7992,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   store.markSeen(mon.id);
+  store.setLast(mon.id);
   document.title = `#${String(mon.id).padStart(3, "0")} ${mon.name} — 151 File`;
   history.replaceState(null, "", `pokemon.html?id=${mon.id}`);
-  render(mon);
+  await render(mon);
 
   // 进场叫声：只在声音开关打开时自动播放
   window.pokeApi.playCryAuto(mon.id);
@@ -5455,28 +8015,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
-
 ```
 
 ---
 
-### 3.7 `js/regions.js` (地区列表逻辑)
-
-- **文件路径**: `js/regions.js`  
-- **代码行数**: 0 行  
-- **文件大小**: 0 字节  
-
-```javascript
-
-```
-
----
-
-### 3.8 `js/types.js` (属性色票与矩阵交互)
+### 3.7 `js/types.js` (属性色票与矩阵交互)
 
 - **文件路径**: `js/types.js`  
-- **代码行数**: 60 行  
-- **文件大小**: 2,274 字节  
+- **代码行数**: 109 行  
+- **文件大小**: 4,925 字节  
 
 ```javascript
 /**
@@ -5502,7 +8049,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. 渲染 18×18 攻击/防御克制表
   if (chartEl) {
-    let html = `<thead><tr><th></th>${tc.TYPES.map((t, j) => `<th data-c="${j}" title="Defending: ${t}">${t.slice(0, 3)}</th>`).join("")}</tr></thead><tbody>`;
+    let html = `<thead><tr><th><span class="sr-only">Attacking type (rows) against defending type (columns)</span></th>${tc.TYPES.map((t, j) => `<th data-c="${j}" title="Defending: ${t}">${t.slice(0, 3)}</th>`).join("")}</tr></thead><tbody>`;
 
     tc.TYPES.forEach((atk, i) => {
       html += `<tr data-r="${i}"><th data-r="${i}" title="Attacking: ${atk}">${atk.slice(0, 3)}</th>`;
@@ -5537,18 +8084,66 @@ document.addEventListener("DOMContentLoaded", () => {
     chartEl.addEventListener("mouseleave", () => {
       chartEl.querySelectorAll(".hi").forEach(n => n.classList.remove("hi"));
     });
+
+    // 4. 点击行/列头触发 Belt vs Type 推演
+    chartEl.addEventListener("click", e => {
+      const th = e.target.closest("th[data-r], th[data-c]");
+      if (th) {
+        const r = th.dataset.r;
+        const c = th.dataset.c;
+        const t = r !== undefined ? tc.TYPES[Number(r)] : tc.TYPES[Number(c)];
+        if (t) beltVsType(t);
+      }
+    });
+  }
+
+  // 5. 点击属性色票触发 Belt vs Type 推演
+  if (wallEl) {
+    wallEl.addEventListener("click", e => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      e.preventDefault();
+      const t = chip.textContent.trim().toLowerCase();
+      beltVsType(t);
+    });
+  }
+
+  // 计算本站腰带对目标属性的克制与弱点 (Belt vs Type)
+  async function beltVsType(atk) {
+    const box = document.getElementById("belt-vs-box");
+    if (!box) return;
+    const ids = window.store ? window.store.belt() : [];
+    if (!ids.length) {
+      box.innerHTML = `<div class="belt-vs-card"><p class="soft">Belt empty. <a class="link-action" href="pokedex.html">Open the dex</a> to add Pokémon to your belt.</p></div>`;
+      return;
+    }
+    box.innerHTML = `<div class="belt-vs-card"><p class="soft">Checking belt vs ${atk}…</p></div>`;
+    const mons = await Promise.all(ids.map(id => window.pokeApi ? window.pokeApi.getPokemon(id).catch(() => null) : null));
+    const validMons = mons.filter(Boolean);
+    const beats = validMons.filter(m => m.types.some(t => tc.getEffectiveness(t, atk) === 2));
+    const fears = validMons.filter(m => tc.getDefensiveMultiplier(atk, m.types) >= 2);
+    box.innerHTML = `
+      <div class="belt-vs-card">
+        <h3 style="margin:0 0 0.5rem; font-size:1rem; font-family:var(--font-ui); color:var(--ink);">
+          Belt vs <span style="text-transform:capitalize;">${atk}</span>
+          <a class="chip" style="${tc.getTypeStyle ? tc.getTypeStyle(atk) : ''} font-size:0.75rem; margin-left:0.5rem; text-decoration:none;" href="pokedex.html?type=${atk}">Dex: ${atk}</a>
+        </h3>
+        <p style="margin:0.25rem 0; font-size:0.875rem;">Hits ${atk} for 2×: ${beats.map(m => `<a href="pokemon.html?id=${m.id}" style="color:var(--ink); font-weight:700;">${m.name}</a>`).join(", ") || "None"}</p>
+        <p style="margin:0.25rem 0; font-size:0.875rem; color:var(--ink-soft);">Takes 2× or more from ${atk}: ${fears.map(m => `<a href="pokemon.html?id=${m.id}" style="color:var(--ink); font-weight:700;">${m.name}</a>`).join(", ") || "None"}</p>
+      </div>
+    `;
+    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 });
-
 ```
 
 ---
 
-### 3.9 `js/team.js` (腰带存储与拖拽排序)
+### 3.8 `js/team.js` (腰带存储与拖拽排序)
 
 - **文件路径**: `js/team.js`  
-- **代码行数**: 130 行  
-- **文件大小**: 4,113 字节  
+- **代码行数**: 297 行  
+- **文件大小**: 10,585 字节  
 
 ```javascript
 /**
@@ -5584,26 +8179,31 @@ document.addEventListener("DOMContentLoaded", () => {
   let ids = load();
   let fromIndex = null;
 
-  function render() {
+  async function render() {
+    ids = load();
+    const mons = await Promise.all(ids.map(id => window.pokeApi ? window.pokeApi.getPokemon(id).catch(() => null) : null));
     const cells = [];
     for (let i = 0; i < 6; i++) {
       const id = ids[i];
-      if (!id) {
+      const m = mons[i];
+      if (!id || !m) {
         cells.push(`<a class="slot empty" href="pokedex.html" title="Open Pokédex to add a Pokémon">+ Empty slot<br><span style="font-size:0.75rem; font-weight:400; color:var(--ink-soft)">Open Dex</span></a>`);
         continue;
       }
-      const name = getName(id);
+      const speed = (m.stats?.find(s => s.name === "speed") || {}).value || 0;
       cells.push(`
         <article class="slot" draggable="true" data-i="${i}">
-          <a href="pokemon.html?id=${id}" title="Open #${id} ${name}">
-            <img src="${art(id)}" alt="${name} 3D Model" loading="lazy" />
+          <a href="pokemon.html?id=${id}" title="Open #${id} ${m.name}">
+            <img src="${art(id)}" alt="${m.name} 3D Model" loading="lazy" />
           </a>
           <span class="id">#${String(id).padStart(3, "0")}</span>
-          <p class="name">${name}</p>
+          <p class="name">${m.name}</p>
+          <p class="types-row" style="font-size:0.75rem; color:var(--ink-soft); margin:0.2rem 0; font-weight:700; text-transform:uppercase;">${(m.types || []).join(" · ")}</p>
+          <p class="speed-row" style="font-size:0.75rem; font-family:var(--font-num); color:var(--ink-soft); margin-bottom:0.4rem;">spe ${speed}</p>
           <div class="slot-tools">
-            <button class="mv" type="button" data-mv="-1" data-i="${i}" aria-label="Move ${name} left" ${i === 0 ? "disabled" : ""}>◀</button>
-            <button class="rm" type="button" data-rm="${i}" title="Remove ${name} from belt">Remove</button>
-            <button class="mv" type="button" data-mv="1" data-i="${i}" aria-label="Move ${name} right" ${i === ids.length - 1 ? "disabled" : ""}>▶</button>
+            <button class="mv" type="button" data-mv="-1" data-i="${i}" aria-label="Move ${m.name} left" ${i === 0 ? "disabled" : ""}>◀</button>
+            <button class="rm" type="button" data-rm="${i}" title="Remove ${m.name} from belt">Remove</button>
+            <button class="mv" type="button" data-mv="1" data-i="${i}" aria-label="Move ${m.name} right" ${i === ids.length - 1 ? "disabled" : ""}>▶</button>
           </div>
         </article>
       `);
@@ -5613,6 +8213,168 @@ document.addEventListener("DOMContentLoaded", () => {
       slotsEl.innerHTML = cells.join("");
       bindDragAndDrop();
     }
+
+    const live = mons.filter(Boolean);
+    const summaryLine = document.getElementById("belt-summary");
+    if (summaryLine) {
+      if (live.length < 6) {
+        summaryLine.hidden = true;
+      } else {
+        const counts = {};
+        live.forEach(m => (m.types || []).forEach(t => counts[t] = (counts[t] || 0) + 1));
+        const dups = Object.entries(counts).filter(([, n]) => n >= 2).map(([t]) => t);
+        const getSpe = (m) => (m.stats?.find(s => s.name === "speed") || {}).value || 0;
+        const fast = live.reduce((a, b) => getSpe(a) >= getSpe(b) ? a : b);
+        const slow = live.reduce((a, b) => getSpe(a) <= getSpe(b) ? a : b);
+        summaryLine.hidden = false;
+        summaryLine.textContent = [
+          dups.length ? `Repeat: ${dups.join(", ")}` : "No repeat type",
+          `Fastest ${fast.name} (${getSpe(fast)})`,
+          `Slowest ${slow.name} (${getSpe(slow)})`
+        ].join(" · ");
+      }
+    }
+
+    const analysisEl = document.getElementById("team-analysis");
+    if (analysisEl) {
+      if (live.length < 6) {
+        analysisEl.hidden = true;
+      } else {
+        analysisEl.hidden = false;
+        renderRadar(live);
+        renderHeatmap(live);
+      }
+    }
+  }
+
+  function renderRadar(live) {
+    const canvas = document.getElementById("radar-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const center = { x: w / 2, y: h / 2 };
+    const maxR = 105;
+    const labels = ["HP", "ATK", "DEF", "SPE", "SPD", "SPA"];
+    const keys = ["hp", "attack", "defense", "speed", "special-defense", "special-attack"];
+    const totalAxes = labels.length;
+
+    // 1. Draw web grid (3 rings)
+    for (let level = 1; level <= 3; level++) {
+      const r = (maxR / 3) * level;
+      ctx.beginPath();
+      for (let i = 0; i < totalAxes; i++) {
+        const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+        const x = center.x + r * Math.cos(angle);
+        const y = center.y + r * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = "rgba(42, 69, 94, 0.6)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // 2. Draw axis lines & labels
+    ctx.font = "600 11px var(--font-num, sans-serif)";
+    ctx.fillStyle = "#A8C2D8";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    for (let i = 0; i < totalAxes; i++) {
+      const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+      const x = center.x + maxR * Math.cos(angle);
+      const y = center.y + maxR * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(center.x, center.y);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = "rgba(42, 69, 94, 0.4)";
+      ctx.stroke();
+
+      const labelX = center.x + (maxR + 20) * Math.cos(angle);
+      const labelY = center.y + (maxR + 15) * Math.sin(angle);
+      ctx.fillText(labels[i], labelX, labelY);
+    }
+
+    // 3. Compute team average stats
+    const avgStats = keys.map(k => {
+      const sum = live.reduce((acc, m) => {
+        const st = (m.stats || []).find(s => s.name === k);
+        return acc + (st ? (st.value ?? st.base_stat ?? 0) : 0);
+      }, 0);
+      return Math.round(sum / live.length);
+    });
+
+    // 4. Draw polygon
+    ctx.beginPath();
+    for (let i = 0; i < totalAxes; i++) {
+      const val = avgStats[i];
+      const ratio = Math.min(1, Math.max(0.1, val / 150));
+      const r = maxR * ratio;
+      const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+      const x = center.x + r * Math.cos(angle);
+      const y = center.y + r * Math.sin(angle);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = "rgba(255, 203, 5, 0.25)";
+    ctx.fill();
+    ctx.strokeStyle = "#FFCB05";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Point dots
+    for (let i = 0; i < totalAxes; i++) {
+      const val = avgStats[i];
+      const ratio = Math.min(1, Math.max(0.1, val / 150));
+      const r = maxR * ratio;
+      const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+      const x = center.x + r * Math.cos(angle);
+      const y = center.y + r * Math.sin(angle);
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = "#FFCB05";
+      ctx.fill();
+    }
+  }
+
+  function renderHeatmap(live) {
+    const container = document.getElementById("defense-heatmap");
+    if (!container || !window.TYPES_CHART) return;
+    const tc = window.TYPES_CHART;
+    const TYPES = tc.TYPES || [
+      "normal", "fire", "water", "electric", "grass", "ice",
+      "fighting", "poison", "ground", "flying", "psychic", "bug",
+      "rock", "ghost", "dragon", "dark", "steel", "fairy"
+    ];
+
+    const html = TYPES.map(atkType => {
+      const mults = live.map(m => tc.getDefensiveMultiplier(atkType, m.types || []));
+      const best = Math.min(...mults);
+
+      let color = "#7EB6D9";
+      let tag = "1.0× Even";
+      if (best === 0) { color = "#78C850"; tag = "0× Immune"; }
+      else if (best <= 0.25) { color = "#78C850"; tag = "0.25× Quad"; }
+      else if (best <= 0.5) { color = "#78C850"; tag = "0.5× Resist"; }
+      else if (best >= 2) { color = "#EE1515"; tag = `${best}× Weak`; }
+
+      const typeStyle = tc.getTypeStyle ? tc.getTypeStyle(atkType) : "background:#2A455E; color:#fff;";
+
+      return `
+        <div style="display:flex; align-items:center; justify-content:space-between; background:var(--sky-deep); border:1px solid var(--line); border-radius:3px; padding:0.35rem 0.5rem; font-family:var(--font-num); font-size:0.75rem;">
+          <span class="chip" style="${typeStyle} font-size:0.6875rem; padding:0.1rem 0.35rem;">${atkType}</span>
+          <span style="color:${color}; font-weight:700;">${tag}</span>
+        </div>
+      `;
+    }).join("");
+
+    container.innerHTML = html;
   }
 
   function bindDragAndDrop() {
@@ -5681,16 +8443,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
-
 ```
 
 ---
 
-### 3.10 `js/lineup.js` (弱点缺口计算与两只对比)
+### 3.9 `js/lineup.js` (弱点缺口计算与两只对比)
 
 - **文件路径**: `js/lineup.js`  
-- **代码行数**: 286 行  
-- **文件大小**: 10,564 字节  
+- **代码行数**: 336 行  
+- **文件大小**: 12,737 字节  
 
 ```javascript
 /**
@@ -5792,7 +8553,7 @@ document.addEventListener("DOMContentLoaded", () => {
         : "Empty side. Search above or tap a Pokémon on the belt.";
       return `
         <input data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" />
-        <p class="lineup-empty" style="text-align:center; padding: 2rem 0;">${msg}</p>
+        <p class="lineup-empty" ${requested ? 'role="alert"' : ""} style="text-align:center; padding: 2rem 0;">${msg}</p>
       `;
     }
 
@@ -5896,7 +8657,48 @@ document.addEventListener("DOMContentLoaded", () => {
     if (leftPane) leftPane.innerHTML = renderPaneHtml("left", leftMon, rightMon, leftId);
     if (rightPane) rightPane.innerHTML = renderPaneHtml("right", rightMon, leftMon, rightId);
 
+    renderVerdict();
     updateUrl();
+  }
+
+  let focusType = null;
+
+  function renderVerdict() {
+    const verdictEl = document.getElementById("lineup-verdict");
+    if (!verdictEl) return;
+    if (!leftMon || !rightMon) {
+      verdictEl.hidden = true;
+      verdictEl.innerHTML = "";
+      return;
+    }
+
+    const aSpe = leftMon.stats?.speed ?? 0;
+    const bSpe = rightMon.stats?.speed ?? 0;
+    const faster = aSpe === bSpe
+      ? "Both have the same speed"
+      : (aSpe > bSpe ? `${leftMon.name} is faster (${aSpe} vs ${bSpe})` : `${rightMon.name} is faster (${bSpe} vs ${aSpe})`);
+
+    let tank = "";
+    if (focusType && tc) {
+      const la = tc.getDefensiveMultiplier(focusType, leftMon.types);
+      const lb = tc.getDefensiveMultiplier(focusType, rightMon.types);
+      tank = la === lb
+        ? `Both take ${la}× from ${focusType}`
+        : (la < lb ? `${leftMon.name} resists ${focusType} better (${la}× vs ${lb}×)` : `${rightMon.name} resists ${focusType} better (${lb}× vs ${la}×)`);
+    } else {
+      tank = "Pick an attack type below to compare resistance";
+    }
+
+    const verdictText = `${faster}. ${tank}.`;
+
+    verdictEl.hidden = false;
+    verdictEl.innerHTML = `
+      <p style="margin:0 0 0.5rem; font-size:1rem; color:var(--ink); font-weight:700;">${verdictText}</p>
+      <div style="display:flex; gap:0.3rem; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:0.75rem; color:var(--ink-soft); font-family:var(--font-num);">Compare vs attack:</span>
+        ${tc ? tc.TYPES.map(t => `<button type="button" class="chip ${t === focusType ? 'is-focus' : ''}" data-focus="${t}" style="${tc.getTypeStyle(t)} font-size:0.7rem; border:${t === focusType ? '2px solid var(--ink)' : 'none'}; cursor:pointer; padding:0.15rem 0.4rem; border-radius:3px;">${t}</button>`).join("") : ""}
+      </div>
+    `;
   }
 
   // 事件监听与委托
@@ -5975,20 +8777,749 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (_) {}
     });
 
+    // 6. 点击对比攻击属性
+    document.getElementById("lineup-verdict")?.addEventListener("click", e => {
+      const btn = e.target.closest("[data-focus]");
+      if (!btn) return;
+      const t = btn.dataset.focus;
+      focusType = (focusType === t) ? null : t;
+      renderVerdict();
+    });
+
     // 初始化渲染
     render();
   });
 })();
-
 ```
 
 ---
 
-### 3.11 `js/store.js` (本地存储与安全缓存管理)
+### 3.10 `js/moves.js` (招式库检索与分页渲染)
+
+- **文件路径**: `js/moves.js`  
+- **代码行数**: 154 行  
+- **文件大小**: 5,933 字节  
+
+```javascript
+document.addEventListener("DOMContentLoaded", async () => {
+  const grid = document.getElementById("move-grid");
+  const search = document.getElementById("move-search");
+  const typeSelect = document.getElementById("move-type");
+  const categorySelect = document.getElementById("move-category");
+  const statusEl = document.getElementById("move-status");
+  const paginationEl = document.getElementById("move-pagination");
+  const tc = window.TYPES_CHART;
+
+  const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
+
+  const TYPES = [
+    "normal", "fire", "water", "grass", "electric", "ice",
+    "fighting", "poison", "ground", "flying", "psychic", "bug",
+    "rock", "ghost", "dragon", "steel", "dark", "fairy"
+  ];
+
+  TYPES.forEach(t => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t.toUpperCase();
+    typeSelect.appendChild(opt);
+  });
+
+  let allMoveEntries = [];
+  let currentPage = 1;
+  const PAGE_SIZE = 36;
+
+  try {
+    const listResp = await fetch("https://pokeapi.co/api/v2/move?limit=950");
+    if (!listResp.ok) throw new Error("Failed to load moves list");
+    const data = await listResp.json();
+    allMoveEntries = data.results || [];
+    statusEl.textContent = `Indexed ${allMoveEntries.length} moves.`;
+
+    const urlQ = new URLSearchParams(location.search).get("q");
+    if (urlQ && search) search.value = urlQ;
+  } catch (err) {
+    statusEl.textContent = "Unable to load moves list. Please check your network.";
+    return;
+  }
+
+  async function render() {
+    statusEl.textContent = "Filtering and loading move details...";
+    const q = search.value.trim().toLowerCase();
+    const selectedType = typeSelect.value;
+    const selectedCat = categorySelect.value;
+
+    let matched = allMoveEntries.filter(m => {
+      if (q && !m.name.includes(q)) return false;
+      return true;
+    });
+
+    const totalMatched = matched.length;
+    const totalPages = Math.ceil(totalMatched / PAGE_SIZE) || 1;
+    if (currentPage > totalPages) currentPage = 1;
+
+    const pageSlice = matched.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+    // Fetch details for the current slice
+    const moveDetails = await Promise.all(
+      pageSlice.map(item => window.pokeApi.getMove(item.name))
+    );
+
+    // Filter by type / category if selected
+    let displayed = moveDetails.filter(m => {
+      if (!m) return false;
+      if (selectedType && m.type !== selectedType) return false;
+      if (selectedCat && m.category !== selectedCat) return false;
+      return true;
+    });
+
+    statusEl.textContent = `Showing ${displayed.length} of ${totalMatched} moves (Page ${currentPage}/${totalPages}).`;
+
+    grid.innerHTML = displayed.map(m => `
+      <article class="dex-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:12rem;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span class="id-badge">#${String(m.id).padStart(3, "0")}</span>
+            <span class="chip" style="${typeStyle(m.type)} font-size:0.75rem;">${m.type}</span>
+          </div>
+
+          <h3 style="font-family:var(--font-ui); font-size:1.1rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.35rem;">
+            ${m.name.replace(/-/g, " ")}
+          </h3>
+
+          <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem; font-size:0.75rem;">
+            <span style="background:var(--sky-deep); color:var(--ink-soft); padding:0.1rem 0.35rem; border-radius:2px; text-transform:capitalize; border:1px solid var(--line);">
+              ${m.category || "status"}
+            </span>
+          </div>
+
+          <p class="soft" style="font-size:0.8125rem; line-height:1.4; color:var(--ink-soft); margin-bottom:0.5rem;">
+            ${m.description ? m.description.replace(/\n/g, " ") : "No description available."}
+          </p>
+        </div>
+
+        <div style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink); padding-top:0.4rem; border-top:1px solid var(--line); display:flex; justify-content:space-between;">
+          <span>PWR: <strong>${m.power ?? "—"}</strong></span>
+          <span>ACC: <strong>${m.accuracy ? m.accuracy + "%" : "—"}</strong></span>
+          <span>PP: <strong>${m.pp ?? "—"}</strong></span>
+        </div>
+      </article>
+    `).join("");
+
+    // Render pagination buttons
+    if (totalPages > 1) {
+      paginationEl.innerHTML = `
+        <div style="display:inline-flex; gap:0.5rem; align-items:center;">
+          <button class="btn btn-paper" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Page ${currentPage} of ${totalPages}</span>
+          <button class="btn btn-paper" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+        </div>
+      `;
+      document.getElementById("prev-page")?.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+      document.getElementById("next-page")?.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    } else {
+      paginationEl.innerHTML = "";
+    }
+  }
+
+  let debounceTimer = null;
+  search.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      currentPage = 1;
+      render();
+    }, 250);
+  });
+
+  typeSelect.addEventListener("change", () => {
+    currentPage = 1;
+    render();
+  });
+
+  categorySelect.addEventListener("change", () => {
+    currentPage = 1;
+    render();
+  });
+
+  render();
+});
+```
+
+---
+
+### 3.11 `js/abilities.js` (特性库检索与宝可梦索引)
+
+- **文件路径**: `js/abilities.js`  
+- **代码行数**: 133 行  
+- **文件大小**: 5,316 字节  
+
+```javascript
+document.addEventListener("DOMContentLoaded", async () => {
+  const grid = document.getElementById("ability-grid");
+  const search = document.getElementById("ability-search");
+  const statusEl = document.getElementById("ability-status");
+  const paginationEl = document.getElementById("ability-pagination");
+
+  let allAbilities = [];
+  let currentPage = 1;
+  const PAGE_SIZE = 24;
+
+  try {
+    const listResp = await fetch("https://pokeapi.co/api/v2/ability?limit=400");
+    if (!listResp.ok) throw new Error("Failed to load abilities");
+    const data = await listResp.json();
+    allAbilities = data.results || [];
+    statusEl.textContent = `Indexed ${allAbilities.length} abilities.`;
+
+    const urlQ = new URLSearchParams(location.search).get("q");
+    if (urlQ && search) search.value = urlQ;
+  } catch (err) {
+    statusEl.textContent = "Unable to load abilities list. Please check your network.";
+    return;
+  }
+
+  function getPokemonIdFromUrl(url) {
+    const m = url.match(/\/pokemon\/(\d+)\//);
+    return m ? m[1] : null;
+  }
+
+  async function render() {
+    statusEl.textContent = "Filtering and loading ability details...";
+    const q = search.value.trim().toLowerCase();
+
+    const matched = allAbilities.filter(a => {
+      if (q && !a.name.includes(q)) return false;
+      return true;
+    });
+
+    const totalMatched = matched.length;
+    const totalPages = Math.ceil(totalMatched / PAGE_SIZE) || 1;
+    if (currentPage > totalPages) currentPage = 1;
+
+    const pageSlice = matched.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+    const details = await Promise.all(
+      pageSlice.map(item => window.pokeApi.getAbility(item.name))
+    );
+
+    statusEl.textContent = `Showing ${details.filter(Boolean).length} of ${totalMatched} abilities (Page ${currentPage}/${totalPages}).`;
+
+    grid.innerHTML = details.filter(Boolean).map(a => {
+      const pokeList = a.pokemon || [];
+      const previewList = pokeList.slice(0, 12);
+      const remaining = pokeList.length - previewList.length;
+
+      return `
+        <article class="dex-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:14rem;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <span class="id-badge">#${String(a.id).padStart(3, "0")}</span>
+              <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.75rem;">${pokeList.length} Pokémon</span>
+            </div>
+
+            <h3 style="font-family:var(--font-ui); font-size:1.15rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.4rem;">
+              ${a.name.replace(/-/g, " ")}
+            </h3>
+
+            <p class="soft" style="font-size:0.8125rem; line-height:1.45; color:var(--ink-soft); margin-bottom:0.75rem;">
+              ${a.description ? a.description.replace(/\n/g, " ") : "No description available."}
+            </p>
+          </div>
+
+          <div>
+            <p style="font-family:var(--font-ui); font-size:0.75rem; font-weight:700; color:var(--ink); margin:0 0 0.35rem; text-transform:uppercase; letter-spacing:0.04em;">
+              Specimens
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
+              ${previewList.map(p => {
+                const pId = getPokemonIdFromUrl(p.url);
+                return `
+                  <a href="pokemon.html?${pId ? 'id=' + pId : 'name=' + p.name}"
+                     class="chip"
+                     style="font-size:0.75rem; text-decoration:none; text-transform:capitalize; padding:0.15rem 0.4rem;"
+                     title="${p.name}">
+                    ${p.name.replace(/-/g, " ")}
+                  </a>
+                `;
+              }).join("")}
+              ${remaining > 0 ? `<span style="font-size:0.75rem; color:var(--ink-soft); align-self:center;">+${remaining} more</span>` : ""}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    if (totalPages > 1) {
+      paginationEl.innerHTML = `
+        <div style="display:inline-flex; gap:0.5rem; align-items:center;">
+          <button class="btn btn-paper" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Page ${currentPage} of ${totalPages}</span>
+          <button class="btn btn-paper" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+        </div>
+      `;
+      document.getElementById("prev-page")?.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+      document.getElementById("next-page")?.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    } else {
+      paginationEl.innerHTML = "";
+    }
+  }
+
+  let debounceTimer = null;
+  search.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      currentPage = 1;
+      render();
+    }, 250);
+  });
+
+  render();
+});
+```
+
+---
+
+### 3.12 `js/collection.js` (图鉴与地区收集度统计)
+
+- **文件路径**: `js/collection.js`  
+- **代码行数**: 172 行  
+- **文件大小**: 5,669 字节  
+
+```javascript
+document.addEventListener("DOMContentLoaded", () => {
+  const seen = window.store?.seen?.() || [];
+  const favorites = window.store?.favoriteIds?.() || [];
+  const belt = window.store?.belt?.() || [];
+
+  const seenCount = seen.length;
+
+  const seenEl = document.getElementById("seen-count");
+  if (seenEl) seenEl.textContent = seenCount;
+
+  const favEl = document.getElementById("favorite-count");
+  if (favEl) favEl.textContent = favorites.length;
+
+  const beltEl = document.getElementById("belt-count");
+  if (beltEl) beltEl.textContent = belt.length;
+
+  const percent = Math.min(100, (seenCount / 1025) * 100).toFixed(1);
+
+  const natProg = document.getElementById("national-progress");
+  if (natProg) natProg.style.width = `${percent}%`;
+
+  const natText = document.getElementById("national-text");
+  if (natText) natText.textContent = `${seenCount} / 1025 Pokémon seen (${percent}%)`;
+
+  const regionRoot = document.getElementById("region-progress");
+  if (!regionRoot || !window.REGIONS) return;
+
+  regionRoot.innerHTML = window.REGIONS.map(region => {
+    const count = seen.filter(id => id >= region.start && id <= region.end).length;
+    const percentage = region.count ? Math.min(100, (count / region.count) * 100).toFixed(1) : 0;
+
+    return `
+      <article class="collection-region">
+        <div class="region-head">
+          <a href="pokedex.html?region=${region.slug}" style="color:var(--ink); font-weight:700; text-decoration:none;">${region.name}</a>
+          <span style="color:var(--mark); font-variant-numeric: tabular-nums;">
+            ${count} / ${region.count} (${percentage}%)
+          </span>
+        </div>
+        <div class="progress">
+          <div style="width:${percentage}%"></div>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  // Achievements Badge System
+  const BADGES = [
+    {
+      id: "first_seen",
+      name: "First Contact",
+      icon: "👁",
+      desc: "Register your first specimen in the seen archive.",
+      test: (c) => c.seen >= 1
+    },
+    {
+      id: "ten_seen",
+      name: "Curious Researcher",
+      icon: "🔬",
+      desc: "Observe and register 10 unique Pokémon specimens.",
+      test: (c) => c.seen >= 10
+    },
+    {
+      id: "fifty_seen",
+      name: "Field Biologist",
+      icon: "📋",
+      desc: "Expand your catalog to 50 observed specimens.",
+      test: (c) => c.seen >= 50
+    },
+    {
+      id: "hundred_seen",
+      name: "Centurion",
+      icon: "💯",
+      desc: "Catalog 100 Pokémon across any regional territories.",
+      test: (c) => c.seen >= 100
+    },
+    {
+      id: "kanto_complete",
+      name: "Kanto Master",
+      icon: "🏆",
+      desc: "Catalog all original 151 Kanto specimens (#001–#151).",
+      test: (c) => c.kantoSeen >= 151
+    },
+    {
+      id: "all_seen",
+      name: "National Archivist",
+      icon: "🌟",
+      desc: "Complete the master national archive of 1,025 specimens.",
+      test: (c) => c.seen >= 1025
+    },
+    {
+      id: "first_fav",
+      name: "First Favorite",
+      icon: "⭐",
+      desc: "Star your very first favorite specimen.",
+      test: (c) => c.favorites >= 1
+    },
+    {
+      id: "ten_favs",
+      name: "Curator",
+      icon: "🎖",
+      desc: "Curate a showcase of 10 or more favorited specimens.",
+      test: (c) => c.favorites >= 10
+    },
+    {
+      id: "belt_full",
+      name: "Full Belt",
+      icon: "🎒",
+      desc: "Equip a full team of 6 battle-ready specimens on your belt.",
+      test: (c) => c.belt >= 6
+    },
+    {
+      id: "all_types_seen",
+      name: "Type Collector",
+      icon: "🌈",
+      desc: "Encounter and register at least 18 diverse specimens.",
+      test: (c) => c.seen >= 18
+    },
+    {
+      id: "quiz_streak_5",
+      name: "Quiz Ace",
+      icon: "🧠",
+      desc: "Achieve a silhouette quiz streak of 5 correct guesses.",
+      test: (c) => c.quizBest >= 5
+    },
+    {
+      id: "quiz_streak_10",
+      name: "Quiz Master",
+      icon: "👑",
+      desc: "Achieve a silhouette quiz streak of 10 correct guesses.",
+      test: (c) => c.quizBest >= 10
+    }
+  ];
+
+  const badgeGrid = document.getElementById("badge-grid");
+  const summaryBadgeEl = document.getElementById("badge-unlocked-summary");
+  if (badgeGrid) {
+    const kantoCount = seen.filter(id => id >= 1 && id <= 151).length;
+    const quizBest = window.store?.quizBest?.() || 0;
+    const ctx = {
+      seen: seenCount,
+      favorites: favorites.length,
+      belt: belt.length,
+      kantoSeen: kantoCount,
+      quizBest: quizBest
+    };
+
+    let unlockedCount = 0;
+    badgeGrid.innerHTML = BADGES.map(b => {
+      const unlocked = b.test(ctx);
+      if (unlocked) unlockedCount++;
+      return `
+        <article class="badge-card ${unlocked ? 'earned' : 'locked'}">
+          <div style="font-size:2rem; line-height:1; margin-bottom:0.5rem;">${unlocked ? b.icon : '🔒'}</div>
+          <h4 style="font-family:var(--font-ui); font-size:1rem; font-weight:700; color:${unlocked ? 'var(--ink)' : 'var(--ink-soft)'}; margin:0 0 0.25rem;">
+            ${unlocked ? b.name : 'Locked Badge'}
+          </h4>
+          <p style="font-size:0.8125rem; color:var(--ink-soft); margin:0; line-height:1.4;">
+            ${b.desc}
+          </p>
+          <div style="margin-top:0.6rem; font-family:var(--font-num); font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.04em; color:${unlocked ? 'var(--mark)' : 'var(--line)'}; font-weight:700;">
+            ${unlocked ? '✓ UNLOCKED' : 'LOCKED'}
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    if (summaryBadgeEl) {
+      summaryBadgeEl.textContent = `${unlockedCount} / ${BADGES.length} UNLOCKED`;
+    }
+  }
+});
+```
+
+---
+
+### 3.13 `js/battle-lab.js` (对战实验室与克制比对)
+
+- **文件路径**: `js/battle-lab.js`  
+- **代码行数**: 218 行  
+- **文件大小**: 10,177 字节  
+
+```javascript
+document.addEventListener("DOMContentLoaded", () => {
+  const tc = window.TYPES_CHART;
+  const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
+
+  const state = {
+    left: null,
+    right: null
+  };
+
+  function stat(mon, name) {
+    if (!mon || !mon.stats) return 0;
+    const found = mon.stats.find(s => s.name === name);
+    return found ? (found.value ?? found.base_stat ?? 0) : 0;
+  }
+
+  function bst(mon) {
+    if (!mon || !mon.stats) return 0;
+    return mon.stats.reduce((acc, s) => acc + (s.value ?? s.base_stat ?? 0), 0);
+  }
+
+  async function loadPokemon(side, value) {
+    if (!value) return;
+    const cardEl = document.getElementById(`battle-${side}-card`);
+    if (cardEl) {
+      cardEl.innerHTML = `<p class="soft" style="font-size:0.875rem; color:var(--ink-soft); padding:1rem 0;">Loading specimen #${value}...</p>`;
+    }
+
+    try {
+      const mon = await window.pokeApi.getPokemon(value);
+      if (!mon) {
+        if (cardEl) cardEl.innerHTML = `<p class="soft" style="color:var(--mark); padding:1rem 0;">Specimen not found: "${value}".</p>`;
+        return;
+      }
+      state[side] = mon;
+      render();
+    } catch (_) {
+      if (cardEl) cardEl.innerHTML = `<p class="soft" style="color:var(--mark); padding:1rem 0;">Error loading specimen.</p>`;
+    }
+  }
+
+  function renderCard(mon) {
+    if (!mon) {
+      return `<p class="soft" style="font-size:0.875rem; color:var(--ink-soft); padding:1rem 0;">Search or load a specimen.</p>`;
+    }
+
+    const hp = stat(mon, "hp");
+    const atk = stat(mon, "attack");
+    const def = stat(mon, "defense");
+    const spa = stat(mon, "special-attack");
+    const spd = stat(mon, "special-defense");
+    const spe = stat(mon, "speed");
+    const total = bst(mon);
+
+    return `
+      <article class="dex-card" style="padding:1rem; margin-top:0.75rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <span class="id-badge">#${String(mon.id).padStart(3, "0")}</span>
+          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.8125rem;">BST ${total}</span>
+        </div>
+
+        <div style="text-align:center; margin-bottom:0.5rem;">
+          <img src="${window.pokeApi.artUrl(mon.id)}" width="140" height="140" alt="${mon.name}" style="object-fit:contain; filter:drop-shadow(0 6px 8px rgba(0,0,0,0.4));">
+          <h2 style="font-family:var(--font-ui); font-size:1.35rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0.4rem 0 0.2rem;">${mon.name}</h2>
+          <div style="display:flex; justify-content:center; gap:0.4rem; margin-bottom:0.75rem;">
+            ${mon.types.map(t => `<span class="chip" style="${typeStyle(t)} font-size:0.75rem;">${t}</span>`).join("")}
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--line); padding-top:0.5rem; font-family:var(--font-num); font-size:0.8125rem; line-height:1.6;">
+          <div style="display:flex; justify-content:space-between;"><span>HP</span><strong>${hp}</strong></div>
+          <div style="display:flex; justify-content:space-between;"><span>Attack</span><strong>${atk}</strong></div>
+          <div style="display:flex; justify-content:space-between;"><span>Defense</span><strong>${def}</strong></div>
+          <div style="display:flex; justify-content:space-between;"><span>Sp. Atk</span><strong>${spa}</strong></div>
+          <div style="display:flex; justify-content:space-between;"><span>Sp. Def</span><strong>${spd}</strong></div>
+          <div style="display:flex; justify-content:space-between; color:var(--mark);"><span>Speed</span><strong>${spe}</strong></div>
+        </div>
+      </article>
+    `;
+  }
+
+  function calculateSTABMatchups(attacker, defender) {
+    if (!attacker || !defender || !tc) return [];
+    return attacker.types.map(atkType => {
+      const mult = tc.getDefensiveMultiplier(atkType, defender.types);
+      return { atkType, mult };
+    });
+  }
+
+  function renderResult() {
+    const root = document.getElementById("battle-result");
+    if (!root) return;
+
+    if (!state.left || !state.right) {
+      root.innerHTML = "";
+      return;
+    }
+
+    const a = state.left;
+    const b = state.right;
+
+    const aSpeed = stat(a, "speed");
+    const bSpeed = stat(b, "speed");
+    const speedWinner = aSpeed > bSpeed ? a.name : bSpeed > aSpeed ? b.name : null;
+
+    const aToB = calculateSTABMatchups(a, b);
+    const bToA = calculateSTABMatchups(b, a);
+
+    const aMaxMult = aToB.length ? Math.max(...aToB.map(x => x.mult)) : 1;
+    const bMaxMult = bToA.length ? Math.max(...bToA.map(x => x.mult)) : 1;
+
+    root.innerHTML = `
+      <div class="file-block" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1.5rem;">
+        <h2 style="font-family:var(--font-ui); font-size:1.4rem; color:var(--ink); margin:0 0 1rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem;">
+          Matchup Diagnostics
+        </h2>
+
+        <!-- 速度比对 -->
+        <div style="margin-bottom:1.5rem;">
+          <h3 style="font-family:var(--font-num); font-size:0.875rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 0.5rem;">
+            Speed Priority
+          </h3>
+          <p style="font-size:1rem; margin:0 0 0.35rem; color:var(--ink);">
+            <strong>${a.name}</strong> (${aSpeed}) vs <strong>${b.name}</strong> (${bSpeed})
+          </p>
+          <p class="soft" style="font-size:0.875rem; color:var(--ink-soft);">
+            ${speedWinner
+              ? `<span style="color:var(--mark); font-weight:700;">${speedWinner.toUpperCase()}</span> holds the initiative with a higher base speed.`
+              : "Both specimens have equal speed (Speed tie)."}
+          </p>
+        </div>
+
+        <!-- 属性打击面推演 -->
+        <div>
+          <h3 style="font-family:var(--font-num); font-size:0.875rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 0.5rem;">
+            STAB Type Advantage
+          </h3>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(18rem, 1fr)); gap:1.25rem;">
+            <!-- A attacking B -->
+            <div style="background:var(--sky-deep); border:1px solid var(--line); padding:1rem; border-radius:4px;">
+              <p style="font-family:var(--font-ui); font-size:0.9375rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.5rem;">
+                ${a.name} → ${b.name}
+              </p>
+              ${aToB.map(m => `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; font-family:var(--font-num); font-size:0.875rem;">
+                  <span class="chip" style="${typeStyle(m.atkType)} font-size:0.75rem;">${m.atkType}</span>
+                  <span style="font-weight:700; color:${m.mult >= 2 ? 'var(--mark)' : m.mult < 1 ? 'var(--ink-soft)' : 'var(--ink)'};">
+                    ${m.mult}×
+                  </span>
+                </div>
+              `).join("")}
+              <p style="font-size:0.8125rem; color:var(--ink-soft); margin-top:0.5rem; border-top:1px solid var(--line); padding-top:0.4rem;">
+                Peak STAB: <strong>${aMaxMult}×</strong> ${aMaxMult >= 2 ? '(Super Effective)' : aMaxMult === 0 ? '(No Effect)' : aMaxMult < 1 ? '(Not Very Effective)' : '(Standard)'}
+              </p>
+            </div>
+
+            <!-- B attacking A -->
+            <div style="background:var(--sky-deep); border:1px solid var(--line); padding:1rem; border-radius:4px;">
+              <p style="font-family:var(--font-ui); font-size:0.9375rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.5rem;">
+                ${b.name} → ${a.name}
+              </p>
+              ${bToA.map(m => `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem; font-family:var(--font-num); font-size:0.875rem;">
+                  <span class="chip" style="${typeStyle(m.atkType)} font-size:0.75rem;">${m.atkType}</span>
+                  <span style="font-weight:700; color:${m.mult >= 2 ? 'var(--mark)' : m.mult < 1 ? 'var(--ink-soft)' : 'var(--ink)'};">
+                    ${m.mult}×
+                  </span>
+                </div>
+              `).join("")}
+              <p style="font-size:0.8125rem; color:var(--ink-soft); margin-top:0.5rem; border-top:1px solid var(--line); padding-top:0.4rem;">
+                Peak STAB: <strong>${bMaxMult}×</strong> ${bMaxMult >= 2 ? '(Super Effective)' : bMaxMult === 0 ? '(No Effect)' : bMaxMult < 1 ? '(Not Very Effective)' : '(Standard)'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function render() {
+    const leftCard = document.getElementById("battle-left-card");
+    const rightCard = document.getElementById("battle-right-card");
+    if (leftCard) leftCard.innerHTML = renderCard(state.left);
+    if (rightCard) rightCard.innerHTML = renderCard(state.right);
+    renderResult();
+  }
+
+  const leftInput = document.getElementById("battle-left");
+  leftInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      loadPokemon("left", e.target.value.trim());
+    }
+  });
+  leftInput?.addEventListener("change", (e) => {
+    loadPokemon("left", e.target.value.trim());
+  });
+
+  const rightInput = document.getElementById("battle-right");
+  rightInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      loadPokemon("right", e.target.value.trim());
+    }
+  });
+  rightInput?.addEventListener("change", (e) => {
+    loadPokemon("right", e.target.value.trim());
+  });
+
+  // URL search params: ?left=...&right=... or ?a=...&b=...
+  const q = new URLSearchParams(location.search);
+  const paramLeft = q.get("left") || q.get("a") || "25";
+  const paramRight = q.get("right") || q.get("b") || "6";
+
+  if (leftInput && paramLeft) leftInput.value = paramLeft;
+  if (rightInput && paramRight) rightInput.value = paramRight;
+
+  loadPokemon("left", paramLeft);
+  loadPokemon("right", paramRight);
+});
+```
+
+---
+
+### 3.14 `js/store.js` (本地存储与安全缓存管理)
 
 - **文件路径**: `js/store.js`  
-- **代码行数**: 60 行  
-- **文件大小**: 1,577 字节  
+- **代码行数**: 103 行  
+- **文件大小**: 2,989 字节  
 
 ```javascript
 /**
@@ -5997,7 +9528,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * 隐私模式或存储已满时 localStorage 会抛错，这里全部吞掉并回退到空值。
  */
 (function (window) {
-  const KEYS = { belt: "file151.belt", seen: "file151.seen", sound: "file151.sound" };
+  const KEYS = { belt: "file151.belt", seen: "file151.seen", sound: "file151.sound", last: "file151.last", favorites: "file151.favorites", quizBest: "file151.quiz.best", quizTotal: "file151.quiz.total" };
   const MAX_BELT = 6;
   const MAX_ID = 1025;
 
@@ -6046,21 +9577,573 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         localStorage.setItem(KEYS.sound, on ? "on" : "off");
       } catch (_) {}
+    },
+    lastId() {
+      try {
+        const n = Number(localStorage.getItem(KEYS.last) || 0);
+        return n > 0 && n <= MAX_ID ? n : null;
+      } catch (_) {
+        return null;
+      }
+    },
+    setLast(id) {
+      try {
+        const n = Number(id);
+        if (n > 0 && n <= MAX_ID) localStorage.setItem(KEYS.last, String(n));
+      } catch (_) {}
+    },
+    favoriteIds() {
+      return readIds(KEYS.favorites);
+    },
+    isFavorite(id) {
+      return store.favoriteIds().includes(Number(id));
+    },
+    toggleFavorite(id) {
+      const n = Number(id);
+      const ids = store.favoriteIds();
+      const next = ids.includes(n) ? ids.filter(x => x !== n) : [...ids, n];
+      writeIds(KEYS.favorites, next);
+      return next.includes(n);
+    },
+    quizBest() {
+      try { return Number(localStorage.getItem(KEYS.quizBest) || 0); } catch (_) { return 0; }
+    },
+    setQuizBest(n) {
+      try { localStorage.setItem(KEYS.quizBest, String(n)); } catch (_) {}
+    },
+    quizTotal() {
+      try { return Number(localStorage.getItem(KEYS.quizTotal) || 0); } catch (_) { return 0; }
+    },
+    incQuizTotal() {
+      try {
+        const next = store.quizTotal() + 1;
+        localStorage.setItem(KEYS.quizTotal, String(next));
+        return next;
+      } catch (_) { return 0; }
     }
   };
 
   window.store = store;
 })(window);
-
 ```
 
 ---
 
+### 3.15 `js/quiz.js` (猜谜逻辑与连胜成就积分)
+
+- **文件路径**: `js/quiz.js`  
+- **代码行数**: 154 行  
+- **文件大小**: 4,607 字节  
+
+```javascript
+document.addEventListener("DOMContentLoaded", () => {
+  const store = window.store;
+  const api = window.pokeApi;
+
+  const imgEl = document.getElementById("quiz-img");
+  const formEl = document.getElementById("quiz-form");
+  const inputEl = document.getElementById("quiz-input");
+  const skipBtn = document.getElementById("quiz-skip");
+  const feedbackEl = document.getElementById("quiz-feedback");
+
+  const streakEl = document.getElementById("streak-count");
+  const bestStreakEl = document.getElementById("best-streak-count");
+  const totalEl = document.getElementById("total-count");
+
+  let currentMon = null;
+  let streak = 0;
+  let bestStreak = store?.quizBest?.() || 0;
+  let totalCorrect = store?.quizTotal?.() || 0;
+  let attempts = 0;
+  let isResolving = false;
+
+  function updateScoreboard() {
+    if (streakEl) streakEl.textContent = streak;
+    if (bestStreakEl) bestStreakEl.textContent = bestStreak;
+    if (totalEl) totalEl.textContent = totalCorrect;
+  }
+
+  function normalize(s) {
+    return String(s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/♀/g, "f")
+      .replace(/♂/g, "m")
+      .replace(/[^a-z0-9]/g, "");
+  }
+
+  async function newRound() {
+    isResolving = false;
+    attempts = 0;
+    if (inputEl) {
+      inputEl.value = "";
+      inputEl.disabled = false;
+      inputEl.focus();
+    }
+    if (feedbackEl) {
+      feedbackEl.hidden = true;
+      feedbackEl.className = "quiz-feedback-banner";
+      feedbackEl.innerHTML = "";
+    }
+
+    const randId = Math.floor(Math.random() * 1025) + 1;
+
+    if (imgEl) {
+      imgEl.className = "quiz-img-silhouette";
+      imgEl.src = api ? api.artUrl(randId) : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${randId}.png`;
+      imgEl.alt = "Silhouette of mystery Pokémon";
+    }
+
+    try {
+      if (api) {
+        currentMon = await api.getPokemon(randId);
+      } else {
+        currentMon = { id: randId, name: `pokemon-${randId}` };
+      }
+    } catch (_) {
+      currentMon = { id: randId, name: `pokemon-${randId}` };
+    }
+  }
+
+  function revealSuccess() {
+    isResolving = true;
+    if (imgEl) imgEl.className = "quiz-img-revealed";
+    if (inputEl) inputEl.disabled = true;
+
+    streak++;
+    if (streak > bestStreak) {
+      bestStreak = streak;
+      store?.setQuizBest?.(bestStreak);
+    }
+    totalCorrect = store?.incQuizTotal?.() || (totalCorrect + 1);
+    updateScoreboard();
+
+    if (currentMon) {
+      store?.markSeen?.(currentMon.id);
+      api?.playCry?.(currentMon.id);
+    }
+
+    if (feedbackEl && currentMon) {
+      feedbackEl.hidden = false;
+      feedbackEl.className = "quiz-feedback-banner success";
+      feedbackEl.innerHTML = `
+        <strong>✓ Correct!</strong> It's <strong>#${String(currentMon.id).padStart(3, "0")} ${currentMon.name}</strong>!
+        <span style="font-size:0.8125rem; display:block; margin-top:0.25rem;">Added to seen archive · Next round in 2 seconds...</span>
+      `;
+    }
+
+    setTimeout(newRound, 2200);
+  }
+
+  function revealFailure(reason) {
+    isResolving = true;
+    if (imgEl) imgEl.className = "quiz-img-revealed";
+    if (inputEl) inputEl.disabled = true;
+
+    streak = 0;
+    updateScoreboard();
+
+    if (feedbackEl && currentMon) {
+      feedbackEl.hidden = false;
+      feedbackEl.className = "quiz-feedback-banner warning";
+      feedbackEl.innerHTML = `
+        <strong>${reason}</strong> The specimen was <strong>#${String(currentMon.id).padStart(3, "0")} ${currentMon.name}</strong>.
+        <span style="font-size:0.8125rem; display:block; margin-top:0.25rem;">Streak reset · Loading next specimen...</span>
+      `;
+    }
+
+    setTimeout(newRound, 2500);
+  }
+
+  formEl?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (isResolving || !currentMon) return;
+
+    const guess = normalize(inputEl.value);
+    const answer = normalize(currentMon.name);
+
+    if (!guess) return;
+
+    if (guess === answer || (guess.length >= 3 && answer.startsWith(guess))) {
+      revealSuccess();
+    } else {
+      attempts++;
+      if (attempts >= 3) {
+        revealFailure("Out of attempts!");
+      } else {
+        if (feedbackEl) {
+          feedbackEl.hidden = false;
+          feedbackEl.className = "quiz-feedback-banner error";
+          feedbackEl.innerHTML = `✗ Not quite! Try again (Attempt ${attempts}/3).`;
+        }
+        inputEl.select();
+      }
+    }
+  });
+
+  skipBtn?.addEventListener("click", () => {
+    if (isResolving || !currentMon) return;
+    revealFailure("Skipped!");
+  });
+
+  updateScoreboard();
+  newRound();
+});
+```
+
 ---
 
-## 4. 矢量资源与配置 (Assets & Config)
+### 3.16 `js/global-search.js` (全局命令面板快捷检索)
 
-### 4.1 `assets/favicon.svg` (精灵球矢量图标)
+- **文件路径**: `js/global-search.js`  
+- **代码行数**: 236 行  
+- **文件大小**: 7,181 字节  
+
+```javascript
+/**
+ * 151 FILE — Global Quick Search (Command Palette)
+ * 全局即时快捷搜索：按 / 打开，Esc 关闭，↑↓ 切换，Enter 直达
+ * 同时检索 Pokémon、Moves、Abilities
+ */
+(function () {
+  let pokemonCache = null;
+  let movesCache = null;
+  let abilitiesCache = null;
+  let activeIndex = -1;
+  let currentResults = [];
+
+  function createSearchDOM() {
+    if (document.getElementById("search-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "search-overlay";
+    overlay.id = "search-overlay";
+    overlay.hidden = true;
+
+    overlay.innerHTML = `
+      <div class="search-panel" role="dialog" aria-modal="true" aria-label="Global Search">
+        <div class="search-panel-header">
+          <span style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:1.1rem; padding-left:0.5rem;">/</span>
+          <input id="global-search-input" type="search" placeholder="Search Pokémon, moves, abilities..." autocomplete="off">
+          <button class="search-close-btn" id="search-close-btn" type="button" aria-label="Close search">✕</button>
+        </div>
+        <ul id="global-search-results" class="search-results-list"></ul>
+        <div class="search-panel-footer">
+          <span><kbd>/</kbd> Open · <kbd>Esc</kbd> Close · <kbd>↑</kbd><kbd>↓</kbd> Select · <kbd>Enter</kbd> Jump</span>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const input = document.getElementById("global-search-input");
+    const closeBtn = document.getElementById("search-close-btn");
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeSearch();
+    });
+
+    closeBtn.addEventListener("click", closeSearch);
+
+    input.addEventListener("input", handleSearch);
+    input.addEventListener("keydown", handleKeyNavigation);
+  }
+
+  async function loadData() {
+    if (!pokemonCache) {
+      if (window.ALL_SPECIES && window.ALL_SPECIES.length === 1025) {
+        pokemonCache = window.ALL_SPECIES;
+      } else {
+        try {
+          const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
+          const data = await resp.json();
+          pokemonCache = (data.results || []).map((p, idx) => ({ id: idx + 1, name: p.name }));
+        } catch (_) {
+          pokemonCache = [];
+        }
+      }
+    }
+
+    if (!movesCache) {
+      try {
+        const resp = await fetch("https://pokeapi.co/api/v2/move?limit=950");
+        const data = await resp.json();
+        movesCache = (data.results || []).map(m => m.name);
+      } catch (_) {
+        movesCache = [];
+      }
+    }
+
+    if (!abilitiesCache) {
+      try {
+        const resp = await fetch("https://pokeapi.co/api/v2/ability?limit=400");
+        const data = await resp.json();
+        abilitiesCache = (data.results || []).map(a => a.name);
+      } catch (_) {
+        abilitiesCache = [];
+      }
+    }
+  }
+
+  function openSearch() {
+    createSearchDOM();
+    const overlay = document.getElementById("search-overlay");
+    const input = document.getElementById("global-search-input");
+    if (!overlay || !input) return;
+
+    overlay.hidden = false;
+    input.value = "";
+    input.focus();
+    renderResults([]);
+    loadData();
+  }
+
+  function closeSearch() {
+    const overlay = document.getElementById("search-overlay");
+    if (overlay) overlay.hidden = true;
+    activeIndex = -1;
+  }
+
+  function handleSearch(e) {
+    const q = e.target.value.trim().toLowerCase();
+    if (q.length < 2) {
+      renderResults([]);
+      return;
+    }
+
+    const results = [];
+
+    // 1. Pokémon (max 4)
+    if (pokemonCache) {
+      const pMatches = pokemonCache.filter(p => {
+        const cleanName = p.name.toLowerCase();
+        return cleanName.includes(q) || String(p.id) === q;
+      }).slice(0, 4);
+
+      pMatches.forEach(p => {
+        results.push({
+          type: "Pokémon",
+          title: `#${String(p.id).padStart(3, "0")} ${p.name.replace(/-/g, " ")}`,
+          url: `pokemon.html?id=${p.id}`,
+          tag: "SPECIMEN"
+        });
+      });
+    }
+
+    // 2. Moves (max 3)
+    if (movesCache) {
+      const mMatches = movesCache.filter(m => m.toLowerCase().includes(q)).slice(0, 3);
+      mMatches.forEach(m => {
+        results.push({
+          type: "Move",
+          title: m.replace(/-/g, " "),
+          url: `moves.html?q=${encodeURIComponent(m)}`,
+          tag: "MOVE"
+        });
+      });
+    }
+
+    // 3. Abilities (max 3)
+    if (abilitiesCache) {
+      const aMatches = abilitiesCache.filter(a => a.toLowerCase().includes(q)).slice(0, 3);
+      aMatches.forEach(a => {
+        results.push({
+          type: "Ability",
+          title: a.replace(/-/g, " "),
+          url: `abilities.html?q=${encodeURIComponent(a)}`,
+          tag: "ABILITY"
+        });
+      });
+    }
+
+    renderResults(results);
+  }
+
+  function renderResults(results) {
+    currentResults = results;
+    activeIndex = results.length > 0 ? 0 : -1;
+    const list = document.getElementById("global-search-results");
+    if (!list) return;
+
+    if (results.length === 0) {
+      list.innerHTML = `<li class="search-empty">No matching records found.</li>`;
+      return;
+    }
+
+    list.innerHTML = results.map((item, idx) => `
+      <li class="search-item ${idx === activeIndex ? 'active' : ''}" data-idx="${idx}">
+        <span class="search-item-title">${item.title}</span>
+        <span class="search-item-tag ${item.type.toLowerCase()}">${item.tag}</span>
+      </li>
+    `).join("");
+
+    list.querySelectorAll(".search-item").forEach(el => {
+      el.addEventListener("click", () => {
+        const idx = Number(el.dataset.idx);
+        navigate(currentResults[idx]);
+      });
+    });
+  }
+
+  function handleKeyNavigation(e) {
+    if (e.key === "Escape") {
+      closeSearch();
+      return;
+    }
+
+    if (currentResults.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      activeIndex = (activeIndex + 1) % currentResults.length;
+      updateActiveItem();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      activeIndex = (activeIndex - 1 + currentResults.length) % currentResults.length;
+      updateActiveItem();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (activeIndex >= 0 && activeIndex < currentResults.length) {
+        navigate(currentResults[activeIndex]);
+      }
+    }
+  }
+
+  function updateActiveItem() {
+    const list = document.getElementById("global-search-results");
+    if (!list) return;
+    const items = list.querySelectorAll(".search-item");
+    items.forEach((el, idx) => {
+      el.classList.toggle("active", idx === activeIndex);
+      if (idx === activeIndex) el.scrollIntoView({ block: "nearest" });
+    });
+  }
+
+  function navigate(item) {
+    if (!item || !item.url) return;
+    closeSearch();
+    location.href = item.url;
+  }
+
+  // Global hotkey
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+
+  window.openGlobalSearch = openSearch;
+  window.closeGlobalSearch = closeSearch;
+})();
+```
+
+---
+
+## 4. 矢量资源、脚本与配置 (Assets, Scripts & Config)
+
+### 4.1 `scripts/make-thumbs.mjs` (缩略图离线生成脚本)
+
+- **文件路径**: `scripts/make-thumbs.mjs`  
+- **代码行数**: 89 行  
+- **文件大小**: 2,877 字节  
+
+```javascript
+// 生成 Dex 列表 / 网格 / 胶片尺用的 192px WebP 缩略图。
+//
+// 为什么：卡片只显示 ~96px，却在加载 512×512 的 HOME 大图（平均 ~116 KB）。
+// 缩到 192px（2× 屏够用）后平均 ~8 KB，约小 14 倍；全集 1025 张约 8 MB。
+//
+// 用法（在仓库根目录）：
+//   npm i --no-save sharp
+//   node scripts/make-thumbs.mjs            # 全部 1..1025，已存在的会跳过
+//   node scripts/make-thumbs.mjs 1 151      # 只生成 #1–#151
+//
+// 输出：assets/thumbs/{id}.webp（缺失时页面会自动回退到远程大图，不会坏）
+
+import { mkdir, access, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+const OUT_DIR = fileURLToPath(new URL("../assets/thumbs/", import.meta.url));
+const SRC = (id) =>
+  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+
+const SIZE = 192;
+const QUALITY = 80;
+const CONCURRENCY = 8;
+const RETRIES = 2;
+
+const [from = 1, to = 1025] = process.argv.slice(2).map(Number);
+if (!Number.isInteger(from) || !Number.isInteger(to) || from < 1 || to < from) {
+  console.error("用法: node scripts/make-thumbs.mjs [起始id] [结束id]");
+  process.exit(1);
+}
+
+await mkdir(OUT_DIR, { recursive: true });
+
+const exists = (p) => access(p).then(() => true, () => false);
+
+async function fetchBuffer(url) {
+  let lastErr;
+  for (let i = 0; i <= RETRIES; i++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return Buffer.from(await res.arrayBuffer());
+    } catch (err) {
+      lastErr = err;
+      await new Promise((r) => setTimeout(r, 400 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+const stats = { made: 0, skipped: 0, failed: [], bytes: 0 };
+
+async function one(id) {
+  const file = `${OUT_DIR}${id}.webp`;
+  if (await exists(file)) {
+    stats.skipped++;
+    return;
+  }
+  try {
+    const png = await fetchBuffer(SRC(id));
+    const webp = await sharp(png)
+      .resize(SIZE, SIZE, { fit: "inside", withoutEnlargement: true })
+      .webp({ quality: QUALITY, effort: 6 })
+      .toBuffer();
+    await writeFile(file, webp);
+    stats.made++;
+    stats.bytes += webp.length;
+  } catch (err) {
+    stats.failed.push(`${id} (${err.message})`);
+  }
+}
+
+const ids = Array.from({ length: to - from + 1 }, (_, i) => from + i);
+let cursor = 0;
+await Promise.all(
+  Array.from({ length: CONCURRENCY }, async () => {
+    while (cursor < ids.length) await one(ids[cursor++]);
+  })
+);
+
+const kb = (n) => (n / 1024).toFixed(1);
+console.log(
+  `done: made ${stats.made}, skipped ${stats.skipped}, failed ${stats.failed.length}` +
+    (stats.made ? `, avg ${kb(stats.bytes / stats.made)} KB, total ${kb(stats.bytes)} KB` : "")
+);
+if (stats.failed.length) {
+  console.log("failed ids:", stats.failed.join(", "));
+  process.exitCode = 1;
+}
+```
+
+---
+
+### 4.2 `assets/favicon.svg` (精灵球矢量图标)
 
 - **文件路径**: `assets/favicon.svg`  
 - **代码行数**: 14 行  
@@ -6081,16 +10164,15 @@ document.addEventListener("DOMContentLoaded", () => {
     <circle cx="16" cy="16" r="2.8" fill="#FFFFFF" />
   </g>
 </svg>
-
 ```
 
 ---
 
-### 4.2 `.gitignore` (版本控制忽略文件)
+### 4.3 `.gitignore` (版本控制忽略文件)
 
 - **文件路径**: `.gitignore`  
-- **代码行数**: 5 行  
-- **文件大小**: 48 字节  
+- **代码行数**: 6 行  
+- **文件大小**: 62 字节  
 
 ```ini
 .DS_Store
@@ -6098,10 +10180,8 @@ Icon?
 Icon\r
 .Spotlight-V100
 .Trashes
-
+node_modules/
 ```
-
----
 
 ---
 
@@ -7002,7 +11082,6 @@ Icon\r
   </script>
 </body>
 </html>
-
 ```
 
 ---
@@ -7694,8 +11773,6 @@ Icon\r
   </main>
 </body>
 </html>
-
 ```
 
 ---
-

@@ -23,14 +23,17 @@
   // 内存缓存
   const listMemoryCache = new Map();
   const pokemonMemoryCache = new Map();
+  const speciesMemoryCache = new Map();
+  const abilityMemoryCache = new Map();
+  const evoMemoryCache = new Map();
 
   /**
    * 把名字或编号统一成 PokeAPI 能识别的 key。
    * 有本地名录时一律转成编号：Mr. Mime、Type: Null、Nidoran♀ 这类名字直接请求会 404。
    */
   function resolveKey(idOrName) {
-    const raw = String(idOrName).trim().toLowerCase();
-    if (/^\d+$/.test(raw)) return raw;
+    const raw = String(idOrName).trim().toLowerCase().replace(/^#+/, "");
+    if (/^\d+$/.test(raw)) return String(parseInt(raw, 10));
     // ♀/♂ 先换成 f/m，否则 Nidoran♀ 和 Nidoran♂ 会被当成同一个名字
     const norm = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/♀/g, "f").replace(/♂/g, "m").replace(/[^a-z0-9]/g, "");
     if (window.ALL_SPECIES) {
@@ -162,43 +165,252 @@
         }
       } catch (_) {}
 
-      // 3. 网络请求
-      const resp = await fetch(`${API_BASE}/pokemon/${encodeURIComponent(key)}`);
-      if (!resp.ok) {
-        throw new Error(`Pokemon not found: ${idOrName}`);
+      // 3. 网络请求 (带超时与自动重试)
+      let data = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+          const timer = controller ? setTimeout(() => controller.abort(), 5000) : null;
+          const resp = await fetch(`${API_BASE}/pokemon/${encodeURIComponent(key)}`, {
+            signal: controller ? controller.signal : undefined
+          });
+          if (timer) clearTimeout(timer);
+          if (resp.ok) {
+            data = await resp.json();
+            break;
+          }
+        } catch (_) {
+          if (attempt === 0) await new Promise((r) => setTimeout(r, 300));
+        }
       }
-      const data = await resp.json();
 
-      // 显示名优先用本地名录（Mr. Mime），API 的 slug 是 mr-mime
-      const local = window.getSpeciesById ? window.getSpeciesById(data.id) : null;
-      const result = {
-        id: data.id,
-        name: local ? local.name : data.name.charAt(0).toUpperCase() + data.name.slice(1),
-        types: data.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
-        height: data.height / 10, // 分米转米
-        weight: data.weight / 10, // 百克转千克
-        stats: data.stats.map((s) => ({
-          name: s.stat.name,
-          value: s.base_stat
-        })),
-        abilities: data.abilities.map((a) => ({
-          name: a.ability.name,
-          is_hidden: a.is_hidden
-        }))
-      };
+      if (data) {
+        // 显示名优先用本地名录（Mr. Mime），API 的 slug 是 mr-mime
+        const local = window.getSpeciesById ? window.getSpeciesById(data.id) : null;
+        const result = {
+          id: data.id,
+          name: local ? local.name : data.name.charAt(0).toUpperCase() + data.name.slice(1),
+          types: (data.types || []).sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
+          height: (data.height || 0) / 10, // 分米转米
+          weight: (data.weight || 0) / 10, // 百克转千克
+          stats: (data.stats || []).map((s) => ({
+            name: s.stat.name,
+            value: s.base_stat
+          })),
+          abilities: (data.abilities || []).map((a) => ({
+            name: a.ability.name,
+            is_hidden: a.is_hidden
+          }))
+        };
 
-      // 存入内存与本地存储
-      pokemonMemoryCache.set(key, result);
-      pokemonMemoryCache.set(String(result.id), result);
+        // 存入内存与本地存储
+        pokemonMemoryCache.set(key, result);
+        pokemonMemoryCache.set(String(result.id), result);
+        try {
+          localStorage.setItem(`${CACHE_PREFIX}p_${result.id}`, JSON.stringify(result));
+        } catch (_) {}
+
+        return result;
+      }
+
+      // 4. 网络故障/超时时的优雅降级（本地档案兜底，确保页面永不白屏/空壳）
+      const localSpec = /^\d+$/.test(key)
+        ? (window.getSpeciesById ? window.getSpeciesById(Number(key)) : null)
+        : (window.ALL_SPECIES || []).find((s) => s.name.toLowerCase() === key.toLowerCase());
+
+      if (localSpec) {
+        const fallback = {
+          id: localSpec.id,
+          name: localSpec.name,
+          types: localSpec.types || [],
+          height: 1.0,
+          weight: 10.0,
+          stats: [
+            { name: "hp", value: 70 },
+            { name: "attack", value: 70 },
+            { name: "defense", value: 70 },
+            { name: "special-attack", value: 70 },
+            { name: "special-defense", value: 70 },
+            { name: "speed", value: 70 }
+          ],
+          abilities: [],
+          isOffline: true
+        };
+        return fallback;
+      }
+
+      throw new Error(`Pokemon not found: ${idOrName}`);
+    },
+
+    /**
+     * 获取种族元数据：英文种属、100字以内 flavor、进化链 URL
+     */
+    async getSpecies(id) {
+      if (!id) return null;
+      const num = parseInt(id, 10);
+      if (!num) return null;
+      const cacheKey = `${CACHE_PREFIX}sp_${num}`;
+      if (speciesMemoryCache.has(num)) return speciesMemoryCache.get(num);
       try {
-        localStorage.setItem(`${CACHE_PREFIX}p_${result.id}`, JSON.stringify(result));
+        const local = localStorage.getItem(cacheKey);
+        if (local) {
+          const parsed = JSON.parse(local);
+          speciesMemoryCache.set(num, parsed);
+          return parsed;
+        }
       } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/pokemon-species/${num}`);
+        if (!resp.ok) return null;
+        const j = await resp.json();
+        const flavor = (j.flavor_text_entries || []).find((x) => x.language && x.language.name === "en");
+        const genus = (j.genera || []).find((x) => x.language && x.language.name === "en");
+        const row = {
+          id: j.id,
+          genus: genus ? genus.genus : "",
+          flavor: flavor ? flavor.flavor_text.replace(/\s+/g, " ").trim() : "",
+          evoUrl: j.evolution_chain?.url || null
+        };
+        speciesMemoryCache.set(num, row);
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(row));
+        } catch (_) {}
+        return row;
+      } catch (_) {
+        return null;
+      }
+    },
 
-      return result;
+    /**
+     * 获取特性简明说明 (short_effect)
+     */
+    async getAbilityText(name) {
+      if (!name) return "";
+      const clean = String(name).toLowerCase().trim();
+      const cacheKey = `${CACHE_PREFIX}ab_${clean}`;
+      if (abilityMemoryCache.has(clean)) return abilityMemoryCache.get(clean);
+      try {
+        const local = localStorage.getItem(cacheKey);
+        if (local) {
+          abilityMemoryCache.set(clean, local);
+          return local;
+        }
+      } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/ability/${clean}`);
+        if (!resp.ok) return "";
+        const j = await resp.json();
+        const en = (j.effect_entries || []).find((x) => x.language && x.language.name === "en");
+        const text = en ? en.short_effect : (j.flavor_text_entries || []).find((x) => x.language && x.language.name === "en")?.flavor_text || "";
+        const cleaned = text.replace(/\s+/g, " ").trim();
+        abilityMemoryCache.set(clean, cleaned);
+        try {
+          localStorage.setItem(cacheKey, cleaned);
+        } catch (_) {}
+        return cleaned;
+      } catch (_) {
+        return "";
+      }
+    },
+
+    /**
+     * 获取同进化线关联种族的 ID 列表 (最多 8 只，包含分支)
+     */
+    async getEvoIds(evoUrl) {
+      if (!evoUrl) return [];
+      if (evoMemoryCache.has(evoUrl)) return evoMemoryCache.get(evoUrl);
+      try {
+        const resp = await fetch(evoUrl);
+        if (!resp.ok) return [];
+        const j = await resp.json();
+        function chainIds(node, acc = []) {
+          if (!node || !node.species || !node.species.url) return acc;
+          const m = node.species.url.match(/\/(\d+)\/$/);
+          const id = m ? Number(m[1]) : 0;
+          if (id) acc.push(id);
+          (node.evolves_to || []).forEach((n) => chainIds(n, acc));
+          return acc;
+        }
+        const ids = [...new Set(chainIds(j.chain))].slice(0, 8);
+        evoMemoryCache.set(evoUrl, ids);
+        return ids;
+      } catch (_) {
+        return [];
+      }
+    },
+
+    /**
+     * 获取招式详情与战斗属性
+     */
+    async getMove(nameOrId) {
+      if (!nameOrId) return null;
+      const key = String(nameOrId).trim().toLowerCase();
+      const cacheKey = `${CACHE_PREFIX}move.${key}`;
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) return JSON.parse(cached);
+      } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/move/${encodeURIComponent(key)}`);
+        if (!resp.ok) return null;
+        const data = await resp.json();
+        const move = {
+          id: data.id,
+          name: data.name,
+          type: data.type?.name || "",
+          category: data.damage_class?.name || "",
+          power: data.power,
+          accuracy: data.accuracy,
+          pp: data.pp,
+          priority: data.priority,
+          description: data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || ""
+        };
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(move));
+        } catch (_) {}
+        return move;
+      } catch (_) {
+        return null;
+      }
+    },
+
+    /**
+     * 获取特性完整信息及对应宝可梦列表
+     */
+    async getAbility(nameOrId) {
+      if (!nameOrId) return null;
+      const key = String(nameOrId).trim().toLowerCase();
+      const cacheKey = `${CACHE_PREFIX}ability_full.${key}`;
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) return JSON.parse(cached);
+      } catch (_) {}
+      try {
+        const resp = await fetch(`${API_BASE}/ability/${encodeURIComponent(key)}`);
+        if (!resp.ok) return null;
+        const data = await resp.json();
+        const res = {
+          id: data.id,
+          name: data.name,
+          description: (data.effect_entries || []).find(x => x.language?.name === "en")?.short_effect ||
+            data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || "",
+          pokemon: (data.pokemon || []).map(x => ({
+            name: x.pokemon.name,
+            url: x.pokemon.url
+          }))
+        };
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(res));
+        } catch (_) {}
+        return res;
+      } catch (_) {
+        return null;
+      }
     }
   };
 
   window.pokeApi = api;
+  window.api = api;
 
   /**
    * 全站立绘兜底：HOME 缺图时换官方立绘，仍失败就隐藏，避免破图图标。
@@ -215,7 +427,13 @@
         img.dataset.fallback = "1";
         img.src = api.officialUrl(m[1]);
       } else if (img.src.includes("/sprites/")) {
-        img.style.visibility = "hidden";
+        const num = m ? m[1] : (img.src.match(/\/(\d+)\.png$/) || [])[1];
+        if (num && !img.dataset.localFallback) {
+          img.dataset.localFallback = "1";
+          img.src = `assets/thumbs/${num}.webp`;
+        } else {
+          img.style.visibility = "hidden";
+        }
       }
     },
     true

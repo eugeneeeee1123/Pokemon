@@ -46,6 +46,15 @@
   color: var(--ink);
 }
 
+.hero-pokemon-logo {
+  max-width: clamp(220px, 32vw, 360px);
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--s-1) 0 var(--s-3);
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
+}
+
 .hero p {
   color: var(--ink-soft);
   font-size: 1.125rem;
@@ -457,17 +466,77 @@
 /* ==========================================================================
    Dex Page (pokedex.html — Spine + Ledger + Stage + Film)
    ========================================================================== */
+/* 名录页底部只留一条窄边，胶片停在首屏里、并离窗口底边一点 */
+.wrap.dex-page {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* 宽屏把顶栏 + 本页锁进视口：名录和胶片在内部滚，页面本身不滚 */
+@media (min-width: 45.01rem) {
+  body:has(.dex-page) {
+    height: 100dvh;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body:has(.dex-page) .site-bar,
+  body:has(.dex-page) .tools {
+    flex: none;
+  }
+  body:has(.dex-page) .wrap.dex-page {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body:has(.dex-page) .dex,
+  body:has(.dex-page) .dex-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+  }
+  body:has(.dex-page) .dex-grid {
+    overflow: auto;
+  }
+}
+
 .tools {
   display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+.tools-bar {
+  display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
   align-items: center;
-  margin-bottom: var(--s-4);
+  gap: 0.5rem 0.65rem;
+}
+
+/* 18 个属性固定一行。宽屏排得下；窄了只在这一行横滑，页面不再被挤高 */
+.type-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.35rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  padding-block: 2px;
+}
+
+.type-row .chip {
+  flex: 0 0 auto;
 }
 
 .tools input {
-  height: 2.75rem;
-  min-width: 14rem;
+  height: 2.5rem;
+  flex: 1 1 12rem;
+  min-width: min(100%, 12rem);
   border: 0;
   border-bottom: 2px solid var(--navy);
   background: var(--paper);
@@ -477,21 +546,32 @@
   font: 400 1rem/1 var(--font-ui);
 }
 
+.tools-bar #draw {
+  height: 2.5rem;
+  padding-inline: 0.75rem;
+}
+
 .tools input:focus {
   outline: 3px solid var(--mark);
   outline-offset: 3px;
 }
 
 .chip {
-  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.625rem;
   padding: 0 0.6rem;
   border: 1px solid var(--line);
   background: var(--paper);
   border-radius: 4px;
-  font: 500 0.75rem/1 var(--font-num);
+  font: 500 0.75rem var(--font-num);
+  line-height: 1;
   letter-spacing: 0.04em;
   cursor: pointer;
   color: var(--ink);
+  text-decoration: none;
+  vertical-align: middle;
   transition: border-color 100ms ease, background 100ms ease, color 100ms ease;
 }
 
@@ -516,10 +596,11 @@
 
 .dex {
   display: grid;
-  grid-template-columns: 7.5rem minmax(14rem, 20rem) 1fr;
-  grid-template-rows: 1fr auto;
-  gap: 1rem;
-  min-height: calc(100dvh - 9rem);
+  grid-template-columns: 7.5rem minmax(16rem, 22rem) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  column-gap: 0.85rem;
+  row-gap: 0.35rem;
+  min-height: 0;
 }
 
 .spines {
@@ -527,11 +608,13 @@
   flex-direction: column;
   gap: 0.35rem;
   grid-row: 1 / 3;
+  min-height: 0;
+  overflow: auto;
 }
 
 .spines button {
   border: 0;
-  background: #0B1C2E;
+  background: var(--sky-deep);
   color: var(--ink);
   text-align: left;
   padding: 0.7rem 0.5rem;
@@ -542,12 +625,12 @@
 }
 
 .spines button:hover:not(:disabled) {
-  background: #102338;
+  background: var(--paper);
 }
 
 .spines button[data-on] {
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   border-left-color: #D4A700;
 }
 
@@ -560,38 +643,86 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  min-height: 0;
+  height: 100%;
   overflow: auto;
   border-top: 2px solid var(--navy);
-  max-height: 52dvh;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
 .ledger li {
-  display: flex;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.55rem;
   align-items: center;
-  padding: 0.55rem 0.4rem;
+  min-height: 2.25rem;
+  padding: 0.15rem 0.55rem 0.15rem 0.4rem;
   border-bottom: 1px solid var(--line);
+  border-left: 3px solid transparent;
   cursor: pointer;
-  transition: background 0.1s ease;
+  transition: background 100ms ease, border-color 100ms ease;
 }
 
-.ledger li:hover {
-  background: rgba(126, 182, 217, 0.08);
+.ledger li:hover:not(.is-on) {
+  background: color-mix(in srgb, var(--navy) 14%, transparent);
 }
 
 .ledger li.is-on {
   background: var(--paper);
-  box-shadow: 0 0.4rem 0 var(--line);
+  border-left-color: var(--mark);
 }
 
-.ledger li.seen .id {
-  opacity: 0.45;
+.ledger li.is-on .ledger-name {
+  font-weight: 700;
+}
+
+.ledger li.seen:not(.is-on) .ledger-name {
+  color: var(--ink-soft);
+}
+
+.ledger li.empty {
+  display: block;
+  border-left-color: transparent;
+  cursor: default;
+}
+
+/* 未选中只留等宽编号，名字才是扫读目标；选中行才点上黄标 */
+.ledger .id {
+  min-width: 2.7rem;
+  text-align: right;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.1rem 0.2rem;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger li.is-on .id {
+  background: var(--mark);
+  color: var(--sky);
+}
+
+.ledger-name {
+  font: 500 0.9375rem/1.2 var(--font-ui);
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ledger-types {
+  font: 500 0.75rem/1 var(--font-num);
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 .id {
   font: 700 0.8rem/1 var(--font-num);
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.12rem 0.3rem;
   border-radius: 2px;
 }
@@ -601,8 +732,10 @@
   justify-items: center;
   align-content: start;
   text-align: center;
-  padding: 1rem;
+  padding: 0.35rem 1rem 0.25rem;
   position: relative;
+  min-height: 0;
+  overflow: auto;
 }
 
 .stage .stage-img-box {
@@ -616,7 +749,7 @@
 
 .stage img {
   width: 100%;
-  max-height: 16rem;
+  max-height: min(14rem, 30vh);
   object-fit: contain;
   filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -657,7 +790,7 @@
   gap: 0.35rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 0.5rem 0 1rem;
+  padding: 0.15rem 0 0;
 }
 
 .film button {
@@ -679,7 +812,7 @@
 }
 
 .film button[data-on] {
-  border-color: #3D7DCA;
+  border-color: var(--blue);
 }
 
 .film img {
@@ -702,17 +835,32 @@
 @media (max-width: 45rem) {
   .dex {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+    min-height: 0;
   }
   .spines {
     grid-row: auto;
     flex-direction: row;
     overflow-x: auto;
   }
+  .ledger {
+    height: auto;
+    max-height: 46dvh;
+  }
+  .stage {
+    overflow: visible;
+  }
+  .stage img {
+    max-height: 14rem;
+  }
   .film {
     position: sticky;
     bottom: 0;
     background: var(--sky);
     grid-column: 1;
+    margin-top: 0;
+    padding: 0.35rem 0;
   }
 }
 
@@ -729,15 +877,26 @@
 
 .atlas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  gap: 1.25rem 1.25rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 68rem) {
+  .atlas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 36rem) {
+  .atlas {
+    grid-template-columns: 1fr;
+  }
 }
 
 .region-card {
-  display: grid;
-  grid-template-columns: 8.5rem 1fr;
-  gap: 0.85rem;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   background: var(--paper);
   box-shadow: 0 10px 0 var(--line);
   border: 1px solid var(--line);
@@ -762,12 +921,12 @@
 }
 
 .region-card .map-thumb {
-  width: 8.5rem;
-  height: 5.8rem;
+  width: 100%;
+  height: 6.5rem;
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #0B1C2E;
+  background: var(--sky-deep);
   position: relative;
 }
 
@@ -837,7 +996,7 @@
   line-height: 1.75rem;
   letter-spacing: 0.04em;
   text-decoration: none;
-  color: #071422;
+  color: var(--sky);
   transition: transform 100ms ease, filter 100ms ease;
   display: inline-flex;
   align-items: center;
@@ -886,7 +1045,7 @@
 .types-table th {
   color: var(--ink-soft);
   font-weight: 500;
-  background: #0B1C2E;
+  background: var(--sky-deep);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.65rem;
@@ -924,7 +1083,7 @@
 
 .types-table td.x0 {
   background: #071422;
-  color: #5A7A90;
+  color: #688A9F;
 }
 
 .types-table tr.hi th,
@@ -1055,7 +1214,7 @@
   margin: 0.25rem 0 0.75rem;
   border: 0;
   border-bottom: 2px solid var(--navy);
-  background: #0B1C2E;
+  background: var(--sky-deep);
   color: var(--ink);
   font-family: var(--font-num);
   font-weight: 700;
@@ -1104,7 +1263,7 @@
 
 .lineup-stat .bar {
   height: 8px;
-  background: #071422;
+  background: var(--sky);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -1112,7 +1271,7 @@
 .lineup-stat .bar > span {
   display: block;
   height: 100%;
-  background: #1E3A55;
+  background: var(--line);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -1166,7 +1325,7 @@
    ========================================================================== */
 .view-toggle {
   display: inline-flex;
-  background: #0B1C2E;
+  background: var(--sky-deep);
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 2px;
@@ -1244,6 +1403,10 @@
   transition: transform 120ms ease, border-color 100ms ease, box-shadow 120ms ease;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  /* Grid 一次渲染 1025 张：离屏卡片跳过布局/绘制（实测 layout+style 115ms→36ms）。
+     12.68rem = 卡片实高 14.3rem 扣掉 padding+border，占位高度与真实高度基本一致 */
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 12.68rem;
 }
 
 .dex-card:hover {
@@ -1292,7 +1455,7 @@
   font-weight: 700;
   font-size: 0.75rem;
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.1rem 0.35rem;
   border-radius: 2px;
   margin-bottom: 0.3rem;
@@ -1377,15 +1540,44 @@
    Detail (Pokemon) Page Styles
    ========================================================================== */
 .wrap.wide {
-  max-width: 68rem;
+  max-width: 84rem;
 }
 
 .detail {
   display: grid;
   grid-template-columns: minmax(18rem, 24rem) 1fr;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: start;
   margin-top: 1rem;
+}
+
+.detail-art-stage {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 0.625rem 0 var(--line);
+  border-radius: var(--r-file);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.detail-art-stage:active {
+  transform: scale(0.98);
+}
+
+.detail-art-stage img {
+  width: 100%;
+  height: 100%;
+  max-width: 320px;
+  max-height: 320px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
 }
 
 .fields {
@@ -1393,17 +1585,45 @@
   border: 1px solid var(--line);
   box-shadow: 0 0.625rem 0 var(--line);
   border-radius: var(--r-file);
-  padding: 1.5rem;
+  padding: 1.5rem 1.75rem;
 }
 
-.fields p {
-  margin: 0;
-  padding: 0.75rem 0;
+.fields-top {
+  padding-bottom: 0.5rem;
+}
+
+.field-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--ink);
+  margin: 0 0 0.4rem 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 2rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
-.fields p:last-child {
-  border-bottom: 0;
+.fields-col {
+  min-width: 0;
+}
+
+.fields-bottom {
+  padding-top: 0.85rem;
+}
+
+@media (max-width: 58rem) {
+  .fields-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 }
 
 .id-badge {
@@ -1411,7 +1631,7 @@
   font-weight: 700;
   font-size: 0.875rem;
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.15rem 0.45rem;
   border-radius: 3px;
   display: inline-block;
@@ -1422,7 +1642,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  padding-top: 1.25rem;
+  padding-top: 0.5rem;
 }
 
 /* ==========================================================================
@@ -1484,11 +1704,6 @@
   object-fit: contain;
   margin-bottom: 0.5rem;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
-  transition: transform 120ms ease;
-}
-
-.slot:hover img {
-  transform: scale(1.08);
 }
 
 .slot .id {
@@ -1496,7 +1711,7 @@
   font-weight: 700;
   font-size: 0.75rem;
   background: var(--mark);
-  color: #071422;
+  color: var(--sky);
   padding: 0.1rem 0.35rem;
   border-radius: 2px;
 }
@@ -1572,7 +1787,7 @@
 .stat > span:last-child { text-align: right; }
 .stat .bar {
   height: 8px;
-  background: #071422;
+  background: var(--sky);
   border-radius: 2px 0 0 0;
   overflow: hidden;
 }
@@ -1601,3 +1816,1416 @@
 }
 .slot .mv:disabled { opacity: 0.35; cursor: default; }
 .slot .mv:not(:disabled):hover { border-color: var(--blue); }
+
+/* 触屏：view-btn / 腰带挪动按钮撑到 44px；筛选 chip 视觉不变，只外扩点按热区（受行距限制约 39px，桌面不变） */
+@media (pointer: coarse) {
+  .view-btn,
+  .slot .mv {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+  .dex-card .card-belt-btn {
+    position: relative;
+  }
+  .dex-card .card-belt-btn::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem -0.25rem;
+  }
+  .chip {
+    position: relative;
+  }
+  .chip::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem 0;
+  }
+}
+
+/* Grid 卡片：名字是真链接，用 ::after 拉伸到整张卡；+ Belt 按钮抬高一层保持可点 */
+.dex-card .dex-card-link,
+.dex-card .dex-card-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.dex-card .dex-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.dex-card .dex-card-link:focus-visible {
+  outline: none;
+}
+.dex-card:has(.dex-card-link:focus-visible) {
+  outline: 3px solid var(--mark);
+  outline-offset: 2px;
+}
+.dex-card .card-belt-btn {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dex Grid 卡片角标：已看过点、腰带点 */
+.dex-card .card-dots {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+  z-index: 2;
+}
+.dex-card .card-dots .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dex-card .card-dots .dot.seen {
+  background: var(--navy);
+}
+.dex-card .card-dots .dot.belt {
+  background: var(--ball);
+}
+
+/* Detail 标本档案详情扩展 */
+.flavor {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0.6rem 0;
+  border-left: 2px solid var(--mark);
+  padding-left: 0.65rem;
+}
+
+.abilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.35rem 0;
+  font-size: 0.875rem;
+}
+.abilities-list li {
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+.abilities-list b {
+  text-transform: capitalize;
+  color: var(--ink);
+}
+.abilities-list .hidden-tag {
+  color: var(--mark);
+  font-size: 0.75rem;
+  font-family: var(--font-num);
+  font-weight: 700;
+  margin-left: 0.2rem;
+}
+
+.evo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.35rem 0;
+  flex-wrap: wrap;
+}
+.evo-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.evo-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--mark);
+}
+.evo-link.current {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+.evo-link img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+.evo-link span {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+}
+
+/* Types: Belt vs Type 结果卡片 */
+.belt-vs-card {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 4px;
+}
+
+/* Belt: 满 6 只统计栏 */
+.belt-summary {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 4px;
+  font-family: var(--font-num);
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+/* Lineup: 文字结论 */
+.lineup-verdict {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Collection System
+   ========================================================================== */
+.collection-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.collection-summary > div {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+  border-radius: 4px;
+}
+
+.collection-summary span {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 2rem;
+  color: var(--mark);
+}
+
+.collection-summary small {
+  font-family: var(--font-num);
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.progress {
+  width: 100%;
+  height: 10px;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress > div {
+  height: 100%;
+  width: 0;
+  background: var(--mark);
+  border-radius: 4px;
+  transition: width 300ms ease;
+}
+
+.region-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .4rem;
+  font-family: var(--font-num);
+  font-size: 0.875rem;
+}
+
+.collection-region {
+  margin-bottom: 1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+}
+
+.evo-node {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.evo-children {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Moves & Abilities & Battle Lab
+   ========================================================================== */
+.tools-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.25rem 0 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tools-bar input,
+.tools-bar select {
+  padding: 0.5rem 0.85rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  border-radius: 4px;
+}
+
+.tools-bar input:focus,
+.tools-bar select:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.lineup-pair {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+
+.lineup-mid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--mark);
+  padding-top: 5rem;
+}
+
+.lineup-pane {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lineup-pane input {
+  padding: 0.5rem 0.75rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  border-radius: 4px;
+}
+
+.lineup-pane input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.matchup-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin-top: 1rem;
+  font-family: var(--font-num);
+}
+
+.matchup-multiplier {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--mark);
+}
+
+@media (max-width: 700px) {
+  .collection-summary {
+    grid-template-columns: 1fr;
+  }
+  .lineup-pair {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .lineup-mid {
+    padding-top: 0;
+  }
+}
+
+/* ==========================================================================
+   Global Quick Search (Command Palette)
+   ========================================================================== */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 20, 34, 0.78);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10vh 1rem 2rem;
+  animation: fadeIn 120ms ease;
+}
+
+.search-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--navy);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 36rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--sky-deep);
+}
+
+.search-panel-header input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.05rem;
+  outline: none;
+}
+
+.search-panel-header input::placeholder {
+  color: var(--ink-soft);
+}
+
+.search-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+.search-close-btn:hover {
+  color: var(--ink);
+  background: var(--sky);
+}
+
+.search-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  transition: background 80ms ease;
+}
+
+.search-item:hover,
+.search-item.active {
+  background: var(--sky-deep);
+}
+
+.search-item-title {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  color: var(--ink);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.search-item-tag {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+  background: var(--sky);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+}
+
+.search-item-tag.pokémon {
+  background: rgba(255, 203, 5, 0.15);
+  color: var(--mark);
+  border-color: rgba(255, 203, 5, 0.35);
+}
+
+.search-item-tag.move {
+  background: rgba(61, 125, 202, 0.15);
+  color: var(--blue);
+  border-color: rgba(61, 125, 202, 0.35);
+}
+
+.search-item-tag.ability {
+  background: rgba(120, 200, 80, 0.15);
+  color: #78C850;
+  border-color: rgba(120, 200, 80, 0.35);
+}
+
+.search-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.search-panel-footer {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--line);
+  background: var(--sky);
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+}
+
+.search-panel-footer kbd {
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.1rem 0.3rem;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Who's That Pokémon Quiz
+   ========================================================================== */
+.quiz-score-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-score-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+
+.quiz-score-card span {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--mark);
+}
+
+.quiz-score-card small {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+
+.quiz-stage-box {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quiz-silhouette-wrap {
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, var(--sky-deep) 0%, rgba(11, 28, 46, 0.4) 70%, transparent 100%);
+  margin-bottom: 1.5rem;
+}
+
+.quiz-img-silhouette {
+  filter: brightness(0);
+  transition: filter 400ms ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.quiz-img-revealed {
+  filter: brightness(1) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+  animation: revealPulse 500ms ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@keyframes revealPulse {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.quiz-controls-form {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 32rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.quiz-controls-form input {
+  flex: 1;
+  min-width: 14rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+.quiz-controls-form input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.quiz-feedback-banner {
+  width: 100%;
+  max-width: 32rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  animation: fadeIn 150ms ease;
+}
+
+.quiz-feedback-banner.success {
+  background: rgba(120, 200, 80, 0.15);
+  border: 1px solid rgba(120, 200, 80, 0.4);
+  color: #78C850;
+}
+
+.quiz-feedback-banner.warning {
+  background: rgba(240, 128, 48, 0.15);
+  border: 1px solid rgba(240, 128, 48, 0.4);
+  color: #F08030;
+}
+
+.quiz-feedback-banner.error {
+  background: rgba(238, 21, 21, 0.15);
+  border: 1px solid rgba(238, 21, 21, 0.4);
+  color: #EE1515;
+}
+
+/* ==========================================================================
+   Achievement Badges
+   ========================================================================== */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.badge-card {
+  padding: 1.15rem;
+  border-radius: 4px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 120ms ease, border-color 120ms ease;
+}
+
+.badge-card.earned {
+  border-color: var(--mark);
+  box-shadow: 0 4px 12px rgba(255, 203, 5, 0.1);
+}
+
+.badge-card.earned:hover {
+  transform: translateY(-2px);
+}
+
+.badge-card.locked {
+  opacity: 0.55;
+  filter: grayscale(0.8);
+  border-style: dashed;
+}
+
+@media (max-width: 900px) {
+  .badge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .quiz-score-board {
+    grid-template-columns: 1fr;
+  }
+  .badge-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Interactive Regional Field Map
+   ========================================================================== */
+.field-map-stage {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.field-map-img {
+  width: 100%;
+  height: auto;
+  max-height: 580px;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: contrast(1.05) saturate(1.1);
+  transition: opacity 200ms ease;
+}
+
+.pins-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+  z-index: 10;
+}
+
+.map-pin-core {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--mark);
+  border: 2px solid #071422;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.map-pin:hover .map-pin-core,
+.map-pin.active .map-pin-core {
+  transform: scale(1.15);
+  background: #FFF;
+}
+
+.map-pin-pulse {
+  display: none;
+}
+
+.map-pin-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: rgba(7, 20, 34, 0.85);
+  border: 1px solid var(--line);
+  padding: 0.15rem 0.4rem;
+  border-radius: 2px;
+  margin-top: 4px;
+  pointer-events: none;
+  opacity: 0.9;
+  letter-spacing: 0.02em;
+}
+
+/* Recon Popover */
+.recon-popover {
+  position: absolute;
+  z-index: 50;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  border-radius: var(--r-file);
+  padding: 1.15rem 1.25rem;
+  width: 290px;
+  max-width: 90vw;
+  animation: fadeIn 120ms ease;
+}
+
+.recon-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  line-height: 1;
+  border-radius: 2px;
+}
+.recon-close-btn:hover {
+  color: var(--ink);
+  background: var(--sky);
+}
+
+.recon-type-tag {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--mark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.recon-name {
+  font-family: var(--font-ui);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0.2rem 0 0.35rem;
+}
+
+.recon-desc {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin: 0 0 0.85rem;
+}
+
+.recon-pokemons-title {
+  font-family: var(--font-num);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.5rem;
+}
+
+.recon-pokemons-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.recon-poke-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--sky-deep);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.4rem 0.25rem;
+  text-decoration: none;
+  transition: transform 100ms ease, border-color 100ms ease;
+}
+.recon-poke-card:hover {
+  border-color: var(--mark);
+}
+
+.recon-poke-card img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+.recon-poke-card span.id {
+  font-family: var(--font-num);
+  font-size: 0.625rem;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.recon-poke-card span.name {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  color: var(--ink);
+  font-weight: 700;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   TCG BOOSTER PACK LAB (QUIZ PAGE REPURPOSED)
+   Strictly following design.md: night archive, hard shadows, 4px radii,
+   no hover-scale, no rainbow glow, no decorative glassmorphism.
+   ========================================================================== */
+
+.pack-lab-wrap {
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+/* Pack Controls Bar */
+.pack-controls-bar {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.pack-selector-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  margin-top: 0.75rem;
+}
+
+.pack-select-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1 1 20rem;
+}
+
+.pack-select-group label {
+  font-family: var(--font-num);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.pack-set-select {
+  flex: 1;
+  height: 2.5rem;
+  background: var(--sky-deep);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 0.75rem;
+  font: 500 0.875rem var(--font-ui);
+  cursor: pointer;
+  outline: none;
+}
+
+.pack-set-select:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Pack Stage Main Container */
+.pack-stage-container {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2.5rem 1.5rem;
+  min-height: 26rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 0 var(--line);
+}
+
+/* Pack Stage Loading Overlay */
+.pack-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--sky);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.pack-loading-overlay.is-active {
+  display: flex !important;
+}
+
+/* Foil Booster Pack Display (100% Authentic Physical Packaging) */
+.pack-foil-wrapper {
+  position: relative;
+  width: 250px;
+  height: 485px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  background: #0d1e30;
+  box-shadow: 0 10px 0 var(--line), 0 16px 28px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 160ms cubic-bezier(0.2, 0.8, 0.4, 1), box-shadow 160ms ease;
+}
+
+.pack-foil-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 0 var(--line), 0 22px 35px rgba(0, 0, 0, 0.6);
+}
+
+.pack-foil-wrapper:active {
+  transform: translateY(2px);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+.pack-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+/* Subtle physical metallic sheen overlay */
+.pack-foil-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(255, 255, 255, 0.04) 58%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.75;
+  transition: opacity 160ms ease;
+  z-index: 5;
+}
+
+.pack-foil-wrapper:hover .pack-foil-sheen {
+  opacity: 1;
+}
+
+/* Tear interaction indicator */
+.pack-tear-tab {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 0.75rem;
+  background: rgba(7, 20, 34, 0.65);
+  border-top: 1px dashed rgba(255, 203, 5, 0.6);
+  border-bottom: 1px dashed rgba(255, 203, 5, 0.6);
+  color: var(--mark);
+  font-family: var(--font-num);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+  transition: opacity 140ms ease, background 140ms ease;
+  z-index: 10;
+}
+
+.pack-foil-wrapper:hover .pack-tear-tab {
+  opacity: 1;
+  background: rgba(7, 20, 34, 0.85);
+}
+
+.pack-tear-arrow {
+  font-size: 0.5rem;
+  opacity: 0.8;
+}
+
+/* Tearing animation state */
+.pack-foil-wrapper.is-tearing {
+  animation: packTearPhysical 0.5s forwards ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes packTearPhysical {
+  0% { transform: scale(1) translateY(0); filter: brightness(1); }
+  35% { transform: scale(0.98) translateY(-6px) rotate(-1deg); filter: brightness(1.2); }
+  70% { transform: scale(0.95) translateY(-14px) rotate(1deg); opacity: 0.7; }
+  100% { transform: scale(0.9) translateY(-24px); opacity: 0; }
+}
+
+/* 10-Card Opening Grid */
+.pack-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .pack-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .pack-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+/* 3D Card Item */
+.tcg-card-item {
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  perspective: 800px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tcg-card-item:active {
+  transform: scale(0.97);
+}
+
+.tcg-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out;
+  border-radius: 4px;
+}
+
+.tcg-card-item.is-flipped .tcg-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Card Back (Official Pokémon TCG Physical Card Back) */
+.tcg-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 4px;
+  background: #142842;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+  overflow: hidden;
+  transition: border-color 100ms ease;
+}
+
+.tcg-card-item:hover .tcg-card-back {
+  border-color: var(--mark);
+}
+
+.card-back-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-slot-num {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-family: var(--font-num);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: var(--mark);
+  background: rgba(7, 20, 34, 0.85);
+  border: 1px solid var(--line);
+  padding: 0.08rem 0.3rem;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+/* Card Front */
+.tcg-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--sky-deep);
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+  transition: border-color 100ms ease;
+}
+
+.tcg-card-item:hover .tcg-card-front {
+  border-color: var(--navy);
+}
+
+.tcg-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Hit Borders for High Rarity (Crisp physical tokens, no blurry neon) */
+.tcg-card-item.hit-glow-gold .tcg-card-front {
+  border: 2px solid var(--mark);
+}
+
+.tcg-card-item.hit-glow-rainbow .tcg-card-front {
+  border: 2px solid var(--mark);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+/* Specimen Badge on card corner */
+.tcg-card-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-family: var(--font-num);
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.15rem 0.35rem;
+  border-radius: 2px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.tcg-card-badge.badge-sar {
+  background: var(--ball);
+  color: #fff;
+}
+
+.tcg-card-badge.badge-ultra {
+  background: var(--mark);
+  color: var(--navy-key-ink);
+}
+
+.tcg-card-badge.badge-rare {
+  background: var(--navy);
+  color: var(--sky);
+}
+
+/* Post-opening Actions Bar */
+.pack-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* Binder Drawer & Gallery */
+.pack-binder-section {
+  margin-top: 2rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow: 0 4px 0 var(--line);
+  overflow: hidden;
+}
+
+.pack-binder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--sky-deep);
+  cursor: pointer;
+  user-select: none;
+}
+
+.pack-binder-header h2 {
+  font-size: 1.125rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pack-binder-toggle-icon {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  transition: transform 180ms ease;
+}
+
+.pack-binder-section.is-open .pack-binder-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.pack-binder-body {
+  padding: 1.25rem;
+  display: none;
+}
+
+.pack-binder-section.is-open .pack-binder-body {
+  display: block;
+}
+
+.pack-binder-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.pack-binder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+  max-height: 38rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.binder-thumb-item {
+  position: relative;
+  aspect-ratio: 63 / 88;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--sky);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 0 var(--line);
+  cursor: pointer;
+  transition: border-color 100ms ease;
+}
+
+.binder-thumb-item:hover {
+  border-color: var(--mark);
+}
+
+.binder-thumb-item:active {
+  transform: scale(0.97);
+}
+
+.binder-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.binder-thumb-count {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: var(--sky);
+  color: var(--mark);
+  font-family: var(--font-num);
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  line-height: 1;
+}
+
+/* Card Detail Modal (Solid night sky background, no blurry glassmorphism) */
+.tcg-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 20, 34, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.tcg-modal-backdrop.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tcg-modal-card-wrap {
+  max-width: 380px;
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 0 var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tcg-modal-card-img {
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  object-fit: contain;
+}
+
+.tcg-modal-info {
+  text-align: center;
+  color: var(--ink);
+}
+
+.tcg-modal-info h3 {
+  font-family: var(--font-ui);
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.tcg-modal-info p {
+  font-family: var(--font-num);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
