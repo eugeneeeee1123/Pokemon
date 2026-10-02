@@ -1,13 +1,13 @@
 # 151 FILE — All-In-One Codebase
 
 > 本文件汇集了 **151 File**（宝可梦纯原生前端 Web 站点）的全部源码。
-> 包含 8 个主页面、5 个全局样式表、10 个前端 JS 核心模块、辅助脚本、矢量资源与参考样板。
+> 包含 8 个主页面与扩展页面、5 个全局样式表、17 个前端 JS 核心模块、辅助脚本、矢量资源与参考样板。
 
 ---
 
 ## 目录 (Table of Contents)
 
-**汇总统计**: 共打包 **39** 个文件 | **11,276** 行代码 | **369,202** 字节
+**汇总统计**: 共打包 **40** 个文件 | **12,563** 行代码 | **409,472** 字节
 
 ---
 
@@ -25,11 +25,11 @@
 - [1.10 `lineup.html` (Lineup / 战力与属性缺口分析)](#110-lineuphtml-lineup-战力与属性缺口分析)
 - [1.11 `battle-lab.html` (Battle Lab / 双宝可梦对战推演)](#111-battle-labhtml-battle-lab-双宝可梦对战推演)
 - [1.12 `about.html` (File / 架构说明与数据源)](#112-abouthtml-file-架构说明与数据源)
-- [1.13 `quiz.html` (Quiz / 剪影猜谜辨识小游戏)](#113-quizhtml-quiz-剪影猜谜辨识小游戏)
+- [1.13 `quiz.html` (Booster Pack Lab / 实体卡包拆包实验室)](#113-quizhtml-booster-pack-lab-实体卡包拆包实验室)
 
 ### 2. CSS 样式模块 (CSS Stylesheets)
 
-- [2.1 `css/tokens.css` (设计 Token & 变量)](#21-csstokenscss-设计-token-&-变量)
+- [2.1 `css/tokens.css` (设计 Token & 变量)](#21-csstokenscss-设计-token-变量)
 - [2.2 `css/base.css` (全局排版与基础样式)](#22-cssbasecss-全局排版与基础样式)
 - [2.3 `css/buttons.css` (按钮与交互控件规范)](#23-cssbuttonscss-按钮与交互控件规范)
 - [2.4 `css/pokeball.css` (开闭精灵球组件动画)](#24-csspokeballcss-开闭精灵球组件动画)
@@ -39,20 +39,21 @@
 
 - [3.1 `js/api.js` (PokeAPI 异步请求与缓存)](#31-jsapijs-pokeapi-异步请求与缓存)
 - [3.2 `js/regions-data.js` (10 地区编号区间字典)](#32-jsregions-datajs-10-地区编号区间字典)
-- [3.3 `js/types-chart.js` (18×18 属性克制常数矩阵)](#33-jstypes-chartjs-18×18-属性克制常数矩阵)
-- [3.4 `js/pokeball.js` (精灵球开合音效与转场控制)](#34-jspokeballjs-精灵球开合音效与转场控制)
-- [3.5 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)](#35-jspokedexjs-名录+胶片双视图全1025只图鉴渲染)
-- [3.6 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)](#36-jspokemonjs-详情页标本台3d模型shiny切换)
-- [3.7 `js/types.js` (属性色票与矩阵交互)](#37-jstypesjs-属性色票与矩阵交互)
-- [3.8 `js/team.js` (腰带存储与拖拽排序)](#38-jsteamjs-腰带存储与拖拽排序)
-- [3.9 `js/lineup.js` (弱点缺口计算与两只对比)](#39-jslineupjs-弱点缺口计算与两只对比)
-- [3.10 `js/moves.js` (招式库检索与分页渲染)](#310-jsmovesjs-招式库检索与分页渲染)
-- [3.11 `js/abilities.js` (特性库检索与宝可梦索引)](#311-jsabilitiesjs-特性库检索与宝可梦索引)
-- [3.12 `js/collection.js` (图鉴与地区收集度统计)](#312-jscollectionjs-图鉴与地区收集度统计)
-- [3.13 `js/battle-lab.js` (对战实验室与克制比对)](#313-jsbattle-labjs-对战实验室与克制比对)
-- [3.14 `js/store.js` (本地存储与安全缓存管理)](#314-jsstorejs-本地存储与安全缓存管理)
-- [3.15 `js/quiz.js` (猜谜逻辑与连胜成就积分)](#315-jsquizjs-猜谜逻辑与连胜成就积分)
-- [3.16 `js/global-search.js` (全局命令面板快捷检索)](#316-jsglobal-searchjs-全局命令面板快捷检索)
+- [3.3 `js/regions.js` (地区实地探索地图与生态点位交互)](#33-jsregionsjs-地区实地探索地图与生态点位交互)
+- [3.4 `js/types-chart.js` (18×18 属性克制常数矩阵)](#34-jstypes-chartjs-18×18-属性克制常数矩阵)
+- [3.5 `js/pokeball.js` (精灵球开合音效与转场控制)](#35-jspokeballjs-精灵球开合音效与转场控制)
+- [3.6 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)](#36-jspokedexjs-名录+胶片双视图全1025只图鉴渲染)
+- [3.7 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)](#37-jspokemonjs-详情页标本台3d模型shiny切换)
+- [3.8 `js/types.js` (属性色票与矩阵交互)](#38-jstypesjs-属性色票与矩阵交互)
+- [3.9 `js/team.js` (腰带存储与拖拽排序)](#39-jsteamjs-腰带存储与拖拽排序)
+- [3.10 `js/lineup.js` (弱点缺口计算与两只对比)](#310-jslineupjs-弱点缺口计算与两只对比)
+- [3.11 `js/moves.js` (招式库检索与分页渲染)](#311-jsmovesjs-招式库检索与分页渲染)
+- [3.12 `js/abilities.js` (特性库检索与宝可梦索引)](#312-jsabilitiesjs-特性库检索与宝可梦索引)
+- [3.13 `js/collection.js` (图鉴与地区收集度统计)](#313-jscollectionjs-图鉴与地区收集度统计)
+- [3.14 `js/battle-lab.js` (对战实验室与克制比对)](#314-jsbattle-labjs-对战实验室与克制比对)
+- [3.15 `js/store.js` (本地存储与安全缓存管理)](#315-jsstorejs-本地存储与安全缓存管理)
+- [3.16 `js/quiz.js` (TCG 卡包实验室/实体开包/去重算法/卡册收藏)](#316-jsquizjs-tcg-卡包实验室实体开包去重算法卡册收藏)
+- [3.17 `js/global-search.js` (全局命令面板快捷检索)](#317-jsglobal-searchjs-全局命令面板快捷检索)
 
 ### 4. 矢量资源、脚本与配置 (Assets, Scripts & Config)
 
@@ -415,6 +416,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -556,6 +558,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -626,6 +629,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -633,8 +637,8 @@
 ### 1.4 `regions.html` (Regions / 10 官方地区地图)
 
 - **文件路径**: `regions.html`  
-- **代码行数**: 262 行  
-- **文件大小**: 12,113 字节  
+- **代码行数**: 97 行  
+- **文件大小**: 5,315 字节  
 
 ```html
 <!DOCTYPE html>
@@ -730,175 +734,11 @@
   </main>
 
   <script src="js/regions-data.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const atlasEl = document.getElementById("atlas");
-      const selector = document.getElementById("region-selector");
-      const mapImg = document.getElementById("active-map-img");
-      const titleEl = document.getElementById("current-region-title");
-      const descEl = document.getElementById("current-region-desc");
-      const dexBtn = document.getElementById("open-region-dex-btn");
-      const pinsLayer = document.getElementById("pins-layer");
-      const popover = document.getElementById("recon-popover");
-      const popoverClose = document.getElementById("recon-close-btn");
-      const popoverType = document.getElementById("recon-type");
-      const popoverName = document.getElementById("recon-name");
-      const popoverDesc = document.getElementById("recon-desc");
-      const popoverPokes = document.getElementById("recon-pokemons");
-
-      if (!window.REGIONS) return;
-
-      function getSpeciesName(id) {
-        const item = (window.ALL_SPECIES_DATA || []).find(s => s[0] === id);
-        return item ? item[1] : `#${id}`;
-      }
-
-      if (selector) {
-        selector.innerHTML = window.REGIONS.map(r => `
-          <option value="${r.slug}">${r.name} (#${String(r.start).padStart(3, "0")}–${r.end})</option>
-        `).join("");
-      }
-
-      function renderInteractiveMap(region) {
-        if (selector) selector.value = region.slug;
-        if (mapImg) {
-          mapImg.src = `assets/maps/${region.slug}.webp`;
-          mapImg.alt = `${region.name} Regional Map`;
-        }
-        if (titleEl) titleEl.textContent = `${region.name} Habitat Recon`;
-        if (descEl) descEl.textContent = region.line || `Detailed geographical survey covering #${region.start} through #${region.end}.`;
-        if (dexBtn) {
-          dexBtn.href = `pokedex.html?region=${region.slug}`;
-          dexBtn.textContent = `Explore ${region.name} Dex →`;
-        }
-
-        closePopover();
-
-        const landmarks = region.landmarks || [];
-        if (pinsLayer) {
-          pinsLayer.innerHTML = landmarks.map((lm, idx) => `
-            <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}">
-              <span class="map-pin-pulse"></span>
-              <span class="map-pin-core"></span>
-              <span class="map-pin-label">${lm.name}</span>
-            </button>
-          `).join("");
-
-          pinsLayer.querySelectorAll(".map-pin").forEach(pinBtn => {
-            pinBtn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              const idx = Number(pinBtn.dataset.idx);
-              const lm = landmarks[idx];
-              if (!lm) return;
-              showPopover(lm);
-            });
-          });
-        }
-      }
-
-      function showPopover(lm) {
-        if (!popover) return;
-        if (popoverType) popoverType.textContent = lm.type || "Habitat";
-        if (popoverName) popoverName.textContent = lm.name;
-        if (popoverDesc) popoverDesc.textContent = lm.desc || "";
-
-        if (popoverPokes) {
-          popoverPokes.innerHTML = (lm.pokemons || []).map(id => {
-            const name = getSpeciesName(id);
-            const artUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
-            return `
-              <a class="recon-poke-card" href="pokemon.html?id=${id}" title="Open #${id} ${name}">
-                <img src="${artUrl}" alt="${name}" loading="lazy">
-                <span class="id">#${String(id).padStart(3, "0")}</span>
-                <span class="name">${name}</span>
-              </a>
-            `;
-          }).join("");
-        }
-
-        const pinLeft = lm.x;
-        const pinTop = lm.y;
-
-        if (pinLeft > 55) {
-          popover.style.right = `${100 - pinLeft + 3}%`;
-          popover.style.left = "auto";
-        } else {
-          popover.style.left = `${pinLeft + 3}%`;
-          popover.style.right = "auto";
-        }
-
-        if (pinTop > 60) {
-          popover.style.bottom = `${100 - pinTop}%`;
-          popover.style.top = "auto";
-        } else {
-          popover.style.top = `${Math.max(5, pinTop - 5)}%`;
-          popover.style.bottom = "auto";
-        }
-
-        popover.hidden = false;
-      }
-
-      function closePopover() {
-        if (popover) popover.hidden = true;
-      }
-
-      popoverClose?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        closePopover();
-      });
-
-      document.getElementById("map-stage")?.addEventListener("click", (e) => {
-        if (!e.target.closest(".recon-popover") && !e.target.closest(".map-pin")) {
-          closePopover();
-        }
-      });
-
-      selector?.addEventListener("change", (e) => {
-        const slug = e.target.value;
-        const found = window.REGIONS.find(r => r.slug === slug);
-        if (found) renderInteractiveMap(found);
-      });
-
-      if (atlasEl) {
-        atlasEl.innerHTML = window.REGIONS.map(r => `
-          <div class="region-card" data-slug="${r.slug}" style="cursor:pointer;">
-            <div class="map-thumb">
-              <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
-            </div>
-            <div class="region-info">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
-                <div>
-                  <p class="name">${r.name}</p>
-                  <p class="ids">#${String(r.start).padStart(3, "0")}–${r.end} · ${r.count} files</p>
-                </div>
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${r.preview}.png" alt="" width="48" height="48" loading="lazy" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3)); flex-shrink:0;">
-              </div>
-              <p class="soft" style="font-size:0.8125rem; margin-top:0.4rem; color:var(--ink-soft); line-height:1.4;">${r.line}</p>
-              <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
-                <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">Inspect Recon Map ↗</span>
-              </div>
-            </div>
-          </div>
-        `).join("");
-
-        atlasEl.querySelectorAll(".region-card").forEach(card => {
-          card.addEventListener("click", () => {
-            const slug = card.dataset.slug;
-            const r = window.REGIONS.find(x => x.slug === slug);
-            if (r) {
-              renderInteractiveMap(r);
-              document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: "smooth" });
-            }
-          });
-        });
-      }
-
-      renderInteractiveMap(window.REGIONS[0]);
-    });
-  </script>
+  <script src="js/regions.js"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -988,6 +828,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1079,6 +920,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1158,6 +1000,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1264,6 +1107,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1375,6 +1219,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1481,6 +1326,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1571,6 +1417,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1710,15 +1557,16 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
 
-### 1.13 `quiz.html` (Quiz / 剪影猜谜辨识小游戏)
+### 1.13 `quiz.html` (Booster Pack Lab / 实体卡包拆包实验室)
 
 - **文件路径**: `quiz.html`  
-- **代码行数**: 88 行  
-- **文件大小**: 3,562 字节  
+- **代码行数**: 221 行  
+- **文件大小**: 10,428 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1726,8 +1574,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quiz — 151 File</title>
-  <meta name="description" content="Who's that Pokémon? Identify specimens from their official silhouettes and test your field knowledge.">
+  <title>Pack Lab — 151 File</title>
+  <meta name="description" content="Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.">
   <meta name="theme-color" content="#071422">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1763,43 +1611,176 @@
     </div>
   </header>
 
-  <main id="main" class="wrap" style="max-width:48rem; margin:0 auto;">
-    <h1 class="page-title">Who's That Pokémon?</h1>
-    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
-      Silhouette recognition lab. Guess the specimen to unlock its archive entry and build your knowledge streak.
-    </p>
+  <main id="main" class="wrap pack-lab-wrap">
+    <div style="margin-bottom:1.5rem;">
+      <h1 class="page-title">Booster Pack Lab</h1>
+      <p class="lead" style="color:var(--ink-soft); margin-bottom:1.25rem;">
+        Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.
+      </p>
 
-    <!-- 计分看板 -->
-    <div class="quiz-score-board">
-      <div class="quiz-score-card">
-        <span id="streak-count">0</span>
-        <small>CURRENT STREAK</small>
-      </div>
-      <div class="quiz-score-card">
-        <span id="best-streak-count">0</span>
-        <small>RECORD BEST</small>
-      </div>
-      <div class="quiz-score-card">
-        <span id="total-count">0</span>
-        <small>TOTAL CORRECT</small>
+      <!-- 记分看板：采用全站统一结构与Oxanium等宽数字 -->
+      <div class="quiz-score-board" style="grid-template-columns: repeat(3, 1fr); margin-bottom:0;">
+        <div class="quiz-score-card">
+          <span id="stat-packs-opened">0</span>
+          <small>PACKS OPENED</small>
+        </div>
+        <div class="quiz-score-card">
+          <span id="stat-cards-collected">0</span>
+          <small>UNIQUE SPECIMENS</small>
+        </div>
+        <div class="quiz-score-card">
+          <span id="pack-set-meta-total">161</span>
+          <small id="pack-set-meta-name">30TH CELEBRATION</small>
+        </div>
       </div>
     </div>
 
-    <!-- 猜谜展台 -->
-    <section class="quiz-stage-box" id="quiz-stage">
-      <div class="quiz-silhouette-wrap">
-        <img id="quiz-img" src="" alt="Mystery specimen" class="quiz-img-silhouette" width="220" height="220">
+    <!-- 卡包控制栏与选择器 -->
+    <section class="pack-controls-bar">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+        <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); font-weight:700; letter-spacing:0.05em;">
+          FEATURED EXPANSIONS
+        </span>
+        <span id="pack-set-meta" style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">
+          30th Celebration · 161 Cards
+        </span>
       </div>
 
-      <div id="quiz-feedback" class="quiz-feedback-banner" hidden></div>
+      <!-- 快速预设按钮组：使用全站原生 .type-row 与 .chip 样式规范 -->
+      <div class="type-row" id="pack-featured-chips">
+        <button class="chip" data-set-id="me55" data-on>30th Celebration · 2026</button>
+        <button class="chip" data-set-id="sv3pt5">Pokémon 151 · 2023</button>
+        <button class="chip" data-set-id="base1">Base Set · 1999</button>
+        <button class="chip" data-set-id="sv8pt5">Prismatic Evolutions · 2025</button>
+        <button class="chip" data-set-id="swsh7">Evolving Skies · 2021</button>
+      </div>
 
-      <form id="quiz-form" class="quiz-controls-form" autocomplete="off">
-        <input id="quiz-input" type="text" placeholder="Type Pokémon name and press Enter..." autocomplete="off" spellcheck="false">
-        <button class="btn btn-primary" id="quiz-submit" type="submit">Submit Guess</button>
-        <button class="btn btn-paper" id="quiz-skip" type="button">Reveal / Skip</button>
-      </form>
+      <!-- 全系列下拉框 -->
+      <div class="pack-selector-row">
+        <div class="pack-select-group">
+          <label for="pack-set-select">All Expansions:</label>
+          <select id="pack-set-select" class="pack-set-select">
+            <option value="me55">[2026] 30th Celebration (161 cards) — 30th Anniversary</option>
+            <option value="me55c">[2026] 30th Celebration: Classic Collection (30 cards)</option>
+            <option value="me1">[2025] Mega Evolution (188 cards)</option>
+            <option value="sv10">[2025] Destined Rivals (244 cards)</option>
+            <option value="sv9">[2025] Journey Together (190 cards)</option>
+            <option value="sv8pt5">[2025] Prismatic Evolutions (180 cards)</option>
+            <option value="sv8">[2024] Surging Sparks (252 cards)</option>
+            <option value="sv7">[2024] Stellar Crown (175 cards)</option>
+            <option value="sv6">[2024] Twilight Masquerade (226 cards)</option>
+            <option value="sv4pt5">[2024] Paldean Fates (245 cards)</option>
+            <option value="sv3pt5" selected>[2023] 151 (207 cards) — Classic 151 Modern Art</option>
+            <option value="sv1">[2023] Scarlet & Violet Base (258 cards)</option>
+            <option value="swsh12pt5">[2023] Crown Zenith (160 cards)</option>
+            <option value="swsh7">[2021] Evolving Skies (237 cards)</option>
+            <option value="swsh45">[2021] Shining Fates (73 cards)</option>
+            <option value="base1">[1999] Base Set (102 cards) — 1999 Original First Edition</option>
+            <option value="base2">[1999] Jungle (64 cards)</option>
+            <option value="base3">[1999] Fossil (62 cards)</option>
+            <option value="base5">[2000] Team Rocket (83 cards)</option>
+            <option value="gym1">[2000] Gym Heroes (132 cards)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="pack-open-trigger-btn" type="button">
+          Tear pack
+        </button>
+      </div>
+    </section>
+
+    <!-- 拆包交互主舞台 -->
+    <section class="pack-stage-container" id="pack-stage">
+      <!-- 初始/封包状态：铝箔卡包展示 -->
+      <div id="pack-sealed-view" style="display:flex; flex-direction:column; align-items:center;">
+        <div class="pack-foil-wrapper" id="pack-foil-pack" title="Tear pack">
+          <!-- 实体铝箔卡包完整包装封画 -->
+          <img id="pack-cover-img" class="pack-cover-img" src="assets/packs/me55.jpg" alt="Official Booster Pack Packaging">
+          <!-- 拟真铝箔金属高光覆层 -->
+          <div class="pack-foil-sheen"></div>
+          <!-- 撕包微交互浮标 -->
+          <div class="pack-tear-tab">
+            <span class="pack-tear-arrow">◀</span>
+            <span class="pack-tear-label">TEAR TO OPEN</span>
+            <span class="pack-tear-arrow">▶</span>
+          </div>
+        </div>
+
+        <p style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink-soft); margin-top:1.5rem; text-align:center;">
+          Tap the foil pack or press Tear pack to reveal 10 specimens.
+        </p>
+      </div>
+
+      <!-- 开包状态：10 张卡牌揭晓展示区（默认隐藏） -->
+      <div id="pack-opened-view" style="display:none; width:100%;">
+        <div class="pack-cards-grid" id="pack-cards-grid">
+          <!-- 10 张卡牌由 JS 动态生成 -->
+        </div>
+
+        <!-- 揭晓后续操作栏 -->
+        <div class="pack-actions-bar">
+          <button class="btn btn-primary" id="pack-again-btn" type="button">
+            Tear another pack
+          </button>
+          <button class="btn btn-paper" id="pack-reveal-all-btn" type="button">
+            Reveal all
+          </button>
+          <button class="btn btn-paper" id="pack-toggle-binder-btn" type="button">
+            Open binder
+          </button>
+        </div>
+      </div>
+
+      <!-- 加载提示浮层 -->
+      <div id="pack-loading-overlay" class="pack-loading-overlay">
+        <p style="font-family:var(--font-num); font-size:0.875rem; color:var(--ink);" id="pack-loading-msg">Fetching expansion card ledger...</p>
+      </div>
+    </section>
+
+    <!-- 卡册抽屉（Binder Section，默认可折叠） -->
+    <section class="pack-binder-section" id="pack-binder-section">
+      <div class="pack-binder-header" id="pack-binder-header">
+        <h2>
+          <span>Specimen Binder</span>
+          <span id="binder-count-badge" style="font-family:var(--font-num); font-size:0.75rem; background:var(--sky); color:var(--mark); padding:0.15rem 0.5rem; border-radius:2px; font-weight:700;">
+            0 Cards
+          </span>
+        </h2>
+        <span class="pack-binder-toggle-icon">▼</span>
+      </div>
+
+      <div class="pack-binder-body">
+        <div class="pack-binder-filters">
+          <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); font-weight:700; margin-right:0.25rem;">
+            FILTER:
+          </span>
+          <button class="chip" data-filter="all" data-on>All Cards</button>
+          <button class="chip" data-filter="sar">Special Illustration</button>
+          <button class="chip" data-filter="ultra">Ultra Rare / ex</button>
+          <button class="chip" data-filter="rare">Rare / Holo</button>
+          <button class="chip" data-filter="uncommon">Uncommon</button>
+          <button class="chip" data-filter="common">Common</button>
+        </div>
+
+        <div class="pack-binder-grid" id="pack-binder-grid">
+          <!-- 收集卡牌缩略图由 JS 动态生成 -->
+        </div>
+      </div>
     </section>
   </main>
+
+  <!-- 高清大卡预览 Modal -->
+  <div class="tcg-modal-backdrop" id="tcg-modal">
+    <div class="tcg-modal-card-wrap">
+      <img id="tcg-modal-img" class="tcg-modal-card-img" src="" alt="High resolution card preview">
+      <div class="tcg-modal-info">
+        <h3 id="tcg-modal-name">Pokémon Name</h3>
+        <p id="tcg-modal-meta">#001 · Illustration Rare · Yuu Nishida</p>
+      </div>
+      <button class="btn btn-paper" id="tcg-modal-close-btn" type="button" style="margin-top:0.5rem;">
+        Close file
+      </button>
+    </div>
+  </div>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
@@ -1809,6 +1790,7 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1870,6 +1852,7 @@
   --shadow-file: 0 10px 0 var(--line);
   --shadow-key:  0 4px 0 var(--line);
 }
+
 ```
 
 ---
@@ -2106,6 +2089,7 @@ main li a:not([class]),
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
+
 ```
 
 ---
@@ -2235,6 +2219,7 @@ main li a:not([class]),
 .link-action:hover {
   color: var(--ink);
 }
+
 ```
 
 ---
@@ -2482,6 +2467,8 @@ main li a:not([class]),
     transform: none !important;
   }
 }
+
+
 ```
 
 ---
@@ -2489,8 +2476,8 @@ main li a:not([class]),
 ### 2.5 `css/pages.css` (各页面专用布局与响应式样式)
 
 - **文件路径**: `css/pages.css`  
-- **代码行数**: 2,696 行  
-- **文件大小**: 55,024 字节  
+- **代码行数**: 3,231 行  
+- **文件大小**: 65,954 字节  
 
 ```css
 /* ==========================================================================
@@ -5185,6 +5172,546 @@ main li a:not([class]),
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ==========================================================================
+   TCG BOOSTER PACK LAB (QUIZ PAGE REPURPOSED)
+   Strictly following design.md: night archive, hard shadows, 4px radii,
+   no hover-scale, no rainbow glow, no decorative glassmorphism.
+   ========================================================================== */
+
+.pack-lab-wrap {
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+/* Pack Controls Bar */
+.pack-controls-bar {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.pack-selector-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  margin-top: 0.75rem;
+}
+
+.pack-select-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1 1 20rem;
+}
+
+.pack-select-group label {
+  font-family: var(--font-num);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.pack-set-select {
+  flex: 1;
+  height: 2.5rem;
+  background: var(--sky-deep);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 0.75rem;
+  font: 500 0.875rem var(--font-ui);
+  cursor: pointer;
+  outline: none;
+}
+
+.pack-set-select:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Pack Stage Main Container */
+.pack-stage-container {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2.5rem 1.5rem;
+  min-height: 26rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 0 var(--line);
+}
+
+/* Pack Stage Loading Overlay */
+.pack-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--sky);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 20;
+}
+
+.pack-loading-overlay.is-active {
+  display: flex !important;
+}
+
+/* Foil Booster Pack Display (100% Authentic Physical Packaging) */
+.pack-foil-wrapper {
+  position: relative;
+  width: 250px;
+  height: 485px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  background: #0d1e30;
+  box-shadow: 0 10px 0 var(--line), 0 16px 28px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 160ms cubic-bezier(0.2, 0.8, 0.4, 1), box-shadow 160ms ease;
+}
+
+.pack-foil-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 0 var(--line), 0 22px 35px rgba(0, 0, 0, 0.6);
+}
+
+.pack-foil-wrapper:active {
+  transform: translateY(2px);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+.pack-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+/* Subtle physical metallic sheen overlay */
+.pack-foil-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(255, 255, 255, 0.04) 58%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.75;
+  transition: opacity 160ms ease;
+  z-index: 5;
+}
+
+.pack-foil-wrapper:hover .pack-foil-sheen {
+  opacity: 1;
+}
+
+/* Tear interaction indicator */
+.pack-tear-tab {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 0.75rem;
+  background: rgba(7, 20, 34, 0.65);
+  border-top: 1px dashed rgba(255, 203, 5, 0.6);
+  border-bottom: 1px dashed rgba(255, 203, 5, 0.6);
+  color: var(--mark);
+  font-family: var(--font-num);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+  transition: opacity 140ms ease, background 140ms ease;
+  z-index: 10;
+}
+
+.pack-foil-wrapper:hover .pack-tear-tab {
+  opacity: 1;
+  background: rgba(7, 20, 34, 0.85);
+}
+
+.pack-tear-arrow {
+  font-size: 0.5rem;
+  opacity: 0.8;
+}
+
+/* Tearing animation state */
+.pack-foil-wrapper.is-tearing {
+  animation: packTearPhysical 0.5s forwards ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes packTearPhysical {
+  0% { transform: scale(1) translateY(0); filter: brightness(1); }
+  35% { transform: scale(0.98) translateY(-6px) rotate(-1deg); filter: brightness(1.2); }
+  70% { transform: scale(0.95) translateY(-14px) rotate(1deg); opacity: 0.7; }
+  100% { transform: scale(0.9) translateY(-24px); opacity: 0; }
+}
+
+/* 10-Card Opening Grid */
+.pack-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .pack-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .pack-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+/* 3D Card Item */
+.tcg-card-item {
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  perspective: 800px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tcg-card-item:active {
+  transform: scale(0.97);
+}
+
+.tcg-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out;
+  border-radius: 4px;
+}
+
+.tcg-card-item.is-flipped .tcg-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Card Back (Official Pokémon TCG Physical Card Back) */
+.tcg-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 4px;
+  background: #142842;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+  overflow: hidden;
+  transition: border-color 100ms ease;
+}
+
+.tcg-card-item:hover .tcg-card-back {
+  border-color: var(--mark);
+}
+
+.card-back-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-slot-num {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-family: var(--font-num);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: var(--mark);
+  background: rgba(7, 20, 34, 0.85);
+  border: 1px solid var(--line);
+  padding: 0.08rem 0.3rem;
+  border-radius: 2px;
+  line-height: 1;
+}
+
+/* Card Front */
+.tcg-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--sky-deep);
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+  transition: border-color 100ms ease;
+}
+
+.tcg-card-item:hover .tcg-card-front {
+  border-color: var(--navy);
+}
+
+.tcg-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Hit Borders for High Rarity (Crisp physical tokens, no blurry neon) */
+.tcg-card-item.hit-glow-gold .tcg-card-front {
+  border: 2px solid var(--mark);
+}
+
+.tcg-card-item.hit-glow-rainbow .tcg-card-front {
+  border: 2px solid var(--mark);
+  box-shadow: 0 4px 0 var(--line);
+}
+
+/* Specimen Badge on card corner */
+.tcg-card-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-family: var(--font-num);
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.15rem 0.35rem;
+  border-radius: 2px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.tcg-card-badge.badge-sar {
+  background: var(--ball);
+  color: #fff;
+}
+
+.tcg-card-badge.badge-ultra {
+  background: var(--mark);
+  color: var(--navy-key-ink);
+}
+
+.tcg-card-badge.badge-rare {
+  background: var(--navy);
+  color: var(--sky);
+}
+
+/* Post-opening Actions Bar */
+.pack-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* Binder Drawer & Gallery */
+.pack-binder-section {
+  margin-top: 2rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow: 0 4px 0 var(--line);
+  overflow: hidden;
+}
+
+.pack-binder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--sky-deep);
+  cursor: pointer;
+  user-select: none;
+}
+
+.pack-binder-header h2 {
+  font-size: 1.125rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pack-binder-toggle-icon {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  transition: transform 180ms ease;
+}
+
+.pack-binder-section.is-open .pack-binder-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.pack-binder-body {
+  padding: 1.25rem;
+  display: none;
+}
+
+.pack-binder-section.is-open .pack-binder-body {
+  display: block;
+}
+
+.pack-binder-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.pack-binder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+  max-height: 38rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.binder-thumb-item {
+  position: relative;
+  aspect-ratio: 63 / 88;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--sky);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 0 var(--line);
+  cursor: pointer;
+  transition: border-color 100ms ease;
+}
+
+.binder-thumb-item:hover {
+  border-color: var(--mark);
+}
+
+.binder-thumb-item:active {
+  transform: scale(0.97);
+}
+
+.binder-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.binder-thumb-count {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: var(--sky);
+  color: var(--mark);
+  font-family: var(--font-num);
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  line-height: 1;
+}
+
+/* Card Detail Modal (Solid night sky background, no blurry glassmorphism) */
+.tcg-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 20, 34, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.tcg-modal-backdrop.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tcg-modal-card-wrap {
+  max-width: 380px;
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 0 var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tcg-modal-card-img {
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  object-fit: contain;
+}
+
+.tcg-modal-info {
+  text-align: center;
+  color: var(--ink);
+}
+
+.tcg-modal-info h3 {
+  font-family: var(--font-ui);
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.tcg-modal-info p {
+  font-family: var(--font-num);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
 ```
 
 ---
@@ -5639,6 +6166,7 @@ main li a:not([class]),
     true
   );
 })(window);
+
 ```
 
 ---
@@ -6866,11 +7394,194 @@ function getSpeciesById(id) {
 window.ALL_SPECIES = ALL_SPECIES;
 window.getRegionPokemon = getRegionPokemon;
 window.getSpeciesById = getSpeciesById;
+
 ```
 
 ---
 
-### 3.3 `js/types-chart.js` (18×18 属性克制常数矩阵)
+### 3.3 `js/regions.js` (地区实地探索地图与生态点位交互)
+
+- **文件路径**: `js/regions.js`  
+- **代码行数**: 170 行  
+- **文件大小**: 6,402 字节  
+
+```javascript
+/**
+ * 151 FILE — Regions Logic
+ * 遵循 pokemon-web-project-plan.md §4.7 与目录规划
+ * 交互式地区实地探索地图与地区图鉴卡片联动
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const atlasEl = document.getElementById("atlas");
+  const selector = document.getElementById("region-selector");
+  const mapImg = document.getElementById("active-map-img");
+  const titleEl = document.getElementById("current-region-title");
+  const descEl = document.getElementById("current-region-desc");
+  const dexBtn = document.getElementById("open-region-dex-btn");
+  const pinsLayer = document.getElementById("pins-layer");
+  const popover = document.getElementById("recon-popover");
+  const popoverClose = document.getElementById("recon-close-btn");
+  const popoverType = document.getElementById("recon-type");
+  const popoverName = document.getElementById("recon-name");
+  const popoverDesc = document.getElementById("recon-desc");
+  const popoverPokes = document.getElementById("recon-pokemons");
+
+  if (!window.REGIONS) return;
+
+  function getSpeciesName(id) {
+    const item = (window.ALL_SPECIES_DATA || []).find(s => s[0] === id);
+    return item ? item[1] : `#${id}`;
+  }
+
+  if (selector) {
+    selector.innerHTML = window.REGIONS.map(r => `
+      <option value="${r.slug}">${r.name} (#${String(r.start).padStart(3, "0")}–${r.end})</option>
+    `).join("");
+  }
+
+  function renderInteractiveMap(region) {
+    if (selector) selector.value = region.slug;
+    if (mapImg) {
+      mapImg.src = `assets/maps/${region.slug}.webp`;
+      mapImg.alt = `${region.name} Regional Map`;
+    }
+    if (titleEl) titleEl.textContent = `${region.name} Habitat Recon`;
+    if (descEl) descEl.textContent = region.line || `Detailed geographical survey covering #${region.start} through #${region.end}.`;
+    if (dexBtn) {
+      dexBtn.href = `pokedex.html?region=${region.slug}`;
+      dexBtn.textContent = `Explore ${region.name} Dex →`;
+    }
+
+    closePopover();
+
+    const landmarks = region.landmarks || [];
+    if (pinsLayer) {
+      pinsLayer.innerHTML = landmarks.map((lm, idx) => `
+        <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}">
+          <span class="map-pin-pulse"></span>
+          <span class="map-pin-core"></span>
+          <span class="map-pin-label">${lm.name}</span>
+        </button>
+      `).join("");
+
+      pinsLayer.querySelectorAll(".map-pin").forEach(pinBtn => {
+        pinBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const idx = Number(pinBtn.dataset.idx);
+          const lm = landmarks[idx];
+          if (!lm) return;
+          showPopover(lm);
+        });
+      });
+    }
+  }
+
+  function showPopover(lm) {
+    if (!popover) return;
+    if (popoverType) popoverType.textContent = lm.type || "Habitat";
+    if (popoverName) popoverName.textContent = lm.name;
+    if (popoverDesc) popoverDesc.textContent = lm.desc || "";
+
+    if (popoverPokes) {
+      popoverPokes.innerHTML = (lm.pokemons || []).map(id => {
+        const name = getSpeciesName(id);
+        const artUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+        return `
+          <a class="recon-poke-card" href="pokemon.html?id=${id}" title="Open #${id} ${name}">
+            <img src="${artUrl}" alt="${name}" loading="lazy">
+            <span class="id">#${String(id).padStart(3, "0")}</span>
+            <span class="name">${name}</span>
+          </a>
+        `;
+      }).join("");
+    }
+
+    const pinLeft = lm.x;
+    const pinTop = lm.y;
+
+    if (pinLeft > 55) {
+      popover.style.right = `${100 - pinLeft + 3}%`;
+      popover.style.left = "auto";
+    } else {
+      popover.style.left = `${pinLeft + 3}%`;
+      popover.style.right = "auto";
+    }
+
+    if (pinTop > 60) {
+      popover.style.bottom = `${100 - pinTop}%`;
+      popover.style.top = "auto";
+    } else {
+      popover.style.top = `${Math.max(5, pinTop - 5)}%`;
+      popover.style.bottom = "auto";
+    }
+
+    popover.hidden = false;
+  }
+
+  function closePopover() {
+    if (popover) popover.hidden = true;
+  }
+
+  popoverClose?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closePopover();
+  });
+
+  document.getElementById("map-stage")?.addEventListener("click", (e) => {
+    if (!e.target.closest(".recon-popover") && !e.target.closest(".map-pin")) {
+      closePopover();
+    }
+  });
+
+  selector?.addEventListener("change", (e) => {
+    const slug = e.target.value;
+    const found = window.REGIONS.find(r => r.slug === slug);
+    if (found) renderInteractiveMap(found);
+  });
+
+  if (atlasEl) {
+    atlasEl.innerHTML = window.REGIONS.map(r => `
+      <div class="region-card" data-slug="${r.slug}" style="cursor:pointer;">
+        <div class="map-thumb">
+          <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
+        </div>
+        <div class="region-info">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem;">
+            <div>
+              <p class="name">${r.name}</p>
+              <p class="ids">#${String(r.start).padStart(3, "0")}–${r.end} · ${r.count} files</p>
+            </div>
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${r.preview}.png" alt="" width="48" height="48" loading="lazy" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3)); flex-shrink:0;">
+          </div>
+          <p class="soft" style="font-size:0.8125rem; margin-top:0.4rem; color:var(--ink-soft); line-height:1.4;">${r.line}</p>
+          <div style="margin-top:0.5rem; display:flex; gap:0.5rem; align-items:center;">
+            <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">Inspect Recon Map ↗</span>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    atlasEl.querySelectorAll(".region-card").forEach(card => {
+      card.addEventListener("click", () => {
+        const slug = card.dataset.slug;
+        const r = window.REGIONS.find(x => x.slug === slug);
+        if (r) {
+          renderInteractiveMap(r);
+          document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  }
+
+  renderInteractiveMap(window.REGIONS[0]);
+});
+
+```
+
+---
+
+### 3.4 `js/types-chart.js` (18×18 属性克制常数矩阵)
 
 - **文件路径**: `js/types-chart.js`  
 - **代码行数**: 117 行  
@@ -6994,11 +7705,12 @@ window.getSpeciesById = getSpeciesById;
   window.TYPES = TYPES;
   window.TYPE_COLORS = TYPE_COLORS;
 })(typeof window !== "undefined" ? window : global);
+
 ```
 
 ---
 
-### 3.4 `js/pokeball.js` (精灵球开合音效与转场控制)
+### 3.5 `js/pokeball.js` (精灵球开合音效与转场控制)
 
 - **文件路径**: `js/pokeball.js`  
 - **代码行数**: 137 行  
@@ -7142,11 +7854,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
 ```
 
 ---
 
-### 3.5 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)
+### 3.6 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)
 
 - **文件路径**: `js/pokedex.js`  
 - **代码行数**: 551 行  
@@ -7704,11 +8417,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // 启动执行
   initDex();
 });
+
 ```
 
 ---
 
-### 3.6 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)
+### 3.7 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)
 
 - **文件路径**: `js/pokemon.js`  
 - **代码行数**: 300 行  
@@ -8015,11 +8729,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
 ```
 
 ---
 
-### 3.7 `js/types.js` (属性色票与矩阵交互)
+### 3.8 `js/types.js` (属性色票与矩阵交互)
 
 - **文件路径**: `js/types.js`  
 - **代码行数**: 109 行  
@@ -8135,11 +8850,12 @@ document.addEventListener("DOMContentLoaded", () => {
     box.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 });
+
 ```
 
 ---
 
-### 3.8 `js/team.js` (腰带存储与拖拽排序)
+### 3.9 `js/team.js` (腰带存储与拖拽排序)
 
 - **文件路径**: `js/team.js`  
 - **代码行数**: 297 行  
@@ -8443,11 +9159,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
+
 ```
 
 ---
 
-### 3.9 `js/lineup.js` (弱点缺口计算与两只对比)
+### 3.10 `js/lineup.js` (弱点缺口计算与两只对比)
 
 - **文件路径**: `js/lineup.js`  
 - **代码行数**: 336 行  
@@ -8790,11 +9507,12 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   });
 })();
+
 ```
 
 ---
 
-### 3.10 `js/moves.js` (招式库检索与分页渲染)
+### 3.11 `js/moves.js` (招式库检索与分页渲染)
 
 - **文件路径**: `js/moves.js`  
 - **代码行数**: 154 行  
@@ -8955,11 +9673,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   render();
 });
+
 ```
 
 ---
 
-### 3.11 `js/abilities.js` (特性库检索与宝可梦索引)
+### 3.12 `js/abilities.js` (特性库检索与宝可梦索引)
 
 - **文件路径**: `js/abilities.js`  
 - **代码行数**: 133 行  
@@ -9099,11 +9818,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   render();
 });
+
 ```
 
 ---
 
-### 3.12 `js/collection.js` (图鉴与地区收集度统计)
+### 3.13 `js/collection.js` (图鉴与地区收集度统计)
 
 - **文件路径**: `js/collection.js`  
 - **代码行数**: 172 行  
@@ -9282,11 +10002,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
 ```
 
 ---
 
-### 3.13 `js/battle-lab.js` (对战实验室与克制比对)
+### 3.14 `js/battle-lab.js` (对战实验室与克制比对)
 
 - **文件路径**: `js/battle-lab.js`  
 - **代码行数**: 218 行  
@@ -9511,11 +10232,12 @@ document.addEventListener("DOMContentLoaded", () => {
   loadPokemon("left", paramLeft);
   loadPokemon("right", paramRight);
 });
+
 ```
 
 ---
 
-### 3.14 `js/store.js` (本地存储与安全缓存管理)
+### 3.15 `js/store.js` (本地存储与安全缓存管理)
 
 - **文件路径**: `js/store.js`  
 - **代码行数**: 103 行  
@@ -9625,176 +10347,790 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.store = store;
 })(window);
+
 ```
 
 ---
 
-### 3.15 `js/quiz.js` (猜谜逻辑与连胜成就积分)
+### 3.16 `js/quiz.js` (TCG 卡包实验室/实体开包/去重算法/卡册收藏)
 
 - **文件路径**: `js/quiz.js`  
-- **代码行数**: 154 行  
-- **文件大小**: 4,607 字节  
+- **代码行数**: 766 行  
+- **文件大小**: 27,460 字节  
 
 ```javascript
+// ==========================================================================
+// TCG BOOSTER PACK LAB (Physical 10-card pack simulator & collection binder)
+// ==========================================================================
+
 document.addEventListener("DOMContentLoaded", () => {
-  const store = window.store;
-  const api = window.pokeApi;
+  // DOM References
+  const setSelect = document.getElementById("pack-set-select");
+  const openTriggerBtn = document.getElementById("pack-open-trigger-btn");
+  const packStage = document.getElementById("pack-stage");
+  const sealedView = document.getElementById("pack-sealed-view");
+  const openedView = document.getElementById("pack-opened-view");
+  const foilPack = document.getElementById("pack-foil-pack");
+  const cardsGrid = document.getElementById("pack-cards-grid");
+  const loadingOverlay = document.getElementById("pack-loading-overlay");
+  const loadingMsg = document.getElementById("pack-loading-msg");
 
-  const imgEl = document.getElementById("quiz-img");
-  const formEl = document.getElementById("quiz-form");
-  const inputEl = document.getElementById("quiz-input");
-  const skipBtn = document.getElementById("quiz-skip");
-  const feedbackEl = document.getElementById("quiz-feedback");
+  const statPacksOpened = document.getElementById("stat-packs-opened");
+  const statCardsCollected = document.getElementById("stat-cards-collected");
+  const packSetMeta = document.getElementById("pack-set-meta");
+  const featuredChipsWrap = document.getElementById("pack-featured-chips");
 
-  const streakEl = document.getElementById("streak-count");
-  const bestStreakEl = document.getElementById("best-streak-count");
-  const totalEl = document.getElementById("total-count");
+  const packCoverImg = document.getElementById("pack-cover-img");
+  const foilSeriesTag = document.getElementById("foil-series-tag");
+  const foilLogoImg = document.getElementById("foil-logo-img");
+  const foilMascotImg = document.getElementById("foil-mascot-img");
+  const foilSymbolImg = document.getElementById("foil-symbol-img");
+  const foilTitle = document.getElementById("foil-title");
+  const foilGraphicImg = document.getElementById("foil-graphic-img");
 
-  let currentMon = null;
-  let streak = 0;
-  let bestStreak = store?.quizBest?.() || 0;
-  let totalCorrect = store?.quizTotal?.() || 0;
-  let attempts = 0;
-  let isResolving = false;
+  const packAgainBtn = document.getElementById("pack-again-btn");
+  const packRevealAllBtn = document.getElementById("pack-reveal-all-btn");
+  const packToggleBinderBtn = document.getElementById("pack-toggle-binder-btn");
 
-  function updateScoreboard() {
-    if (streakEl) streakEl.textContent = streak;
-    if (bestStreakEl) bestStreakEl.textContent = bestStreak;
-    if (totalEl) totalEl.textContent = totalCorrect;
+  const binderSection = document.getElementById("pack-binder-section");
+  const binderHeader = document.getElementById("pack-binder-header");
+  const binderCountBadge = document.getElementById("binder-count-badge");
+  const binderGrid = document.getElementById("pack-binder-grid");
+  const binderFilters = document.querySelectorAll(".pack-binder-filters .chip");
+
+  const tcgModal = document.getElementById("tcg-modal");
+  const tcgModalImg = document.getElementById("tcg-modal-img");
+  const tcgModalName = document.getElementById("tcg-modal-name");
+  const tcgModalMeta = document.getElementById("tcg-modal-meta");
+  const tcgModalCloseBtn = document.getElementById("tcg-modal-close-btn");
+
+  // In-memory cache for fetched card sets
+  const cardSetCache = new Map();
+
+  // Known metadata for featured sets
+  const SET_PRESETS = {
+    "me55": {
+      name: "30th Celebration",
+      series: "Mega Evolution",
+      logo: "https://images.scrydex.com/pokemon/me55-logo/logo",
+      symbol: "https://images.scrydex.com/pokemon/me55-symbol/symbol",
+      coverArt: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+      color: "linear-gradient(180deg, #18283d 0%, #111f30 40%, #0a1420 100%)",
+      total: 161,
+      tag: "30th ANNIV · 2026"
+    },
+    "me55c": {
+      name: "30th Celebration: Classic",
+      series: "Mega Evolution",
+      logo: "https://images.scrydex.com/pokemon/me55-logo/logo",
+      symbol: "https://images.scrydex.com/pokemon/me55-symbol/symbol",
+      coverArt: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+      color: "linear-gradient(180deg, #3d1c1c 0%, #2a1212 40%, #160808 100%)",
+      total: 30,
+      tag: "CLASSIC"
+    },
+    "sv3pt5": {
+      name: "Pokémon 151",
+      series: "Scarlet & Violet",
+      logo: "https://images.pokemontcg.io/sv3pt5/logo.png",
+      symbol: "https://images.pokemontcg.io/sv3pt5/symbol.png",
+      coverArt: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png",
+      color: "linear-gradient(180deg, #173852 0%, #10293d 40%, #0a1a26 100%)",
+      total: 207,
+      tag: "151 FILE"
+    },
+    "base1": {
+      name: "Base Set (1999)",
+      series: "Base",
+      logo: "https://images.pokemontcg.io/base1/logo.png",
+      symbol: "https://images.pokemontcg.io/base1/symbol.png",
+      coverArt: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+      color: "linear-gradient(180deg, #1e3a54 0%, #142a3d 40%, #0c1a26 100%)",
+      total: 102,
+      tag: "VINTAGE"
+    },
+    "sv8pt5": {
+      name: "Prismatic Evolutions",
+      series: "Scarlet & Violet",
+      logo: "https://images.pokemontcg.io/sv8pt5/logo.png",
+      symbol: "https://images.pokemontcg.io/sv8pt5/symbol.png",
+      coverArt: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+      color: "linear-gradient(180deg, #351a44 0%, #251230 40%, #160a1c 100%)",
+      total: 180,
+      tag: "EEVEE"
+    },
+    "swsh7": {
+      name: "Evolving Skies",
+      series: "Sword & Shield",
+      logo: "https://images.pokemontcg.io/swsh7/logo.png",
+      symbol: "https://images.pokemontcg.io/swsh7/symbol.png",
+      coverArt: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png",
+      color: "linear-gradient(180deg, #193e32 0%, #122c24 40%, #0a1a15 100%)",
+      total: 237,
+      tag: "DRAGONS"
+    }
+  };
+
+  // State
+  let currentSetId = localStorage.getItem("file151.tcg_current_set") || "me55";
+  let currentPackCards = [];
+  let isTearing = false;
+
+  // Sound Synth Helpers (AudioContext)
+  function playSynthSound(type) {
+    const isSoundOn = localStorage.getItem("file151.sound") === "on";
+    if (!isSoundOn) return;
+
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+
+      if (type === "tear") {
+        // White noise burst for foil tear
+        const bufferSize = ctx.sampleRate * 0.25;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.4));
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.value = 1800;
+        noise.connect(filter);
+        filter.connect(ctx.destination);
+        noise.start();
+      } else if (type === "flip") {
+        // Soft paper card flip click
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.setValueAtTime(480, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } else if (type === "hit") {
+        // High rare shimmer chime
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.08 + 0.4);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.08);
+          osc.stop(ctx.currentTime + idx * 0.08 + 0.4);
+        });
+      }
+    } catch (_) {}
   }
 
-  function normalize(s) {
-    return String(s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/♀/g, "f")
-      .replace(/♂/g, "m")
-      .replace(/[^a-z0-9]/g, "");
+  // LocalStorage Binder Store
+  function getBinder() {
+    try {
+      return JSON.parse(localStorage.getItem("file151.tcg_binder") || "{}");
+    } catch (_) {
+      return {};
+    }
   }
 
-  async function newRound() {
-    isResolving = false;
-    attempts = 0;
-    if (inputEl) {
-      inputEl.value = "";
-      inputEl.disabled = false;
-      inputEl.focus();
+  function saveBinderCard(card) {
+    const binder = getBinder();
+    if (!binder[card.id]) {
+      binder[card.id] = {
+        id: card.id,
+        name: card.name,
+        number: card.number,
+        rarity: card.rarity || "Common",
+        setId: currentSetId,
+        imageSmall: getCardImage(card, "small"),
+        imageLarge: getCardImage(card, "large"),
+        count: 1
+      };
+    } else {
+      binder[card.id].count = (binder[card.id].count || 1) + 1;
     }
-    if (feedbackEl) {
-      feedbackEl.hidden = true;
-      feedbackEl.className = "quiz-feedback-banner";
-      feedbackEl.innerHTML = "";
+    localStorage.setItem("file151.tcg_binder", JSON.stringify(binder));
+    return binder;
+  }
+
+  function getStats() {
+    try {
+      return JSON.parse(localStorage.getItem("file151.tcg_stats") || '{"packsOpened":0}');
+    } catch (_) {
+      return { packsOpened: 0 };
+    }
+  }
+
+  function incrementPacksOpened() {
+    const stats = getStats();
+    stats.packsOpened = (stats.packsOpened || 0) + 1;
+    localStorage.setItem("file151.tcg_stats", JSON.stringify(stats));
+    updateStatsDisplay();
+  }
+
+  function updateStatsDisplay() {
+    const stats = getStats();
+    const binder = getBinder();
+    const uniqueCount = Object.keys(binder).length;
+
+    if (statPacksOpened) statPacksOpened.textContent = stats.packsOpened || 0;
+    if (statCardsCollected) statCardsCollected.textContent = uniqueCount;
+    if (binderCountBadge) binderCountBadge.textContent = `${uniqueCount} Specimens`;
+  }
+
+  // Resolves image CDN reliably for both older pokemontcg.io and newer scrydex.com sets
+  function getCardImage(card, size = "small") {
+    if (card.images) {
+      if (size === "large" && card.images.large) return card.images.large;
+      if (card.images.small) return card.images.small;
+    }
+    // Fallback template
+    return `https://images.pokemontcg.io/${currentSetId}/${card.number}.png`;
+  }
+
+  // Fetch or retrieve card set from memory cache / GitHub
+  async function loadSetData(setId, isBackground = false) {
+    if (cardSetCache.has(setId)) {
+      return cardSetCache.get(setId);
     }
 
-    const randId = Math.floor(Math.random() * 1025) + 1;
-
-    if (imgEl) {
-      imgEl.className = "quiz-img-silhouette";
-      imgEl.src = api ? api.artUrl(randId) : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${randId}.png`;
-      imgEl.alt = "Silhouette of mystery Pokémon";
+    if (!isBackground) {
+      if (loadingOverlay) loadingOverlay.classList.add("is-active");
+      if (loadingMsg) loadingMsg.textContent = `Fetching ${setId.toUpperCase()} expansion ledger...`;
     }
 
     try {
-      if (api) {
-        currentMon = await api.getPokemon(randId);
-      } else {
-        currentMon = { id: randId, name: `pokemon-${randId}` };
-      }
-    } catch (_) {
-      currentMon = { id: randId, name: `pokemon-${randId}` };
-    }
-  }
-
-  function revealSuccess() {
-    isResolving = true;
-    if (imgEl) imgEl.className = "quiz-img-revealed";
-    if (inputEl) inputEl.disabled = true;
-
-    streak++;
-    if (streak > bestStreak) {
-      bestStreak = streak;
-      store?.setQuizBest?.(bestStreak);
-    }
-    totalCorrect = store?.incQuizTotal?.() || (totalCorrect + 1);
-    updateScoreboard();
-
-    if (currentMon) {
-      store?.markSeen?.(currentMon.id);
-      api?.playCry?.(currentMon.id);
-    }
-
-    if (feedbackEl && currentMon) {
-      feedbackEl.hidden = false;
-      feedbackEl.className = "quiz-feedback-banner success";
-      feedbackEl.innerHTML = `
-        <strong>✓ Correct!</strong> It's <strong>#${String(currentMon.id).padStart(3, "0")} ${currentMon.name}</strong>!
-        <span style="font-size:0.8125rem; display:block; margin-top:0.25rem;">Added to seen archive · Next round in 2 seconds...</span>
-      `;
-    }
-
-    setTimeout(newRound, 2200);
-  }
-
-  function revealFailure(reason) {
-    isResolving = true;
-    if (imgEl) imgEl.className = "quiz-img-revealed";
-    if (inputEl) inputEl.disabled = true;
-
-    streak = 0;
-    updateScoreboard();
-
-    if (feedbackEl && currentMon) {
-      feedbackEl.hidden = false;
-      feedbackEl.className = "quiz-feedback-banner warning";
-      feedbackEl.innerHTML = `
-        <strong>${reason}</strong> The specimen was <strong>#${String(currentMon.id).padStart(3, "0")} ${currentMon.name}</strong>.
-        <span style="font-size:0.8125rem; display:block; margin-top:0.25rem;">Streak reset · Loading next specimen...</span>
-      `;
-    }
-
-    setTimeout(newRound, 2500);
-  }
-
-  formEl?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (isResolving || !currentMon) return;
-
-    const guess = normalize(inputEl.value);
-    const answer = normalize(currentMon.name);
-
-    if (!guess) return;
-
-    if (guess === answer || (guess.length >= 3 && answer.startsWith(guess))) {
-      revealSuccess();
-    } else {
-      attempts++;
-      if (attempts >= 3) {
-        revealFailure("Out of attempts!");
-      } else {
-        if (feedbackEl) {
-          feedbackEl.hidden = false;
-          feedbackEl.className = "quiz-feedback-banner error";
-          feedbackEl.innerHTML = `✗ Not quite! Try again (Attempt ${attempts}/3).`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const url = `https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master/cards/en/${setId}.json`;
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const cards = await res.json();
+      cardSetCache.set(setId, cards);
+      return cards;
+    } catch (err) {
+      console.warn("Failed to load set data:", err);
+      // Minimal fallback so app never breaks
+      const dummyCards = Array.from({ length: 50 }, (_, i) => ({
+        id: `${setId}-${i + 1}`,
+        number: String(i + 1),
+        name: `Specimen #${i + 1}`,
+        rarity: i < 30 ? "Common" : i < 45 ? "Uncommon" : "Rare",
+        images: {
+          small: `https://images.pokemontcg.io/${setId}/${i + 1}.png`,
+          large: `https://images.pokemontcg.io/${setId}/${i + 1}_hires.png`
         }
-        inputEl.select();
+      }));
+      cardSetCache.set(setId, dummyCards);
+      return dummyCards;
+    } finally {
+      if (!isBackground && loadingOverlay) {
+        loadingOverlay.classList.remove("is-active");
       }
+    }
+  }
+
+  // Authentic Physical Booster Pack Packaging artwork map
+  const PACK_ART_MAP = {
+    "me55": "assets/packs/me55.jpg",
+    "me55c": "assets/packs/me55.jpg",
+    "sv3pt5": "assets/packs/sv3pt5.jpg",
+    "base1": "assets/packs/base1.jpg",
+    "sv8pt5": "assets/packs/sv8pt5.jpg",
+    "swsh7": "assets/packs/swsh7.jpg",
+    "sv1": "assets/packs/sv1.jpg",
+    "sv6": "assets/packs/sv6.jpg",
+    "sv4pt5": "assets/packs/sv4pt5.jpg",
+    "swsh12pt5": "assets/packs/swsh12pt5.jpg",
+    "base2": "assets/packs/base2.jpg",
+    "base3": "assets/packs/base3.jpg"
+  };
+
+  function getPackCoverArt(setId) {
+    return PACK_ART_MAP[setId] || "assets/packs/sv3pt5.jpg";
+  }
+
+  // Update pack wrapper visual appearance based on selected set
+  function updatePackAppearance(setId) {
+    currentSetId = setId;
+    localStorage.setItem("file151.tcg_current_set", setId);
+
+    const preset = SET_PRESETS[setId] || {
+      name: setId.toUpperCase(),
+      series: "EXPANSION",
+      symbol: "https://images.pokemontcg.io/sv3pt5/symbol.png",
+      color: "linear-gradient(135deg, #1b354f 0%, #0d1e30 50%, #204163 100%)",
+      total: "---"
+    };
+
+    if (packCoverImg) {
+      packCoverImg.src = getPackCoverArt(setId);
+      packCoverImg.alt = `${preset.name} Official Booster Pack Packaging`;
+    }
+
+    if (foilSeriesTag) foilSeriesTag.textContent = preset.series;
+    if (foilTitle) foilTitle.textContent = preset.name;
+    if (foilLogoImg && preset.logo) {
+      foilLogoImg.src = preset.logo;
+      foilLogoImg.alt = `${preset.name} Logo`;
+    }
+    if (foilMascotImg && preset.coverArt) {
+      foilMascotImg.src = preset.coverArt;
+      foilMascotImg.alt = `${preset.name} Mascot`;
+    }
+    if (foilSymbolImg && preset.symbol) {
+      foilSymbolImg.src = preset.symbol;
+      foilSymbolImg.alt = `${preset.name} Symbol`;
+    }
+    if (foilGraphicImg && preset.symbol) foilGraphicImg.src = preset.symbol;
+
+    const foilBody = document.querySelector(".pack-foil-body");
+    if (foilBody && preset.color) {
+      foilBody.style.background = preset.color;
+    }
+
+    if (packSetMeta) {
+      packSetMeta.textContent = `${preset.name} · ${preset.total} Cards`;
+    }
+
+    // Update select element if different
+    if (setSelect && setSelect.value !== setId) {
+      setSelect.value = setId;
+    }
+
+    // Update featured chip active states using native [data-on]
+    document.querySelectorAll("#pack-featured-chips .chip").forEach(btn => {
+      if (btn.dataset.setId === setId) {
+        btn.setAttribute("data-on", "");
+      } else {
+        btn.removeAttribute("data-on");
+      }
+    });
+
+    const statTotal = document.getElementById("pack-set-meta-total");
+    const statName = document.getElementById("pack-set-meta-name");
+    if (statTotal) statTotal.textContent = preset.total;
+    if (statName) statName.textContent = preset.name.toUpperCase();
+
+    renderBinderGrid();
+    // Prefetch set data silently in background
+    loadSetData(setId, true).catch(() => {});
+  }
+
+  // Physical 10-card slot distribution algorithm
+  function generatePack(cards) {
+    if (!cards || cards.length === 0) return [];
+
+    // Bucket cards by rarity category
+    const buckets = {
+      common: [],
+      uncommon: [],
+      rare: [],
+      holoDouble: [],
+      illustration: [],
+      ultra: [],
+      sar: [],
+      hyper: []
+    };
+
+    cards.forEach(card => {
+      const r = (card.rarity || "").toLowerCase();
+      if (r.includes("special illustration") || r.includes("sar")) {
+        buckets.sar.push(card);
+      } else if (r.includes("hyper") || r.includes("futuristic") || r.includes("gold")) {
+        buckets.hyper.push(card);
+      } else if (r.includes("ultra") || r.includes("secret") || r.includes("ex") || r.includes("vmax") || r.includes("vstar")) {
+        buckets.ultra.push(card);
+      } else if (r.includes("illustration rare")) {
+        buckets.illustration.push(card);
+      } else if (r.includes("double rare") || r.includes("pikachu rare") || r.includes("holo")) {
+        buckets.holoDouble.push(card);
+      } else if (r.includes("rare")) {
+        buckets.rare.push(card);
+      } else if (r.includes("uncommon")) {
+        buckets.uncommon.push(card);
+      } else {
+        buckets.common.push(card);
+      }
+    });
+
+    // Track card appearances to prevent excessive duplicates (max 2 copies per card)
+    const cardCountMap = new Map();
+
+    function pickCapped(pool, fallbackPool = cards, maxCap = 2) {
+      const primary = (pool && pool.length > 0) ? pool : fallbackPool;
+      const eligible = primary.filter(c => (cardCountMap.get(c.id) || 0) < maxCap);
+
+      let chosen = null;
+      if (eligible.length > 0) {
+        chosen = eligible[Math.floor(Math.random() * eligible.length)];
+      } else {
+        const fallbackEligible = fallbackPool.filter(c => (cardCountMap.get(c.id) || 0) < maxCap);
+        if (fallbackEligible.length > 0) {
+          chosen = fallbackEligible[Math.floor(Math.random() * fallbackEligible.length)];
+        } else {
+          chosen = primary[Math.floor(Math.random() * primary.length)];
+        }
+      }
+
+      if (chosen && chosen.id) {
+        cardCountMap.set(chosen.id, (cardCountMap.get(chosen.id) || 0) + 1);
+      }
+      return chosen;
+    }
+
+    const pack = [];
+
+    // Slot 1-5: 5 Common Cards
+    for (let i = 0; i < 5; i++) {
+      pack.push({ card: pickCapped(buckets.common, cards), foilType: "normal", slot: i + 1 });
+    }
+
+    // Slot 6-8: 3 Uncommon Cards
+    for (let i = 0; i < 3; i++) {
+      pack.push({ card: pickCapped(buckets.uncommon, buckets.common), foilType: "normal", slot: i + 6 });
+    }
+
+    // Slot 9: Reverse Holo / Foil Slot (70% UC foil, 25% Rare foil, 5% Illustration Rare)
+    const roll9 = Math.random() * 100;
+    if (roll9 < 70) {
+      pack.push({ card: pickCapped(buckets.uncommon, cards), foilType: "reverse-foil", slot: 9 });
+    } else if (roll9 < 95) {
+      pack.push({ card: pickCapped(buckets.rare, buckets.uncommon), foilType: "reverse-foil", slot: 9 });
+    } else {
+      pack.push({ card: pickCapped(buckets.illustration, buckets.rare), foilType: "illustration", slot: 9 });
+    }
+
+    // Slot 10: HIT SLOT (Guaranteed Rare / Ultra / SAR)
+    const roll10 = Math.random() * 100;
+    let hitCard = null;
+    let hitFoil = "rare";
+
+    if (roll10 < 50 && buckets.rare.length > 0) {
+      hitCard = pickCapped(buckets.rare);
+      hitFoil = "rare";
+    } else if (roll10 < 70 && (buckets.holoDouble.length > 0 || buckets.rare.length > 0)) {
+      hitCard = pickCapped(buckets.holoDouble, buckets.rare);
+      hitFoil = "holo";
+    } else if (roll10 < 85 && (buckets.illustration.length > 0 || buckets.rare.length > 0)) {
+      hitCard = pickCapped(buckets.illustration, buckets.rare);
+      hitFoil = "illustration";
+    } else if (roll10 < 95 && (buckets.ultra.length > 0 || buckets.rare.length > 0)) {
+      hitCard = pickCapped(buckets.ultra, buckets.rare);
+      hitFoil = "ultra";
+    } else if (roll10 < 99 && (buckets.sar.length > 0 || buckets.ultra.length > 0)) {
+      hitCard = pickCapped(buckets.sar, buckets.ultra);
+      hitFoil = "sar";
+    } else {
+      // Hyper Rare / Jackpot
+      hitCard = pickCapped(buckets.hyper, buckets.sar);
+      hitFoil = "hyper";
+    }
+
+    pack.push({ card: hitCard || pickCapped(cards), foilType: hitFoil, slot: 10 });
+
+    return pack;
+  }
+
+  // Tearing and opening flow
+  async function openBoosterPack() {
+    if (isTearing) return;
+    isTearing = true;
+
+    // Start tear animation on the pack
+    if (foilPack) {
+      foilPack.classList.add("is-tearing");
+      playSynthSound("tear");
+    }
+
+    // Load cards in parallel
+    const cards = await loadSetData(currentSetId);
+    currentPackCards = generatePack(cards);
+
+    incrementPacksOpened();
+
+    // After tear animation finishes, switch views
+    setTimeout(() => {
+      if (sealedView) sealedView.style.display = "none";
+      if (openedView) openedView.style.display = "block";
+      if (foilPack) foilPack.classList.remove("is-tearing");
+      isTearing = false;
+
+      renderCardsGrid(currentPackCards);
+    }, 600);
+  }
+
+  // Render the 10 cards in grid
+  function renderCardsGrid(packItems) {
+    if (!cardsGrid) return;
+    cardsGrid.innerHTML = "";
+
+    packItems.forEach((item, index) => {
+      const card = item.card;
+      const foilType = item.foilType;
+
+      const cardEl = document.createElement("div");
+      cardEl.className = "tcg-card-item";
+      cardEl.dataset.index = index;
+
+      // Glow highlights for big hits
+      if (foilType === "sar" || foilType === "hyper") {
+        cardEl.classList.add("hit-glow-rainbow");
+      } else if (foilType === "ultra" || foilType === "illustration") {
+        cardEl.classList.add("hit-glow-gold");
+      }
+
+      // Rarity badge
+      let badgeHtml = "";
+      const rarity = card.rarity || "";
+      if (rarity.toLowerCase().includes("special illustration") || rarity.toLowerCase().includes("sar")) {
+        badgeHtml = `<span class="tcg-card-badge badge-sar">SAR</span>`;
+      } else if (rarity.toLowerCase().includes("ultra") || rarity.toLowerCase().includes("ex")) {
+        badgeHtml = `<span class="tcg-card-badge badge-ultra">ULTRA</span>`;
+      } else if (rarity.toLowerCase().includes("illustration")) {
+        badgeHtml = `<span class="tcg-card-badge badge-ultra">IR</span>`;
+      } else if (rarity.toLowerCase().includes("rare")) {
+        badgeHtml = `<span class="tcg-card-badge badge-rare">RARE</span>`;
+      }
+
+      const imgUrl = getCardImage(card, "small");
+
+      cardEl.innerHTML = `
+        <div class="tcg-card-inner">
+          <div class="tcg-card-back">
+            <img src="assets/card-back.jpg" class="card-back-img" alt="Pokémon Card Back">
+            <span class="card-slot-num">#${item.slot}</span>
+          </div>
+          <div class="tcg-card-front">
+            ${badgeHtml}
+            <img src="${imgUrl}" alt="${card.name}" loading="lazy">
+          </div>
+        </div>
+      `;
+
+      // Flip on click
+      cardEl.addEventListener("click", () => {
+        flipCard(cardEl, item);
+      });
+
+      cardsGrid.appendChild(cardEl);
+    });
+  }
+
+  // Flip an individual card
+  function flipCard(cardEl, item) {
+    if (cardEl.classList.contains("is-flipped")) {
+      // If already flipped, clicking opens high-res preview modal
+      openCardModal(item.card);
+      return;
+    }
+
+    cardEl.classList.add("is-flipped");
+    playSynthSound("flip");
+
+    if (item.foilType === "sar" || item.foilType === "hyper" || item.foilType === "ultra") {
+      playSynthSound("hit");
+    }
+
+    // Save to collection binder
+    saveBinderCard(item.card);
+    updateStatsDisplay();
+  }
+
+  // Reveal all cards with staggering
+  function revealAllCards() {
+    const cardEls = document.querySelectorAll(".tcg-card-item:not(.is-flipped)");
+    cardEls.forEach((cardEl, idx) => {
+      setTimeout(() => {
+        const itemIdx = parseInt(cardEl.dataset.index, 10);
+        const item = currentPackCards[itemIdx];
+        if (item && !cardEl.classList.contains("is-flipped")) {
+          flipCard(cardEl, item);
+        }
+      }, idx * 100);
+    });
+  }
+
+  // Reset stage to sealed pack view
+  function resetToSealedPack() {
+    if (openedView) openedView.style.display = "none";
+    if (sealedView) sealedView.style.display = "flex";
+    if (cardsGrid) cardsGrid.innerHTML = "";
+    currentPackCards = [];
+  }
+
+  // Card detail high-res modal
+  function openCardModal(card) {
+    if (!tcgModal || !card) return;
+    const hiresUrl = getCardImage(card, "large");
+    if (tcgModalImg) {
+      tcgModalImg.src = hiresUrl;
+      tcgModalImg.alt = card.name;
+    }
+    if (tcgModalName) tcgModalName.textContent = card.name;
+    if (tcgModalMeta) {
+      tcgModalMeta.textContent = `#${card.number} · ${card.rarity || "Standard"} · ${card.artist || "Official"}`;
+    }
+    tcgModal.classList.add("is-active");
+  }
+
+  function closeCardModal() {
+    if (tcgModal) tcgModal.classList.remove("is-active");
+  }
+
+  // Binder Grid rendering with filters
+  function renderBinderGrid(filter = "all") {
+    if (!binderGrid) return;
+    const binder = getBinder();
+    const cards = Object.values(binder).filter(c => c.setId === currentSetId);
+
+    binderGrid.innerHTML = "";
+
+    if (cards.length === 0) {
+      binderGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; padding: 2rem; text-align: center; color: var(--ink-soft); font-family: var(--font-num);">
+          No specimens collected from this expansion yet. Tear open a pack to begin your ledger!
+        </div>
+      `;
+      return;
+    }
+
+    const filtered = cards.filter(c => {
+      if (filter === "all") return true;
+      const r = (c.rarity || "").toLowerCase();
+      if (filter === "sar") return r.includes("special illustration") || r.includes("sar");
+      if (filter === "ultra") return r.includes("ultra") || r.includes("ex") || r.includes("vmax");
+      if (filter === "rare") return r.includes("rare");
+      if (filter === "uncommon") return r.includes("uncommon");
+      if (filter === "common") return r.includes("common");
+      return true;
+    });
+
+    filtered.forEach(c => {
+      const itemEl = document.createElement("div");
+      itemEl.className = "binder-thumb-item";
+      itemEl.title = `${c.name} (#${c.number}) - Owned: x${c.count || 1}`;
+      itemEl.innerHTML = `
+        <img src="${c.imageSmall || getCardImage(c, 'small')}" alt="${c.name}" loading="lazy">
+        <span class="binder-thumb-count">x${c.count || 1}</span>
+      `;
+      itemEl.addEventListener("click", () => {
+        openCardModal(c);
+      });
+      binderGrid.appendChild(itemEl);
+    });
+  }
+
+  // Event Listeners
+  if (foilPack) {
+    foilPack.addEventListener("click", openBoosterPack);
+  }
+
+  if (openTriggerBtn) {
+    openTriggerBtn.addEventListener("click", openBoosterPack);
+  }
+
+  if (packAgainBtn) {
+    packAgainBtn.addEventListener("click", () => {
+      resetToSealedPack();
+      openBoosterPack();
+    });
+  }
+
+  if (packRevealAllBtn) {
+    packRevealAllBtn.addEventListener("click", revealAllCards);
+  }
+
+  if (packToggleBinderBtn) {
+    packToggleBinderBtn.addEventListener("click", () => {
+      if (binderSection) {
+        binderSection.classList.add("is-open");
+        binderSection.scrollIntoView({ behavior: "smooth" });
+        renderBinderGrid();
+      }
+    });
+  }
+
+  if (binderHeader) {
+    binderHeader.addEventListener("click", () => {
+      if (binderSection) {
+        binderSection.classList.toggle("is-open");
+        if (binderSection.classList.contains("is-open")) {
+          renderBinderGrid();
+        }
+      }
+    });
+  }
+
+  // Filter chips in binder
+  binderFilters.forEach(chip => {
+    chip.addEventListener("click", () => {
+      binderFilters.forEach(c => c.removeAttribute("data-on"));
+      chip.setAttribute("data-on", "");
+      renderBinderGrid(chip.dataset.filter);
+    });
+  });
+
+  // Featured Chips
+  if (featuredChipsWrap) {
+    featuredChipsWrap.addEventListener("click", (e) => {
+      const btn = e.target.closest(".chip");
+      if (!btn) return;
+      const setId = btn.dataset.setId;
+      if (setId && setId !== currentSetId) {
+        resetToSealedPack();
+        updatePackAppearance(setId);
+      }
+    });
+  }
+
+  // Select dropdown change
+  if (setSelect) {
+    setSelect.addEventListener("change", () => {
+      const setId = setSelect.value;
+      if (setId && setId !== currentSetId) {
+        resetToSealedPack();
+        updatePackAppearance(setId);
+      }
+    });
+  }
+
+  // Modal close handlers
+  if (tcgModalCloseBtn) {
+    tcgModalCloseBtn.addEventListener("click", closeCardModal);
+  }
+  if (tcgModal) {
+    tcgModal.addEventListener("click", (e) => {
+      if (e.target === tcgModal) closeCardModal();
+    });
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && tcgModal?.classList.contains("is-active")) {
+      closeCardModal();
     }
   });
 
-  skipBtn?.addEventListener("click", () => {
-    if (isResolving || !currentMon) return;
-    revealFailure("Skipped!");
-  });
-
-  updateScoreboard();
-  newRound();
+  // Initial Load
+  updateStatsDisplay();
+  updatePackAppearance(currentSetId);
+  loadSetData(currentSetId, true).catch(() => {});
 });
+
 ```
 
 ---
 
-### 3.16 `js/global-search.js` (全局命令面板快捷检索)
+### 3.17 `js/global-search.js` (全局命令面板快捷检索)
 
 - **文件路径**: `js/global-search.js`  
 - **代码行数**: 236 行  
@@ -10037,6 +11373,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.openGlobalSearch = openSearch;
   window.closeGlobalSearch = closeSearch;
 })();
+
 ```
 
 ---
@@ -10139,6 +11476,7 @@ if (stats.failed.length) {
   console.log("failed ids:", stats.failed.join(", "));
   process.exitCode = 1;
 }
+
 ```
 
 ---
@@ -10164,6 +11502,7 @@ if (stats.failed.length) {
     <circle cx="16" cy="16" r="2.8" fill="#FFFFFF" />
   </g>
 </svg>
+
 ```
 
 ---
@@ -10171,16 +11510,19 @@ if (stats.failed.length) {
 ### 4.3 `.gitignore` (版本控制忽略文件)
 
 - **文件路径**: `.gitignore`  
-- **代码行数**: 6 行  
-- **文件大小**: 62 字节  
+- **代码行数**: 8 行  
+- **文件大小**: 79 字节  
 
-```ini
+```gitignore
 .DS_Store
 Icon?
 Icon\r
 .Spotlight-V100
 .Trashes
 node_modules/
+files/
+files.zip
+
 ```
 
 ---
@@ -11082,6 +12424,7 @@ node_modules/
   </script>
 </body>
 </html>
+
 ```
 
 ---
@@ -11773,6 +13116,5 @@ node_modules/
   </main>
 </body>
 </html>
-```
 
----
+```
