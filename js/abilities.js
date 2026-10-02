@@ -3,22 +3,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   const search = document.getElementById("ability-search");
   const statusEl = document.getElementById("ability-status");
   const paginationEl = document.getElementById("ability-pagination");
+  statusEl.setAttribute("aria-live", "polite");
+  const htmlEntities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => htmlEntities[char]);
 
   let allAbilities = [];
   let currentPage = 1;
-  const PAGE_SIZE = 24;
+  let renderRevision = 0;
+  const PAGE_SIZE = 18;
 
   try {
     const listResp = await fetch("https://pokeapi.co/api/v2/ability?limit=400");
     if (!listResp.ok) throw new Error("Failed to load abilities");
     const data = await listResp.json();
     allAbilities = data.results || [];
-    statusEl.textContent = `Indexed ${allAbilities.length} abilities.`;
 
     const urlQ = new URLSearchParams(location.search).get("q");
     if (urlQ && search) search.value = urlQ;
   } catch (err) {
-    statusEl.textContent = "Unable to load abilities list. Please check your network.";
+    statusEl.textContent = "Abilities unavailable.";
     return;
   }
 
@@ -28,7 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function render() {
-    statusEl.textContent = "Filtering and loading ability details...";
+    const revision = ++renderRevision;
+    statusEl.textContent = "Loading…";
     const q = search.value.trim().toLowerCase();
 
     const matched = allAbilities.filter(a => {
@@ -45,48 +49,78 @@ document.addEventListener("DOMContentLoaded", async () => {
     const details = await Promise.all(
       pageSlice.map(item => window.pokeApi.getAbility(item.name))
     );
+    if (revision !== renderRevision) return;
 
-    statusEl.textContent = `Showing ${details.filter(Boolean).length} of ${totalMatched} abilities (Page ${currentPage}/${totalPages}).`;
+    const availableDetails = details.filter(Boolean);
+    statusEl.textContent = availableDetails.length ? `${availableDetails.length} shown` : "No matches";
 
-    grid.innerHTML = details.filter(Boolean).map(a => {
+    grid.innerHTML = availableDetails.map(a => {
       const pokeList = a.pokemon || [];
-      const previewList = pokeList.slice(0, 12);
-      const remaining = pokeList.length - previewList.length;
+      const previewList = pokeList.slice(0, 3);
+      const remainingList = pokeList.slice(previewList.length);
+      const description = a.description ? a.description.replace(/\n/g, " ") : "No description available.";
+      const excerptLimit = 132;
+      const excerptEnd = description.length > excerptLimit
+        ? description.lastIndexOf(" ", excerptLimit)
+        : description.length;
+      const excerpt = description.length > excerptLimit
+        ? `${description.slice(0, excerptEnd > 0 ? excerptEnd : excerptLimit).trim()}…`
+        : description;
+      const safeDescription = escapeHTML(description);
+      const safeExcerpt = escapeHTML(excerpt);
+      const visualPokemon = pokeList.find(p => {
+        const id = Number(getPokemonIdFromUrl(p.url));
+        return id > 0 && id <= 1025;
+      });
+      const visualId = visualPokemon ? getPokemonIdFromUrl(visualPokemon.url) : null;
+      const specimenLink = p => {
+        const pId = getPokemonIdFromUrl(p.url);
+        const href = pId ? `pokemon.html?id=${pId}` : `pokemon.html?name=${encodeURIComponent(p.name)}`;
+        return `
+          <a href="${escapeHTML(href)}"
+             class="ability-specimen-chip"
+             title="${escapeHTML(p.name)}">
+            ${escapeHTML(p.name.replace(/-/g, " "))}
+          </a>
+        `;
+      };
 
       return `
-        <article class="dex-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:14rem;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-              <span class="id-badge">#${String(a.id).padStart(3, "0")}</span>
-              <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.75rem;">${pokeList.length} Pokémon</span>
-            </div>
-
-            <h3 style="font-family:var(--font-ui); font-size:1.15rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.4rem;">
-              ${a.name.replace(/-/g, " ")}
-            </h3>
-
-            <p class="soft" style="font-size:0.8125rem; line-height:1.45; color:var(--ink-soft); margin-bottom:0.75rem;">
-              ${a.description ? a.description.replace(/\n/g, " ") : "No description available."}
-            </p>
+        <article class="dex-card ability-card">
+          <div class="ability-visual" aria-hidden="true">
+            ${visualId
+              ? `<img class="ability-visual-pokemon" src="assets/thumbs/${visualId}.webp" alt="" loading="lazy" decoding="async">`
+              : `<span class="ability-visual-placeholder">✦</span>`}
+            <span class="ability-visual-label">Specimen</span>
           </div>
-
-          <div>
-            <p style="font-family:var(--font-ui); font-size:0.75rem; font-weight:700; color:var(--ink); margin:0 0 0.35rem; text-transform:uppercase; letter-spacing:0.04em;">
-              Specimens
-            </p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
-              ${previewList.map(p => {
-                const pId = getPokemonIdFromUrl(p.url);
-                return `
-                  <a href="pokemon.html?${pId ? 'id=' + pId : 'name=' + p.name}"
-                     class="chip"
-                     style="font-size:0.75rem; text-decoration:none; text-transform:capitalize; padding:0.15rem 0.4rem;"
-                     title="${p.name}">
-                    ${p.name.replace(/-/g, " ")}
-                  </a>
-                `;
-              }).join("")}
-              ${remaining > 0 ? `<span style="font-size:0.75rem; color:var(--ink-soft); align-self:center;">+${remaining} more</span>` : ""}
+          <div class="ability-card-body">
+            <div class="ability-meta">
+              <span class="id-badge">#${escapeHTML(String(a.id).padStart(3, "0"))}</span>
+              <span class="ability-count">${pokeList.length} Pokémon</span>
+            </div>
+            <h2 class="ability-name">${escapeHTML(a.name.replace(/-/g, " "))}</h2>
+            <p class="ability-effect">${safeExcerpt}</p>
+            ${description.length > excerpt.length ? `
+              <details class="ability-full-effect">
+                <summary>Full effect</summary>
+                <p>${safeDescription}</p>
+              </details>
+            ` : ""}
+            <div class="ability-roster">
+              <p class="ability-roster-heading">Specimens</p>
+              <div class="ability-specimen-list">
+                ${previewList.length
+                  ? previewList.map(specimenLink).join("")
+                  : `<span class="ability-no-specimens">No linked Pokémon</span>`}
+              </div>
+              ${remainingList.length ? `
+                <details class="ability-more-specimens">
+                  <summary>${remainingList.length} more Pokémon</summary>
+                  <div class="ability-specimen-list ability-specimen-list-extra">
+                    ${remainingList.map(specimenLink).join("")}
+                  </div>
+                </details>
+              ` : ""}
             </div>
           </div>
         </article>
@@ -95,9 +129,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (totalPages > 1) {
       paginationEl.innerHTML = `
-        <div style="display:inline-flex; gap:0.5rem; align-items:center;">
+        <div class="ability-pagination-inner">
           <button class="btn btn-paper" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
-          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Page ${currentPage} of ${totalPages}</span>
+          <span>Page ${currentPage} of ${totalPages}</span>
           <button class="btn btn-paper" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
         </div>
       `;

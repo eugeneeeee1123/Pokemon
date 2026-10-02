@@ -17,6 +17,539 @@
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/pokeball.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* Dossier Ledger Header */
+    .ledger-dossier-bar {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .ledger-meta-block {
+      background: rgba(7, 20, 34, 0.45);
+      padding: 1.15rem 1.25rem;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.25rem;
+    }
+    .ledger-tag {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: var(--mark);
+      font-weight: 700;
+    }
+    .ledger-inst {
+      font-family: var(--font-ui);
+      font-size: 0.9375rem;
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .ledger-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--ok);
+    }
+    .status-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ok);
+      display: inline-block;
+    }
+    .ledger-cell {
+      padding: 1.15rem 1.25rem;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ledger-cell:last-child {
+      border-right: none;
+    }
+    .ledger-label {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.35rem;
+    }
+    .ledger-num-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+    }
+    .ledger-num {
+      font-family: var(--font-num);
+      font-size: 2.15rem;
+      line-height: 1;
+      color: var(--mark);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger-denom {
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+    }
+
+    /* Section Headings with Dossier Tag */
+    .ledger-section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .ledger-sub-tag {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+    }
+
+    /* Calibrated Gauge */
+    .calibrated-gauge {
+      position: relative;
+      background: var(--sky-deep);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .gauge-milestones {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .milestone-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+    }
+    .milestone-badge img {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+
+    /* Expedition Belt Showcase */
+    .ledger-action-link {
+      font-family: var(--font-num);
+      font-size: 0.8125rem;
+      color: var(--mark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .ledger-action-link:hover {
+      text-decoration: underline;
+    }
+    .belt-roster-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .belt-specimen-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.75rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color 140ms ease, background 140ms ease;
+      min-height: 140px;
+      position: relative;
+    }
+    .belt-specimen-card:hover {
+      border-color: var(--mark);
+      background: rgba(16, 35, 56, 0.9);
+    }
+    .belt-slot-tag {
+      font-family: var(--font-num);
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+      color: var(--navy);
+      align-self: flex-start;
+      font-weight: 700;
+    }
+    .belt-art-wrap {
+      width: 68px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.25rem 0;
+    }
+    .belt-art {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+    }
+    .belt-specimen-name {
+      font-family: var(--font-ui);
+      font-size: 0.875rem;
+      color: var(--ink);
+      display: block;
+      margin-top: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      font-weight: 700;
+    }
+    .belt-specimen-num {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--mark);
+      font-weight: 700;
+    }
+    .belt-specimen-type {
+      font-size: 0.6875rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+      font-weight: 700;
+    }
+    .belt-specimen-card.empty-slot {
+      border-style: dashed;
+      opacity: 0.7;
+      justify-content: center;
+    }
+    .belt-specimen-card.empty-slot:hover {
+      border-color: var(--navy);
+      opacity: 1;
+    }
+    .empty-ball-ghost {
+      width: 32px;
+      height: 32px;
+      opacity: 0.25;
+      filter: grayscale(1);
+    }
+    .belt-empty-title {
+      font-family: var(--font-ui);
+      font-size: 0.8125rem;
+      color: var(--navy);
+      margin-top: 0.25rem;
+      font-weight: 700;
+    }
+    .belt-empty-sub {
+      font-size: 0.6875rem;
+      color: var(--ink-soft);
+    }
+
+    /* 10 Regions Breakdown (5 columns x 2 rows) */
+    #region-progress {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .collection-region {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+      transition: border-color 140ms ease;
+      min-height: 125px;
+    }
+    .collection-region:hover {
+      border-color: var(--navy);
+    }
+    .region-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+    .region-meta-tag {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+    .region-title {
+      margin: 0.15rem 0 0;
+      font-size: 0.9375rem;
+    }
+    .region-title-link {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .region-title-link:hover {
+      color: var(--mark);
+    }
+    .region-mascot-art {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+      flex-shrink: 0;
+      pointer-events: none;
+      transition: transform 160ms ease;
+    }
+    .collection-region:hover .region-mascot-art {
+      transform: scale(1.1);
+    }
+    .region-data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.75rem;
+    }
+    .region-stat {
+      color: var(--ink);
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .region-rate {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--mark);
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+
+    /* Priority Field Favorites Gallery */
+    .favorites-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .fav-specimen-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.75rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color 140ms ease;
+    }
+    .fav-specimen-card:hover {
+      border-color: var(--mark);
+    }
+    .fav-art-wrap {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.35rem;
+    }
+    .fav-art {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+    }
+    .fav-specimen-name {
+      font-family: var(--font-ui);
+      font-size: 0.8125rem;
+      color: var(--ink);
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .fav-specimen-num {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--mark);
+    }
+    .favorites-empty-shelf {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .empty-shelf-ghosts {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .ghost-mascot {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      opacity: 0.22;
+      filter: grayscale(0.8);
+    }
+    .empty-shelf-copy strong {
+      display: block;
+      color: var(--ink);
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
+    }
+    .empty-shelf-copy p {
+      color: var(--ink-soft);
+      font-size: 0.8125rem;
+      margin: 0;
+    }
+
+    /* Field Proficiency Seals (Monochrome / Brass Technical Stamps) */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    .seal-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      min-height: 140px;
+      transition: border-color 140ms ease;
+    }
+    .seal-card.sealed {
+      border-color: var(--mark);
+      background: linear-gradient(180deg, rgba(255, 203, 5, 0.05) 0%, var(--paper) 100%);
+    }
+    .seal-card.unsealed {
+      opacity: 0.6;
+      background: rgba(16, 35, 56, 0.5);
+    }
+    .seal-mark {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.35rem;
+    }
+    .seal-serial {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--navy);
+    }
+    .seal-card.sealed .seal-serial {
+      color: var(--mark);
+    }
+    .seal-status-icon {
+      font-family: var(--font-num);
+      font-size: 0.8125rem;
+      color: var(--line);
+      font-weight: 700;
+    }
+    .seal-card.sealed .seal-status-icon {
+      color: var(--mark);
+    }
+    .seal-title {
+      font-family: var(--font-ui);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 0.25rem;
+    }
+    .seal-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      margin: 0;
+      line-height: 1.35;
+    }
+    .seal-verdict {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+    .seal-card.sealed .seal-verdict {
+      color: var(--ok);
+    }
+    .seal-card.unsealed .seal-verdict {
+      color: var(--ink-soft);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .ledger-dossier-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .ledger-meta-block {
+        grid-column: span 2;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .ledger-cell:nth-child(3) {
+        border-right: 1px solid var(--line);
+      }
+      .ledger-cell:last-child {
+        border-right: none;
+      }
+      .belt-roster-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      #region-progress {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .badge-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 560px) {
+      .ledger-dossier-bar {
+        grid-template-columns: 1fr;
+      }
+      .ledger-meta-block {
+        grid-column: span 1;
+      }
+      .ledger-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .ledger-cell:last-child {
+        border-bottom: none;
+      }
+      .belt-roster-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #region-progress {
+        grid-template-columns: 1fr;
+      }
+      .badge-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -44,44 +577,97 @@
     <h1 class="page-title">Collection</h1>
     <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">Archive progress ledger. Track specimen discoveries across National Dex and all 10 regions, stored locally.</p>
 
-    <section class="collection-summary">
-      <div>
-        <span id="seen-count">0</span>
-        <small>/ 1025 SEEN</small>
+    <section class="ledger-dossier-bar" aria-label="Specimen archive metrics">
+      <div class="ledger-meta-block">
+        <span class="ledger-tag">SPECIMEN FIELD REGISTRY</span>
+        <strong class="ledger-inst">Oak Ecological Archive</strong>
+        <div class="ledger-status"><span class="status-indicator"></span>ACTIVE FILE</div>
       </div>
 
-      <div>
-        <span id="favorite-count">0</span>
-        <small>FAVORITES</small>
+      <div class="ledger-cell">
+        <span class="ledger-label">Cataloged Specimens</span>
+        <div class="ledger-num-row">
+          <span id="seen-count" class="ledger-num">0</span>
+          <span class="ledger-denom">/ 1025</span>
+        </div>
       </div>
 
-      <div>
-        <span id="belt-count">0</span>
-        <small>IN BELT</small>
+      <div class="ledger-cell">
+        <span class="ledger-label">Field Favorites</span>
+        <div class="ledger-num-row">
+          <span id="favorite-count" class="ledger-num">0</span>
+          <span class="ledger-denom">MARKED</span>
+        </div>
+      </div>
+
+      <div class="ledger-cell">
+        <span class="ledger-label">Expedition Belt</span>
+        <div class="ledger-num-row">
+          <span id="belt-count" class="ledger-num">0</span>
+          <span class="ledger-denom">/ 6 SLOTS</span>
+        </div>
       </div>
     </section>
 
-    <section style="margin-bottom:2.25rem;">
-      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">National Dex</h2>
-      <div class="progress" style="height:12px; margin-bottom:0.5rem;">
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <h2 style="font-size:1.15rem; margin:0;">National Master Gauge</h2>
+        <span class="ledger-sub-tag">001–1025 CONTINUOUS LEDGER</span>
+      </div>
+      <div class="progress calibrated-gauge" style="height:12px; margin-bottom:0.5rem;">
         <div id="national-progress"></div>
       </div>
-      <p id="national-text" style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;"></p>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <p id="national-text" style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem; margin:0;"></p>
+        <div class="gauge-milestones">
+          <span title="#001 Bulbasaur" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png" alt="" width="22" height="22"> #001</span>
+          <span title="#151 Mew" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/151.png" alt="" width="22" height="22"> #151</span>
+          <span title="#493 Arceus" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/493.png" alt="" width="22" height="22"> #493</span>
+          <span title="#1025 Pecharunt" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1025.png" alt="" width="22" height="22"> #1025</span>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">Regions Breakdown</h2>
+    <!-- Expedition Belt Squad (Visual Specimen Showcase) -->
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <div>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Expedition Belt Squad</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Active 6-specimen deployment roster stored in belt memory.</p>
+        </div>
+        <a href="team.html" class="ledger-action-link">Open Belt Bay →</a>
+      </div>
+      <div id="belt-roster-grid" class="belt-roster-grid"></div>
+    </section>
+
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <h2 style="font-size:1.15rem; margin:0;">Territorial Breakdown</h2>
+        <span class="ledger-sub-tag">10 OFFICIAL REGIONS</span>
+      </div>
       <div id="region-progress"></div>
     </section>
 
-    <!-- 勋章成就系统 (Achievements) -->
-    <section id="achievements" style="margin-top:2.5rem;">
+    <!-- Priority Field Favorites -->
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <div>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Priority Field Specimens</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Specimens flagged with star in Pokédex for dedicated observation.</p>
+        </div>
+        <span id="fav-count-indicator" class="ledger-sub-tag">0 PINNED</span>
+      </div>
+      <div id="favorites-specimen-gallery" class="favorites-gallery-grid"></div>
+    </section>
+
+    <!-- Field Proficiency Seals -->
+    <section id="achievements" class="ledger-block" style="margin-top:2.5rem;">
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
-          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Archive Achievements</h2>
-          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Unlock commemorative badges as your specimen collection and field mastery progress.</p>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Field Proficiency Seals</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Commemorative field seals validated upon verifiable ecological discovery milestones.</p>
         </div>
-        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 12 UNLOCKED</span>
+        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 12 VALIDATED</span>
       </div>
       <div class="badge-grid" id="badge-grid"></div>
     </section>

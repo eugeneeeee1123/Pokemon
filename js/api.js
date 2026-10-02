@@ -26,6 +26,8 @@
   const speciesMemoryCache = new Map();
   const abilityMemoryCache = new Map();
   const evoMemoryCache = new Map();
+  const moveMemoryCache = new Map();
+  const fullAbilityMemoryCache = new Map();
 
   /**
    * 把名字或编号统一成 PokeAPI 能识别的 key。
@@ -345,33 +347,40 @@
     async getMove(nameOrId) {
       if (!nameOrId) return null;
       const key = String(nameOrId).trim().toLowerCase();
+      if (moveMemoryCache.has(key)) return moveMemoryCache.get(key);
       const cacheKey = `${CACHE_PREFIX}move.${key}`;
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) return JSON.parse(cached);
-      } catch (_) {}
-      try {
-        const resp = await fetch(`${API_BASE}/move/${encodeURIComponent(key)}`);
-        if (!resp.ok) return null;
-        const data = await resp.json();
-        const move = {
-          id: data.id,
-          name: data.name,
-          type: data.type?.name || "",
-          category: data.damage_class?.name || "",
-          power: data.power,
-          accuracy: data.accuracy,
-          pp: data.pp,
-          priority: data.priority,
-          description: data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || ""
-        };
+      const request = (async () => {
         try {
-          localStorage.setItem(cacheKey, JSON.stringify(move));
+          const cached = localStorage.getItem(cacheKey);
+          if (cached) return JSON.parse(cached);
         } catch (_) {}
-        return move;
-      } catch (_) {
-        return null;
-      }
+        try {
+          const resp = await fetch(`${API_BASE}/move/${encodeURIComponent(key)}`);
+          if (!resp.ok) return null;
+          const data = await resp.json();
+          const move = {
+            id: data.id,
+            name: data.name,
+            type: data.type?.name || "",
+            category: data.damage_class?.name || "",
+            power: data.power,
+            accuracy: data.accuracy,
+            pp: data.pp,
+            priority: data.priority,
+            description: data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || ""
+          };
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify(move));
+          } catch (_) {}
+          return move;
+        } catch (_) {
+          return null;
+        }
+      })();
+      moveMemoryCache.set(key, request);
+      const move = await request;
+      if (!move) moveMemoryCache.delete(key);
+      return move;
     },
 
     /**
@@ -380,32 +389,39 @@
     async getAbility(nameOrId) {
       if (!nameOrId) return null;
       const key = String(nameOrId).trim().toLowerCase();
+      if (fullAbilityMemoryCache.has(key)) return fullAbilityMemoryCache.get(key);
       const cacheKey = `${CACHE_PREFIX}ability_full.${key}`;
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) return JSON.parse(cached);
-      } catch (_) {}
-      try {
-        const resp = await fetch(`${API_BASE}/ability/${encodeURIComponent(key)}`);
-        if (!resp.ok) return null;
-        const data = await resp.json();
-        const res = {
-          id: data.id,
-          name: data.name,
-          description: (data.effect_entries || []).find(x => x.language?.name === "en")?.short_effect ||
-            data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || "",
-          pokemon: (data.pokemon || []).map(x => ({
-            name: x.pokemon.name,
-            url: x.pokemon.url
-          }))
-        };
+      const request = (async () => {
         try {
-          localStorage.setItem(cacheKey, JSON.stringify(res));
+          const cached = localStorage.getItem(cacheKey);
+          if (cached) return JSON.parse(cached);
         } catch (_) {}
-        return res;
-      } catch (_) {
-        return null;
-      }
+        try {
+          const resp = await fetch(`${API_BASE}/ability/${encodeURIComponent(key)}`);
+          if (!resp.ok) return null;
+          const data = await resp.json();
+          const res = {
+            id: data.id,
+            name: data.name,
+            description: (data.effect_entries || []).find(x => x.language?.name === "en")?.short_effect ||
+              data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || "",
+            pokemon: (data.pokemon || []).map(x => ({
+              name: x.pokemon.name,
+              url: x.pokemon.url
+            }))
+          };
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify(res));
+          } catch (_) {}
+          return res;
+        } catch (_) {
+          return null;
+        }
+      })();
+      fullAbilityMemoryCache.set(key, request);
+      const ability = await request;
+      if (!ability) fullAbilityMemoryCache.delete(key);
+      return ability;
     }
   };
 

@@ -8,6 +8,41 @@ document.addEventListener("DOMContentLoaded", async () => {
   const tc = window.TYPES_CHART;
 
   const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
+  const htmlEntities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => htmlEntities[char]);
+  const filterMoveCache = new Map();
+  function getMoveNames(resource, name) {
+    const key = `${resource}/${name}`;
+    if (!filterMoveCache.has(key)) {
+      const request = fetch(`https://pokeapi.co/api/v2/${resource}/${encodeURIComponent(name)}`)
+        .then(resp => {
+          if (!resp.ok) throw new Error("Move filter unavailable");
+          return resp.json();
+        })
+        .then(data => new Set((data.moves || []).map(move => move.name)))
+        .catch(err => {
+          filterMoveCache.delete(key);
+          throw err;
+        });
+      filterMoveCache.set(key, request);
+    }
+    return filterMoveCache.get(key);
+  }
+  const categoryIcons = {
+    physical: '<svg viewBox="0 0 24 24"><path d="M5 19 19 5M11 5h8v8"/></svg>',
+    special: '<svg viewBox="0 0 24 24"><path d="m12 2 2.5 7.2L22 12l-7.5 2.8L12 22l-2.5-7.2L2 12l7.5-2.8L12 2Z"/></svg>',
+    status: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>'
+  };
+  const statMeter = (label, value, max, suffix = "") => {
+    const percent = Number.isFinite(value) ? Math.min(100, Math.max(0, value) / max * 100) : 0;
+    const displayValue = value == null ? "—" : escapeHTML(value);
+    return `
+      <div class="move-meter">
+        <div class="move-meter-label"><span>${label}</span><strong>${displayValue}${value == null ? "" : suffix}</strong></div>
+        <div class="move-meter-track" aria-hidden="true"><span style="width:${percent}%"></span></div>
+      </div>
+    `;
+  };
 
   const TYPES = [
     "normal", "fire", "water", "grass", "electric", "ice",
@@ -24,35 +59,50 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let allMoveEntries = [];
   let currentPage = 1;
-  const PAGE_SIZE = 36;
+  let renderRevision = 0;
+  const PAGE_SIZE = 18;
 
   try {
     const listResp = await fetch("https://pokeapi.co/api/v2/move?limit=950");
     if (!listResp.ok) throw new Error("Failed to load moves list");
     const data = await listResp.json();
     allMoveEntries = data.results || [];
-    statusEl.textContent = `Indexed ${allMoveEntries.length} moves.`;
 
     const urlQ = new URLSearchParams(location.search).get("q");
     if (urlQ && search) search.value = urlQ;
   } catch (err) {
-    statusEl.textContent = "Unable to load moves list. Please check your network.";
+    statusEl.textContent = "Moves unavailable.";
     return;
   }
 
   async function render() {
-    statusEl.textContent = "Filtering and loading move details...";
+    const revision = ++renderRevision;
+    statusEl.textContent = "Loading…";
     const q = search.value.trim().toLowerCase();
     const selectedType = typeSelect.value;
     const selectedCat = categorySelect.value;
 
-    let matched = allMoveEntries.filter(m => {
-      if (q && !m.name.includes(q)) return false;
-      return true;
-    });
+    let typeMoveNames = null;
+    let categoryMoveNames = null;
+    try {
+      [typeMoveNames, categoryMoveNames] = await Promise.all([
+        selectedType ? getMoveNames("type", selectedType) : null,
+        selectedCat ? getMoveNames("move-damage-class", selectedCat) : null
+      ]);
+    } catch (_) {
+      if (revision !== renderRevision) return;
+      statusEl.textContent = "Filters unavailable.";
+      return;
+    }
+    if (revision !== renderRevision) return;
 
-    const totalMatched = matched.length;
-    const totalPages = Math.ceil(totalMatched / PAGE_SIZE) || 1;
+    const matched = allMoveEntries.filter(m =>
+      (!q || m.name.includes(q)) &&
+      (!typeMoveNames || typeMoveNames.has(m.name)) &&
+      (!categoryMoveNames || categoryMoveNames.has(m.name))
+    );
+
+    const totalPages = Math.ceil(matched.length / PAGE_SIZE) || 1;
     if (currentPage > totalPages) currentPage = 1;
 
     const pageSlice = matched.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
@@ -61,54 +111,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     const moveDetails = await Promise.all(
       pageSlice.map(item => window.pokeApi.getMove(item.name))
     );
+    if (revision !== renderRevision) return;
 
-    // Filter by type / category if selected
-    let displayed = moveDetails.filter(m => {
+    const displayed = moveDetails.filter(m => {
       if (!m) return false;
       if (selectedType && m.type !== selectedType) return false;
       if (selectedCat && m.category !== selectedCat) return false;
       return true;
     });
 
-    statusEl.textContent = `Showing ${displayed.length} of ${totalMatched} moves (Page ${currentPage}/${totalPages}).`;
+    statusEl.textContent = displayed.length ? `${displayed.length} shown` : "No matches";
 
-    grid.innerHTML = displayed.map(m => `
-      <article class="dex-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:12rem;">
-        <div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-            <span class="id-badge">#${String(m.id).padStart(3, "0")}</span>
-            <span class="chip" style="${typeStyle(m.type)} font-size:0.75rem;">${m.type}</span>
+    grid.innerHTML = displayed.map(m => {
+      const category = m.category || "status";
+      const icon = categoryIcons[category] || categoryIcons.status;
+      const categoryText = escapeHTML(category);
+      const description = escapeHTML(m.description ? m.description.replace(/\n/g, " ") : "No description available.");
+      return `
+        <article class="dex-card move-card">
+          <div class="move-visual" data-category="${categoryText}" style="${typeStyle(m.type)}" aria-hidden="true">
+            <span class="move-visual-emblem">${icon}</span>
+            <span class="move-visual-label">${categoryText}</span>
           </div>
-
-          <h3 style="font-family:var(--font-ui); font-size:1.1rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.35rem;">
-            ${m.name.replace(/-/g, " ")}
-          </h3>
-
-          <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem; font-size:0.75rem;">
-            <span style="background:var(--sky-deep); color:var(--ink-soft); padding:0.1rem 0.35rem; border-radius:2px; text-transform:capitalize; border:1px solid var(--line);">
-              ${m.category || "status"}
-            </span>
+          <div class="move-card-body">
+            <div class="move-card-heading">
+              <h2 class="move-name">${escapeHTML(m.name.replace(/-/g, " "))}</h2>
+              <span class="chip move-type" style="${typeStyle(m.type)}">${escapeHTML(m.type)}</span>
+            </div>
+            <div class="move-stats">
+              ${statMeter("PWR", m.power, 250)}
+              ${statMeter("ACC", m.accuracy, 100, "%")}
+              ${statMeter("PP", m.pp, 40)}
+            </div>
           </div>
-
-          <p class="soft" style="font-size:0.8125rem; line-height:1.4; color:var(--ink-soft); margin-bottom:0.5rem;">
-            ${m.description ? m.description.replace(/\n/g, " ") : "No description available."}
-          </p>
-        </div>
-
-        <div style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink); padding-top:0.4rem; border-top:1px solid var(--line); display:flex; justify-content:space-between;">
-          <span>PWR: <strong>${m.power ?? "—"}</strong></span>
-          <span>ACC: <strong>${m.accuracy ? m.accuracy + "%" : "—"}</strong></span>
-          <span>PP: <strong>${m.pp ?? "—"}</strong></span>
-        </div>
-      </article>
-    `).join("");
+          <details class="move-details">
+            <summary>Details</summary>
+            <p>${description}</p>
+          </details>
+        </article>
+      `;
+    }).join("");
 
     // Render pagination buttons
     if (totalPages > 1) {
       paginationEl.innerHTML = `
-        <div style="display:inline-flex; gap:0.5rem; align-items:center;">
+        <div class="move-pagination-inner">
           <button class="btn btn-paper" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
-          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Page ${currentPage} of ${totalPages}</span>
+          <span>Page ${currentPage} / ${totalPages}</span>
           <button class="btn btn-paper" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
         </div>
       `;

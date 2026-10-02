@@ -40,11 +40,8 @@
     </div>
   </header>
 
-  <main id="main" class="wrap">
+  <main id="main" class="wrap moves-page">
     <h1 class="page-title">Moves</h1>
-    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
-      Browse Pokémon battle moves by type, damage category, power, and accuracy.
-    </p>
 
     <div class="tools-bar">
       <input
@@ -67,9 +64,9 @@
       </select>
     </div>
 
-    <div id="move-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading moves database...</div>
-    <div id="move-grid" class="dex-grid"></div>
-    <div id="move-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+    <div id="move-status" class="move-status" aria-live="polite">Loading…</div>
+    <div id="move-grid" class="dex-grid moves-grid"></div>
+    <div id="move-pagination" class="move-pagination"></div>
   </main>
 
   <script src="js/types-chart.js"></script>
