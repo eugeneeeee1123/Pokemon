@@ -1,8 +1,7 @@
 /**
- * 151 FILE — Dex Page Logic (Spine + Ledger + Stage + Film & Visual Cards Grid)
+ * 151 FILE — Dex Page Logic (Spine + Ledger + Stage + Film)
  * 遵循 pokemon-web-project-plan.md §4.2 与 §7
- * 支持全部 1025 只宝可梦全局浏览与 10 官方地区切卷
- * 支持双展示模式：1. Ledger 档案台座模式  2. Grid 全景卡片网格模式
+ * 默认关都 151，只从 Regions 进入其他地区
  */
 
 // 地区预置数据引用
@@ -14,19 +13,15 @@ const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#
 
 // URL 查询参数
 const params = new URLSearchParams(location.search);
-const initialRegionSlug = params.get("region") || "all";
-const currentRegion = window.getRegionBySlug ? window.getRegionBySlug(initialRegionSlug) : { slug: "all", name: "National", start: 1, end: 1025, offset: 0, limit: 1025 };
+const initialRegionSlug = params.get("region") || "kanto";
+const currentRegion = window.getRegionBySlug ? window.getRegionBySlug(initialRegionSlug) : { slug: "kanto", name: "Kanto", start: 1, end: 151, offset: 0, limit: 151 };
 
 // 当前地区的 50 序号一段书脊分段
 let SPINES = window.getRegionSpines ? window.getRegionSpines(currentRegion.start, currentRegion.end) : [[1, 50], [51, 100], [101, 151]];
 
-// 记忆展示模式 (优先读 URL ?view=，其次 localStorage，默认 ledger)
-const savedView = typeof localStorage !== "undefined" ? localStorage.getItem("file151.dex_view") : null;
-const initialView = params.get("view") || savedView || "ledger";
-
 // 响应式应用状态
 const state = {
-  displayMode: (initialView === "grid") ? "grid" : "ledger",
+  displayMode: "ledger",
   region: currentRegion,
   type: params.get("type"),
   resist: params.get("resist"),
@@ -35,7 +30,8 @@ const state = {
   list: [],       // 经筛选后的当前展示名单
   i: 0,
   range: SPINES[0] || [1, 50],
-  listRev: 0      // 每次 state.list 重新计算就 +1，用来决定要不要重画胶片和网格
+  listRev: 0,
+  numberBuffer: ""
 };
 let filmRev = -1;
 let gridRev = -1;
@@ -101,6 +97,28 @@ function selectIndex(i) {
   const spine = SPINES.find(([a, b]) => id >= a && id <= b) || state.range;
   state.range = spine;
   render();
+}
+
+function renderNumberBuffer() {
+  const bufferEl = document.getElementById("number-buffer");
+  if (!bufferEl) return;
+  bufferEl.hidden = !state.numberBuffer;
+  bufferEl.textContent = state.numberBuffer ? `_${state.numberBuffer}` : "";
+}
+
+function clearNumberBuffer() {
+  state.numberBuffer = "";
+  renderNumberBuffer();
+}
+
+function selectBufferedNumber() {
+  if (!state.numberBuffer) return false;
+  const id = Number(state.numberBuffer);
+  const hit = state.list.findIndex(p => p.id === id);
+  clearNumberBuffer();
+  if (hit < 0) return false;
+  selectIndex(hit);
+  return true;
 }
 
 // 加入腰带 (最多 6 只)
@@ -218,22 +236,16 @@ function render() {
   const onBelt = belt();
   const p = current();
 
-  // 1. 同步顶部工具栏状态 (地区下拉框、模式按键、数量标记、抗性芯片)
-  const regSelect = document.getElementById("region-select");
-  if (regSelect && regSelect.value !== state.region.slug) {
-    regSelect.value = state.region.slug;
+  // 1. 同步顶部工具栏状态（地区标签、数量标记、抗性芯片）
+  const regionLink = document.getElementById("region-link");
+  if (regionLink) {
+    regionLink.href = "regions.html";
+    regionLink.textContent = `${state.region.name} · #${pad3(state.region.start)}–#${pad3(state.region.end)}`;
   }
 
   const countBadge = document.getElementById("count-badge");
   if (countBadge) {
     countBadge.textContent = `${state.list.length} files`;
-  }
-
-  const btnLedger = document.getElementById("btn-view-ledger");
-  const btnGrid = document.getElementById("btn-view-grid");
-  if (btnLedger && btnGrid) {
-    btnLedger.classList.toggle("is-active", state.displayMode === "ledger");
-    btnGrid.classList.toggle("is-active", state.displayMode === "grid");
   }
 
   const resistChip = document.getElementById("resist-chip");
@@ -291,8 +303,8 @@ function render() {
       const has = onBelt.includes(p.id);
 
       stageEl.innerHTML = `
-        <div class="stage-img-box" id="stageImgBox" title="Tap Pokémon to hear official Cry">
-          <img src="${artOf(p.id)}" alt="${p.name} 3D Model" width="240" height="240" />
+        <div class="stage-img-box" id="stageImgBox">
+          <img src="${artOf(p.id)}" alt="${p.name}" width="240" height="240" />
         </div>
         <p><span class="id">#${pad3(p.id)}</span></p>
         <p class="name">${p.name}</p>
@@ -325,9 +337,6 @@ function render() {
       })();
 
       document.getElementById("add")?.addEventListener("click", () => addBelt(p.id));
-      document.getElementById("stageImgBox")?.addEventListener("click", () => {
-        window.pokeApi.playCry(p.id); // 用户主动点击，不受声音开关限制
-      });
     }
 
     // 1.4 底胶片尺 (Film Strip)
@@ -341,9 +350,10 @@ function render() {
     renderGrid(gridViewEl);
   }
 
-  // 同步搜索框与属性芯片高亮
+  // 同步搜索框、属性芯片和编号缓冲
   const qEl = document.getElementById("q");
   if (qEl && qEl.value !== state.q) qEl.value = state.q;
+  renderNumberBuffer();
   document.querySelectorAll(".chip[data-type]").forEach(c => {
     c.toggleAttribute("data-on", (c.dataset.type || "") === (state.type || ""));
   });
@@ -388,22 +398,7 @@ async function initDex() {
 
 // 事件委托与监听
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. 切换展示模式 (Ledger / Grid)
-  document.getElementById("btn-view-ledger")?.addEventListener("click", () => {
-    if (state.displayMode === "ledger") return;
-    state.displayMode = "ledger";
-    localStorage.setItem("file151.dex_view", "ledger");
-    render();
-  });
-
-  document.getElementById("btn-view-grid")?.addEventListener("click", () => {
-    if (state.displayMode === "grid") return;
-    state.displayMode = "grid";
-    localStorage.setItem("file151.dex_view", "grid");
-    render();
-  });
-
-  // 2. 地区选择下拉框切换
+  // 地区页是唯一地区入口；保留监听以兼容旧页面嵌入的选择器。
   document.getElementById("region-select")?.addEventListener("change", e => {
     const slug = e.target.value;
     state.region = window.getRegionBySlug ? window.getRegionBySlug(slug) : { slug, name: "National", start: 1, end: 1025 };
@@ -442,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectIndex(state.list.findIndex(p => p.id === Number(cell.dataset.id)));
   });
 
-  // 6. 卡片网格点击委托 (卡片直达详情/播放叫声，按键加入腰带)
+  // 6. 兼容旧网格容器的点击委托
   document.getElementById("dex-grid-view")?.addEventListener("click", e => {
     const beltBtn = e.target.closest("[data-belt-id]");
     if (beltBtn) {
@@ -467,12 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("q")?.addEventListener("keydown", e => {
     if (e.key === "Enter") {
-      if (state.list.length === 1) {
-        location.href = `pokemon.html?id=${state.list[0].id}`;
-      } else if (/^\d+$/.test(state.q)) {
-        const num = Number(state.q);
-        if (num >= 1 && num <= 1025) location.href = `pokemon.html?id=${num}`;
-      }
+      if (state.list.length === 1) selectIndex(0);
     }
   });
 
@@ -495,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
     syncUrl();
   });
 
-  // 8c. 键盘：名录行和网格卡片用 Enter / 空格触发，和点击一致
+  // 8c. 键盘：名录行和旧网格卡片用 Enter / 空格触发，和点击一致
   ["ledger", "dex-grid-view"].forEach(id => {
     document.getElementById(id)?.addEventListener("keydown", e => {
       if (e.key !== "Enter" && e.key !== " ") return;
@@ -512,8 +502,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!state.list.length) return;
     const randIdx = Math.floor(Math.random() * state.list.length);
     selectIndex(randIdx);
-    const picked = state.list[randIdx];
-    if (picked && window.pokeApi) window.pokeApi.playCryAuto(picked.id);
   });
 
   // 10. 全局快捷键导航
@@ -527,6 +515,21 @@ document.addEventListener("DOMContentLoaded", () => {
         syncUrl();
         document.getElementById("q")?.blur();
       }
+      return;
+    }
+    if (e.key === "Escape") {
+      clearNumberBuffer();
+      return;
+    }
+    if (/^\d$/.test(e.key)) {
+      state.numberBuffer = `${state.numberBuffer}${e.key}`.slice(-3);
+      renderNumberBuffer();
+      if (state.numberBuffer.length === 3) selectBufferedNumber();
+      return;
+    }
+    if (e.key === "Enter" && state.numberBuffer) {
+      e.preventDefault();
+      selectBufferedNumber();
       return;
     }
     if (e.key === "/") {

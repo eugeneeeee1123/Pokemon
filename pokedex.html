@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dex — 151 File</title>
-  <meta name="description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
+  <meta name="description" content="Browse the Kanto 151 through a spine, ledger and film strip. Filter by type or resistance, then add a specimen to your belt.">
   <meta name="theme-color" content="#071422">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Dex — 151 File">
-  <meta property="og:description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
+  <meta property="og:description" content="Browse the Kanto 151 through a spine, ledger and film strip. Filter by type or resistance, then add a specimen to your belt.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,35 +47,14 @@
   <!-- 页面主体容器 -->
   <main id="main" class="wrap dex-page">
     <h1 class="sr-only">Dex</h1>
-    <!-- 工具条两行：控制一行，18 属性永远一行（窄屏只在这一行里横滑） -->
+    <!-- 控制条：地区从 Regions 进入，搜索与属性只作用于当前地区 -->
     <div class="tools">
       <div class="tools-bar">
-      <select id="region-select" class="region-select" aria-label="Select Region">
-        <option value="all">All Regions (#001–#1025)</option>
-        <option value="kanto">Kanto (#001–#151)</option>
-        <option value="johto">Johto (#152–#251)</option>
-        <option value="hoenn">Hoenn (#252–#386)</option>
-        <option value="sinnoh">Sinnoh (#387–#493)</option>
-        <option value="unova">Unova (#494–#649)</option>
-        <option value="kalos">Kalos (#650–#721)</option>
-        <option value="alola">Alola (#722–#809)</option>
-        <option value="galar">Galar (#810–#898)</option>
-        <option value="hisui">Hisui (#899–#905)</option>
-        <option value="paldea">Paldea (#906–#1025)</option>
-      </select>
-
-      <div class="view-toggle" role="group" aria-label="Display mode">
-        <button type="button" class="view-btn is-active" id="btn-view-ledger" data-view="ledger" title="Ledger & Stage (台座名录)">
-          📑 Ledger
-        </button>
-        <button type="button" class="view-btn" id="btn-view-grid" data-view="grid" title="Visual Cards Grid (全景网格)">
-          ▦ Grid
-        </button>
-      </div>
-
-      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off" aria-label="Search by name or number">
-      <button class="chip" id="draw" type="button">Draw one</button>
-      <span class="count-badge" id="count-badge"></span>
+        <a class="region" id="region-link" href="regions.html">Kanto · #001–#151</a>
+        <span class="count-badge" id="count-badge" aria-live="polite"></span>
+        <input id="q" type="search" placeholder="Find a name or number" autocomplete="off" aria-label="Search the current region by name or number">
+        <button class="chip" id="draw" type="button">Draw one</button>
+        <output class="id" id="number-buffer" aria-live="polite" hidden></output>
       </div>
       <div class="type-row" role="toolbar" aria-label="Filter by type">
       <button class="chip" data-type="" data-on type="button">All types</button>
@@ -101,7 +80,7 @@
       </div>
     </div>
 
-    <!-- 模式 1：Dex 四区同屏布局 (Spine + Ledger + Stage + Film) -->
+    <!-- 同屏结构：Spine + Ledger + Stage + Film -->
     <div class="dex" id="dex-ledger-view">
       <!-- 左脊：50 号一段分册导航 -->
       <div class="spines" id="spines"></div>
@@ -116,15 +95,13 @@
       <div class="film" id="film"></div>
     </div>
 
-    <!-- 模式 2：全景 3D 卡片网格布局 (Visual Cards Grid) -->
-    <div class="dex-grid" id="dex-grid-view" hidden></div>
   </main>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
-  <script src="js/pokedex.js"></script>
+  <script src="js/pokedex.js?v=20261003a"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
