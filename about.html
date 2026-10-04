@@ -20,6 +20,31 @@
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/pokeball.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .about-page {
+      max-width: 80rem;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: var(--s-6);
+    }
+    .about-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .about-col > .file-block {
+      margin: 0;
+    }
+    @media (max-width: 64rem) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -45,64 +70,100 @@
     </div>
   </header>
 
-  <!-- 页面主体容器：约束在舒适阅读行宽 (wrap-doc) -->
-  <main id="main" class="wrap wrap-doc">
+  <!-- 页面主体容器：使用两栏桌面网格消除右侧空白 -->
+  <main id="main" class="wrap about-page">
     <h1 class="page-title">File</h1>
     <p class="page-desc">Unofficial Kanto-first dex. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
 
-    <!-- 这站存什么 / 不存什么 -->
-    <section class="file-block">
-      <h2>这站存什么</h2>
-      <p style="margin-bottom:0.75rem; line-height:1.6;">只用你浏览器的 <code>localStorage</code>，存 4 样东西，全在本地：</p>
-      <ul>
-        <li><code>file151.belt</code>：你的 6 槽腰带名单（编号数组）。</li>
-        <li><code>file151.seen</code>：你看过哪些宝可梦，在 Dex 网格角落留记号。</li>
-        <li><code>file151.last</code>：上次打开的文件编号，首页直接一键继续。</li>
-        <li><code>file151.sound</code>：叫声自动播放偏好（默认 <code>off</code>）。</li>
-      </ul>
-    </section>
+    <div class="about-grid">
+      <!-- 左栏：游戏正作世界观与时空脉络 -->
+      <div class="about-col">
+        <section class="file-block" id="world-canon" aria-labelledby="world-heading">
+          <h2 id="world-heading">世界观与时空背景 / World Setting & Chronology</h2>
+          <p style="margin-bottom:1rem; line-height:1.6; color:var(--ink-soft);">
+            A background reference for how Pokémon regions, history, and spacetime fit together. This guide separates in-game lore from real-world release history, and notes canon sources to prevent mixing game and anime storylines.
+          </p>
 
-    <section class="file-block">
-      <h2>不存什么</h2>
-      <p style="line-height:1.6;">没有账号，没有登录，没有追踪 Cookie，没有服务器后台，也没有数据分析打点。你关掉浏览器或清理本地缓存，记录就清零。没有任何数据会传到这台电脑之外。</p>
-    </section>
+          <div style="border-top:1px solid var(--line); padding-top:1rem; margin-top:1rem;">
+            <h3 style="font-family:var(--font-ui); font-size:1.1rem; color:var(--ink); margin:0 0 0.5rem;">In-Universe Game Canon</h3>
+            <p style="font-size:0.875rem; color:var(--ink-soft); line-height:1.5; margin-bottom:0.75rem;">
+              Source: Core video games developed by Game Freak. This continuity does not follow the animated television series, which uses an unaging floating timeline where Ash Ketchum remains ten years old across twenty-five seasons.
+            </p>
 
-    <!-- 数据从哪来 -->
-    <section class="file-block">
-      <h2>数据从哪来</h2>
-      <ul>
-        <li>种族基础数值、属性、特性、英文种属与描述：来自开放数据接口 <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a>。</li>
-        <li>3D 立绘渲染模型：来自官方立绘归档 <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a>（HOME 渲染图与 192px 缩略图）。</li>
-        <li>叫声音频：来自 <a href="https://github.com/PokeAPI/cries" target="_blank" rel="noopener">PokeAPI/cries</a> 原生音频归档。</li>
-      </ul>
-    </section>
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Regions and Spatial Geography</h4>
+            <p style="line-height:1.6; margin-bottom:0.75rem;">
+              The first four regions (Kanto, Johto, Hoenn, and Sinnoh) sit in close geographic proximity, based on the real-world Japanese regions of Kanto, Kansai, Kyushu, and Hokkaido. Kanto and Johto share a contiguous land border connected by Route 27, Tohjo Falls, and the Magnet Train between Saffron City and Goldenrod City. Later titles moved to overseas territories: Unova is based on the New York metropolitan area, Kalos on northern France, Alola on Hawaii, Galar on the United Kingdom, and Paldea on the Iberian Peninsula. For regional borders, native dex slices, and field survey maps from Kanto #001 to Paldea #1025, see the <a href="regions.html">Regions</a> index.
+            </p>
 
-    <!-- 腰带在这台机器 -->
-    <section class="file-block">
-      <h2>腰带在这台机器</h2>
-      <p style="line-height:1.6;">你的六只腰带搭档只保存在当前这台设备的当前浏览器中。不会同步到其他设备，也不会因为换台机器而泄漏。它是你私人的一份野外记录。</p>
-    </section>
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Chronology from Ancient Eras to Modern Leagues</h4>
+            <p style="line-height:1.6; margin-bottom:0.5rem;">
+              The core series establishes chronological milestones through in-game history and NPC dialogue:
+            </p>
+            <ul style="margin-bottom:0.75rem;">
+              <li><strong>Ancient history:</strong> <em>Pokémon Legends: Arceus</em> documents the settlement of ancient Sinnoh (Hisui) and the earliest hand-crafted wooden apricorn Poké Balls. Three thousand years before modern events, an ancient war in Kalos ended when the king AZ fired the ultimate weapon powered by Pokémon life energy.</li>
+              <li><strong>Timeline split:</strong> Dialogue during the Delta Episode in <em>Omega Ruby</em> and <em>Alpha Sapphire</em> confirmed that AZ firing the ultimate weapon split the games into two separate branches: an original timeline without Mega Evolution (Generation I to Generation V), and an alternate timeline where Mega Evolution exists.</li>
+              <li><strong>Modern league era:</strong> Generation I (<em>Red, Green, Blue</em>) and Generation III (<em>Ruby, Sapphire</em>) happen at roughly the same point in time. Three years later, Generation II (<em>Gold, Silver</em>) and Generation IV (<em>Diamond, Pearl</em>) run concurrently. Generation V (<em>Black and White</em>) takes place several years later, with <em>Black 2 and White 2</em> and Generation VI (<em>X and Y</em>) occurring two years after that. Later adventures in Alola, Galar, and Paldea proceed forward in modern sequence.</li>
+            </ul>
 
-    <!-- 精灵球音效开关 -->
-    <section class="file-block" aria-labelledby="sound-heading">
-      <h2 id="sound-heading">Sound</h2>
-      <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. When on, a cry plays once as a file opens or when you press Draw one. Tapping a Pokémon always plays its cry.</p>
-      <button class="btn btn-paper" id="sound" type="button">Sound off</button>
-    </section>
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Anomalous Spacetime Phenomena</h4>
+            <p style="line-height:1.6; margin-bottom:0.5rem;">
+              The game universe features specific localized breaches in space and time:
+            </p>
+            <ul style="margin-bottom:0.75rem;">
+              <li><strong>Space-time rifts:</strong> Atmospheric tears over Mount Coronet in ancient Hisui, triggered by Giratina destabilizing the Temple of Sinnoh, which caused items and people from different centuries to fall through.</li>
+              <li><strong>The Distortion World:</strong> A parallel plane where Giratina was banished. Normal gravity, surface orientation, and the standard forward flow of time do not apply there.</li>
+              <li><strong>Ultra Wormholes:</strong> Interdimensional gateways in Alola opened by Solgaleo, Lunala, or Necrozma. These tunnels connect our world to extradimensional habitats such as Ultra Deep Sea and the ruined civilization of Ultra Megalopolis.</li>
+              <li><strong>Area Zero and Paradox Pokémon:</strong> The Great Crater of Paldea houses a functioning time machine built by Professor Sada or Professor Turo. The machine extracted ancient past or distant future Paradox specimens into the present day.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
 
-    <!-- 快捷键指南 -->
-    <section class="file-block" aria-labelledby="keys-heading">
-      <h2 id="keys-heading">Keys</h2>
-      <table class="keys-table">
-        <tbody>
-          <tr><td><kbd>/</kbd></td><td>Focus search on Dex / Lineup</td></tr>
-          <tr><td><kbd>Esc</kbd></td><td>Close file or clear search</td></tr>
-          <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next number on Detail; Film on Dex</td></tr>
-          <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
-          <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
-        </tbody>
-      </table>
-    </section>
+      <!-- 右栏：现实发布演进、地区直达、系统设置与快捷键 -->
+      <div class="about-col">
+        <section class="file-block" id="franchise-history" aria-labelledby="history-heading">
+          <h2 id="history-heading">现实系列演进 / Franchise Milestones</h2>
+          <p style="line-height:1.6; color:var(--ink-soft); margin-bottom:0.75rem;">
+            The real-world development of the franchise spans thirty years of hardware changes:
+          </p>
+          <ul style="margin-bottom:0.75rem;">
+            <li><strong>1996:</strong> Game Freak and Nintendo released <em>Pocket Monsters Red and Green</em> for the Game Boy in Japan, directed by Satoshi Tajiri with artwork by Ken Sugimori. This established the initial 151 species indexed on this site.</li>
+            <li><strong>1998-1999:</strong> International localized releases as <em>Pokémon Red and Blue</em> established the global franchise.</li>
+            <li><strong>Hardware generations:</strong> The series transitioned across Game Boy Color (1999, Gen II), Game Boy Advance (2002, Gen III), Nintendo DS (2006, Gen IV), Nintendo 3DS (2013, Gen VI), and Nintendo Switch (2019, Gen VIII).</li>
+            <li><strong>Data compatibility:</strong> The 2002 release of <em>Ruby and Sapphire</em> rebuilt the core internal data structures for individual Pokémon (introducing 31-point Individual Values and personality values). Because of this unified structure, a Pokémon caught on a Game Boy Advance cartridge in 2002 can still be transferred upward through the DS, 3DS, and Pokémon Bank into Pokémon HOME on the Nintendo Switch today.</li>
+          </ul>
+        </section>
+
+        <section class="file-block" id="regions-shortcut" aria-labelledby="regions-shortcut-heading">
+          <h2 id="regions-shortcut-heading">地区索引直达 / Regional Field Index</h2>
+          <p style="line-height:1.6; color:var(--ink-soft); margin-bottom:1rem;">
+            Looking to explore specific territories? The Regions catalog contains official regional maps, habitat markers, and National Dex bounds for all 9 generations.
+          </p>
+          <a href="regions.html" class="btn btn-primary">Open Regions Atlas →</a>
+        </section>
+
+        <!-- 精灵球音效开关 -->
+        <section class="file-block" aria-labelledby="sound-heading">
+          <h2 id="sound-heading">Sound</h2>
+          <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. When on, a cry plays once as a file opens or when you press Draw one. Tapping a Pokémon always plays its cry.</p>
+          <button class="btn btn-paper" id="sound" type="button">Sound off</button>
+        </section>
+
+        <!-- 快捷键指南 -->
+        <section class="file-block" aria-labelledby="keys-heading">
+          <h2 id="keys-heading">Keys</h2>
+          <table class="keys-table">
+            <tbody>
+              <tr><td><kbd>/</kbd></td><td>Focus search on Dex / Lineup</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Close file or clear search</td></tr>
+              <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next number on Detail; Film on Dex</td></tr>
+              <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
+              <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
   </main>
 
   <script src="js/store.js"></script>
