@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Characters — 151 File</title>
+  <meta name="description" content="Meet the Trainers, Gym Leaders, researchers, Champions, and rivals who shape the Pokémon world.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .characters-page {
+      max-width: 68rem;
+    }
+
+    .characters-lede {
+      max-width: 42rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+    }
+
+    .character-index {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .character-index a,
+    .character-source,
+    .character-pokemon-link {
+      color: var(--navy);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+    }
+
+    .character-index a:hover,
+    .character-source:hover,
+    .character-pokemon-link:hover {
+      color: var(--mark);
+    }
+
+    .character-section {
+      margin-top: 2.5rem;
+      scroll-margin-top: 5rem;
+    }
+
+    .character-section h2 {
+      padding-bottom: 0.65rem;
+      border-bottom: 2px solid var(--line);
+      margin-bottom: 0;
+    }
+
+    .character-record {
+      display: grid;
+      grid-template-columns: minmax(10rem, 0.72fr) minmax(0, 1.8fr);
+      gap: 1rem 2rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .character-id,
+    .character-meta,
+    .character-links-label {
+      font-family: var(--font-num);
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+    }
+
+    .character-id {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--mark);
+    }
+
+    .character-name {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .character-meta {
+      margin-top: 0.35rem;
+    }
+
+    .character-copy p {
+      margin: 0 0 0.6rem;
+      line-height: 1.55;
+    }
+
+    .character-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      align-items: baseline;
+      margin-top: 0.75rem;
+    }
+
+    .character-links-label {
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 42rem) {
+      .character-record {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="characters.html" aria-current="page">Characters</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap characters-page">
+    <p class="meta-eyebrow"><span>PEOPLE INDEX</span><span>/</span><span>08 DOSSIERS</span></p>
+    <h1 class="page-title">Characters</h1>
+    <p class="characters-lede">A field guide to the Trainers, Gym Leaders, researchers, Champions, and rivals who make the Pokémon world feel lived in. Each entry points to an official source and, where relevant, back to a Pokémon in the Dex.</p>
+
+    <nav class="character-index" aria-label="Character groups">
+      <a href="#travelers">Travelers</a>
+      <a href="#kanto">Kanto figures</a>
+      <a href="#champions">Champions</a>
+      <a href="#adversaries">Adversaries</a>
+    </nav>
+
+    <section class="character-section" id="travelers" aria-labelledby="travelers-title">
+      <h2 id="travelers-title">Travelers</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 001</span>
+          <h3 class="character-name">Ash Ketchum</h3>
+          <p class="character-meta">Trainer · begins in Kanto</p>
+        </div>
+        <div class="character-copy">
+          <p>A spirited Trainer whose journey begins in Pallet Town with Pikachu. His travels bring new friends, rivals, and battles across the regions.</p>
+          <div class="character-links">
+            <span class="character-links-label">Partner</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=25">Pikachu · #025</a>
+            <a class="character-source" href="https://www.pokemon.com/us/animation/seasons/23/episode-1-enter-pikachu" target="_blank" rel="noopener">Official episode ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 002</span>
+          <h3 class="character-name">Misty</h3>
+          <p class="character-meta">Cerulean Gym Leader · Kanto</p>
+        </div>
+        <div class="character-copy">
+          <p>A Water-type specialist and longtime traveling companion of Ash. Her connection to Cerulean Gym ties her story to one of Kanto’s best-known locations.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=121">Starmie · #121</a>
+            <a class="character-source" href="https://www.pokemon.com/uk/news/a-peek-at-the-cards-of-the-pokemon-tcg-sword-shield-astral-radiance-trainer-gallery" target="_blank" rel="noopener">Official feature ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 003</span>
+          <h3 class="character-name">Brock</h3>
+          <p class="character-meta">Pewter Gym Leader · Kanto</p>
+        </div>
+        <div class="character-copy">
+          <p>A steady traveling companion and former Pewter Gym Leader. Beyond battling, Brock hopes to become a Pokémon Breeder.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=95">Onix · #095</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-news/lets-go-for-a-test-run" target="_blank" rel="noopener">Official feature ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="kanto" aria-labelledby="kanto-title">
+      <h2 id="kanto-title">Kanto figures</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 004</span>
+          <h3 class="character-name">Professor Oak</h3>
+          <p class="character-meta">Pokémon researcher · Pallet Town</p>
+        </div>
+        <div class="character-copy">
+          <p>A researcher whose work introduces many new Trainers to the world of Pokémon. His lab and field research appear throughout the Kanto stories.</p>
+          <div class="character-links">
+            <span class="character-links-label">Read more</span>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-video-games/pokemon-snap/" target="_blank" rel="noopener">Pokémon Snap overview ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 005</span>
+          <h3 class="character-name">Red</h3>
+          <p class="character-meta">Trainer · Kanto games</p>
+        </div>
+        <div class="character-copy">
+          <p>A legendary Trainer from the Kanto games, known for letting his record and team speak for him.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=6">Charizard · #006</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-video-games/pokemon-masters-ex" target="_blank" rel="noopener">Official game profile ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 006</span>
+          <h3 class="character-name">Blue</h3>
+          <p class="character-meta">Trainer · Kanto games</p>
+        </div>
+        <div class="character-copy">
+          <p>Red’s formidable rival and Professor Oak’s grandson. His confidence makes him one of the classic Pokémon game rivals.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=18">Pidgeot · #018</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-video-games/pokemon-masters-ex" target="_blank" rel="noopener">Official game profile ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="champions" aria-labelledby="champions-title">
+      <h2 id="champions-title">Champions</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 007</span>
+          <h3 class="character-name">Cynthia</h3>
+          <p class="character-meta">Sinnoh Champion</p>
+        </div>
+        <div class="character-copy">
+          <p>A composed Champion admired for her strength and generosity toward younger Trainers. Her Garchomp is one of the franchise’s most recognizable teams.</p>
+          <div class="character-links">
+            <span class="character-links-label">Signature Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=445">Garchomp · #445</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-news/ten-memorable-dragon-type-pokemon-trainers" target="_blank" rel="noopener">Official trainer profile ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="adversaries" aria-labelledby="adversaries-title">
+      <h2 id="adversaries-title">Adversaries</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 008</span>
+          <h3 class="character-name">Jessie &amp; James</h3>
+          <p class="character-meta">Team Rocket field agents</p>
+        </div>
+        <div class="character-copy">
+          <p>The theatrical duo best known for pursuing Ash and Pikachu. Their schemes often fail, but their partnership and affection for their Pokémon give them more sides than simple villains.</p>
+          <div class="character-links">
+            <span class="character-links-label">Team partner</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=52">Meowth · #052</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-news/opinion-are-team-rocket-the-real-heroes" target="_blank" rel="noopener">Official feature ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

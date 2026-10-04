@@ -1,5 +1,5 @@
 // ==========================================================================
-// TCG BOOSTER PACK LAB (Physical 10-card pack simulator & collection binder)
+// TCG BOOSTER PACK LAB (Expansion-specific pack simulator & collection binder)
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardsGrid = document.getElementById("pack-cards-grid");
   const loadingOverlay = document.getElementById("pack-loading-overlay");
   const loadingMsg = document.getElementById("pack-loading-msg");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const statPacksOpened = document.getElementById("stat-packs-opened");
   const statCardsCollected = document.getElementById("stat-cards-collected");
@@ -255,23 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(timeoutId);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const cards = await res.json();
+      if (!Array.isArray(cards) || cards.length === 0) throw new Error("Empty card ledger");
       cardSetCache.set(setId, cards);
       return cards;
     } catch (err) {
       console.warn("Failed to load set data:", err);
-      // Minimal fallback so app never breaks
-      const dummyCards = Array.from({ length: 50 }, (_, i) => ({
-        id: `${setId}-${i + 1}`,
-        number: String(i + 1),
-        name: `Specimen #${i + 1}`,
-        rarity: i < 30 ? "Common" : i < 45 ? "Uncommon" : "Rare",
-        images: {
-          small: `https://images.pokemontcg.io/${setId}/${i + 1}.png`,
-          large: `https://images.pokemontcg.io/${setId}/${i + 1}_hires.png`
-        }
-      }));
-      cardSetCache.set(setId, dummyCards);
-      return dummyCards;
+      throw err;
     } finally {
       if (!isBackground && loadingOverlay) {
         loadingOverlay.classList.remove("is-active");
@@ -361,39 +351,55 @@ document.addEventListener("DOMContentLoaded", () => {
     if (statTotal) statTotal.textContent = preset.total;
     if (statName) statName.textContent = preset.name.toUpperCase();
 
+    const cardCount = setId === "me55c" ? 3 : setId === "me55" ? 5
+      : /^(base[1235]|gym1)$/.test(setId) ? 11 : 10;
+    const packHint = sealedView?.querySelector("p");
+    if (packHint) {
+      packHint.textContent = `Tap the foil pack or press Tear pack to reveal ${cardCount} expansion cards.`
+        + (setId === "me55" ? " The pack also contains a foil Basic Energy, not shown."
+          : cardCount === 10 ? " Separately packed Energy and code cards are not shown." : "")
+        + " Rarity odds are simulated.";
+    }
+
     renderBinderGrid();
     // Prefetch set data silently in background
     loadSetData(setId, true).catch(() => {});
   }
 
-  // Physical 10-card slot distribution algorithm
+  // Expansion-specific pack slots
   function generatePack(cards) {
-    if (!cards || cards.length === 0) return [];
+    if (!cards || cards.length === 0) throw new Error("No cards available for this pack");
 
     // Bucket cards by rarity category
     const buckets = {
       common: [],
       uncommon: [],
+      energy: [],
       rare: [],
       holoDouble: [],
       illustration: [],
       ultra: [],
       sar: [],
-      hyper: []
+      hyper: [],
+      special: []
     };
 
     cards.forEach(card => {
       const r = (card.rarity || "").toLowerCase();
-      if (r.includes("special illustration") || r.includes("sar")) {
+      if (card.supertype === "Energy" && !card.rarity) {
+        buckets.energy.push(card);
+      } else if (r.includes("special illustration") || r.includes("sar")) {
         buckets.sar.push(card);
-      } else if (r.includes("hyper") || r.includes("futuristic") || r.includes("gold")) {
+      } else if (r.includes("hyper") || r.includes("futuristic") || r.includes("gold") || r.includes("rainbow") || r.includes("secret")) {
         buckets.hyper.push(card);
-      } else if (r.includes("ultra") || r.includes("secret") || r.includes("ex") || r.includes("vmax") || r.includes("vstar")) {
+      } else if (r.includes("ultra") || r.includes("ex") || r.includes("vmax") || r.includes("vstar")) {
         buckets.ultra.push(card);
       } else if (r.includes("illustration rare")) {
         buckets.illustration.push(card);
-      } else if (r.includes("double rare") || r.includes("pikachu rare") || r.includes("holo")) {
+      } else if (r.includes("double rare") || r.includes("holo")) {
         buckets.holoDouble.push(card);
+      } else if (r.includes("shiny") || r.includes("radiant") || r.includes("amazing") || r.includes("ace spec") || r.includes("legend") || r.includes("prime") || r.includes("break")) {
+        buckets.special.push(card);
       } else if (r.includes("rare")) {
         buckets.rare.push(card);
       } else if (r.includes("uncommon")) {
@@ -403,113 +409,161 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Track card appearances to prevent excessive duplicates (max 2 copies per card)
-    const cardCountMap = new Map();
-
-    function pickCapped(pool, fallbackPool = cards, maxCap = 2) {
-      const primary = (pool && pool.length > 0) ? pool : fallbackPool;
-      const eligible = primary.filter(c => (cardCountMap.get(c.id) || 0) < maxCap);
-
-      let chosen = null;
-      if (eligible.length > 0) {
-        chosen = eligible[Math.floor(Math.random() * eligible.length)];
-      } else {
-        const fallbackEligible = fallbackPool.filter(c => (cardCountMap.get(c.id) || 0) < maxCap);
-        if (fallbackEligible.length > 0) {
-          chosen = fallbackEligible[Math.floor(Math.random() * fallbackEligible.length)];
-        } else {
-          chosen = primary[Math.floor(Math.random() * primary.length)];
-        }
-      }
-
-      if (chosen && chosen.id) {
-        cardCountMap.set(chosen.id, (cardCountMap.get(chosen.id) || 0) + 1);
-      }
-      return chosen;
-    }
-
+    // Card counts and guaranteed slots follow the printed packs. Chase weights are estimates.
+    const used = new Set();
     const pack = [];
-
-    // Slot 1-5: 5 Common Cards
-    for (let i = 0; i < 5; i++) {
-      pack.push({ card: pickCapped(buckets.common, cards), foilType: "normal", slot: i + 1 });
+    function add(pool, foilType = "normal") {
+      const available = pool.filter(card => card?.id && !used.has(card.id));
+      if (!available.length) throw new Error(`Incomplete ${currentSetId} card pool`);
+      const card = available[Math.floor(Math.random() * available.length)];
+      used.add(card.id);
+      pack.push({ card, foilType, slot: pack.length + 1 });
     }
 
-    // Slot 6-8: 3 Uncommon Cards
-    for (let i = 0; i < 3; i++) {
-      pack.push({ card: pickCapped(buckets.uncommon, buckets.common), foilType: "normal", slot: i + 6 });
+    function addWeighted(choices) {
+      const available = choices.filter(choice => choice.pool.some(card => card?.id && !used.has(card.id)));
+      if (!available.length) throw new Error(`No eligible ${currentSetId} cards for this slot`);
+      let roll = Math.random() * available.reduce((sum, choice) => sum + choice.weight, 0);
+      const choice = available.find(option => (roll -= option.weight) < 0) || available[available.length - 1];
+      add(choice.pool, choice.foilType);
     }
 
-    // Slot 9: Reverse Holo / Foil Slot (70% UC foil, 25% Rare foil, 5% Illustration Rare)
-    const roll9 = Math.random() * 100;
-    if (roll9 < 70) {
-      pack.push({ card: pickCapped(buckets.uncommon, cards), foilType: "reverse-foil", slot: 9 });
-    } else if (roll9 < 95) {
-      pack.push({ card: pickCapped(buckets.rare, buckets.uncommon), foilType: "reverse-foil", slot: 9 });
-    } else {
-      pack.push({ card: pickCapped(buckets.illustration, buckets.rare), foilType: "illustration", slot: 9 });
+    if (currentSetId === "me55c") {
+      for (let i = 0; i < 3; i++) add(cards, "holo");
+      return pack;
     }
 
-    // Slot 10: HIT SLOT (Guaranteed Rare / Ultra / SAR)
-    const roll10 = Math.random() * 100;
-    let hitCard = null;
-    let hitFoil = "rare";
-
-    if (roll10 < 50 && buckets.rare.length > 0) {
-      hitCard = pickCapped(buckets.rare);
-      hitFoil = "rare";
-    } else if (roll10 < 70 && (buckets.holoDouble.length > 0 || buckets.rare.length > 0)) {
-      hitCard = pickCapped(buckets.holoDouble, buckets.rare);
-      hitFoil = "holo";
-    } else if (roll10 < 85 && (buckets.illustration.length > 0 || buckets.rare.length > 0)) {
-      hitCard = pickCapped(buckets.illustration, buckets.rare);
-      hitFoil = "illustration";
-    } else if (roll10 < 95 && (buckets.ultra.length > 0 || buckets.rare.length > 0)) {
-      hitCard = pickCapped(buckets.ultra, buckets.rare);
-      hitFoil = "ultra";
-    } else if (roll10 < 99 && (buckets.sar.length > 0 || buckets.ultra.length > 0)) {
-      hitCard = pickCapped(buckets.sar, buckets.ultra);
-      hitFoil = "sar";
-    } else {
-      // Hyper Rare / Jackpot
-      hitCard = pickCapped(buckets.hyper, buckets.sar);
-      hitFoil = "hyper";
+    if (currentSetId === "me55") {
+      const others = [
+        { pool: buckets.common, weight: 65, foilType: "holo" },
+        { pool: buckets.rare.filter(card => card.rarity !== "Pikachu Rare"), weight: 23, foilType: "holo" },
+        { pool: buckets.holoDouble, weight: 5, foilType: "holo" },
+        { pool: buckets.illustration, weight: 4, foilType: "illustration" },
+        { pool: buckets.sar, weight: 2, foilType: "sar" },
+        { pool: buckets.hyper, weight: 1, foilType: "hyper" }
+      ];
+      for (let i = 0; i < 4; i++) addWeighted(others);
+      add(cards.filter(card => card.rarity === "Pikachu Rare"), "holo");
+      return pack;
     }
 
-    pack.push({ card: hitCard || pickCapped(cards), foilType: hitFoil, slot: 10 });
+    if (/^(base[1235]|gym1)$/.test(currentSetId)) {
+      const energyCount = currentSetId === "base1" ? 2 : currentSetId === "gym1" ? 1 : 0;
+      for (let i = 0; i < 7 - energyCount; i++) add(buckets.common);
+      for (let i = 0; i < energyCount; i++) add(buckets.energy);
+      for (let i = 0; i < 3; i++) add(buckets.uncommon);
+      addWeighted([
+        { pool: buckets.rare, weight: 2, foilType: "rare" },
+        { pool: buckets.holoDouble, weight: 1, foilType: "holo" },
+        { pool: buckets.hyper, weight: 0.02, foilType: "hyper" }
+      ]);
+      return pack;
+    }
 
+    const modern = /^(sv|me)/.test(currentSetId);
+    for (let i = 0; i < (modern ? 4 : 5); i++) add(buckets.common);
+    for (let i = 0; i < 3; i++) add(buckets.uncommon);
+    const foilChoices = [
+      { pool: buckets.common, weight: 55, foilType: "reverse-foil" },
+      { pool: buckets.uncommon, weight: 35, foilType: "reverse-foil" },
+      { pool: buckets.rare, weight: 5, foilType: "reverse-foil" },
+      { pool: buckets.special, weight: 3, foilType: "holo" },
+      { pool: buckets.illustration, weight: 2, foilType: "illustration" }
+    ];
+    for (let i = 0; i < (modern ? 2 : 1); i++) addWeighted(foilChoices);
+    addWeighted([
+      { pool: buckets.rare, weight: 55, foilType: "rare" },
+      { pool: buckets.holoDouble, weight: 25, foilType: "holo" },
+      { pool: buckets.special, weight: 3, foilType: "holo" },
+      { pool: buckets.illustration, weight: 8, foilType: "illustration" },
+      { pool: buckets.ultra, weight: 7, foilType: "ultra" },
+      { pool: buckets.sar, weight: 1.5, foilType: "sar" },
+      { pool: buckets.hyper, weight: 0.5, foilType: "hyper" }
+    ]);
     return pack;
+  }
+
+  function clearTearState() {
+    if (!foilPack) return;
+    window.gsap?.killTweensOf(foilPack);
+    window.gsap?.set(foilPack, { clearProps: "transform,opacity,filter" });
+    foilPack.classList.remove("is-tearing", "is-gsap-tearing");
+  }
+
+  function playPackTearAnimation() {
+    if (!foilPack) return Promise.resolve();
+    foilPack.classList.add("is-tearing");
+    if (!window.gsap) return new Promise(resolve => setTimeout(resolve, 600));
+
+    foilPack.classList.add("is-gsap-tearing");
+    return new Promise(resolve => {
+      const timeline = window.gsap.timeline({ onComplete: resolve });
+      if (prefersReducedMotion) {
+        timeline.to(foilPack, { opacity: 0, duration: 0.18, ease: "power2.out" });
+        return;
+      }
+      timeline
+        .to(foilPack, { scale: 0.97, y: -8, rotation: -1, duration: 0.16, ease: "power2.out" })
+        .to(foilPack, { scale: 0.94, y: -24, rotation: 1.2, opacity: 0.72, duration: 0.2, ease: "power2.inOut" })
+        .to(foilPack, { scale: 0.91, y: -40, rotation: 0, opacity: 0, duration: 0.18, ease: "power3.out" });
+    });
+  }
+
+  function animatePackCards() {
+    const cardEls = cardsGrid?.querySelectorAll(".tcg-card-item");
+    if (!window.gsap || !cardEls?.length || prefersReducedMotion) return;
+    window.gsap.set(cardEls, { opacity: 0, y: 28, rotation: -2 });
+    window.gsap.to(cardEls, {
+      opacity: 1,
+      y: 0,
+      rotation: 0,
+      duration: 0.36,
+      ease: "power3.out",
+      stagger: 0.055,
+      clearProps: "transform,opacity"
+    });
   }
 
   // Tearing and opening flow
   async function openBoosterPack() {
     if (isTearing) return;
     isTearing = true;
+    const selectedSetId = currentSetId;
 
-    // Start tear animation on the pack
-    if (foilPack) {
-      foilPack.classList.add("is-tearing");
-      playSynthSound("tear");
-    }
+    const tearAnimation = playPackTearAnimation();
+    playSynthSound("tear");
 
-    // Load cards in parallel
-    const cards = await loadSetData(currentSetId);
-    currentPackCards = generatePack(cards);
+    try {
+      const cards = await loadSetData(selectedSetId);
+      if (selectedSetId !== currentSetId) {
+        clearTearState();
+        isTearing = false;
+        return;
+      }
+      currentPackCards = generatePack(cards);
+      incrementPacksOpened();
 
-    incrementPacksOpened();
-
-    // After tear animation finishes, switch views
-    setTimeout(() => {
+      await tearAnimation;
+      if (selectedSetId !== currentSetId) {
+        clearTearState();
+        isTearing = false;
+        return;
+      }
       if (sealedView) sealedView.style.display = "none";
       if (openedView) openedView.style.display = "block";
-      if (foilPack) foilPack.classList.remove("is-tearing");
+      clearTearState();
       isTearing = false;
-
       renderCardsGrid(currentPackCards);
-    }, 600);
+    } catch (err) {
+      console.warn("Could not open pack:", err);
+      clearTearState();
+      isTearing = false;
+      const packHint = sealedView?.querySelector("p");
+      if (packHint) packHint.textContent = "Card data unavailable. Check your connection and try again.";
+    }
   }
 
-  // Render the 10 cards in grid
+  // Render the opened cards in grid
   function renderCardsGrid(packItems) {
     if (!cardsGrid) return;
     cardsGrid.innerHTML = "";
@@ -553,6 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="tcg-card-front">
             ${badgeHtml}
             <img src="${imgUrl}" alt="${card.name}" loading="lazy">
+            <span class="tcg-card-hit-flash" aria-hidden="true"></span>
           </div>
         </div>
       `;
@@ -564,6 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       cardsGrid.appendChild(cardEl);
     });
+    animatePackCards();
   }
 
   // Flip an individual card
@@ -579,6 +635,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (item.foilType === "sar" || item.foilType === "hyper" || item.foilType === "ultra") {
       playSynthSound("hit");
+      const hitFlash = cardEl.querySelector(".tcg-card-hit-flash");
+      if (window.gsap && hitFlash && !prefersReducedMotion) {
+        window.gsap.fromTo(hitFlash, { opacity: 0, xPercent: -140 }, {
+          opacity: 0.7,
+          xPercent: 140,
+          duration: 0.48,
+          ease: "power2.out",
+          clearProps: "transform,opacity"
+        });
+      }
     }
 
     // Save to collection binder
@@ -602,6 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Reset stage to sealed pack view
   function resetToSealedPack() {
+    clearTearState();
     if (openedView) openedView.style.display = "none";
     if (sealedView) sealedView.style.display = "flex";
     if (cardsGrid) cardsGrid.innerHTML = "";

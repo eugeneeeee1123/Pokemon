@@ -2,6 +2,11 @@
    151 FILE — Buttons & Controls (Night Archive)
    ========================================================================== */
 
+:root {
+  --btn-primary-hover: #B9DDF0;
+  --btn-mark-hover: #FFE066;
+}
+
 /* 基础装置按钮规范：只切右下角 (4px 4px 14px 4px) */
 .btn {
   display: inline-flex;
@@ -42,7 +47,7 @@
 }
 
 .btn-primary:hover {
-  background: #B9DDF0;
+  background: var(--btn-primary-hover);
 }
 
 .btn-primary:active {
@@ -84,7 +89,7 @@
 }
 
 .btn-mark:hover {
-  background: #FFE066;
+  background: var(--btn-mark-hover);
 }
 
 /* 尺寸变体 */

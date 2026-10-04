@@ -3520,8 +3520,11 @@ body:has(.detail) .wrap.wide {
 
 /* Tearing animation state */
 .pack-foil-wrapper.is-tearing {
-  animation: packTearPhysical 0.5s forwards ease-in-out;
   pointer-events: none;
+}
+
+.pack-foil-wrapper.is-tearing:not(.is-gsap-tearing) {
+  animation: packTearPhysical 0.5s forwards ease-in-out;
 }
 
 @keyframes packTearPhysical {
@@ -3648,6 +3651,15 @@ body:has(.detail) .wrap.wide {
   display: block;
 }
 
+.tcg-card-hit-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 34%, rgba(255, 255, 255, 0.78) 50%, transparent 66%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
 /* Hit Borders for High Rarity (Crisp physical tokens, no blurry neon) */
 .tcg-card-item.hit-glow-gold .tcg-card-front {
   border: 2px solid var(--mark);
@@ -3656,6 +3668,18 @@ body:has(.detail) .wrap.wide {
 .tcg-card-item.hit-glow-rainbow .tcg-card-front {
   border: 2px solid var(--mark);
   box-shadow: 0 4px 0 var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack-foil-wrapper,
+  .tcg-card-inner {
+    transition-duration: 0.16s;
+  }
+
+  .pack-foil-wrapper.is-tearing:not(.is-gsap-tearing) {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* Specimen Badge on card corner */
