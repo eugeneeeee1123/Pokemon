@@ -1,13 +1,15 @@
 # 151 FILE — All-In-One Codebase
 
 > 本文件汇集了 **151 File**（宝可梦纯原生前端 Web 站点）的全部源码。
-> 包含 8 个主页面与扩展页面、5 个全局样式表、17 个前端 JS 核心模块、辅助脚本、矢量资源与参考样板。
+> 包含 15 个主页面与扩展页面、5 个全局样式表、17 个前端 JS 核心模块、辅助脚本、矢量资源、项目规范以及对话日志索引。
 
 ---
 
 ## 目录 (Table of Contents)
 
-**汇总统计**: 共打包 **40** 个文件 | **12,563** 行代码 | **409,472** 字节
+**汇总统计**: 共打包 **47** 个源码文件 | **19,022** 行代码 | **686,080** 字节
+
+> 💡 **对话记录提示**: 本项目从立项至全部迭代的历史对话记录已汇编至独立文档 [`CHATLOG.md`](./CHATLOG.md)，共收录 20 个会话周期、189 轮交互记录。
 
 ---
 
@@ -24,8 +26,10 @@
 - [1.9 `team.html` (Belt / 6 槽腰带编成)](#19-teamhtml-belt-6-槽腰带编成)
 - [1.10 `lineup.html` (Lineup / 战力与属性缺口分析)](#110-lineuphtml-lineup-战力与属性缺口分析)
 - [1.11 `battle-lab.html` (Battle Lab / 双宝可梦对战推演)](#111-battle-labhtml-battle-lab-双宝可梦对战推演)
-- [1.12 `about.html` (File / 架构说明与数据源)](#112-abouthtml-file-架构说明与数据源)
-- [1.13 `quiz.html` (Booster Pack Lab / 实体卡包拆包实验室)](#113-quizhtml-booster-pack-lab-实体卡包拆包实验室)
+- [1.12 `characters.html` (Characters / 动画与历代游戏核心人物名录)](#112-charactershtml-characters-动画与历代游戏核心人物名录)
+- [1.13 `games.html` (Games / 历代正作游戏与各世代版本海报档案)](#113-gameshtml-games-历代正作游戏与各世代版本海报档案)
+- [1.14 `about.html` (File / 架构说明与数据源)](#114-abouthtml-file-架构说明与数据源)
+- [1.15 `quiz.html` (Booster Pack Lab / 实体卡包拆包实验室)](#115-quizhtml-booster-pack-lab-实体卡包拆包实验室)
 
 ### 2. CSS 样式模块 (CSS Stylesheets)
 
@@ -58,13 +62,21 @@
 ### 4. 矢量资源、脚本与配置 (Assets, Scripts & Config)
 
 - [4.1 `scripts/make-thumbs.mjs` (缩略图离线生成脚本)](#41-scriptsmake-thumbsmjs-缩略图离线生成脚本)
-- [4.2 `assets/favicon.svg` (精灵球矢量图标)](#42-assetsfaviconsvg-精灵球矢量图标)
-- [4.3 `.gitignore` (版本控制忽略文件)](#43-gitignore-版本控制忽略文件)
+- [4.2 `scripts/make-posters.mjs` (海报图离线生成脚本)](#42-scriptsmake-postersmjs-海报图离线生成脚本)
+- [4.3 `scripts/make-game-posters.mjs` (游戏正作海报离线生成脚本)](#43-scriptsmake-game-postersmjs-游戏正作海报离线生成脚本)
+- [4.4 `scripts/generate-chatlog.mjs` (项目对话与开发日志生成脚本)](#44-scriptsgenerate-chatlogmjs-项目对话与开发日志生成脚本)
+- [4.5 `assets/favicon.svg` (精灵球矢量图标)](#45-assetsfaviconsvg-精灵球矢量图标)
+- [4.6 `.gitignore` (版本控制忽略文件)](#46-gitignore-版本控制忽略文件)
 
 ### 5. 附录参考模板 (Appendix & Demos)
 
 - [5.1 `demo-interactive.html` (交互组件演示样板)](#51-demo-interactivehtml-交互组件演示样板)
 - [5.2 `ui-template.html` (原始设计参考模板)](#52-ui-templatehtml-原始设计参考模板)
+
+### 6. 项目规范与产品档案 (Specifications & Guidelines)
+
+- [6.1 `PRODUCT.md` (产品愿景与功能架构规范)](#61-productmd-产品愿景与功能架构规范)
+- [6.2 `AGENTS.md` (Agent 操作红线与工程约束规范)](#62-agentsmd-agent-操作红线与工程约束规范)
 
 ---
 
@@ -73,8 +85,8 @@
 ### 1.1 `index.html` (Home / 青纸首页)
 
 - **文件路径**: `index.html`  
-- **代码行数**: 339 行  
-- **文件大小**: 15,943 字节  
+- **代码行数**: 361 行  
+- **文件大小**: 16,907 字节  
 
 ```html
 <!DOCTYPE html>
@@ -118,13 +130,15 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main id="main" class="wrap">
+  <main id="main" class="wrap home-page">
     <!-- Hero 区块：左文本与动作，右侧大型精灵球 CTA -->
     <section class="hero">
       <div>
@@ -151,7 +165,7 @@
     </section>
 
     <!-- Daily Specimen 今日标本 -->
-    <section class="daily-specimen-section" id="daily-specimen" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1.25rem 1.5rem; margin-top:1.5rem;">
+    <section class="daily-specimen-section" id="daily-specimen" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1rem 1.5rem; margin-top:1rem;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem; margin-bottom:1rem;">
         <div class="meta-eyebrow" style="margin:0;">
           <span>TODAY'S SPECIMEN</span>
@@ -181,7 +195,7 @@
     </section>
 
     <!-- Archive Status 概览 -->
-    <section class="collection-summary" style="margin-top:1.5rem; margin-bottom:1.5rem;">
+    <section class="collection-summary" style="margin-top:0.75rem; margin-bottom:0.25rem;">
       <div>
         <span id="home-seen-count">0</span>
         <small>/ 1025 SEEN</small>
@@ -322,6 +336,25 @@
     </section>
   </main>
 
+  <footer class="home-footer site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
@@ -416,7 +449,6 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -424,8 +456,8 @@
 ### 1.2 `pokedex.html` (Dex / 双视图全 1025 图鉴)
 
 - **文件路径**: `pokedex.html`  
-- **代码行数**: 130 行  
-- **文件大小**: 6,498 字节  
+- **代码行数**: 140 行  
+- **文件大小**: 7,189 字节  
 
 ```html
 <!DOCTYPE html>
@@ -434,11 +466,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dex — 151 File</title>
-  <meta name="description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
+  <meta name="description" content="Browse the Kanto 151 through a spine, ledger and film strip. Filter by type or resistance, then add a specimen to your belt.">
   <meta name="theme-color" content="#071422">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Dex — 151 File">
-  <meta property="og:description" content="Browse all 1025 Pokémon in a ledger or card grid. Filter by region, type or resistance, and add favourites to your belt.">
+  <meta property="og:description" content="Browse the Kanto 151 through a spine, ledger and film strip. Filter by type or resistance, then add a specimen to your belt.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -469,6 +501,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -477,35 +511,26 @@
   <!-- 页面主体容器 -->
   <main id="main" class="wrap dex-page">
     <h1 class="sr-only">Dex</h1>
-    <!-- 工具条两行：控制一行，18 属性永远一行（窄屏只在这一行里横滑） -->
+    <!-- 控制条：地区从 Regions 进入，搜索与属性只作用于当前地区 -->
     <div class="tools">
       <div class="tools-bar">
-      <select id="region-select" class="region-select" aria-label="Select Region">
-        <option value="all">All Regions (#001–#1025)</option>
-        <option value="kanto">Kanto (#001–#151)</option>
-        <option value="johto">Johto (#152–#251)</option>
-        <option value="hoenn">Hoenn (#252–#386)</option>
-        <option value="sinnoh">Sinnoh (#387–#493)</option>
-        <option value="unova">Unova (#494–#649)</option>
-        <option value="kalos">Kalos (#650–#721)</option>
-        <option value="alola">Alola (#722–#809)</option>
-        <option value="galar">Galar (#810–#898)</option>
-        <option value="hisui">Hisui (#899–#905)</option>
-        <option value="paldea">Paldea (#906–#1025)</option>
-      </select>
-
-      <div class="view-toggle" role="group" aria-label="Display mode">
-        <button type="button" class="view-btn is-active" id="btn-view-ledger" data-view="ledger" title="Ledger & Stage (台座名录)">
-          📑 Ledger
-        </button>
-        <button type="button" class="view-btn" id="btn-view-grid" data-view="grid" title="Visual Cards Grid (全景网格)">
-          ▦ Grid
-        </button>
-      </div>
-
-      <input id="q" type="search" placeholder="name or number (press / to focus)" autocomplete="off" aria-label="Search by name or number">
-      <button class="chip" id="draw" type="button">Draw one</button>
-      <span class="count-badge" id="count-badge"></span>
+        <select id="region-select" class="region-select" aria-label="Select Region" style="font-family:var(--font-num); background:var(--paper); color:var(--ink); border:1px solid var(--line); border-radius:var(--r-btn); padding:0.25rem 0.5rem; font-size:0.8125rem;">
+          <option value="all">National (#001–#1025)</option>
+          <option value="kanto">Kanto (#001–#151)</option>
+          <option value="johto">Johto (#152–#251)</option>
+          <option value="hoenn">Hoenn (#252–#386)</option>
+          <option value="sinnoh">Sinnoh (#387–#493)</option>
+          <option value="unova">Unova (#494–#649)</option>
+          <option value="kalos">Kalos (#650–#721)</option>
+          <option value="alola">Alola (#722–#809)</option>
+          <option value="galar">Galar (#810–#898)</option>
+          <option value="hisui">Hisui (#899–#905)</option>
+          <option value="paldea">Paldea (#906–#1025)</option>
+        </select>
+        <span class="count-badge" id="count-badge" aria-live="polite"></span>
+        <input id="q" type="search" placeholder="Find a name or number" autocomplete="off" aria-label="Search the current region by name or number">
+        <button class="chip" id="draw" type="button">Draw one</button>
+        <output class="id" id="number-buffer" aria-live="polite" hidden></output>
       </div>
       <div class="type-row" role="toolbar" aria-label="Filter by type">
       <button class="chip" data-type="" data-on type="button">All types</button>
@@ -531,7 +556,7 @@
       </div>
     </div>
 
-    <!-- 模式 1：Dex 四区同屏布局 (Spine + Ledger + Stage + Film) -->
+    <!-- 同屏结构：Spine + Ledger + Stage + Film -->
     <div class="dex" id="dex-ledger-view">
       <!-- 左脊：50 号一段分册导航 -->
       <div class="spines" id="spines"></div>
@@ -545,20 +570,35 @@
       <!-- 底胶片尺：整份过滤列表滚动条，支持吸格对齐 -->
       <div class="film" id="film"></div>
     </div>
-
-    <!-- 模式 2：全景 3D 卡片网格布局 (Visual Cards Grid) -->
-    <div class="dex-grid" id="dex-grid-view" hidden></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#1025</span> National Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
-  <script src="js/pokedex.js"></script>
+  <script src="js/pokedex.js?v=20261009b"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -566,8 +606,8 @@
 ### 1.3 `pokemon.html` (Detail / 详情与开球展台)
 
 - **文件路径**: `pokemon.html`  
-- **代码行数**: 59 行  
-- **文件大小**: 2,387 字节  
+- **代码行数**: 102 行  
+- **文件大小**: 4,045 字节  
 
 ```html
 <!DOCTYPE html>
@@ -592,6 +632,27 @@
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/pokeball.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* The detail viewer uses a plain model stage, without the Poké Ball shell. */
+    .detail-stage-box .stage-ball {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+      cursor: default;
+    }
+
+    .detail-stage-box .stage-ball .lid-t,
+    .detail-stage-box .stage-ball .lid-b,
+    .detail-stage-box .stage-ball .lid-band,
+    .detail-stage-box .stage-ball .lid-btn,
+    .detail-stage-box #close-ball {
+      display: none !important;
+    }
+  </style>
+  <!-- 3D 渲染组件 (Google model-viewer) -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -611,6 +672,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -621,15 +684,33 @@
     <div id="file"></div>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/pokemon.js"></script>
+  <script src="js/api.js?v=3"></script>
+  <script src="js/pokemon.js?v=9"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -637,8 +718,8 @@
 ### 1.4 `regions.html` (Regions / 10 官方地区地图)
 
 - **文件路径**: `regions.html`  
-- **代码行数**: 97 行  
-- **文件大小**: 5,315 字节  
+- **代码行数**: 119 行  
+- **文件大小**: 6,260 字节  
 
 ```html
 <!DOCTYPE html>
@@ -682,6 +763,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -733,12 +816,30 @@
     <div class="atlas" id="atlas"></div>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/regions-data.js"></script>
   <script src="js/regions.js"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -746,8 +847,8 @@
 ### 1.5 `types.html` (Types / 18 属性矩阵克制表)
 
 - **文件路径**: `types.html`  
-- **代码行数**: 78 行  
-- **文件大小**: 3,289 字节  
+- **代码行数**: 97 行  
+- **文件大小**: 4,205 字节  
 
 ```html
 <!DOCTYPE html>
@@ -791,6 +892,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -799,7 +902,7 @@
   <!-- 页面主体容器 -->
   <main id="main" class="wrap">
     <h1 class="page-title">Types</h1>
-    <p class="lead">Attack down the left, defense across the top. Dual defense is multiplied on Lineup, not here. Click a type or a cell to open the dex filtered by the defending type.</p>
+    <p class="lead">Rows show attacking types; columns show defending types. Select a type label to filter the Dex, or a cell to browse by its defending type. Lineup handles dual-type defense.</p>
 
     <!-- 18 属性色票墙 -->
     <div class="wall" id="wall"></div>
@@ -812,23 +915,38 @@
     <!-- 图例说明 -->
     <div class="types-legend">
       <span><i class="dot" style="background:#3D7DCA"></i> 2× Super effective</span>
+      <span><i class="dot" style="background:var(--paper); border:1px solid var(--line)"></i> 1× Normal effectiveness (blank cells)</span>
       <span><i class="dot" style="background:#1E3A55"></i> ½ Not very effective</span>
       <span><i class="dot" style="background:#071422; border:1px solid #1E3A55"></i> 0 Immune</span>
     </div>
-
-    <!-- 当前选中属性与腰带克制推演 (Belt vs Type) -->
-    <div id="belt-vs-box" class="belt-vs-box" aria-live="polite"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
-  <script src="js/api.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/types.js"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -836,8 +954,8 @@
 ### 1.6 `moves.html` (Moves / 招式数据库与战斗属性)
 
 - **文件路径**: `moves.html`  
-- **代码行数**: 80 行  
-- **文件大小**: 2,996 字节  
+- **代码行数**: 108 行  
+- **文件大小**: 3,966 字节  
 
 ```html
 <!DOCTYPE html>
@@ -877,42 +995,69 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="wrap">
+  <main id="main" class="wrap moves-page">
     <h1 class="page-title">Moves</h1>
-    <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">
-      Browse Pokémon battle moves by type, damage category, power, and accuracy.
-    </p>
 
     <div class="tools-bar">
-      <input
-        id="move-search"
-        type="search"
-        placeholder="Search move name..."
-        autocomplete="off"
-        style="min-width: 14rem;"
-      >
+      <label class="tool-field">
+        <span>Search moves</span>
+        <input
+          id="move-search"
+          type="search"
+          placeholder="Search move name..."
+          autocomplete="off"
+          style="min-width: 14rem;"
+        >
+      </label>
 
-      <select id="move-type">
-        <option value="">All types</option>
-      </select>
+      <label class="tool-field">
+        <span>Type</span>
+        <select id="move-type">
+          <option value="">All types</option>
+        </select>
+      </label>
 
-      <select id="move-category">
-        <option value="">All categories</option>
-        <option value="physical">Physical</option>
-        <option value="special">Special</option>
-        <option value="status">Status</option>
-      </select>
+      <label class="tool-field">
+        <span>Category</span>
+        <select id="move-category">
+          <option value="">All categories</option>
+          <option value="physical">Physical</option>
+          <option value="special">Special</option>
+          <option value="status">Status</option>
+        </select>
+      </label>
     </div>
 
-    <div id="move-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading moves database...</div>
-    <div id="move-grid" class="dex-grid"></div>
-    <div id="move-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+    <div id="move-status" class="move-status" aria-live="polite">Loading…</div>
+    <div id="move-grid" class="dex-grid moves-grid"></div>
+    <div id="move-pagination" class="move-pagination"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
@@ -920,7 +1065,6 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -928,8 +1072,8 @@
 ### 1.7 `abilities.html` (Abilities / 特性效果与宝可梦索引)
 
 - **文件路径**: `abilities.html`  
-- **代码行数**: 68 行  
-- **文件大小**: 2,643 字节  
+- **代码行数**: 93 行  
+- **文件大小**: 3,714 字节  
 
 ```html
 <!DOCTYPE html>
@@ -969,6 +1113,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -981,26 +1127,47 @@
     </p>
 
     <div class="tools-bar">
-      <input
-        id="ability-search"
-        type="search"
-        placeholder="Search ability name..."
-        autocomplete="off"
-        style="min-width: 14rem;"
-      >
+      <label class="tool-field">
+        <span>Search abilities</span>
+        <input
+          id="ability-search"
+          type="search"
+          placeholder="Search ability name..."
+          autocomplete="off"
+          style="min-width: 14rem;"
+        >
+      </label>
     </div>
 
     <div id="ability-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading abilities index...</div>
     <div id="ability-grid" class="dex-grid"></div>
-    <div id="ability-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+    <div id="ability-pagination" style="margin-top:1.5rem; margin-bottom:var(--s-8); text-align:center;"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/api.js"></script>
   <script src="js/abilities.js"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -1008,8 +1175,8 @@
 ### 1.8 `collection.html` (Collection / 全图鉴与地区收集进度)
 
 - **文件路径**: `collection.html`  
-- **代码行数**: 95 行  
-- **文件大小**: 3,865 字节  
+- **代码行数**: 705 行  
+- **文件大小**: 21,320 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1031,6 +1198,541 @@
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/pokeball.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* Dossier Ledger Header */
+    .ledger-dossier-bar {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .ledger-meta-block {
+      background: rgba(7, 20, 34, 0.45);
+      padding: 1.15rem 1.25rem;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.25rem;
+    }
+    .ledger-tag {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: var(--mark);
+      font-weight: 700;
+    }
+    .ledger-inst {
+      font-family: var(--font-ui);
+      font-size: 0.9375rem;
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .ledger-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--ok);
+    }
+    .status-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ok);
+      display: inline-block;
+    }
+    .ledger-cell {
+      padding: 1.15rem 1.25rem;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ledger-cell:last-child {
+      border-right: none;
+    }
+    .ledger-label {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.35rem;
+    }
+    .ledger-num-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+    }
+    .ledger-num {
+      font-family: var(--font-num);
+      font-size: 2.15rem;
+      line-height: 1;
+      color: var(--mark);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger-denom {
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+    }
+
+    /* Section Headings with Dossier Tag */
+    .ledger-section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .ledger-sub-tag {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+    }
+
+    /* Calibrated Gauge */
+    .calibrated-gauge {
+      position: relative;
+      background: var(--sky-deep);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .gauge-milestones {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .milestone-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+    }
+    .milestone-badge img {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+
+    /* Expedition Belt Showcase */
+    .ledger-action-link {
+      font-family: var(--font-num);
+      font-size: 0.8125rem;
+      color: var(--mark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .ledger-action-link:hover {
+      text-decoration: underline;
+    }
+    .belt-roster-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .belt-specimen-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.75rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color 140ms ease, background 140ms ease;
+      min-height: 140px;
+      position: relative;
+    }
+    .belt-specimen-card:hover {
+      border-color: var(--mark);
+      background: rgba(16, 35, 56, 0.9);
+    }
+    .belt-slot-tag {
+      font-family: var(--font-num);
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+      color: var(--navy);
+      align-self: flex-start;
+      font-weight: 700;
+    }
+    .belt-art-wrap {
+      width: 68px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.25rem 0;
+    }
+    .belt-art {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+    }
+    .belt-specimen-name {
+      font-family: var(--font-ui);
+      font-size: 0.875rem;
+      color: var(--ink);
+      display: block;
+      margin-top: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      font-weight: 700;
+    }
+    .belt-specimen-num {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--mark);
+      font-weight: 700;
+    }
+    .belt-specimen-type {
+      font-size: 0.6875rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+      font-weight: 700;
+    }
+    .belt-specimen-card.empty-slot {
+      border-style: dashed;
+      opacity: 0.7;
+      justify-content: center;
+    }
+    .belt-specimen-card.empty-slot:hover {
+      border-color: var(--navy);
+      opacity: 1;
+    }
+    .empty-ball-ghost {
+      width: 32px;
+      height: 32px;
+      opacity: 0.25;
+      filter: grayscale(1);
+    }
+    .belt-empty-title {
+      font-family: var(--font-ui);
+      font-size: 0.8125rem;
+      color: var(--navy);
+      margin-top: 0.25rem;
+      font-weight: 700;
+    }
+    .belt-empty-sub {
+      font-size: 0.6875rem;
+      color: var(--ink-soft);
+    }
+
+    /* 10 Regions Breakdown (5 columns x 2 rows) */
+    #region-progress {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    .collection-region {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+      transition: border-color 140ms ease;
+      min-height: 125px;
+    }
+    .collection-region:hover {
+      border-color: var(--navy);
+    }
+    .region-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+    .region-meta-tag {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+    .region-title {
+      margin: 0.15rem 0 0;
+      font-size: 0.9375rem;
+    }
+    .region-title-link {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .region-title-link:hover {
+      color: var(--mark);
+    }
+    .region-mascot-art {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+      flex-shrink: 0;
+      pointer-events: none;
+      transition: transform 160ms ease;
+    }
+    .collection-region:hover .region-mascot-art {
+      transform: none;
+    }
+    .region-data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.75rem;
+    }
+    .region-stat {
+      color: var(--ink);
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .region-rate {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--mark);
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+
+    /* Priority Field Favorites Gallery */
+    .favorites-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .fav-specimen-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.75rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      transition: border-color 140ms ease;
+    }
+    .fav-specimen-card:hover {
+      border-color: var(--mark);
+    }
+    .fav-art-wrap {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.35rem;
+    }
+    .fav-art {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+    }
+    .fav-specimen-name {
+      font-family: var(--font-ui);
+      font-size: 0.8125rem;
+      color: var(--ink);
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .fav-specimen-num {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      color: var(--mark);
+    }
+    .favorites-empty-shelf {
+      grid-column: 1 / -1;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .empty-shelf-ghosts {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .ghost-mascot {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      opacity: 0.22;
+      filter: grayscale(0.8);
+    }
+    .empty-shelf-copy strong {
+      display: block;
+      color: var(--ink);
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
+    }
+    .empty-shelf-copy p {
+      color: var(--ink-soft);
+      font-size: 0.8125rem;
+      margin: 0;
+    }
+
+    /* Field Proficiency Seals (Monochrome / Brass Technical Stamps) */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    .seal-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      min-height: 140px;
+      transition: border-color 140ms ease;
+    }
+    .seal-card.sealed {
+      border-color: var(--mark);
+      background: linear-gradient(180deg, rgba(255, 203, 5, 0.05) 0%, var(--paper) 100%);
+    }
+    .seal-card.unsealed {
+      opacity: 0.6;
+      background: rgba(16, 35, 56, 0.5);
+    }
+    .seal-mark {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.35rem;
+    }
+    .seal-serial {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--navy);
+    }
+    .seal-card.sealed .seal-serial {
+      color: var(--mark);
+    }
+    .seal-status-icon {
+      font-family: var(--font-num);
+      font-size: 0.8125rem;
+      color: var(--line);
+      font-weight: 700;
+    }
+    .seal-card.sealed .seal-status-icon {
+      color: var(--mark);
+    }
+    .seal-title {
+      font-family: var(--font-ui);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 0.25rem;
+    }
+    .seal-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      margin: 0;
+      line-height: 1.35;
+    }
+    .seal-verdict {
+      font-family: var(--font-num);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+    .seal-card.sealed .seal-verdict {
+      color: var(--ok);
+    }
+    .seal-card.unsealed .seal-verdict {
+      color: var(--ink-soft);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .ledger-dossier-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .ledger-meta-block {
+        grid-column: span 2;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .ledger-cell:nth-child(3) {
+        border-right: 1px solid var(--line);
+      }
+      .ledger-cell:last-child {
+        border-right: none;
+      }
+      .belt-roster-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      #region-progress {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .badge-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 560px) {
+      .ledger-dossier-bar {
+        grid-template-columns: 1fr;
+      }
+      .ledger-meta-block {
+        grid-column: span 1;
+      }
+      .ledger-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .ledger-cell:last-child {
+        border-bottom: none;
+      }
+      .belt-roster-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #region-progress {
+        grid-template-columns: 1fr;
+      }
+      .badge-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -1049,6 +1751,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -1058,48 +1762,120 @@
     <h1 class="page-title">Collection</h1>
     <p class="lead" style="color:var(--ink-soft); margin-bottom:1.5rem;">Archive progress ledger. Track specimen discoveries across National Dex and all 10 regions, stored locally.</p>
 
-    <section class="collection-summary">
-      <div>
-        <span id="seen-count">0</span>
-        <small>/ 1025 SEEN</small>
+    <section class="ledger-dossier-bar" aria-label="Specimen archive metrics">
+      <div class="ledger-meta-block">
+        <span class="ledger-tag">SPECIMEN FIELD REGISTRY</span>
+        <strong class="ledger-inst">Oak Ecological Archive</strong>
+        <div class="ledger-status"><span class="status-indicator"></span>ACTIVE FILE</div>
       </div>
 
-      <div>
-        <span id="favorite-count">0</span>
-        <small>FAVORITES</small>
+      <div class="ledger-cell">
+        <span class="ledger-label">Cataloged Specimens</span>
+        <div class="ledger-num-row">
+          <span id="seen-count" class="ledger-num">0</span>
+          <span class="ledger-denom">/ 1025</span>
+        </div>
       </div>
 
-      <div>
-        <span id="belt-count">0</span>
-        <small>IN BELT</small>
+      <div class="ledger-cell">
+        <span class="ledger-label">Priority Specimens</span>
+        <div class="ledger-num-row">
+          <span id="favorite-count" class="ledger-num">0</span>
+          <span class="ledger-denom">PINNED</span>
+        </div>
+      </div>
+
+      <div class="ledger-cell">
+        <span class="ledger-label">Expedition Belt</span>
+        <div class="ledger-num-row">
+          <span id="belt-count" class="ledger-num">0</span>
+          <span class="ledger-denom">/ 6 SLOTS</span>
+        </div>
       </div>
     </section>
 
-    <section style="margin-bottom:2.25rem;">
-      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">National Dex</h2>
-      <div class="progress" style="height:12px; margin-bottom:0.5rem;">
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <h2 style="font-size:1.15rem; margin:0;">National Master Gauge</h2>
+        <span class="ledger-sub-tag">001–1025 CONTINUOUS LEDGER</span>
+      </div>
+      <div class="progress calibrated-gauge" style="height:12px; margin-bottom:0.5rem;">
         <div id="national-progress"></div>
       </div>
-      <p id="national-text" style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;"></p>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <p id="national-text" style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem; margin:0;"></p>
+        <div class="gauge-milestones">
+          <span title="#001 Bulbasaur" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png" alt="" width="22" height="22"> #001</span>
+          <span title="#151 Mew" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/151.png" alt="" width="22" height="22"> #151</span>
+          <span title="#493 Arceus" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/493.png" alt="" width="22" height="22"> #493</span>
+          <span title="#1025 Pecharunt" class="milestone-badge"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1025.png" alt="" width="22" height="22"> #1025</span>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2 style="font-size:1.15rem; margin-bottom:0.75rem;">Regions Breakdown</h2>
+    <!-- Expedition Belt Squad (Visual Specimen Showcase) -->
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <div>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Expedition Belt Squad</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Active 6-specimen deployment roster stored in belt memory.</p>
+        </div>
+        <a href="team.html" class="ledger-action-link">Open Belt Bay →</a>
+      </div>
+      <div id="belt-roster-grid" class="belt-roster-grid"></div>
+    </section>
+
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <h2 style="font-size:1.15rem; margin:0;">Territorial Breakdown</h2>
+        <span class="ledger-sub-tag">10 OFFICIAL REGIONS</span>
+      </div>
       <div id="region-progress"></div>
     </section>
 
-    <!-- 勋章成就系统 (Achievements) -->
-    <section id="achievements" style="margin-top:2.5rem;">
+    <!-- Priority Field Favorites -->
+    <section class="ledger-block" style="margin-bottom:2.25rem;">
+      <div class="ledger-section-head">
+        <div>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Priority Field Specimens</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Specimens flagged with star in Pokédex for dedicated observation.</p>
+        </div>
+        <span id="fav-count-indicator" class="ledger-sub-tag">0 PINNED</span>
+      </div>
+      <div id="favorites-specimen-gallery" class="favorites-gallery-grid"></div>
+    </section>
+
+    <!-- Field Proficiency Seals -->
+    <section id="achievements" class="ledger-block" style="margin-top:2.5rem;">
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
-          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Archive Achievements</h2>
-          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Unlock commemorative badges as your specimen collection and field mastery progress.</p>
+          <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Field Proficiency Seals</h2>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Earn seals as you log Pokémon and complete challenges.</p>
         </div>
-        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 12 UNLOCKED</span>
+        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 10 ACTIVE · 2 ARCHIVED</span>
       </div>
       <div class="badge-grid" id="badge-grid"></div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
@@ -1107,7 +1883,6 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -1115,8 +1890,8 @@
 ### 1.9 `team.html` (Belt / 6 槽腰带编成)
 
 - **文件路径**: `team.html`  
-- **代码行数**: 100 行  
-- **文件大小**: 4,804 字节  
+- **代码行数**: 122 行  
+- **文件大小**: 5,749 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1160,6 +1935,8 @@
         <a href="team.html" aria-current="page">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -1211,6 +1988,25 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
@@ -1219,7 +2015,6 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -1227,8 +2022,8 @@
 ### 1.10 `lineup.html` (Lineup / 战力与属性缺口分析)
 
 - **文件路径**: `lineup.html`  
-- **代码行数**: 95 行  
-- **文件大小**: 4,047 字节  
+- **代码行数**: 126 行  
+- **文件大小**: 5,878 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1272,6 +2067,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -1279,6 +2076,11 @@
 
   <!-- 页面主体容器 -->
   <main id="main" class="wrap">
+    <nav aria-label="Breadcrumb" style="margin-bottom:0.5rem;">
+      <a class="link-action" href="team.html">Belt</a>
+      <span aria-hidden="true"> → </span>
+      <span aria-current="page">Lineup</span>
+    </nav>
     <h1 class="page-title">Lineup</h1>
     <p class="lead">Typed as the species types, not moves. Coverage chips open Dex by attack type. Holes open Dex by <code>resist</code>.</p>
 
@@ -1289,10 +2091,12 @@
 
     <!-- 打击面覆盖 (Coverage) -->
     <h2 class="lineup-subheading">Coverage</h2>
+    <p class="lineup-note">Calculated from species types only. Shows opposing types that receive super-effective damage from at least one belt member's primary or secondary type. Does not account for moves, abilities, or stats.</p>
     <div class="wall" id="coverage"></div>
 
     <!-- 防御盲点 (Holes) -->
     <h2 class="lineup-subheading">Holes</h2>
+    <p class="lineup-note">Shows attack types that deal super-effective damage to at least one current belt member. Based on species types and the type chart; abilities, held items, and moves are not included.</p>
     <div class="wall" id="holes"></div>
 
     <!-- 属性抵抗 (Resists) -->
@@ -1309,6 +2113,8 @@
         <button class="btn btn-paper" id="cl" type="button">Clear left</button>
         <button class="btn btn-paper" id="cr" type="button">Clear right</button>
         <button class="btn btn-paper" id="copy" type="button">Copy link</button>
+        <p id="copy-feedback" class="lineup-note" role="status" aria-live="polite" hidden></p>
+        <input id="copy-fallback" type="text" readonly hidden aria-label="Lineup link to copy manually" style="width:100%;">
       </div>
       <div class="lineup-pane" id="right"></div>
     </div>
@@ -1316,6 +2122,25 @@
     <!-- 文字比对结论 (Verdict) -->
     <div class="lineup-verdict" id="lineup-verdict" hidden aria-live="polite"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <!-- 脚本依赖 -->
   <script src="js/store.js"></script>
@@ -1326,7 +2151,6 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -1334,8 +2158,8 @@
 ### 1.11 `battle-lab.html` (Battle Lab / 双宝可梦对战推演)
 
 - **文件路径**: `battle-lab.html`  
-- **代码行数**: 79 行  
-- **文件大小**: 3,508 字节  
+- **代码行数**: 101 行  
+- **文件大小**: 4,453 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1375,6 +2199,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html" aria-current="page">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -1409,6 +2235,25 @@
     <section id="battle-result" style="margin-top:2rem;"></section>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
@@ -1417,16 +2262,1477 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
 
-### 1.12 `about.html` (File / 架构说明与数据源)
+### 1.12 `characters.html` (Characters / 动画与历代游戏核心人物名录)
+
+- **文件路径**: `characters.html`  
+- **代码行数**: 1,136 行  
+- **文件大小**: 44,770 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Characters — 151 File</title>
+  <meta name="description" content="Meet the Trainers, Gym Leaders, researchers, Champions, and rivals who shape the Pokémon world.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .characters-page {
+      max-width: 68rem;
+    }
+
+    .characters-lede {
+      max-width: 42rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.5rem;
+    }
+
+    .character-index {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .character-index a,
+    .character-source,
+    .character-pokemon-link {
+      color: var(--navy);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+    }
+
+    .character-index a:hover,
+    .character-source:hover,
+    .character-pokemon-link:hover {
+      color: var(--mark);
+    }
+
+    .character-section {
+      margin-top: 2.5rem;
+      scroll-margin-top: 5rem;
+    }
+
+    .character-section h2 {
+      padding-bottom: 0.65rem;
+      border-bottom: 2px solid var(--line);
+      margin-bottom: 0;
+    }
+
+    .character-record {
+      display: grid;
+      grid-template-columns: minmax(10rem, 0.72fr) minmax(0, 1.8fr);
+      gap: 1rem 2rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .character-id,
+    .character-meta,
+    .character-links-label {
+      font-family: var(--font-num);
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+    }
+
+    .character-id {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--mark);
+    }
+
+    .character-name {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .character-meta {
+      margin-top: 0.35rem;
+    }
+
+    .character-copy p {
+      margin: 0 0 0.6rem;
+      line-height: 1.55;
+    }
+
+    .character-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1rem;
+      align-items: baseline;
+      margin-top: 0.75rem;
+    }
+
+    .character-links-label {
+      text-transform: uppercase;
+    }
+
+    .gym-region-block {
+      margin-top: 1.5rem;
+    }
+
+    .gym-region-title {
+      font-size: 1.15rem;
+      margin: 0 0 0.5rem;
+      color: var(--navy);
+    }
+
+    .gym-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .gym-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .gym-table th,
+    .gym-table td {
+      padding: 0.5rem 0.65rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .gym-table th {
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: color-mix(in srgb, var(--sky) 25%, transparent);
+    }
+
+    @media (max-width: 42rem) {
+      .character-record {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav>
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="characters.html" aria-current="page">Characters</a>
+        <a href="games.html">Games</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap characters-page">
+    <p class="meta-eyebrow"><span>PEOPLE INDEX</span><span>/</span><span>08 DOSSIERS</span></p>
+    <h1 class="page-title">Characters</h1>
+    <p class="characters-lede">A field guide to the Trainers, Gym Leaders, researchers, Champions, and rivals who make the Pokémon world feel lived in. Each entry points to an official source and, where relevant, back to a Pokémon in the Dex.</p>
+
+    <nav class="character-index" aria-label="Page sections">
+      <a href="#travelers">Travelers</a>
+      <a href="#kanto">Kanto figures</a>
+      <a href="#gyms">Gyms</a>
+      <a href="#champions">Champions</a>
+      <a href="#adversaries">Adversaries</a>
+      <a href="#battle-mechanics">Battle mechanics</a>
+    </nav>
+
+    <section class="character-section" id="travelers" aria-labelledby="travelers-title">
+      <h2 id="travelers-title">Travelers</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 001</span>
+          <h3 class="character-name">Ash Ketchum</h3>
+          <p class="character-meta">Trainer · begins in Kanto</p>
+        </div>
+        <div class="character-copy">
+          <p>A spirited Trainer whose journey begins in Pallet Town with Pikachu. His travels bring new friends, rivals, and battles across the regions.</p>
+          <div class="character-links">
+            <span class="character-links-label">Partner</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=25">Pikachu · #025</a>
+            <a class="character-source" href="https://www.pokemon.com/us/animation/seasons/23/episode-1-enter-pikachu" target="_blank" rel="noopener">Official episode ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 002</span>
+          <h3 class="character-name">Misty</h3>
+          <p class="character-meta">Cerulean Gym Leader · Kanto</p>
+        </div>
+        <div class="character-copy">
+          <p>A Water-type specialist and longtime traveling companion of Ash. Her connection to Cerulean Gym ties her story to one of Kanto’s best-known locations.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=121">Starmie · #121</a>
+            <a class="character-source" href="https://www.pokemon.com/uk/news/a-peek-at-the-cards-of-the-pokemon-tcg-sword-shield-astral-radiance-trainer-gallery" target="_blank" rel="noopener">Official feature ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 003</span>
+          <h3 class="character-name">Brock</h3>
+          <p class="character-meta">Pewter Gym Leader · Kanto</p>
+        </div>
+        <div class="character-copy">
+          <p>A steady traveling companion and former Pewter Gym Leader. Beyond battling, Brock hopes to become a Pokémon Breeder.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=95">Onix · #095</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-news/lets-go-for-a-test-run" target="_blank" rel="noopener">Official feature ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="kanto" aria-labelledby="kanto-title">
+      <h2 id="kanto-title">Kanto figures</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 004</span>
+          <h3 class="character-name">Professor Oak</h3>
+          <p class="character-meta">Pokémon researcher · Pallet Town</p>
+        </div>
+        <div class="character-copy">
+          <p>A researcher whose work introduces many new Trainers to the world of Pokémon. His lab and field research appear throughout the Kanto stories.</p>
+          <div class="character-links">
+            <span class="character-links-label">Read more</span>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-video-games/pokemon-snap/" target="_blank" rel="noopener">Pokémon Snap overview ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 005</span>
+          <h3 class="character-name">Red</h3>
+          <p class="character-meta">Trainer · Kanto games</p>
+        </div>
+        <div class="character-copy">
+          <p>A legendary Trainer from the Kanto games, known for letting his record and team speak for him.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=6">Charizard · #006</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-video-games/pokemon-masters-ex" target="_blank" rel="noopener">Official game profile ↗</a>
+          </div>
+        </div>
+      </article>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 006</span>
+          <h3 class="character-name">Blue</h3>
+          <p class="character-meta">Trainer · Kanto games</p>
+        </div>
+        <div class="character-copy">
+          <p>Red’s formidable rival and Professor Oak’s grandson. His confidence makes him one of the classic Pokémon game rivals.</p>
+          <div class="character-links">
+            <span class="character-links-label">Featured Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=18">Pidgeot · #018</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-video-games/pokemon-masters-ex" target="_blank" rel="noopener">Official game profile ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="gyms" aria-labelledby="gyms-title">
+      <h2 id="gyms-title">Gyms</h2>
+      <div class="character-copy">
+        <p>Gyms are regional testing facilities run by type specialists. Each Gym tests whether a challenger understands type matchups and team balance instead of relying on a single favorite Pokémon.</p>
+        <p>Defeating a Gym Leader earns an official Badge. Collecting eight Badges qualifies a Trainer for the regional Pokémon League and keeps traded Pokémon obedient in battle.</p>
+        <p>Content in preparation.</p>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Kanto Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Pewter City</td>
+                <td>Brock</td>
+                <td>Rock</td>
+                <td>Boulder Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=95">Onix · #095</a></td>
+              </tr>
+              <tr>
+                <td>Cerulean City</td>
+                <td>Misty</td>
+                <td>Water</td>
+                <td>Cascade Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=121">Starmie · #121</a></td>
+              </tr>
+              <tr>
+                <td>Vermilion City</td>
+                <td>Lt. Surge</td>
+                <td>Electric</td>
+                <td>Thunder Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=26">Raichu · #026</a></td>
+              </tr>
+              <tr>
+                <td>Celadon City</td>
+                <td>Erika</td>
+                <td>Grass</td>
+                <td>Rainbow Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=45">Vileplume · #045</a></td>
+              </tr>
+              <tr>
+                <td>Fuchsia City</td>
+                <td>Koga / Janine</td>
+                <td>Poison</td>
+                <td>Soul Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=110">Weezing · #110</a></td>
+              </tr>
+              <tr>
+                <td>Saffron City</td>
+                <td>Sabrina</td>
+                <td>Psychic</td>
+                <td>Marsh Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=65">Alakazam · #065</a></td>
+              </tr>
+              <tr>
+                <td>Cinnabar Island</td>
+                <td>Blaine</td>
+                <td>Fire</td>
+                <td>Volcano Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=126">Magmar · #126</a></td>
+              </tr>
+              <tr>
+                <td>Viridian City</td>
+                <td>Giovanni / Blue</td>
+                <td>Ground</td>
+                <td>Earth Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=112">Rhydon · #112</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Johto Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Violet City</td>
+                <td>Falkner</td>
+                <td>Flying</td>
+                <td>Zephyr Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=17">Pidgeotto · #017</a></td>
+              </tr>
+              <tr>
+                <td>Azalea Town</td>
+                <td>Bugsy</td>
+                <td>Bug</td>
+                <td>Hive Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=123">Scyther · #123</a></td>
+              </tr>
+              <tr>
+                <td>Goldenrod City</td>
+                <td>Whitney</td>
+                <td>Normal</td>
+                <td>Plain Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=241">Miltank · #241</a></td>
+              </tr>
+              <tr>
+                <td>Ecruteak City</td>
+                <td>Morty</td>
+                <td>Ghost</td>
+                <td>Fog Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=94">Gengar · #094</a></td>
+              </tr>
+              <tr>
+                <td>Cianwood City</td>
+                <td>Chuck</td>
+                <td>Fighting</td>
+                <td>Storm Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=62">Poliwrath · #062</a></td>
+              </tr>
+              <tr>
+                <td>Olivine City</td>
+                <td>Jasmine</td>
+                <td>Steel</td>
+                <td>Mineral Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=208">Steelix · #208</a></td>
+              </tr>
+              <tr>
+                <td>Mahogany Town</td>
+                <td>Pryce</td>
+                <td>Ice</td>
+                <td>Glacier Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=221">Piloswine · #221</a></td>
+              </tr>
+              <tr>
+                <td>Blackthorn City</td>
+                <td>Clair</td>
+                <td>Dragon</td>
+                <td>Rising Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=230">Kingdra · #230</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Hoenn Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rustboro City</td>
+                <td>Roxanne</td>
+                <td>Rock</td>
+                <td>Stone Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=299">Nosepass · #299</a></td>
+              </tr>
+              <tr>
+                <td>Dewford Town</td>
+                <td>Brawly</td>
+                <td>Fighting</td>
+                <td>Knuckle Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=297">Hariyama · #297</a></td>
+              </tr>
+              <tr>
+                <td>Mauville City</td>
+                <td>Wattson</td>
+                <td>Electric</td>
+                <td>Dynamo Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=310">Manectric · #310</a></td>
+              </tr>
+              <tr>
+                <td>Lavaridge Town</td>
+                <td>Flannery</td>
+                <td>Fire</td>
+                <td>Heat Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=324">Torkoal · #324</a></td>
+              </tr>
+              <tr>
+                <td>Petalburg City</td>
+                <td>Norman</td>
+                <td>Normal</td>
+                <td>Balance Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=289">Slaking · #289</a></td>
+              </tr>
+              <tr>
+                <td>Fortree City</td>
+                <td>Winona</td>
+                <td>Flying</td>
+                <td>Feather Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=334">Altaria · #334</a></td>
+              </tr>
+              <tr>
+                <td>Mossdeep City</td>
+                <td>Tate &amp; Liza</td>
+                <td>Psychic</td>
+                <td>Mind Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=338">Solrock · #338</a></td>
+              </tr>
+              <tr>
+                <td>Sootopolis City</td>
+                <td>Wallace / Juan</td>
+                <td>Water</td>
+                <td>Rain Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=350">Milotic · #350</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Sinnoh Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oreburgh City</td>
+                <td>Roark</td>
+                <td>Rock</td>
+                <td>Coal Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=408">Cranidos · #408</a></td>
+              </tr>
+              <tr>
+                <td>Eterna City</td>
+                <td>Gardenia</td>
+                <td>Grass</td>
+                <td>Forest Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=407">Roserade · #407</a></td>
+              </tr>
+              <tr>
+                <td>Veilstone City</td>
+                <td>Maylene</td>
+                <td>Fighting</td>
+                <td>Cobble Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=448">Lucario · #448</a></td>
+              </tr>
+              <tr>
+                <td>Pastoria City</td>
+                <td>Crasher Wake</td>
+                <td>Water</td>
+                <td>Fen Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=419">Floatzel · #419</a></td>
+              </tr>
+              <tr>
+                <td>Hearthome City</td>
+                <td>Fantina</td>
+                <td>Ghost</td>
+                <td>Relic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=429">Mismagius · #429</a></td>
+              </tr>
+              <tr>
+                <td>Canalave City</td>
+                <td>Byron</td>
+                <td>Steel</td>
+                <td>Mine Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=411">Bastiodon · #411</a></td>
+              </tr>
+              <tr>
+                <td>Snowpoint City</td>
+                <td>Candice</td>
+                <td>Ice</td>
+                <td>Icicle Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=478">Froslass · #478</a></td>
+              </tr>
+              <tr>
+                <td>Sunyshore City</td>
+                <td>Volkner</td>
+                <td>Electric</td>
+                <td>Beacon Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=466">Electivire · #466</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Unova Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Striaton City</td>
+                <td>Cilan, Chili &amp; Cress</td>
+                <td>Grass / Fire / Water</td>
+                <td>Trio Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=512">Simisage · #512</a></td>
+              </tr>
+              <tr>
+                <td>Nacrene City</td>
+                <td>Lenora</td>
+                <td>Normal</td>
+                <td>Basic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=505">Watchog · #505</a></td>
+              </tr>
+              <tr>
+                <td>Castelia City</td>
+                <td>Burgh</td>
+                <td>Bug</td>
+                <td>Insect Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=542">Leavanny · #542</a></td>
+              </tr>
+              <tr>
+                <td>Nimbasa City</td>
+                <td>Elesa</td>
+                <td>Electric</td>
+                <td>Bolt Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=523">Zebstrika · #523</a></td>
+              </tr>
+              <tr>
+                <td>Driftveil City</td>
+                <td>Clay</td>
+                <td>Ground</td>
+                <td>Quake Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=530">Excadrill · #530</a></td>
+              </tr>
+              <tr>
+                <td>Mistralton City</td>
+                <td>Skyla</td>
+                <td>Flying</td>
+                <td>Jet Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=581">Swanna · #581</a></td>
+              </tr>
+              <tr>
+                <td>Icirrus City</td>
+                <td>Brycen</td>
+                <td>Ice</td>
+                <td>Freeze Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=615">Cryogonal · #615</a></td>
+              </tr>
+              <tr>
+                <td>Opelucid City</td>
+                <td>Drayden / Iris</td>
+                <td>Dragon</td>
+                <td>Legend Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=612">Haxorus · #612</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Kalos Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Santalune City</td>
+                <td>Viola</td>
+                <td>Bug</td>
+                <td>Bug Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=666">Vivillon · #666</a></td>
+              </tr>
+              <tr>
+                <td>Cyllage City</td>
+                <td>Grant</td>
+                <td>Rock</td>
+                <td>Cliff Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=696">Tyrunt · #696</a></td>
+              </tr>
+              <tr>
+                <td>Shalour City</td>
+                <td>Korrina</td>
+                <td>Fighting</td>
+                <td>Rumble Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=448">Lucario · #448</a></td>
+              </tr>
+              <tr>
+                <td>Courmarine City</td>
+                <td>Ramos</td>
+                <td>Grass</td>
+                <td>Plant Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=673">Gogoat · #673</a></td>
+              </tr>
+              <tr>
+                <td>Lumiose City</td>
+                <td>Clemont</td>
+                <td>Electric</td>
+                <td>Voltage Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=695">Heliolisk · #695</a></td>
+              </tr>
+              <tr>
+                <td>Laverre City</td>
+                <td>Valerie</td>
+                <td>Fairy</td>
+                <td>Fairy Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=700">Sylveon · #700</a></td>
+              </tr>
+              <tr>
+                <td>Anistar City</td>
+                <td>Olympia</td>
+                <td>Psychic</td>
+                <td>Psychic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=678">Meowstic · #678</a></td>
+              </tr>
+              <tr>
+                <td>Snowbelle City</td>
+                <td>Wulfric</td>
+                <td>Ice</td>
+                <td>Iceberg Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=713">Avalugg · #713</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Galar Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Turffield</td>
+                <td>Milo</td>
+                <td>Grass</td>
+                <td>Grass Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=830">Eldegoss · #830</a></td>
+              </tr>
+              <tr>
+                <td>Hulbury</td>
+                <td>Nessa</td>
+                <td>Water</td>
+                <td>Water Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=834">Drednaw · #834</a></td>
+              </tr>
+              <tr>
+                <td>Motostoke</td>
+                <td>Kabu</td>
+                <td>Fire</td>
+                <td>Fire Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=851">Centiskorch · #851</a></td>
+              </tr>
+              <tr>
+                <td>Stow-on-Side</td>
+                <td>Bea / Allister</td>
+                <td>Fighting / Ghost</td>
+                <td>Fighting / Ghost Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=68">Machamp · #068</a></td>
+              </tr>
+              <tr>
+                <td>Ballonlea</td>
+                <td>Opal</td>
+                <td>Fairy</td>
+                <td>Fairy Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=869">Alcremie · #869</a></td>
+              </tr>
+              <tr>
+                <td>Circhester</td>
+                <td>Gordie / Melony</td>
+                <td>Rock / Ice</td>
+                <td>Rock / Ice Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=839">Coalossal · #839</a></td>
+              </tr>
+              <tr>
+                <td>Spikemuth</td>
+                <td>Piers / Marnie</td>
+                <td>Dark</td>
+                <td>Dark Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=862">Obstagoon · #862</a></td>
+              </tr>
+              <tr>
+                <td>Hammerlocke</td>
+                <td>Raihan</td>
+                <td>Dragon</td>
+                <td>Dragon Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=884">Duraludon · #884</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Paldea Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cortondo</td>
+                <td>Katy</td>
+                <td>Bug</td>
+                <td>Bug Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=920">Lokix · #920</a></td>
+              </tr>
+              <tr>
+                <td>Artazon</td>
+                <td>Brassius</td>
+                <td>Grass</td>
+                <td>Grass Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=185">Sudowoodo · #185</a></td>
+              </tr>
+              <tr>
+                <td>Levincia</td>
+                <td>Iono</td>
+                <td>Electric</td>
+                <td>Electric Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=939">Bellibolt · #939</a></td>
+              </tr>
+              <tr>
+                <td>Cascarrafa</td>
+                <td>Kofu</td>
+                <td>Water</td>
+                <td>Water Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=740">Crabominable · #740</a></td>
+              </tr>
+              <tr>
+                <td>Medali</td>
+                <td>Larry</td>
+                <td>Normal</td>
+                <td>Normal Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=398">Staraptor · #398</a></td>
+              </tr>
+              <tr>
+                <td>Montenevera</td>
+                <td>Ryme</td>
+                <td>Ghost</td>
+                <td>Ghost Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=972">Houndstone · #972</a></td>
+              </tr>
+              <tr>
+                <td>Alfornada</td>
+                <td>Tulip</td>
+                <td>Psychic</td>
+                <td>Psychic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=671">Florges · #671</a></td>
+              </tr>
+              <tr>
+                <td>Glaseado</td>
+                <td>Grusha</td>
+                <td>Ice</td>
+                <td>Ice Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=975">Cetitan · #975</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="character-section" id="champions" aria-labelledby="champions-title">
+      <h2 id="champions-title">Champions</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 007</span>
+          <h3 class="character-name">Cynthia</h3>
+          <p class="character-meta">Sinnoh Champion</p>
+        </div>
+        <div class="character-copy">
+          <p>A composed Champion admired for her strength and generosity toward younger Trainers. Her Garchomp is one of the franchise’s most recognizable teams.</p>
+          <div class="character-links">
+            <span class="character-links-label">Signature Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=445">Garchomp · #445</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-news/ten-memorable-dragon-type-pokemon-trainers" target="_blank" rel="noopener">Official trainer profile ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="adversaries" aria-labelledby="adversaries-title">
+      <h2 id="adversaries-title">Adversaries</h2>
+      <article class="character-record">
+        <div>
+          <span class="character-id">PERSON / 008</span>
+          <h3 class="character-name">Jessie &amp; James</h3>
+          <p class="character-meta">Team Rocket field agents</p>
+        </div>
+        <div class="character-copy">
+          <p>The theatrical duo best known for pursuing Ash and Pikachu. Their schemes often fail, but their partnership and affection for their Pokémon give them more sides than simple villains.</p>
+          <div class="character-links">
+            <span class="character-links-label">Team partner</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=52">Meowth · #052</a>
+            <a class="character-source" href="https://www.pokemon.com/us/pokemon-news/opinion-are-team-rocket-the-real-heroes" target="_blank" rel="noopener">Official feature ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 001</span>
+          <h3 class="character-name">Team Rocket</h3>
+          <p class="character-meta">Syndicate · Kanto &amp; Johto</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Giovanni</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=53">Persian · #053</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=112">Rhydon · #112</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 002</span>
+          <h3 class="character-name">Team Magma</h3>
+          <p class="character-meta">Eco-syndicate · Hoenn</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Maxie</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=323">Camerupt · #323</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=383">Groudon · #383</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 003</span>
+          <h3 class="character-name">Team Aqua</h3>
+          <p class="character-meta">Eco-syndicate · Hoenn</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Archie</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=319">Sharpedo · #319</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=382">Kyogre · #382</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 004</span>
+          <h3 class="character-name">Team Galactic</h3>
+          <p class="character-meta">Cosmological cult · Sinnoh</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Cyrus</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=461">Weavile · #461</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=430">Honchkrow · #430</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 005</span>
+          <h3 class="character-name">Team Plasma</h3>
+          <p class="character-meta">Liberation movement · Unova</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leaders</span>
+            <span>Ghetsis, N</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=635">Hydreigon · #635</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=644">Zekrom · #644</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=643">Reshiram · #643</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 006</span>
+          <h3 class="character-name">Team Flare</h3>
+          <p class="character-meta">Secret society · Kalos</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Lysandre</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=668">Pyroar · #668</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=130">Gyarados · #130</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 007</span>
+          <h3 class="character-name">Team Skull &amp; Aether Foundation</h3>
+          <p class="character-meta">Street crew &amp; Research foundation · Alola</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leaders</span>
+            <span>Guzma, Lusamine</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=768">Golisopod · #768</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=36">Clefable · #036</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=793">Nihilego · #793</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 008</span>
+          <h3 class="character-name">Macro Cosmos &amp; Team Yell</h3>
+          <p class="character-meta">Corporate conglomerate &amp; Fan club · Galar</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leaders</span>
+            <span>Chairman Rose, Piers</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=879">Copperajah · #879</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=862">Obstagoon · #862</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 009</span>
+          <h3 class="character-name">Team Star</h3>
+          <p class="character-meta">Academy rebellious squads · Paldea</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Penny</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=700">Sylveon · #700</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="battle-mechanics" aria-labelledby="battle-mechanics-title">
+      <h2 id="battle-mechanics-title">Battle mechanics</h2>
+      <div class="character-copy"><p>Content in preparation.</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+</body>
+</html>
+```
+
+---
+
+### 1.13 `games.html` (Games / 历代正作游戏与各世代版本海报档案)
+
+- **文件路径**: `games.html`  
+- **代码行数**: 306 行  
+- **文件大小**: 11,800 字节  
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokémon Games — 151 File</title>
+  <meta name="description" content="Pokémon game titles grouped by region.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .games-page {
+      max-width: 76rem;
+    }
+    .game-region-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-5);
+      margin: var(--s-6) 0;
+    }
+    .game-region {
+      min-width: 0;
+      padding: var(--s-5);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      box-shadow: var(--shadow-file);
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
+      column-gap: var(--s-5);
+      row-gap: var(--s-2);
+      align-items: start;
+    }
+    .game-poster-wrap {
+      grid-column: 1;
+      grid-row: 1 / span 4;
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      aspect-ratio: 2 / 1;
+      margin-bottom: 0;
+      height: 100%;
+    }
+    .game-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+    .game-region:hover .game-poster {
+      transform: scale(1.02);
+    }
+    .game-region h2 {
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0;
+      color: var(--ink);
+      font: 700 1.35rem/1.2 var(--font-ui);
+    }
+    .game-region p {
+      grid-column: 2;
+      grid-row: 2;
+      margin: var(--s-1) 0 var(--s-3);
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+    .game-title-list {
+      grid-column: 2;
+      grid-row: 3;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .game-title-list li {
+      min-width: 0;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--ink);
+      font-size: 0.875rem;
+      line-height: 1.35;
+      font-family: var(--font-ui);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .game-title-list li:hover {
+      border-color: var(--navy);
+      background: rgba(126, 182, 217, 0.08);
+    }
+    @media (max-width: 54rem) {
+      .game-region {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .game-poster-wrap {
+        grid-column: 1;
+        grid-row: auto;
+        margin-bottom: var(--s-3);
+      }
+      .game-region h2,
+      .game-region p,
+      .game-title-list {
+        grid-column: 1;
+        grid-row: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html" aria-current="page">Games</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap games-page">
+    <h1 class="page-title">Pokémon Games</h1>
+    <p class="page-desc">Core series releases, remakes, and regional expansions catalogued across nine generations of adventures.</p>
+    <p><a class="link-action" href="about.html">Back to File</a></p>
+
+    <section class="game-region-grid" aria-label="Pokémon games by region">
+      <section class="game-region" id="kanto" aria-labelledby="kanto-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-kanto.webp" alt="Pokémon Red and Blue official cover art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="kanto-heading">Kanto</h2>
+        <p>The foundational territory where the journey began, spanning the original Game Boy generation through modern Kanto returns.</p>
+        <ul class="game-title-list">
+          <li>Red</li>
+          <li>Blue</li>
+          <li>Yellow</li>
+          <li>FireRed</li>
+          <li>LeafGreen</li>
+          <li>Let's Go, Pikachu! / Eevee!</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="johto" aria-labelledby="johto-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-johto.webp" alt="Pokémon Gold and Silver official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="johto-heading">Johto</h2>
+        <p>A tradition-rich land directly connected to Kanto, featuring the Bell Tower, Whirl Islands, and a path back across the border.</p>
+        <ul class="game-title-list">
+          <li>Gold</li>
+          <li>Silver</li>
+          <li>Crystal</li>
+          <li>HeartGold</li>
+          <li>SoulSilver</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="hoenn" aria-labelledby="hoenn-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-hoenn.webp" alt="Pokémon Ruby and Sapphire official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="hoenn-heading">Hoenn</h2>
+        <p>A tropical maritime expanse shaped by active volcanoes, oceanic trenches, and the awakening of super-ancient titans.</p>
+        <ul class="game-title-list">
+          <li>Ruby</li>
+          <li>Sapphire</li>
+          <li>Emerald</li>
+          <li>Omega Ruby</li>
+          <li>Alpha Sapphire</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="sinnoh" aria-labelledby="sinnoh-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-sinnoh.webp" alt="Pokémon Diamond and Pearl official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="sinnoh-heading">Sinnoh</h2>
+        <p>A northern realm divided by Mount Coronet, steeped in space-time creation myths and the ancestral frontier of Hisui.</p>
+        <ul class="game-title-list">
+          <li>Diamond</li>
+          <li>Pearl</li>
+          <li>Platinum</li>
+          <li>Brilliant Diamond</li>
+          <li>Shining Pearl</li>
+          <li>Legends: Arceus</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="unova" aria-labelledby="unova-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-unova.webp" alt="Pokémon Black and White official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="unova-heading">Unova</h2>
+        <p>A modern metropolitan landscape framed by suspension bridges and an enduring struggle between truth and ideals.</p>
+        <ul class="game-title-list">
+          <li>Black</li>
+          <li>White</li>
+          <li>Black 2</li>
+          <li>White 2</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="kalos" aria-labelledby="kalos-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-kalos.webp" alt="Pokémon X and Y official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="kalos-heading">Kalos</h2>
+        <p>A star-shaped cultural capital radiating from Lumiose City, where the mysteries of Mega Evolution were first uncovered.</p>
+        <ul class="game-title-list">
+          <li>X</li>
+          <li>Y</li>
+          <li>Legends: Z-A</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="alola" aria-labelledby="alola-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-alola.webp" alt="Pokémon Sun and Moon official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="alola-heading">Alola</h2>
+        <p>A sun-drenched archipelago of four natural islands and an artificial reef, defined by island trials and Ultra Space rifts.</p>
+        <ul class="game-title-list">
+          <li>Sun</li>
+          <li>Moon</li>
+          <li>Ultra Sun</li>
+          <li>Ultra Moon</li>
+          <li>Pokémon GO</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="galar" aria-labelledby="galar-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-galar.webp" alt="Pokémon Sword and Shield official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="galar-heading">Galar</h2>
+        <p>An industrial kingdom bordered by open Wild Areas, celebrated for stadium-scale league tournaments and Dynamax energy.</p>
+        <ul class="game-title-list">
+          <li>Sword</li>
+          <li>Shield</li>
+          <li>The Isle of Armor</li>
+          <li>The Crown Tundra</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="paldea" aria-labelledby="paldea-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-paldea.webp" alt="Pokémon Scarlet and Violet official cover art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="paldea-heading">Paldea</h2>
+        <p>A vast open continent surrounding the Great Crater, driven by academy treasure hunts and Terastal crystal phenomena.</p>
+        <ul class="game-title-list">
+          <li>Scarlet</li>
+          <li>Violet</li>
+          <li>The Teal Mask</li>
+          <li>The Indigo Disk</li>
+        </ul>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+</body>
+</html>
+```
+
+---
+
+### 1.14 `about.html` (File / 架构说明与数据源)
 
 - **文件路径**: `about.html`  
-- **代码行数**: 128 行  
-- **文件大小**: 6,116 字节  
+- **代码行数**: 1,036 行  
+- **文件大小**: 76,490 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1451,6 +3757,260 @@
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/pokeball.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .about-page {
+      max-width: 80rem;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: var(--s-6);
+    }
+    .about-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .about-col > .file-block {
+      margin: 0;
+    }
+    @media (max-width: 64rem) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .timeline-map-block {
+      margin-top: var(--s-6);
+    }
+    .timeline-map-intro {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+    .timeline-map-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .timeline-track {
+      position: relative;
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .timeline-item {
+      position: relative;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: calc(-1.25rem - 5px);
+      top: 0.35rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px var(--navy);
+    }
+    .timeline-item-title {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      color: var(--ink);
+      margin: 0 0 0.2rem;
+    }
+    .timeline-item-source {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.75rem;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+      margin: 0 0 0.35rem;
+    }
+    .timeline-item-desc {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .timeline-map-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .timeline-map-frame {
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .timeline-map-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 16 / 10;
+    }
+    .timeline-map-caption {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      padding: 0.5rem 0.75rem;
+      margin: 0;
+      border-top: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.15);
+    }
+    .timeline-map-btn {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    @media (max-width: 64rem) {
+      .timeline-map-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+    .media-card {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .media-poster-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--r-card, 4px);
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      aspect-ratio: 2 / 3;
+      width: 100px;
+    }
+    .media-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .media-content {
+      min-width: 0;
+    }
+    @media (max-width: 40rem) {
+      .media-card {
+        grid-template-columns: 80px minmax(0, 1fr);
+        gap: 0.85rem;
+      }
+      .media-poster-wrap {
+        width: 80px;
+      }
+    }
+    .media-guide-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-7) var(--s-4);
+      margin-top: var(--s-3);
+    }
+    .media-guide-list .media-card {
+      grid-template-columns: 11.25rem minmax(0, 1fr);
+      gap: var(--s-4);
+    }
+    .media-guide-list .media-poster-wrap {
+      width: 11.25rem;
+    }
+    @media (max-width: 72rem) {
+      .media-guide-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 40rem) {
+      .media-guide-list .media-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    /* File：地图与可展开笔记，说明区使用分隔线代替卡片。 */
+    .about-page .file-block {
+      background: transparent; border: 0; border-radius: 0; box-shadow: none;
+      padding: 0; transition: none;
+    }
+    .about-page .page-desc { max-width: 42rem; }
+    .about-page .timeline-map-block {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+      grid-template-rows: auto auto 1fr;
+      column-gap: var(--s-12); align-items: start; margin-block: var(--s-12);
+    }
+    .about-page #timeline-map-heading { font-size: 2rem; margin-bottom: var(--s-3); }
+    .about-page .timeline-map-intro { max-width: 34ch; margin-bottom: var(--s-6); }
+    .about-page .timeline-map-layout, .about-page .about-col { display: contents; }
+    .about-page .timeline-track { padding: 0; border: 0; gap: 0; }
+    .about-page .timeline-dot { display: none; }
+    .about-page .timeline-item { border-top: 1px solid var(--line); }
+    .about-page summary {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+      min-height: 2.75rem; padding-block: var(--s-3); cursor: pointer; color: var(--ink);
+    }
+    .about-page summary::-webkit-details-marker { display: none; }
+    .about-page summary::after { content: "+"; color: var(--navy); font-size: 1.25rem; }
+    .about-page details[open] > summary::after { content: "−"; }
+    .about-page summary:hover { color: var(--navy); }
+    .about-page summary h3 { margin: 0; color: inherit; }
+    .about-page .timeline-item-source { font-family: var(--font-ui); letter-spacing: 0; }
+    .about-page .timeline-item-desc { padding-bottom: var(--s-5); }
+    .about-page .timeline-map-side { grid-column: 2; grid-row: 1 / span 3; gap: var(--s-3); }
+    .about-page .timeline-map-img { aspect-ratio: 16 / 10; object-fit: cover; }
+    .about-page .timeline-map-caption { background: var(--sky); padding: var(--s-3); }
+    .about-page .timeline-map-btn { min-height: 2.75rem; }
+    .about-page .about-grid { gap: var(--s-8) var(--s-12); }
+    .about-page .about-grid .file-block {
+      grid-column: 1; margin: 0; border-top: 1px solid var(--line); padding-top: var(--s-5);
+    }
+    .about-page .file-block:has(#sound-heading) { grid-column: 2; grid-row: 1; }
+    .about-page .file-block:has(#keys-heading) { grid-column: 2; grid-row: 2 / span 2; }
+    .about-page .soft { font-family: var(--font-ui); font-size: 1rem; }
+    .about-page .keys-table td:first-child { width: 28%; }
+    #legendary-mythical > div { gap: var(--s-5) !important; margin-top: var(--s-4) !important; }
+    #legendary-mythical > div > article {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      column-gap: var(--s-6); row-gap: var(--s-2); padding-block: var(--s-5);
+      border-top: 1px solid var(--line);
+    }
+    #legendary-mythical > div > article > h3,
+    #legendary-mythical > div > article > p:not(.legendary-roster) { grid-column: 1; }
+    #legendary-mythical .legendary-roster {
+      grid-column: 2; grid-row: 1 / span 4; display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+      gap: var(--s-2); align-content: start; margin: 0; font-size: 0;
+    }
+    #legendary-mythical .legendary-roster > b {
+      grid-column: 1 / -1; color: var(--ink-soft); font-size: 0.8125rem;
+    }
+    #legendary-mythical .legendary-specimen {
+      display: flex; min-width: 0; flex-direction: column; align-items: center;
+      gap: var(--s-1); color: var(--navy); font-size: 0.8125rem;
+      line-height: 1.2; text-align: center;
+    }
+    #legendary-mythical .legendary-specimen img {
+      width: 6rem; height: 6rem; max-width: 100%; object-fit: contain; display: block;
+    }
+    #legendary-mythical .legendary-separator { display: none; }
+    @media (max-width: 48rem) {
+      #legendary-mythical > div > article { grid-template-columns: minmax(0, 1fr); }
+      #legendary-mythical .legendary-roster { grid-column: 1; grid-row: auto; }
+    }
+    body:has(.about-page) .site-bar nav {
+      min-width: 0; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+    body:has(.about-page) .site-bar nav a { flex: 0 0 auto; min-height: 2.75rem; display: inline-flex; align-items: center; }
+    @media (max-width: 64rem) {
+      .about-page .timeline-map-block, .about-page .about-grid { grid-template-columns: minmax(0, 1fr); }
+      .about-page .timeline-map-side, .about-page .about-grid .file-block { grid-column: 1; grid-row: auto; }
+      .about-page .file-block:has(#sound-heading), .about-page .file-block:has(#keys-heading) { grid-column: 1; grid-row: auto; }
+      .about-page .timeline-map-side { margin-top: var(--s-6); }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -1470,73 +4030,726 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html" aria-current="page">File</a>
       </nav>
     </div>
   </header>
 
-  <!-- 页面主体容器：约束在舒适阅读行宽 (wrap-doc) -->
-  <main id="main" class="wrap wrap-doc">
+  <!-- 页面主体容器：使用两栏桌面网格消除右侧空白 -->
+  <main id="main" class="wrap about-page">
     <h1 class="page-title">File</h1>
     <p class="page-desc">Unofficial Kanto-first dex. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    <p><a class="link-action" href="games.html">Browse Pokémon game titles →</a></p>
 
-    <!-- 这站存什么 / 不存什么 -->
-    <section class="file-block">
-      <h2>这站存什么</h2>
-      <p style="margin-bottom:0.75rem; line-height:1.6;">只用你浏览器的 <code>localStorage</code>，存 4 样东西，全在本地：</p>
-      <ul>
-        <li><code>file151.belt</code>：你的 6 槽腰带名单（编号数组）。</li>
-        <li><code>file151.seen</code>：你看过哪些宝可梦，在 Dex 网格角落留记号。</li>
-        <li><code>file151.last</code>：上次打开的文件编号，首页直接一键继续。</li>
-        <li><code>file151.sound</code>：叫声自动播放偏好（默认 <code>off</code>）。</li>
-      </ul>
+    <!-- 独立档案区块：正作时空脉络与地区地图 -->
+    <section class="file-block timeline-map-block" id="timeline-map" aria-labelledby="timeline-map-heading">
+      <h2 id="timeline-map-heading">World atlas</h2>
+      <p class="timeline-map-intro">
+        Four notes from the core games, alongside a map of Kanto. Open a note to read more.
+      </p>
+
+      <div class="timeline-map-layout">
+        <!-- 左侧：纵向时间节点 -->
+        <div class="timeline-track" role="list">
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Ancient Hisui and Kalos</h3></summary>
+              <p class="timeline-item-source">Source: Legends: Arceus, X and Y</p>
+              <p class="timeline-item-desc">Early hand-crafted Poké Balls are documented in Hisui. Three thousand years before modern leagues, AZ fired the ultimate weapon in Kalos, establishing an event that later split the series into two branches.</p>
+            </details>
+          </div>
+
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Kanto and Hoenn beginnings</h3></summary>
+              <p class="timeline-item-source">Source: Red, Green, Blue, Ruby, Sapphire</p>
+              <p class="timeline-item-desc">The original Kanto expedition and the Hoenn journey occur roughly concurrently. Team Rocket disbands in Kanto as ancient legendary Pokémon awaken in Hoenn.</p>
+            </details>
+          </div>
+
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Johto and Sinnoh league era</h3></summary>
+              <p class="timeline-item-source">Source: Gold, Silver, Diamond, Pearl</p>
+              <p class="timeline-item-desc">Set three years after events in Kanto. The Johto journey deals with Rocket remnants while Team Galactic provokes space-time disturbances across Sinnoh.</p>
+            </details>
+          </div>
+
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Mega Evolution timeline split</h3></summary>
+              <p class="timeline-item-source">Source: Omega Ruby, Alpha Sapphire Delta Episode</p>
+              <p class="timeline-item-desc">Dialogue during the Delta Episode establishes two distinct continuities: one where Mega Evolution was unlocked by the ultimate weapon, and an earlier branch where it never existed.</p>
+            </details>
+          </div>
+        </div>
+
+        <!-- 右侧：地图预览与 Regions 链接 -->
+        <div class="timeline-map-side">
+          <div class="timeline-map-frame">
+            <img src="assets/maps/kanto.webp" alt="Kanto region survey map" width="800" height="500" loading="lazy" class="timeline-map-img">
+            <p class="timeline-map-caption">Kanto field survey map (Generation I)</p>
+          </div>
+          <a href="regions.html" class="link-action timeline-map-btn">Open Regions atlas &rarr;</a>
+        </div>
+      </div>
     </section>
 
-    <section class="file-block">
-      <h2>不存什么</h2>
-      <p style="line-height:1.6;">没有账号，没有登录，没有追踪 Cookie，没有服务器后台，也没有数据分析打点。你关掉浏览器或清理本地缓存，记录就清零。没有任何数据会传到这台电脑之外。</p>
+    <section class="file-block" id="animation-guide" aria-labelledby="animation-guide-heading">
+      <h2 id="animation-guide-heading">Animation &amp; film guide</h2>
+      <p class="soft">Overview of the TV series and films.</p>
+
+      <details>
+        <summary>Animated series</summary>
+        <div class="media-guide-list">
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-01.webp" alt="Poster: The Beginning &amp; Gold-Silver" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">The Beginning &amp; Gold-Silver (1997–2002)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 1–5 (Indigo League, Orange Islands, Johto Journeys, Johto League Champions, Master Quest)</p>
+              <p style="margin:0 0 0.4rem;">Ash and Pikachu leave Pallet Town to challenge Gyms across Kanto, the Orange Islands, and Johto with Misty and Brock.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Pokémon - I Choose You!", "Showdown at Dark City", "Gotta Catch Ya Later!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#travelers">Misty</a>, <a href="characters.html#travelers">Brock</a>, <a href="characters.html#adversaries">Jessie &amp; James</a>, <a href="characters.html#kanto">Professor Oak</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=1">Bulbasaur · #001</a>, <a href="pokemon.html?id=4">Charmander · #004</a>, <a href="pokemon.html?id=7">Squirtle · #007</a>, <a href="pokemon.html?id=6">Charizard · #006</a>, <a href="pokemon.html?id=52">Meowth · #052</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-02.webp" alt="Poster: Advanced Generation" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Advanced Generation (2002–2006)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 6–9 (Advanced, Advanced Challenge, Advanced Battle, Battle Frontier)</p>
+              <p style="margin:0 0 0.4rem;">Ash travels through Hoenn with Brock, May, and Max, then returns to Kanto to tackle the Battle Frontier.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Get the Show on the Road!", "The Bicker the Better", "Pace - The Final Frontier!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#travelers">Brock</a>, May, Max</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=252">Treecko · #252</a>, <a href="pokemon.html?id=254">Sceptile · #254</a>, <a href="pokemon.html?id=255">Torchic · #255</a>, <a href="pokemon.html?id=258">Mudkip · #258</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-03.webp" alt="Poster: Diamond &amp; Pearl" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Diamond &amp; Pearl (2006–2010)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 10–13 (Diamond and Pearl, Battle Dimension, Galactic Battles, Sinnoh League Victors)</p>
+              <p style="margin:0 0 0.4rem;">Ash, Brock, and Dawn travel through Sinnoh, facing rival Paul and stopping Team Galactic.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Following a Maiden's Voyage!", "Tears for Fears!", "Battling a Thaw in Relations!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Dawn, <a href="characters.html#travelers">Brock</a>, <a href="characters.html#champions">Cynthia</a>, Paul</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=390">Chimchar · #390</a>, <a href="pokemon.html?id=392">Infernape · #392</a>, <a href="pokemon.html?id=393">Piplup · #393</a>, <a href="pokemon.html?id=445">Garchomp · #445</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-04.webp" alt="Poster: Black &amp; White" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Black &amp; White (2010–2013)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 14–16 (Black &amp; White, Rival Destinies, Adventures in Unova)</p>
+              <p style="margin:0 0 0.4rem;">Ash travels across Unova with Iris and Cilan, challenging the League and opposing Team Plasma.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "In The Shadow of Zekrom!", "Battling for the Love of Bug-Types!", "Survival of the Striaton Gym!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Iris, Cilan, N</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=495">Snivy · #495</a>, <a href="pokemon.html?id=498">Tepig · #498</a>, <a href="pokemon.html?id=501">Oshawott · #501</a>, <a href="pokemon.html?id=612">Haxorus · #612</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-05.webp" alt="Poster: XY" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">XY (2013–2016)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 17–19 (XY, Kalos Quest, XYZ)</p>
+              <p style="margin:0 0 0.4rem;">In Kalos, Ash travels with Serena, Clemont, and Bonnie, mastering Battle Bond with Greninja and fighting Team Flare.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Kalos, Where Dreams and Adventures Begin!", "A Frenzied Factory Fiasco!", "Down to the Fiery Finish!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Serena, Clemont, Bonnie, Alain</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=658">Greninja · #658</a>, <a href="pokemon.html?id=663">Talonflame · #663</a>, <a href="pokemon.html?id=706">Goodra · #706</a>, <a href="pokemon.html?id=448">Lucario · #448</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-06.webp" alt="Poster: Sun &amp; Moon" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Sun &amp; Moon (2016–2019)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 20–22 (Sun &amp; Moon, Ultra Adventures, Ultra Legends)</p>
+              <p style="margin:0 0 0.4rem;">Ash attends the Pokémon School in Alola, learns Z-Moves, and wins the region's first League.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Alola to New Adventure!", "The Professors' New PBNJ!", "Enter the Champion!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Lillie, Gladion, Professor Kukui</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=722">Rowlet · #722</a>, <a href="pokemon.html?id=724">Decidueye · #724</a>, <a href="pokemon.html?id=745">Lycanroc · #745</a>, <a href="pokemon.html?id=727">Incineroar · #727</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-07.webp" alt="Poster: Journeys" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Journeys (2019–2023)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 23–25 (Journeys, Master Journeys, Ultimate Journeys)</p>
+              <p style="margin:0 0 0.4rem;">Ash and Goh travel across all eight regions as Ash works toward the World Coronation Series title.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Enter Pikachu!", "The Climax of the World Coronation Series!", "The Rainbow and the Pokémon Master!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Goh, Chloe, Leon, <a href="characters.html#champions">Cynthia</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=448">Lucario · #448</a>, <a href="pokemon.html?id=94">Gengar · #094</a>, <a href="pokemon.html?id=815">Cinderace · #815</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-08.webp" alt="Poster: Horizons" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Horizons (2023–present)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Season 26+ (The Sparkling of Terapagos, Terastal Debut)</p>
+              <p style="margin:0 0 0.4rem;">New trainers Liko and Roy travel with the Rising Volt Tacklers to solve the mystery of an ancient pendant.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "The Pendant That Starts It All", "The Door That Never Opens", "How Terrastallizing!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> Liko, Roy, Friede, Dot</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=906">Sprigatito · #906</a>, <a href="pokemon.html?id=909">Fuecoco · #909</a>, <a href="pokemon.html?id=912">Quaxly · #912</a>, <a href="pokemon.html?id=1024">Terapagos · #1024</a>, <a href="pokemon.html?id=25">Pikachu · #025</a></p>
+            </div>
+          </article>
+        </div>
+      </details>
+
+      <details>
+        <summary>Theatrical films</summary>
+        <div class="media-guide-list">
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-01.webp" alt="Poster: Mewtwo Strikes Back" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">1. Pokémon: The First Movie - Mewtwo Strikes Back (1998)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 1998</p>
+              <p style="margin:0 0 0.35rem;">Cloned from Mew, Mewtwo rebels against humans and invites Ash to battle on New Island.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#travelers">Misty</a>, <a href="characters.html#travelers">Brock</a>, <a href="characters.html#adversaries">Giovanni</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=150">Mewtwo · #150</a>, <a href="pokemon.html?id=151">Mew · #151</a>, <a href="pokemon.html?id=25">Pikachu · #025</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-02.webp" alt="Poster: The Power of One" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">2. Pokémon the Movie 2000: The Power of One (1999)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 1999</p>
+              <p style="margin:0 0 0.35rem;">A collector captures the legendary birds, and Ash helps Lugia restore the weather.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Melody, Lawrence III</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=249">Lugia · #249</a>, <a href="pokemon.html?id=144">Articuno · #144</a>, <a href="pokemon.html?id=145">Zapdos · #145</a>, <a href="pokemon.html?id=146">Moltres · #146</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-03.webp" alt="Poster: Spell of the Unown" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">3. Pokémon 3: The Movie - Spell of the Unown (2000)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2000</p>
+              <p style="margin:0 0 0.35rem;">A young girl uses the Unown to create an illusionary Entei, crystallizing Greenfield and taking Ash's mother.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Molly Hale, Delia Ketchum</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=244">Entei · #244</a>, <a href="pokemon.html?id=201">Unown · #201</a>, <a href="pokemon.html?id=6">Charizard · #006</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-04.webp" alt="Poster: Celebi - Voice of the Forest" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">4. Pokémon 4Ever: Celebi - Voice of the Forest (2001)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2001</p>
+              <p style="margin:0 0 0.35rem;">Ash and a time-traveling trainer named Sam protect Celebi from a Team Rocket hunter.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Sam (<a href="characters.html#kanto">Professor Oak</a>), Iron-Masked Marauder</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=251">Celebi · #251</a>, <a href="pokemon.html?id=245">Suicune · #245</a>, <a href="pokemon.html?id=248">Tyranitar · #248</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-05.webp" alt="Poster: Heroes: Latios and Latias" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">5. Pokémon Heroes: Latios and Latias (2002)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2002</p>
+              <p style="margin:0 0 0.35rem;">In Alto Mare, Ash defends Latios and Latias from thieves trying to steal the Soul Dew.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Bianca, Lorenzo, Annie &amp; Oakley</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=380">Latias · #380</a>, <a href="pokemon.html?id=381">Latios · #381</a>, <a href="pokemon.html?id=196">Espeon · #196</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-06.webp" alt="Poster: Jirachi - Wish Maker" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">6. Pokémon: Jirachi - Wish Maker (2003)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2003</p>
+              <p style="margin:0 0 0.35rem;">Max befriends the mythical Jirachi as an ex-Team Magma scientist tries to harness it to revive Groudon.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Max, Butler, Diane</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=385">Jirachi · #385</a>, <a href="pokemon.html?id=383">Groudon · #383</a>, <a href="pokemon.html?id=359">Absol · #359</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-07.webp" alt="Poster: Destiny Deoxys" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">7. Pokémon: Destiny Deoxys (2004)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2004</p>
+              <p style="margin:0 0 0.35rem;">Deoxys lands in LaRousse City searching for its counterpart, triggering a battle with Rayquaza.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Tory Lund, Professor Lund</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=386">Deoxys · #386</a>, <a href="pokemon.html?id=384">Rayquaza · #384</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-08.webp" alt="Poster: Lucario and the Mystery of Mew" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">8. Pokémon: Lucario and the Mystery of Mew (2005)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2005</p>
+              <p style="margin:0 0 0.35rem;">Ash teams up with an awakened Lucario to rescue Pikachu from the Tree of Beginning.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Sir Aaron, Lady Eileen, Kidd Summers</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=448">Lucario · #448</a>, <a href="pokemon.html?id=151">Mew · #151</a>, <a href="pokemon.html?id=377">Regirock · #377</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-09.webp" alt="Poster: Pokémon Ranger and the Temple of the Sea" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">9. Pokémon Ranger and the Temple of the Sea (2006)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2006</p>
+              <p style="margin:0 0 0.35rem;">Ash and a Pokémon Ranger escort newly hatched Manaphy to an underwater temple ahead of pirates.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Jack Walker, Phantom</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=490">Manaphy · #490</a>, <a href="pokemon.html?id=382">Kyogre · #382</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-10.webp" alt="Poster: The Rise of Darkrai" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">10. Pokémon: The Rise of Darkrai (2007)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2007</p>
+              <p style="margin:0 0 0.35rem;">Dialga and Palkia clash over Alamos Town while Darkrai fights to hold them back.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Alice, Tonio, Baron Alberto</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=491">Darkrai · #491</a>, <a href="pokemon.html?id=483">Dialga · #483</a>, <a href="pokemon.html?id=484">Palkia · #484</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-11.webp" alt="Poster: Giratina and the Sky Warrior" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">11. Pokémon: Giratina and the Sky Warrior (2008)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2008</p>
+              <p style="margin:0 0 0.35rem;">Shaymin draws Ash into the Reverse World, where an inventor plots to harness Giratina's power.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Newton Graceland, Zero</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=492">Shaymin · #492</a>, <a href="pokemon.html?id=487">Giratina · #487</a>, <a href="pokemon.html?id=483">Dialga · #483</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-12.webp" alt="Poster: Arceus and the Jewel of Life" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">12. Pokémon: Arceus and the Jewel of Life (2009)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2009</p>
+              <p style="margin:0 0 0.35rem;">Ash travels back in time to stop a betrayal against Arceus before the Pokémon destroys the present.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Damos, Sheena, Marcus</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=493">Arceus · #493</a>, <a href="pokemon.html?id=483">Dialga · #483</a>, <a href="pokemon.html?id=484">Palkia · #484</a>, <a href="pokemon.html?id=487">Giratina · #487</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-13.webp" alt="Poster: Zoroark: Master of Illusions" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">13. Pokémon: Zoroark: Master of Illusions (2010)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2010</p>
+              <p style="margin:0 0 0.35rem;">Ash helps Zorua find its mother while stopping a corrupt businessman from controlling Zoroark.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Grings Kodai, Zorua, Karl</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=571">Zoroark · #571</a>, <a href="pokemon.html?id=570">Zorua · #570</a>, <a href="pokemon.html?id=251">Celebi · #251</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-14.webp" alt="Poster: Victini and Reshiram / Zekrom" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">14. Pokémon the Movie: Black / White - Victini and Reshiram / Zekrom (2011)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2011</p>
+              <p style="margin:0 0 0.35rem;">A man captures Victini and awakens a legendary dragon to relocate an ancient castle.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Damon, Carlita, Juanita</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=494">Victini · #494</a>, <a href="pokemon.html?id=643">Reshiram · #643</a>, <a href="pokemon.html?id=644">Zekrom · #644</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-15.webp" alt="Poster: Kyurem vs. The Sword of Justice" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">15. Pokémon the Movie: Kyurem vs. The Sword of Justice (2012)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2012</p>
+              <p style="margin:0 0 0.35rem;">Keldeo challenges Kyurem too soon and turns to Ash after freezing its mentors in battle.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Keldeo, Swords of Justice</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=647">Keldeo · #647</a>, <a href="pokemon.html?id=646">Kyurem · #646</a>, <a href="pokemon.html?id=638">Cobalion · #638</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-16.webp" alt="Poster: Genesect and the Legend Awakened" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">16. Pokémon the Movie: Genesect and the Legend Awakened (2013)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2013</p>
+              <p style="margin:0 0 0.35rem;">A group of revived Genesect threatens New Tork City, leading Mewtwo to step in.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Eric, Red Genesect</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=649">Genesect · #649</a>, <a href="pokemon.html?id=150">Mewtwo · #150</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-17.webp" alt="Poster: Diancie and the Cocoon of Destruction" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">17. Pokémon the Movie: Diancie and the Cocoon of Destruction (2014)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2014</p>
+              <p style="margin:0 0 0.35rem;">Diancie searches for Xerneas to save her home, but thieves accidentally awaken Yveltal.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Diancie, Millis Steel, Argus Steel</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=719">Diancie · #719</a>, <a href="pokemon.html?id=716">Xerneas · #716</a>, <a href="pokemon.html?id=717">Yveltal · #717</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-18.webp" alt="Poster: Hoopa and the Clash of Ages" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">18. Pokémon the Movie: Hoopa and the Clash of Ages (2015)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2015</p>
+              <p style="margin:0 0 0.35rem;">Hoopa's released shadow power summons past legendary Pokémon into a battle across Dahara City.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Baraz, Meray, Hoopa</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=720">Hoopa · #720</a>, <a href="pokemon.html?id=384">Rayquaza · #384</a>, <a href="pokemon.html?id=493">Arceus · #493</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-19.webp" alt="Poster: Volcanion and the Mechanical Marvel" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">19. Pokémon the Movie: Volcanion and the Mechanical Marvel (2016)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2016</p>
+              <p style="margin:0 0 0.35rem;">Bound to Volcanion by a magnetic ring, Ash helps rescue the artificial Pokémon Magearna from Azoth Kingdom.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Alva, Kimia, Raleigh</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=721">Volcanion · #721</a>, <a href="pokemon.html?id=801">Magearna · #801</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-20.webp" alt="Poster: I Choose You!" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">20. Pokémon the Movie: I Choose You! (2017)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2017</p>
+              <p style="margin:0 0 0.35rem;">An alternate retelling of Ash and Pikachu's first days and their journey toward Mount Tensei.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Verity, Sorrel, Cross</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=250">Ho-Oh · #250</a>, <a href="pokemon.html?id=802">Marshadow · #802</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-21.webp" alt="Poster: The Power of Us" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">21. Pokémon the Movie: The Power of Us (2018)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2018</p>
+              <p style="margin:0 0 0.35rem;">Ash and five strangers work together when a festival fire threatens Fula City and Zeraora.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Risa, Margo, Callahan</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=249">Lugia · #249</a>, <a href="pokemon.html?id=807">Zeraora · #807</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-22.webp" alt="Poster: Mewtwo Strikes Back - Evolution" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">22. Pokémon: Mewtwo Strikes Back - Evolution (2019)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2019</p>
+              <p style="margin:0 0 0.35rem;">A 3D CGI remake of the 1998 film, following Mewtwo's revolt and the battle on New Island.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#adversaries">Giovanni</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=150">Mewtwo · #150</a>, <a href="pokemon.html?id=151">Mew · #151</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-23.webp" alt="Poster: Secrets of the Jungle" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">23. Pokémon the Movie: Secrets of the Jungle (2020)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2020</p>
+              <p style="margin:0 0 0.35rem;">Ash meets Koko, a boy raised by a Zarude, and helps protect the Great Tree from a researcher.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Koko, Dada Zarude, Dr. Zed</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=893">Zarude · #893</a>, <a href="pokemon.html?id=251">Celebi · #251</a></p>
+            </div>
+          </article>
+        </div>
+      </details>
     </section>
 
-    <!-- 数据从哪来 -->
-    <section class="file-block">
-      <h2>数据从哪来</h2>
-      <ul>
-        <li>种族基础数值、属性、特性、英文种属与描述：来自开放数据接口 <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokeAPI</a>。</li>
-        <li>3D 立绘渲染模型：来自官方立绘归档 <a href="https://github.com/PokeAPI/sprites" target="_blank" rel="noopener">PokeAPI/sprites</a>（HOME 渲染图与 192px 缩略图）。</li>
-        <li>叫声音频：来自 <a href="https://github.com/PokeAPI/cries" target="_blank" rel="noopener">PokeAPI/cries</a> 原生音频归档。</li>
-      </ul>
+    <section class="file-block" id="legendary-mythical" aria-labelledby="legendary-mythical-heading">
+      <h2 id="legendary-mythical-heading">Legendary &amp; Mythical Pokémon</h2>
+      <p class="soft">Regional catalogue of Legendary and Mythical species across all nine generations, with canonical appearances across the mainline games and theatrical releases.</p>
+
+      <div style="display:flex; flex-direction:column; gap:1.25rem; margin-top:1rem;">
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Kanto (Generation I)</h3>
+          <p style="margin:0 0 0.4rem;">Kanto established the first legendary trio with the elemental winged mirages Articuno, Zapdos, and Moltres, roosting in remote wilderness across the region. Genetic research conducted on Faraway Island led Team Rocket scientists to clone Mew into the psychic powerhouse Mewtwo in the Cinnabar Island laboratory.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=144">Articuno · #144</a>, <a href="pokemon.html?id=145">Zapdos · #145</a>, <a href="pokemon.html?id=146">Moltres · #146</a>, <a href="pokemon.html?id=150">Mewtwo · #150</a>, <a href="pokemon.html?id=151">Mew · #151</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Red, Blue, Yellow, FireRed, LeafGreen, Let's Go, Pikachu! / Eevee!</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Mewtwo Strikes Back, The Power of One, Mewtwo Returns</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Johto (Generation II)</h3>
+          <p style="margin:0 0 0.4rem;">Johto folklore centers on the destruction of Ecruteak City's Brass Tower, where three unnamed Pokémon perished in the flames and were resurrected by Ho-Oh as the legendary beasts Raikou, Entei, and Suicune. Sky guardian Lugia nested in the Whirl Islands, while time-traveling guardian Celebi protects the ancient shrine deep inside Ilex Forest.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=243">Raikou · #243</a>, <a href="pokemon.html?id=244">Entei · #244</a>, <a href="pokemon.html?id=245">Suicune · #245</a>, <a href="pokemon.html?id=249">Lugia · #249</a>, <a href="pokemon.html?id=250">Ho-Oh · #250</a>, <a href="pokemon.html?id=251">Celebi · #251</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Gold, Silver, Crystal, HeartGold, SoulSilver</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> The Power of One, Spell of the Unown, Celebi: Voice of the Forest, Zoroark: Master of Illusions</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Hoenn (Generation III)</h3>
+          <p style="margin:0 0 0.4rem;">Hoenn's geography was shaped by primeval titan clashes between ancient ocean ruler Kyogre and landmass creator Groudon, kept in check by ozone layer sovereign Rayquaza. Sealed away in ancient stone ruins are the sealed titan trio Regirock, Regice, and Registeel, alongside roaming twin guardians Latias and Latios, wish-granting Jirachi, and extraterrestrial mutation Deoxys.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=377">Regirock · #377</a>, <a href="pokemon.html?id=378">Regice · #378</a>, <a href="pokemon.html?id=379">Registeel · #379</a>, <a href="pokemon.html?id=380">Latias · #380</a>, <a href="pokemon.html?id=381">Latios · #381</a>, <a href="pokemon.html?id=382">Kyogre · #382</a>, <a href="pokemon.html?id=383">Groudon · #383</a>, <a href="pokemon.html?id=384">Rayquaza · #384</a>, <a href="pokemon.html?id=385">Jirachi · #385</a>, <a href="pokemon.html?id=386">Deoxys · #386</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Ruby, Sapphire, Emerald, Omega Ruby, Alpha Sapphire</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Pokémon Heroes, Jirachi: Wish Maker, Destiny Deoxys</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Sinnoh &amp; Hisui (Generation IV &amp; Legends)</h3>
+          <p style="margin:0 0 0.4rem;">Sinnoh cosmology recounts the creation of the cosmos by the original deity Arceus at the Spear Pillar atop Mount Coronet. Arceus brought forth Dialga to rule time, Palkia to govern space, and banished Giratina to the Distortion World, while the lake guardians Uxie, Mesprit, and Azelf brought forth knowledge, emotion, and willpower.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=480">Uxie · #480</a>, <a href="pokemon.html?id=481">Mesprit · #481</a>, <a href="pokemon.html?id=482">Azelf · #482</a>, <a href="pokemon.html?id=483">Dialga · #483</a>, <a href="pokemon.html?id=484">Palkia · #484</a>, <a href="pokemon.html?id=485">Heatran · #485</a>, <a href="pokemon.html?id=486">Regigigas · #486</a>, <a href="pokemon.html?id=487">Giratina · #487</a>, <a href="pokemon.html?id=488">Cresselia · #488</a>, <a href="pokemon.html?id=489">Phione · #489</a>, <a href="pokemon.html?id=490">Manaphy · #490</a>, <a href="pokemon.html?id=491">Darkrai · #491</a>, <a href="pokemon.html?id=492">Shaymin · #492</a>, <a href="pokemon.html?id=493">Arceus · #493</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Diamond, Pearl, Platinum, Brilliant Diamond, Shining Pearl, Legends: Arceus</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> The Rise of Darkrai, Giratina and the Sky Warrior, Arceus and the Jewel of Life</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Unova (Generation V)</h3>
+          <p style="margin:0 0 0.4rem;">Unova history tells of an original dragon that split in two during a civil war between twin hero princes, dividing into Reshiram, dragon of truth, and Zekrom, dragon of ideals, with the frozen husk Kyurem remaining in the Giant Chasm. Defending the wild habitats are the Swords of Justice led by Cobalion, the Forces of Nature trio, and mythical guardians Victini, Meloetta, and Genesect.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=494">Victini · #494</a>, <a href="pokemon.html?id=638">Cobalion · #638</a>, <a href="pokemon.html?id=639">Terrakion · #639</a>, <a href="pokemon.html?id=640">Virizion · #640</a>, <a href="pokemon.html?id=641">Tornadus · #641</a>, <a href="pokemon.html?id=642">Thundurus · #642</a>, <a href="pokemon.html?id=643">Reshiram · #643</a>, <a href="pokemon.html?id=644">Zekrom · #644</a>, <a href="pokemon.html?id=645">Landorus · #645</a>, <a href="pokemon.html?id=646">Kyurem · #646</a>, <a href="pokemon.html?id=647">Keldeo · #647</a>, <a href="pokemon.html?id=648">Meloetta · #648</a>, <a href="pokemon.html?id=649">Genesect · #649</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Black, White, Black 2, White 2</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Victini and Reshiram / Zekrom, Kyurem vs. The Sword of Justice, Genesect and the Legend Awakened</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Kalos (Generation VI)</h3>
+          <p style="margin:0 0 0.4rem;">Kalos myth revolves around the cycle of life and destruction embodied by the life-giving stag Xerneas and the death cocoon Yveltal, both tied to the energy of an ancient ultimate weapon. Maintaining ecological equilibrium beneath the surface is order custodian Zygarde, accompanied by underground jewel ruler Diancie, dimension-hopping djinn Hoopa, and steam-driven Volcanion.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=716">Xerneas · #716</a>, <a href="pokemon.html?id=717">Yveltal · #717</a>, <a href="pokemon.html?id=718">Zygarde · #718</a>, <a href="pokemon.html?id=719">Diancie · #719</a>, <a href="pokemon.html?id=720">Hoopa · #720</a>, <a href="pokemon.html?id=721">Volcanion · #721</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> X, Y, Legends: Z-A</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Diancie and the Cocoon of Destruction, Hoopa and the Clash of Ages, Volcanion and the Mechanical Marvel</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Alola (Generation VII)</h3>
+          <p style="margin:0 0 0.4rem;">Alola's tropical islands are guarded by the four natural land spirits known as the Tapu. Planetary balance depends on Cosmog evolving into the radiant emissaries Solgaleo or Lunala to cross Ultra Wormholes, defending the world's light from the prism parasite Necrozma that once consumed Ultra Megalopolis.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=785">Tapu Koko · #785</a>, <a href="pokemon.html?id=786">Tapu Lele · #786</a>, <a href="pokemon.html?id=787">Tapu Bulu · #787</a>, <a href="pokemon.html?id=788">Tapu Fini · #788</a>, <a href="pokemon.html?id=789">Cosmog · #789</a>, <a href="pokemon.html?id=790">Cosmoem · #790</a>, <a href="pokemon.html?id=791">Solgaleo · #791</a>, <a href="pokemon.html?id=792">Lunala · #792</a>, <a href="pokemon.html?id=800">Necrozma · #800</a>, <a href="pokemon.html?id=801">Magearna · #801</a>, <a href="pokemon.html?id=802">Marshadow · #802</a>, <a href="pokemon.html?id=807">Zeraora · #807</a>, <a href="pokemon.html?id=808">Meltan · #808</a>, <a href="pokemon.html?id=809">Melmetal · #809</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Sun, Moon, Ultra Sun, Ultra Moon, Pokémon GO</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Sun &amp; Moon animated series, I Choose You!, The Power of Us</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Galar (Generation VIII)</h3>
+          <p style="margin:0 0 0.4rem;">Galar ancient history recounts the Darkest Day, an energy cataclysm brought on by alien poison titan Eternatus that was stopped by heroic warrior wolves Zacian and Zamazenta wielding legendary arms. The Crown Tundra preserves ancient king Calyrex and its loyal steed, along with elder elemental regis and master martial bear Urshifu.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=888">Zacian · #888</a>, <a href="pokemon.html?id=889">Zamazenta · #889</a>, <a href="pokemon.html?id=890">Eternatus · #890</a>, <a href="pokemon.html?id=891">Kubfu · #891</a>, <a href="pokemon.html?id=892">Urshifu · #892</a>, <a href="pokemon.html?id=893">Zarude · #893</a>, <a href="pokemon.html?id=894">Regieleki · #894</a>, <a href="pokemon.html?id=895">Regidrago · #895</a>, <a href="pokemon.html?id=896">Glastrier · #896</a>, <a href="pokemon.html?id=897">Spectrier · #897</a>, <a href="pokemon.html?id=898">Calyrex · #898</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Sword, Shield, The Isle of Armor, The Crown Tundra</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Pokémon: Twilight Wings, Journeys series, Secrets of the Jungle</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Paldea (Generation IX)</h3>
+          <p style="margin:0 0 0.4rem;">Paldea holds ancient Paradox beasts brought through a temporal rift in Area Zero, alongside winged apex reptiles Koraidon and Miraidon. Buried across the provinces are the four cursed Treasures of Ruin awakened by royal greed, with the crystal turtle Terapagos fueling the Terastal crystallization phenomenon and mythical puppeteer Pecharunt manipulating Kitakami.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=1001">Wo-Chien · #1001</a>, <a href="pokemon.html?id=1002">Chien-Pao · #1002</a>, <a href="pokemon.html?id=1003">Ting-Lu · #1003</a>, <a href="pokemon.html?id=1004">Chi-Yu · #1004</a>, <a href="pokemon.html?id=1007">Koraidon · #1007</a>, <a href="pokemon.html?id=1008">Miraidon · #1008</a>, <a href="pokemon.html?id=1014">Okidogi · #1014</a>, <a href="pokemon.html?id=1015">Munkidori · #1015</a>, <a href="pokemon.html?id=1016">Fezandipiti · #1016</a>, <a href="pokemon.html?id=1017">Ogerpon · #1017</a>, <a href="pokemon.html?id=1024">Terapagos · #1024</a>, <a href="pokemon.html?id=1025">Pecharunt · #1025</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Scarlet, Violet, The Teal Mask, The Indigo Disk</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Pokémon: Paldean Winds, Horizons series</p>
+        </article>
+      </div>
     </section>
 
-    <!-- 腰带在这台机器 -->
-    <section class="file-block">
-      <h2>腰带在这台机器</h2>
-      <p style="line-height:1.6;">你的六只腰带搭档只保存在当前这台设备的当前浏览器中。不会同步到其他设备，也不会因为换台机器而泄漏。它是你私人的一份野外记录。</p>
-    </section>
+    <div class="about-grid">
+      <!-- 左栏：游戏正作世界观与时空脉络 -->
+      <div class="about-col">
+        <section class="file-block" id="world-canon" aria-labelledby="world-heading">
+          <h2 id="world-heading">Game notes</h2>
+          <details>
+          <summary>Regions, timelines &amp; spacetime</summary>
+          <p style="margin-bottom:1rem; line-height:1.6; color:var(--ink-soft);">
+            Detailed regional geography, chronological sequences, and spacetime phenomena recorded across the main series.
+          </p>
 
-    <!-- 精灵球音效开关 -->
-    <section class="file-block" aria-labelledby="sound-heading">
-      <h2 id="sound-heading">Sound</h2>
-      <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. When on, a cry plays once as a file opens or when you press Draw one. Tapping a Pokémon always plays its cry.</p>
-      <button class="btn btn-paper" id="sound" type="button">Sound off</button>
-    </section>
+          <div style="border-top:1px solid var(--line); padding-top:1rem; margin-top:1rem;">
+            <h3 style="font-family:var(--font-ui); font-size:1.1rem; color:var(--ink); margin:0 0 0.5rem;">In-Universe Game Canon</h3>
+            <p style="font-size:0.875rem; color:var(--ink-soft); line-height:1.5; margin-bottom:0.75rem;">
+              Source: Core series dialogue, trainer histories, and official geography maps from Game Freak releases.
+            </p>
 
-    <!-- 快捷键指南 -->
-    <section class="file-block" aria-labelledby="keys-heading">
-      <h2 id="keys-heading">Keys</h2>
-      <table class="keys-table">
-        <tbody>
-          <tr><td><kbd>/</kbd></td><td>Focus search on Dex / Lineup</td></tr>
-          <tr><td><kbd>Esc</kbd></td><td>Close file or clear search</td></tr>
-          <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next number on Detail; Film on Dex</td></tr>
-          <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
-          <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
-        </tbody>
-      </table>
-    </section>
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Regions and Spatial Geography</h4>
+            <p style="line-height:1.6; margin-bottom:0.75rem;">
+              The first four regions (Kanto, Johto, Hoenn, and Sinnoh) sit in close geographic proximity, based on the real-world Japanese regions of Kanto, Kansai, Kyushu, and Hokkaido. Kanto and Johto share a contiguous land border connected by Route 27, Tohjo Falls, and the Magnet Train between Saffron City and Goldenrod City. Later titles moved to overseas territories: Unova is based on the New York metropolitan area, Kalos on northern France, Alola on Hawaii, Galar on the United Kingdom, and Paldea on the Iberian Peninsula. For regional borders, native dex slices, and field survey maps from Kanto #001 to Paldea #1025, see the <a href="regions.html">Regions</a> index.
+            </p>
+
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Main Series Event Cross-Referencing</h4>
+            <p style="line-height:1.6; margin-bottom:0.5rem;">
+              How different regional adventures correlate across the core continuity:
+            </p>
+            <ul style="margin-bottom:0.75rem;">
+              <li><strong>Kanto and Hoenn:</strong> Red disbands Team Rocket in Kanto at roughly the same time Brendan or May confronts Team Magma and Team Aqua across Hoenn.</li>
+              <li><strong>Johto and Sinnoh:</strong> Three years later, Red trains atop Mt. Silver during the Johto league challenge, while Lucas or Dawn resolves the space-time rift created by Team Galactic in Sinnoh.</li>
+              <li><strong>Unova through Paldea:</strong> Several years elapse before Black and White, followed two years later by Black 2 and White 2. Subsequent journeys across Kalos, Alola, Galar, and Paldea unfold chronologically forward in modern sequence.</li>
+            </ul>
+
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Anomalous Spacetime Phenomena</h4>
+            <p style="line-height:1.6; margin-bottom:0.5rem;">
+              The game universe features specific localized breaches in space and time:
+            </p>
+            <ul style="margin-bottom:0.75rem;">
+              <li><strong>Space-time rifts:</strong> Atmospheric tears over Mount Coronet in ancient Hisui, triggered by Giratina destabilizing the Temple of Sinnoh, which caused items and people from different centuries to fall through.</li>
+              <li><strong>The Distortion World:</strong> A parallel plane where Giratina was banished. Normal gravity, surface orientation, and the standard forward flow of time do not apply there.</li>
+              <li><strong>Ultra Wormholes:</strong> Interdimensional gateways in Alola opened by Solgaleo, Lunala, or Necrozma. These tunnels connect our world to extradimensional habitats such as Ultra Deep Sea and the ruined civilization of Ultra Megalopolis.</li>
+              <li><strong>Area Zero and Paradox Pokémon:</strong> The Great Crater of Paldea houses a functioning time machine built by Professor Sada or Professor Turo. The machine extracted ancient past or distant future Paradox specimens into the present day.</li>
+            </ul>
+          </div>
+          </details>
+        </section>
+      </div>
+
+      <!-- 右栏：现实发布演进、地区直达、系统设置与快捷键 -->
+      <div class="about-col">
+        <section class="file-block" id="franchise-history" aria-labelledby="history-heading">
+          <h2 id="history-heading">Release history</h2>
+          <details>
+          <summary>From Game Boy to Switch</summary>
+          <p style="line-height:1.6; color:var(--ink-soft); margin-bottom:0.75rem;">
+            The real-world development of the franchise spans thirty years of hardware changes:
+          </p>
+          <ul style="margin-bottom:0.75rem;">
+            <li><strong>1996:</strong> Game Freak and Nintendo released <em>Pocket Monsters Red and Green</em> for the Game Boy in Japan, directed by Satoshi Tajiri with artwork by Ken Sugimori. This established the initial 151 species indexed on this site.</li>
+            <li><strong>1998-1999:</strong> International localized releases as <em>Pokémon Red and Blue</em> established the global franchise.</li>
+            <li><strong>Hardware generations:</strong> The series transitioned across Game Boy Color (1999, Gen II), Game Boy Advance (2002, Gen III), Nintendo DS (2006, Gen IV), Nintendo 3DS (2013, Gen VI), and Nintendo Switch (2019, Gen VIII).</li>
+            <li><strong>Data compatibility:</strong> The 2002 release of <em>Ruby and Sapphire</em> rebuilt the core internal data structures for individual Pokémon (introducing 31-point Individual Values and personality values). Because of this unified structure, a Pokémon caught on a Game Boy Advance cartridge in 2002 can still be transferred upward through the DS, 3DS, and Pokémon Bank into Pokémon HOME on the Nintendo Switch today.</li>
+          </ul>
+          </details>
+        </section>
+
+        <section class="file-block" id="regions-shortcut" aria-labelledby="regions-shortcut-heading">
+          <h2 id="regions-shortcut-heading">Regional index</h2>
+          <p style="line-height:1.6; color:var(--ink-soft); margin-bottom:1rem;">
+            Maps and National Dex ranges, region by region.
+          </p>
+          <a href="regions.html" class="link-action timeline-map-btn">Open Regions Atlas →</a>
+        </section>
+
+        <!-- 精灵球音效开关 -->
+        <section class="file-block" aria-labelledby="sound-heading">
+          <h2 id="sound-heading">Sound</h2>
+          <p class="soft" style="margin-bottom: 1rem;">Off by default. Turn on cries when opening a file or drawing a Pokémon. Taps always play a cry.</p>
+          <button class="btn btn-paper" id="sound" type="button">Sound off</button>
+        </section>
+
+        <!-- 快捷键指南 -->
+        <section class="file-block" aria-labelledby="keys-heading">
+          <h2 id="keys-heading">Keys</h2>
+          <table class="keys-table">
+            <tbody>
+              <tr><td><kbd>/</kbd></td><td>Focus local search on Dex / Lineup; open global search elsewhere</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Close the Detail Poké Ball, then Detail; clear the Dex search or number buffer</td></tr>
+              <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next Pokémon in its region on Detail; Film on Dex</td></tr>
+              <tr><td><kbd>F</kbd></td><td>Copy the current Detail or Lineup link</td></tr>
+              <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
+              <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/pokeball.js"></script>
+  <script>
+    document.querySelectorAll("#legendary-mythical > div > article").forEach((article) => {
+      const roster = [...article.querySelectorAll("p")].find((p) => p.querySelector('a[href*="pokemon.html?id="]'));
+      if (!roster) return;
+      roster.classList.add("legendary-roster");
+      [...roster.childNodes].forEach((node) => {
+        if (node.nodeType !== Node.TEXT_NODE || !node.textContent.includes(",")) return;
+        const separator = document.createElement("span");
+        separator.className = "legendary-separator";
+        separator.textContent = node.textContent;
+        separator.setAttribute("aria-hidden", "true");
+        node.replaceWith(separator);
+      });
+      roster.querySelectorAll('a[href*="pokemon.html?id="]').forEach((link) => {
+        const id = link.getAttribute("href").match(/[?&]id=(\d+)/)?.[1];
+        if (!id) return;
+        const image = document.createElement("img");
+        image.src = `assets/thumbs/${id}.webp`;
+        image.alt = ""; image.width = 192; image.height = 192;
+        image.loading = "lazy"; image.decoding = "async";
+        link.classList.add("legendary-specimen");
+        link.prepend(image);
+      });
+    });
+  </script>
   <script>
     // file151.sound 开关控制逻辑
     const soundBtn = document.getElementById("sound");
@@ -1557,16 +4770,15 @@
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
 
-### 1.13 `quiz.html` (Booster Pack Lab / 实体卡包拆包实验室)
+### 1.15 `quiz.html` (Booster Pack Lab / 实体卡包拆包实验室)
 
 - **文件路径**: `quiz.html`  
-- **代码行数**: 221 行  
-- **文件大小**: 10,428 字节  
+- **代码行数**: 246 行  
+- **文件大小**: 12,317 字节  
 
 ```html
 <!DOCTYPE html>
@@ -1574,7 +4786,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pack Lab — 151 File</title>
+  <title>Quiz — 151 File</title>
   <meta name="description" content="Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.">
   <meta name="theme-color" content="#071422">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -1606,6 +4818,8 @@
         <a href="team.html">Belt</a>
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html" aria-current="page">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -1613,9 +4827,9 @@
 
   <main id="main" class="wrap pack-lab-wrap">
     <div style="margin-bottom:1.5rem;">
-      <h1 class="page-title">Booster Pack Lab</h1>
+      <h1 class="page-title">Quiz</h1>
       <p class="lead" style="color:var(--ink-soft); margin-bottom:1.25rem;">
-        Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.
+        <strong>Booster Pack Lab</strong> · Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.
       </p>
 
       <!-- 记分看板：采用全站统一结构与Oxanium等宽数字 -->
@@ -1647,12 +4861,12 @@
       </div>
 
       <!-- 快速预设按钮组：使用全站原生 .type-row 与 .chip 样式规范 -->
-      <div class="type-row" id="pack-featured-chips">
-        <button class="chip" data-set-id="me55" data-on>30th Celebration · 2026</button>
-        <button class="chip" data-set-id="sv3pt5">Pokémon 151 · 2023</button>
-        <button class="chip" data-set-id="base1">Base Set · 1999</button>
-        <button class="chip" data-set-id="sv8pt5">Prismatic Evolutions · 2025</button>
-        <button class="chip" data-set-id="swsh7">Evolving Skies · 2021</button>
+      <div class="type-row" id="pack-featured-chips" role="group" aria-label="Featured expansions">
+        <button class="chip" type="button" data-set-id="me55" data-on aria-pressed="true">30th Celebration · 2026</button>
+        <button class="chip" type="button" data-set-id="sv3pt5" aria-pressed="false">Pokémon 151 · 2023</button>
+        <button class="chip" type="button" data-set-id="base1" aria-pressed="false">Base Set · 1999</button>
+        <button class="chip" type="button" data-set-id="sv8pt5" aria-pressed="false">Prismatic Evolutions · 2025</button>
+        <button class="chip" type="button" data-set-id="swsh7" aria-pressed="false">Evolving Skies · 2021</button>
       </div>
 
       <!-- 全系列下拉框 -->
@@ -1738,27 +4952,29 @@
 
     <!-- 卡册抽屉（Binder Section，默认可折叠） -->
     <section class="pack-binder-section" id="pack-binder-section">
-      <div class="pack-binder-header" id="pack-binder-header">
+      <div class="pack-binder-header">
         <h2>
-          <span>Specimen Binder</span>
-          <span id="binder-count-badge" style="font-family:var(--font-num); font-size:0.75rem; background:var(--sky); color:var(--mark); padding:0.15rem 0.5rem; border-radius:2px; font-weight:700;">
-            0 Cards
-          </span>
+          <button class="pack-binder-header-toggle" id="pack-binder-header" type="button" aria-expanded="false" aria-controls="pack-binder-body">
+            <span>Specimen Binder</span>
+            <span id="binder-count-badge" style="font-family:var(--font-num); font-size:0.75rem; background:var(--sky); color:var(--mark); padding:0.15rem 0.5rem; border-radius:2px; font-weight:700;">
+              0 Cards
+            </span>
+            <span class="pack-binder-toggle-icon" aria-hidden="true">▼</span>
+          </button>
         </h2>
-        <span class="pack-binder-toggle-icon">▼</span>
       </div>
 
-      <div class="pack-binder-body">
-        <div class="pack-binder-filters">
+      <div class="pack-binder-body" id="pack-binder-body">
+        <div class="pack-binder-filters" role="group" aria-label="Filter binder cards by rarity">
           <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); font-weight:700; margin-right:0.25rem;">
             FILTER:
           </span>
-          <button class="chip" data-filter="all" data-on>All Cards</button>
-          <button class="chip" data-filter="sar">Special Illustration</button>
-          <button class="chip" data-filter="ultra">Ultra Rare / ex</button>
-          <button class="chip" data-filter="rare">Rare / Holo</button>
-          <button class="chip" data-filter="uncommon">Uncommon</button>
-          <button class="chip" data-filter="common">Common</button>
+          <button class="chip" type="button" data-filter="all" data-on aria-pressed="true">All Cards</button>
+          <button class="chip" type="button" data-filter="sar" aria-pressed="false">Special Illustration</button>
+          <button class="chip" type="button" data-filter="ultra" aria-pressed="false">Ultra Rare / ex</button>
+          <button class="chip" type="button" data-filter="rare" aria-pressed="false">Rare / Holo</button>
+          <button class="chip" type="button" data-filter="uncommon" aria-pressed="false">Uncommon</button>
+          <button class="chip" type="button" data-filter="common" aria-pressed="false">Common</button>
         </div>
 
         <div class="pack-binder-grid" id="pack-binder-grid">
@@ -1768,8 +4984,27 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <!-- 高清大卡预览 Modal -->
-  <div class="tcg-modal-backdrop" id="tcg-modal">
+  <div class="tcg-modal-backdrop" id="tcg-modal" role="dialog" aria-modal="true" aria-labelledby="tcg-modal-name" aria-describedby="tcg-modal-meta" aria-hidden="true" tabindex="-1" hidden style="display:none;">
     <div class="tcg-modal-card-wrap">
       <img id="tcg-modal-img" class="tcg-modal-card-img" src="" alt="High resolution card preview">
       <div class="tcg-modal-info">
@@ -1786,11 +5021,11 @@
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>
-
 ```
 
 ---
@@ -1800,7 +5035,7 @@
 ### 2.1 `css/tokens.css` (设计 Token & 变量)
 
 - **文件路径**: `css/tokens.css`  
-- **代码行数**: 48 行  
+- **代码行数**: 49 行  
 - **文件大小**: 1,926 字节  
 
 ```css
@@ -1852,7 +5087,6 @@
   --shadow-file: 0 10px 0 var(--line);
   --shadow-key:  0 4px 0 var(--line);
 }
-
 ```
 
 ---
@@ -1860,8 +5094,8 @@
 ### 2.2 `css/base.css` (全局排版与基础样式)
 
 - **文件路径**: `css/base.css`  
-- **代码行数**: 225 行  
-- **文件大小**: 5,259 字节  
+- **代码行数**: 252 行  
+- **文件大小**: 5,897 字节  
 
 ```css
 /* ==========================================================================
@@ -1949,6 +5183,7 @@ a:hover {
 
 .site-bar-brand {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 0.75rem;
   text-decoration: none;
@@ -1982,9 +5217,17 @@ a:hover {
   display: flex;
   gap: 1.25rem;
   font-size: 0.9375rem;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-block: var(--s-1);
 }
 
 .site-bar nav a {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 2.75rem;
   position: relative;
   text-decoration: none;
   color: var(--ink);
@@ -2001,6 +5244,15 @@ a:hover {
 }
 
 /* Accessibility Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .site-bar, .site-bar.is-over-content {
     background: var(--paper);
@@ -2022,6 +5274,14 @@ a:hover {
   .site-bar nav {
     gap: 0.75rem;
     font-size: 0.875rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .site-bar nav::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -2089,7 +5349,6 @@ main li a:not([class]),
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
-
 ```
 
 ---
@@ -2097,13 +5356,18 @@ main li a:not([class]),
 ### 2.3 `css/buttons.css` (按钮与交互控件规范)
 
 - **文件路径**: `css/buttons.css`  
-- **代码行数**: 118 行  
-- **文件大小**: 2,446 字节  
+- **代码行数**: 247 行  
+- **文件大小**: 5,736 字节  
 
 ```css
 /* ==========================================================================
    151 FILE — Buttons & Controls (Night Archive)
    ========================================================================== */
+
+:root {
+  --btn-primary-hover: #B9DDF0;
+  --btn-mark-hover: #FFE066;
+}
 
 /* 基础装置按钮规范：只切右下角 (4px 4px 14px 4px) */
 .btn {
@@ -2145,7 +5409,7 @@ main li a:not([class]),
 }
 
 .btn-primary:hover {
-  background: #B9DDF0;
+  background: var(--btn-primary-hover);
 }
 
 .btn-primary:active {
@@ -2171,7 +5435,7 @@ main li a:not([class]),
 
 .btn-paper:hover {
   border-color: var(--blue);
-  color: var(--blue);
+  color: var(--ink);
 }
 
 .btn-paper:active {
@@ -2187,7 +5451,7 @@ main li a:not([class]),
 }
 
 .btn-mark:hover {
-  background: #FFE066;
+  background: var(--btn-mark-hover);
 }
 
 /* 尺寸变体 */
@@ -2220,6 +5484,128 @@ main li a:not([class]),
   color: var(--ink);
 }
 
+/* Detail viewer: keep modes, camera/actions and animation rows aligned. */
+#stage-controls {
+  width: min(100%, 24rem);
+  gap: var(--s-3) var(--s-2);
+  margin-top: var(--s-4);
+  align-items: flex-start;
+}
+
+#stage-controls .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 2.75rem;
+  padding-inline: var(--s-2);
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+#stage-controls > .btn-mode {
+  flex-basis: calc((100% - var(--s-4)) / 3);
+}
+
+#stage-controls .btn-mode.is-active,
+#stage-controls #btn-rotate[aria-pressed="true"] {
+  background: var(--navy-key);
+  color: var(--navy-key-ink);
+  border-color: var(--navy-key);
+}
+
+#stage-controls :is(#stage-camera-controls, #stage-base-actions) {
+  gap: var(--s-2) !important;
+  border-left: 0 !important;
+  padding-left: 0 !important;
+  min-width: 0;
+}
+
+#stage-controls :is(#stage-camera-controls, #stage-base-actions) .btn {
+  padding-inline: var(--s-1);
+  white-space: nowrap;
+}
+
+#stage-camera-controls { flex: 3 1 13rem; flex-wrap: nowrap !important; }
+#stage-base-actions { flex: 2 1 8rem; }
+#stage-feedback { flex-basis: 100%; text-align: center; }
+#stage-feedback:empty { display: none; }
+
+#stage-actions {
+  gap: var(--s-2) !important;
+  padding-top: var(--s-3) !important;
+}
+
+/* Keep the visibility state set by the existing 2D/3D controls. */
+#stage-actions:not([style*="display: none"]):not([style*="display:none"]) {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#stage-actions > span { grid-column: 1 / -1; text-align: left; }
+
+#stage-controls .btn:disabled {
+  background: var(--line);
+  border-color: var(--line);
+  color: var(--ink-soft);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
+@media (pointer: coarse) {
+  #stage-controls .btn { height: var(--s-12); }
+}
+
+@media (max-width: 24rem) {
+  .detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="] {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    color: var(--ink-soft);
+  }
+
+  .detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]:is(:hover, :focus-visible) {
+    background: var(--line);
+    color: var(--ink);
+  }
+}
+
+/* ponytail: reuse the native return link; draw the close mark as decoration. */
+body:has(.detail) .detail .fields {
+  position: relative;
+  padding-block-start: 4rem;
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="] {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  z-index: 1;
+  width: 2.75rem;
+  min-width: 44px;
+  height: 2.75rem;
+  min-height: 44px;
+  padding: 0;
+  font-size: 0;
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::before,
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 1rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
 ```
 
 ---
@@ -2227,8 +5613,8 @@ main li a:not([class]),
 ### 2.4 `css/pokeball.css` (开闭精灵球组件动画)
 
 - **文件路径**: `css/pokeball.css`  
-- **代码行数**: 237 行  
-- **文件大小**: 4,729 字节  
+- **代码行数**: 240 行  
+- **文件大小**: 4,779 字节  
 
 ```css
 /* ==========================================================================
@@ -2447,11 +5833,13 @@ main li a:not([class]),
 }
 
 .stage-ball.is-open .lid-t {
-  transform: translateY(-58%);
+  transform: translateY(-100%);
+  pointer-events: none;
 }
 
 .stage-ball.is-open .lid-b {
-  transform: translateY(58%);
+  transform: translateY(100%);
+  pointer-events: none;
 }
 
 .stage-ball.is-open .lid-band,
@@ -2468,7 +5856,6 @@ main li a:not([class]),
   }
 }
 
-
 ```
 
 ---
@@ -2476,8 +5863,8 @@ main li a:not([class]),
 ### 2.5 `css/pages.css` (各页面专用布局与响应式样式)
 
 - **文件路径**: `css/pages.css`  
-- **代码行数**: 3,231 行  
-- **文件大小**: 65,954 字节  
+- **代码行数**: 4,206 行  
+- **文件大小**: 85,847 字节  
 
 ```css
 /* ==========================================================================
@@ -2494,8 +5881,118 @@ main li a:not([class]),
   grid-template-columns: 1fr auto;
   gap: var(--s-8);
   align-items: center;
-  padding-top: var(--s-6);
+  padding-top: var(--s-4);
   width: 100%;
+}
+
+.home-page {
+  padding-bottom: var(--s-6);
+}
+
+body:has(> .site-bar + .wrap > .site-footer),
+body:has(> .site-bar + .wrap + .site-footer) {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+body:has(> .site-bar + .wrap > .site-footer) > .wrap:has(> .site-footer) {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+body:has(> .site-bar + .wrap + .site-footer) > .wrap {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding-bottom: var(--s-10);
+}
+
+.home-footer,
+.site-footer {
+  margin-top: auto;
+  padding: var(--s-8) max(var(--s-8), env(safe-area-inset-right)) var(--s-8) max(var(--s-12), env(safe-area-inset-left));
+  border-top: 1px solid var(--line);
+  background: var(--sky-deep);
+  color: var(--ink-soft);
+  font: 400 0.875rem/1.5 var(--font-ui);
+}
+
+@media (max-width: 48rem) {
+  .home-footer,
+  .site-footer {
+    padding-left: max(var(--s-4), env(safe-area-inset-left));
+    padding-right: max(var(--s-4), env(safe-area-inset-right));
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-6);
+  }
+}
+
+.site-footer-range {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 var(--s-3);
+}
+.site-footer-range > span {
+  padding-right: var(--s-2);
+  color: var(--ink);
+  font: 700 0.8125rem/1.5 var(--font-num);
+}
+
+.site-footer-top {
+  display: block;
+}
+
+.site-footer-brand {
+  color: var(--ink);
+  font: 700 1rem/1.25 var(--font-num);
+  letter-spacing: 0.04em;
+}
+.site-footer-intro {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.site-footer p {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 0.875rem;
+}
+.site-footer .site-footer-lead {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.site-footer-seal {
+  display: none;
+}
+
+.site-footer-bottom {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--s-2) var(--s-6);
+  margin-top: var(--s-3);
+}
+
+.site-footer-bottom a {
+  display: inline-flex; align-items: center; min-height: 2.75rem; min-width: 2.75rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.site-footer-bottom p {
+  max-width: 58ch;
+  font-size: 0.8125rem;
+  text-align: right;
+}
+@media (max-width: 48rem) {
+  .site-footer { padding: var(--s-5) 0; }
+  .site-footer-intro { gap: var(--s-2); }
+  .site-footer-bottom p { text-align: left; }
 }
 
 .hero > div {
@@ -2556,7 +6053,8 @@ main li a:not([class]),
    Specimens Strip / 首页标本档案条 (5 只代表：御三家 + 皮卡丘 + 拉普拉斯)
    ========================================================================== */
 .specimens-section {
-  margin-top: var(--s-8);
+  margin-top: var(--s-6);
+  margin-bottom: var(--s-10);
   width: 100%;
 }
 
@@ -2953,25 +6451,20 @@ main li a:not([class]),
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
-/* 宽屏把顶栏 + 本页锁进视口：名录和胶片在内部滚，页面本身不滚 */
+/* 宽屏：Dex 是单屏工作台；名录自己滚动，页面和台座不滚动。 */
 @media (min-width: 45.01rem) {
-  body:has(.dex-page) {
-    height: 100dvh;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  body:has(.dex-page) .site-bar,
-  body:has(.dex-page) .tools {
-    flex: none;
-  }
   body:has(.dex-page) .wrap.dex-page {
-    flex: 1 1 auto;
+    /* 视口高 − 顶栏(3.5rem + 2px border) */
+    height: calc(100dvh - 3.5rem - 2px - env(safe-area-inset-top, 0px));
     min-height: 0;
+    flex: none;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-bottom: 0;
+  }
+  body:has(.dex-page) > .site-footer {
+    display: none;
   }
   body:has(.dex-page) .dex,
   body:has(.dex-page) .dex-grid {
@@ -2981,6 +6474,10 @@ main li a:not([class]),
   }
   body:has(.dex-page) .dex-grid {
     overflow: auto;
+  }
+  body:has(.dex-page) .stage {
+    overflow: visible;
+    transform: translateY(-2.5rem);
   }
 }
 
@@ -3092,6 +6589,30 @@ main li a:not([class]),
   grid-row: 1 / 3;
   min-height: 0;
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.spines::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.spines::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.spines::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.spines::-webkit-scrollbar-thumb:hover {
+  background: var(--navy);
+}
+
+.spines::-webkit-scrollbar-button {
+  display: none;
 }
 
 .spines button {
@@ -3214,10 +6735,15 @@ main li a:not([class]),
   justify-items: center;
   align-content: start;
   text-align: center;
-  padding: 0.35rem 1rem 0.25rem;
+  row-gap: 0.2rem;
+  padding: 0.5rem 1rem;
   position: relative;
   min-height: 0;
   overflow: auto;
+}
+
+.stage > p:not(.name) {
+  margin: 0;
 }
 
 .stage .stage-img-box {
@@ -3244,7 +6770,7 @@ main li a:not([class]),
 .stage .name {
   font-weight: 700;
   font-size: 1.25rem;
-  margin: 0.4rem 0;
+  margin: 0.2rem 0;
 }
 
 .type {
@@ -3266,6 +6792,10 @@ main li a:not([class]),
   justify-content: center;
 }
 
+.stage .actions {
+  margin-top: 0.4rem;
+}
+
 .film {
   grid-column: 2 / 4;
   display: flex;
@@ -3273,6 +6803,56 @@ main li a:not([class]),
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding: 0.15rem 0 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.ledger::-webkit-scrollbar,
+.stage::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.ledger::-webkit-scrollbar-track,
+.stage::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ledger::-webkit-scrollbar-thumb,
+.stage::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.ledger::-webkit-scrollbar-thumb:hover,
+.stage::-webkit-scrollbar-thumb:hover {
+  background: var(--navy);
+}
+
+.ledger::-webkit-scrollbar-button,
+.stage::-webkit-scrollbar-button {
+  display: none;
+}
+
+.film::-webkit-scrollbar {
+  height: 0.5rem;
+}
+
+.film::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.film::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 2px;
+}
+
+.film::-webkit-scrollbar-thumb:hover {
+  background: var(--navy);
+}
+
+.film::-webkit-scrollbar-button {
+  display: none;
 }
 
 .film button {
@@ -3312,6 +6892,30 @@ main li a:not([class]),
 .empty {
   color: var(--ink-soft);
   padding: 1rem;
+}
+
+@media (min-width: 45.01rem) and (max-height: 48rem) {
+  .stage {
+    padding: 0.15rem 0.5rem 0;
+  }
+  .stage .stage-img-box {
+    width: min(13rem, 70%);
+  }
+  .stage img {
+    max-height: min(10rem, 20vh);
+  }
+  .stage > p {
+    margin-block: 0;
+  }
+  .stage .name {
+    margin-block: 0.15rem;
+  }
+  .stage .stage-meta > p {
+    margin-block: 0;
+  }
+  .stage .actions {
+    margin-top: 0.25rem;
+  }
 }
 
 @media (max-width: 45rem) {
@@ -3496,6 +7100,7 @@ main li a:not([class]),
 
 .board {
   overflow: auto;
+  max-height: 70dvh;
   background: var(--paper);
   box-shadow: 0 0.625rem 0 var(--line);
   border: 1px solid var(--line);
@@ -3505,19 +7110,20 @@ main li a:not([class]),
 }
 
 .types-table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-family: var(--font-num);
   font-weight: 700;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   line-height: 1;
   margin: 0 auto;
 }
 
 .types-table th,
 .types-table td {
-  width: 2.15rem;
-  height: 2.15rem;
-  min-width: 2.15rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
   text-align: center;
   border: 1px solid var(--line);
   padding: 0;
@@ -3530,10 +7136,11 @@ main li a:not([class]),
   background: var(--sky-deep);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
 }
 
-.types-table td a {
+.types-table td a,
+.types-table th a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3549,8 +7156,8 @@ main li a:not([class]),
 }
 
 .types-table td.x2 {
-  background: #3D7DCA;
-  color: #ffffff;
+  background: var(--navy);
+  color: var(--navy-key-ink);
 }
 
 .types-table td.xh {
@@ -3660,6 +7267,14 @@ main li a:not([class]),
   line-height: 1.2;
   margin: 1.5rem 0 0.5rem;
   color: var(--ink);
+}
+
+.lineup-note {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: -0.15rem 0 0.75rem;
+  max-width: 48rem;
 }
 
 .lineup-pair {
@@ -4025,6 +7640,10 @@ main li a:not([class]),
   max-width: 84rem;
 }
 
+body:has(.detail) .wrap.wide {
+  padding-bottom: var(--s-6);
+}
+
 .detail {
   display: grid;
   grid-template-columns: minmax(18rem, 24rem) 1fr;
@@ -4060,6 +7679,78 @@ main li a:not([class]),
   max-height: 320px;
   object-fit: contain;
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+}
+
+/* 3D Interactive Stage & Controls */
+.stage-viewer-wrap {
+  position: relative;
+  width: min(22rem, 85vw);
+  height: min(22rem, 85vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.stage-viewer-wrap model-viewer {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  --poster-color: transparent;
+  cursor: grab;
+  filter: saturate(1.8) contrast(1.05) drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5));
+}
+
+.stage-viewer-wrap model-viewer:active {
+  cursor: grabbing;
+}
+
+.stage-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stage-controls .btn-mode.is-active {
+  background: var(--blue, #246BCE);
+  color: #fff;
+  border-color: var(--blue, #246BCE);
+}
+
+.stage-burst-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.heart-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mark, #EE1515);
+  box-shadow: 0 0 8px rgba(238, 21, 21, 0.7);
+  animation: floatHeart 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes floatHeart {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.6) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3) translateY(-40px) rotate(-10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1) translateY(-80px) rotate(15deg);
+  }
 }
 
 .fields {
@@ -4266,6 +7957,52 @@ main li a:not([class]),
   font: 700 0.8125rem var(--font-num);
   color: var(--ink);
 }
+
+/* 矮桌面视口：收紧留白，避免详情内容被挤出屏幕 */
+@media (min-width: 54.01rem) and (max-height: 44rem) {
+  body:has(.detail) .wrap.wide {
+    padding-top: var(--s-2);
+    padding-bottom: var(--s-1);
+  }
+
+  body:has(.detail) .detail {
+    grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
+    gap: var(--s-4);
+    margin-top: 0;
+  }
+
+  .detail .fields {
+    padding: var(--s-2) var(--s-4);
+  }
+
+  .detail .fields-top {
+    padding-bottom: 0;
+  }
+
+  .detail .fields-grid {
+    grid-template-columns: 1.15fr 1fr;
+    gap: var(--s-4);
+    padding: 0;
+  }
+
+  .detail .fields-bottom {
+    padding-top: var(--s-1);
+  }
+
+  .detail .detail-actions {
+    gap: var(--s-2);
+    padding-top: 0;
+  }
+
+  .detail .detail-actions .btn {
+    padding-inline: var(--s-3);
+  }
+
+  .detail .stat {
+    margin: 0;
+  }
+}
+
 .stat > span:last-child { text-align: right; }
 .stat .bar {
   height: 8px;
@@ -4573,6 +8310,492 @@ main li a:not([class]),
   border-color: var(--blue);
 }
 
+.move-status {
+  min-height: 1.2em;
+  margin: 0 0 0.65rem;
+  color: var(--ink-soft);
+  font: 500 0.75rem/1.2 var(--font-num);
+  text-align: right;
+}
+
+.moves-page .moves-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: 0.75rem;
+  min-height: 0;
+  padding-bottom: 2rem;
+}
+
+.moves-page .move-card {
+  min-height: 14rem;
+  padding: 0;
+  align-items: stretch;
+  overflow: hidden;
+  text-align: left;
+}
+
+.move-visual {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  height: 5.25rem;
+  overflow: hidden;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+}
+
+.move-visual::before,
+.move-visual::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.move-visual::before {
+  width: 4.5rem;
+  aspect-ratio: 1;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: none;
+}
+
+.move-visual::after {
+  inset: 0;
+  background: repeating-linear-gradient(135deg, transparent 0 14px, currentColor 14px 15px);
+  opacity: 0.1;
+}
+
+.move-visual-emblem {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--paper) 30%, transparent);
+  animation: none;
+}
+
+.move-visual-emblem svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.move-visual-label {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.4rem;
+  z-index: 1;
+  font: 700 0.6rem/1 var(--font-num);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.move-card-body {
+  display: grid;
+  flex: 1;
+  gap: 0.7rem;
+  padding: 0.65rem;
+}
+
+.move-card-heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.move-name {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font: 700 0.95rem/1.15 var(--font-ui);
+  text-transform: capitalize;
+  overflow-wrap: anywhere;
+}
+
+.move-type {
+  flex: none;
+  min-height: 1.5rem;
+  height: auto;
+  padding-inline: 0.45rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.move-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.45rem;
+}
+
+.move-meter-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem;
+  color: var(--ink-soft);
+  font: 600 0.62rem/1 var(--font-num);
+}
+
+.move-meter-label strong {
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.move-meter-track {
+  height: 0.25rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--sky);
+}
+
+.move-meter-track span {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+}
+
+.move-details {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+}
+
+.move-details summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.65rem;
+  color: var(--ink-soft);
+  font: 600 0.7rem/1 var(--font-num);
+  cursor: pointer;
+  list-style: none;
+}
+
+.move-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.move-details summary::after {
+  margin-left: auto;
+  color: var(--blue);
+  content: "+";
+  font-size: 1rem;
+}
+
+.move-details[open] summary::after {
+  content: "−";
+}
+
+.move-details p {
+  margin: 0;
+  padding: 0 0.65rem 0.65rem;
+  color: var(--ink-soft);
+  font: 400 0.75rem/1.4 var(--font-ui);
+}
+
+.move-pagination {
+  margin-top: var(--s-6);
+  margin-bottom: var(--s-10);
+  text-align: center;
+}
+
+.move-pagination-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.move-pagination-inner span {
+  color: var(--ink-soft);
+  font: 500 0.75rem/1 var(--font-num);
+}
+
+@keyframes move-float {
+  to { transform: translateY(-3px); }
+}
+
+@keyframes move-ring {
+  to { transform: scale(1.12); opacity: 0.12; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .move-visual::before,
+  .move-visual-emblem {
+    animation: none;
+  }
+}
+
+#ability-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.75rem;
+  min-height: 0;
+  padding-bottom: 2rem;
+}
+
+#ability-grid .ability-card {
+  min-height: 15.75rem;
+  padding: 0;
+  align-items: stretch;
+  overflow: hidden;
+  text-align: left;
+}
+
+.ability-visual {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  height: 5rem;
+  overflow: hidden;
+  color: var(--navy);
+  background: linear-gradient(115deg, var(--sky-deep), var(--paper));
+  border-bottom: 1px solid var(--line);
+}
+
+.ability-visual::before,
+.ability-visual::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.ability-visual::before {
+  width: 4.25rem;
+  aspect-ratio: 1;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.45;
+  animation: none;
+}
+
+.ability-visual::after {
+  inset: 0;
+  background: repeating-linear-gradient(135deg, transparent 0 14px, currentColor 14px 15px);
+  opacity: 0.1;
+}
+
+.ability-visual-pokemon {
+  z-index: 1;
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 0 var(--sky));
+  animation: none;
+}
+
+.ability-visual-placeholder {
+  z-index: 1;
+  color: var(--ink);
+  font: 700 2.5rem/1 var(--font-num);
+}
+
+.ability-visual-label {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.4rem;
+  z-index: 1;
+  color: var(--ink-soft);
+  font: 700 0.6rem/1 var(--font-num);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ability-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.65rem;
+}
+
+.ability-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ability-count {
+  color: var(--ink-soft);
+  font: 500 0.7rem/1 var(--font-num);
+}
+
+.ability-name {
+  margin: 0;
+  color: var(--ink);
+  font: 700 1rem/1.15 var(--font-ui);
+  text-transform: capitalize;
+  overflow-wrap: anywhere;
+}
+
+.ability-effect {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font: 400 0.76rem/1.4 var(--font-ui);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.ability-full-effect {
+  margin-top: -0.2rem;
+}
+
+.ability-full-effect summary,
+.ability-more-specimens summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--navy);
+  font: 600 0.68rem/1.25 var(--font-num);
+  cursor: pointer;
+  list-style: none;
+}
+
+.ability-full-effect summary::-webkit-details-marker,
+.ability-more-specimens summary::-webkit-details-marker {
+  display: none;
+}
+
+.ability-full-effect summary::before,
+.ability-more-specimens summary::before {
+  content: "+";
+  color: var(--mark);
+  font-size: 0.9rem;
+}
+
+.ability-full-effect[open] summary::before,
+.ability-more-specimens[open] summary::before {
+  content: "−";
+}
+
+.ability-full-effect p {
+  margin: 0.3rem 0 0;
+  color: var(--ink-soft);
+  font: 400 0.74rem/1.4 var(--font-ui);
+}
+
+.ability-roster {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.ability-roster-heading {
+  margin: 0 0 0.35rem;
+  color: var(--ink);
+  font: 700 0.65rem/1 var(--font-num);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ability-specimen-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.ability-specimen-chip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  overflow: hidden;
+  padding: 0.17rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-chip);
+  color: var(--ink-soft);
+  background: var(--sky-deep);
+  font: 500 0.68rem/1.25 var(--font-ui);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.ability-specimen-chip:hover {
+  border-color: var(--mark);
+  color: var(--ink);
+}
+
+.ability-specimen-chip:focus-visible,
+.ability-full-effect summary:focus-visible,
+.ability-more-specimens summary:focus-visible {
+  outline: 2px solid var(--mark);
+  outline-offset: 2px;
+}
+
+.ability-no-specimens {
+  color: var(--ink-soft);
+  font: 400 0.72rem/1.3 var(--font-ui);
+}
+
+.ability-more-specimens {
+  margin-top: 0.4rem;
+}
+
+.ability-specimen-list-extra {
+  padding-top: 0.4rem;
+}
+
+.ability-pagination-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ability-pagination-inner span {
+  color: var(--ink-soft);
+  font: 500 0.75rem/1 var(--font-num);
+}
+
+@keyframes ability-float {
+  to { transform: translateY(-3px); }
+}
+
+@keyframes ability-ring {
+  to { transform: scale(1.12); opacity: 0.12; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ability-visual::before,
+  .ability-visual-pokemon {
+    animation: none;
+  }
+}
+
+@media (max-width: 76rem) {
+  #ability-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (max-width: 64rem) {
+  #ability-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 48rem) {
+  #ability-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 36rem) {
+  #ability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 30rem) {
+  #ability-grid { grid-template-columns: 1fr; }
+}
+
 .lineup-pair {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -4666,8 +8889,8 @@ main li a:not([class]),
 .search-panel {
   background: var(--paper);
   border: 1px solid var(--line);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--navy);
-  border-radius: 6px;
+  box-shadow: var(--shadow-file);
+  border-radius: var(--r-file);
   width: 100%;
   max-width: 36rem;
   overflow: hidden;
@@ -4686,6 +8909,7 @@ main li a:not([class]),
 
 .search-panel-header input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   color: var(--ink);
@@ -4706,6 +8930,8 @@ main li a:not([class]),
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   border-radius: 3px;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 }
 .search-close-btn:hover {
   color: var(--ink);
@@ -4980,18 +9206,18 @@ main li a:not([class]),
 .field-map-stage {
   position: relative;
   width: 100%;
-  border-radius: 6px;
+  border-radius: var(--r-file);
   overflow: hidden;
   background: var(--sky-deep);
   border: 1px solid var(--line);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-file);
 }
 
 .field-map-img {
   width: 100%;
   height: auto;
-  max-height: 580px;
-  object-fit: cover;
+  max-height: none;
+  object-fit: contain;
   display: block;
   user-select: none;
   -webkit-user-drag: none;
@@ -5010,8 +9236,8 @@ main li a:not([class]),
   transform: translate(-50%, -50%);
   pointer-events: auto;
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5049,7 +9275,7 @@ main li a:not([class]),
   transform: translateX(-50%);
   white-space: nowrap;
   font-family: var(--font-num);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--ink);
   background: rgba(7, 20, 34, 0.85);
@@ -5068,11 +9294,13 @@ main li a:not([class]),
   z-index: 50;
   background: var(--paper);
   border: 1px solid var(--line);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--shadow-file);
   border-radius: var(--r-file);
   padding: 1.15rem 1.25rem;
   width: 290px;
   max-width: 90vw;
+  max-height: calc(100% - 1rem);
+  overflow-y: auto;
   animation: fadeIn 120ms ease;
 }
 
@@ -5085,6 +9313,8 @@ main li a:not([class]),
   padding: 0.1rem 0.3rem;
   line-height: 1;
   border-radius: 2px;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 }
 .recon-close-btn:hover {
   color: var(--ink);
@@ -5210,6 +9440,8 @@ main li a:not([class]),
   align-items: center;
   gap: 0.75rem;
   flex: 1 1 20rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .pack-select-group label {
@@ -5224,6 +9456,9 @@ main li a:not([class]),
 
 .pack-set-select {
   flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   height: 2.5rem;
   background: var(--sky-deep);
   color: var(--ink);
@@ -5365,8 +9600,11 @@ main li a:not([class]),
 
 /* Tearing animation state */
 .pack-foil-wrapper.is-tearing {
-  animation: packTearPhysical 0.5s forwards ease-in-out;
   pointer-events: none;
+}
+
+.pack-foil-wrapper.is-tearing:not(.is-gsap-tearing) {
+  animation: packTearPhysical 0.5s forwards ease-in-out;
 }
 
 @keyframes packTearPhysical {
@@ -5493,6 +9731,15 @@ main li a:not([class]),
   display: block;
 }
 
+.tcg-card-hit-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 34%, rgba(255, 255, 255, 0.78) 50%, transparent 66%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
 /* Hit Borders for High Rarity (Crisp physical tokens, no blurry neon) */
 .tcg-card-item.hit-glow-gold .tcg-card-front {
   border: 2px solid var(--mark);
@@ -5501,6 +9748,18 @@ main li a:not([class]),
 .tcg-card-item.hit-glow-rainbow .tcg-card-front {
   border: 2px solid var(--mark);
   box-shadow: 0 4px 0 var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack-foil-wrapper,
+  .tcg-card-inner {
+    transition-duration: 0.16s;
+  }
+
+  .pack-foil-wrapper.is-tearing:not(.is-gsap-tearing) {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* Specimen Badge on card corner */
@@ -5712,6 +9971,107 @@ main li a:not([class]),
   margin: 0;
 }
 
+/* UI review repairs: keep keyboard, labels and narrow layouts usable. */
+.tools-bar input:focus-visible,
+.tools-bar select:focus-visible,
+.lineup-pane input:focus-visible,
+.search-panel-header input:focus-visible,
+.map-pin:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.tool-field,
+.search-field {
+  display: grid;
+  gap: var(--s-1);
+  min-width: 0;
+}
+.tool-field > span,
+.search-input-label {
+  color: var(--ink-soft);
+  font: 400 0.75rem/1.4 var(--font-ui);
+}
+.search-field { flex: 1; }
+.search-panel { max-height: 80dvh; }
+.search-overlay { overflow-y: auto; }
+.search-item { width: 100%; text-decoration: none; }
+.search-item:focus-visible { outline-offset: -3px; }
+.type-row button.chip,
+.pack-binder-filters button.chip,
+.pack-set-select { min-height: 2.75rem; }
+
+.types-table thead th,
+.types-table thead th.hi {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.types-table tbody th,
+.types-table tbody tr.hi th {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.types-table thead th:first-child { left: 0; z-index: 3; }
+.types-table a:focus-visible { outline-offset: -3px; }
+.types-legend > span:first-child .dot { background: var(--navy) !important; }
+
+#ability-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+}
+
+.map-landmark-list { display: none; }
+.map-landmark-button {
+  appearance: none;
+  min-height: 2.75rem;
+  width: 100%;
+  padding: var(--s-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-file);
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 0.875rem/1.4 var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+.map-landmark-button[aria-expanded="true"] { border-color: var(--mark); }
+.recon-popover.is-below-map {
+  position: relative;
+  inset: auto !important;
+  width: 100%;
+  max-width: 100%;
+  max-height: none;
+  margin-top: var(--s-4);
+}
+
+.region-card,
+.tcg-card-item,
+.binder-thumb-item,
+.pack-binder-header-toggle {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+.tcg-card-item { padding: 0; border: 0; background: transparent; }
+.tcg-card-inner { display: block; }
+.binder-thumb-item { padding: 0; }
+.pack-binder-header h2 { width: 100%; }
+.pack-binder-header-toggle { display: flex; align-items: center; gap: var(--s-2); width: 100%; min-height: 2.75rem; padding: 0; border: 0; background: transparent; font-weight: 700; cursor: pointer; }
+.pack-binder-toggle-icon { margin-left: auto; }
+.binder-thumb-item:focus-visible { outline-offset: -3px; }
+
+@media (max-width: 48rem) {
+  .pins-layer { display: none; }
+  .map-landmark-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); margin-top: var(--s-4); }
+  .pack-select-group { flex-direction: column; align-items: stretch; }
+  .tool-field { flex: 1 1 100%; }
+  .tool-field input, .tool-field select { width: 100%; min-width: 0; }
+  .pack-lab-wrap .quiz-score-card { min-width: 0; padding: var(--s-3) var(--s-2); }
+  .pack-lab-wrap .quiz-score-card small { display: block; overflow-wrap: anywhere; font-size: 0.75rem; line-height: 1.4; }
+  .pack-binder-header-toggle { flex-wrap: wrap; }
+}
 ```
 
 ---
@@ -5721,8 +10081,8 @@ main li a:not([class]),
 ### 3.1 `js/api.js` (PokeAPI 异步请求与缓存)
 
 - **文件路径**: `js/api.js`  
-- **代码行数**: 441 行  
-- **文件大小**: 14,873 字节  
+- **代码行数**: 526 行  
+- **文件大小**: 18,108 字节  
 
 ```javascript
 /**
@@ -5738,7 +10098,7 @@ main li a:not([class]),
   const API_BASE = "https://pokeapi.co/api/v2";
 
   // localStorage 缓存版本。以后详情数据加字段时把 v2 改成 v3，旧缓存自动作废。
-  const CACHE_PREFIX = "file151.v2.";
+  const CACHE_PREFIX = "file151.v3.";
 
   // 一次性清掉没有版本号的旧缓存
   try {
@@ -5753,6 +10113,9 @@ main li a:not([class]),
   const speciesMemoryCache = new Map();
   const abilityMemoryCache = new Map();
   const evoMemoryCache = new Map();
+  const evoTreeMemoryCache = new Map();
+  const moveMemoryCache = new Map();
+  const fullAbilityMemoryCache = new Map();
 
   /**
    * 把名字或编号统一成 PokeAPI 能识别的 key。
@@ -5768,6 +10131,11 @@ main li a:not([class]),
       if (hit) return String(hit.id);
     }
     return raw;
+  }
+
+  function refId(ref) {
+    const match = String(ref?.url || "").match(/\/(\d+)\/?$/);
+    return match ? Number(match[1]) : null;
   }
 
   const api = {
@@ -5917,6 +10285,11 @@ main li a:not([class]),
         const result = {
           id: data.id,
           name: local ? local.name : data.name.charAt(0).toUpperCase() + data.name.slice(1),
+          forms: (data.forms || []).map((form) => ({
+            id: refId(form),
+            name: form.name || "",
+            url: form.url || null
+          })).filter((form) => form.id || form.name),
           types: (data.types || []).sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
           height: (data.height || 0) / 10, // 分米转米
           weight: (data.weight || 0) / 10, // 百克转千克
@@ -5949,6 +10322,7 @@ main li a:not([class]),
         const fallback = {
           id: localSpec.id,
           name: localSpec.name,
+          forms: [],
           types: localSpec.types || [],
           height: 1.0,
           weight: 10.0,
@@ -5970,7 +10344,7 @@ main li a:not([class]),
     },
 
     /**
-     * 获取种族元数据：英文种属、100字以内 flavor、进化链 URL
+     * 获取种族元数据：英文种属、100字以内 flavor、进化链 URL、varieties 引用
      */
     async getSpecies(id) {
       if (!id) return null;
@@ -5996,7 +10370,17 @@ main li a:not([class]),
           id: j.id,
           genus: genus ? genus.genus : "",
           flavor: flavor ? flavor.flavor_text.replace(/\s+/g, " ").trim() : "",
-          evoUrl: j.evolution_chain?.url || null
+          evoUrl: j.evolution_chain?.url || null,
+          // ponytail: keep variety refs shallow; fetch a form only when a caller needs full data.
+          varieties: (j.varieties || []).map((v) => {
+            const pokemon = v?.pokemon || {};
+            return {
+              id: refId(pokemon),
+              name: pokemon.name || "",
+              url: pokemon.url || null,
+              isDefault: Boolean(v?.is_default)
+            };
+          }).filter((v) => v.id || v.name)
         };
         speciesMemoryCache.set(num, row);
         try {
@@ -6067,38 +10451,91 @@ main li a:not([class]),
     },
 
     /**
+     * 获取结构化进化树：保留所有分支，以及每条演化边的 evolution_details 条件。
+     * 节点形状：{ species: { id, name, url }, evolution_details, evolves_to }
+     */
+    async getEvoTree(evoUrl) {
+      if (!evoUrl) return null;
+      if (evoTreeMemoryCache.has(evoUrl)) return evoTreeMemoryCache.get(evoUrl);
+      const cacheKey = `${CACHE_PREFIX}evo_tree_${encodeURIComponent(evoUrl)}`;
+      try {
+        const local = localStorage.getItem(cacheKey);
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (parsed && parsed.species && Array.isArray(parsed.evolves_to)) {
+            evoTreeMemoryCache.set(evoUrl, parsed);
+            return parsed;
+          }
+        }
+      } catch (_) {}
+      try {
+        const resp = await fetch(evoUrl);
+        if (!resp.ok) return null;
+        const j = await resp.json();
+        function build(node) {
+          if (!node?.species?.url) return null;
+          return {
+            species: {
+              id: refId(node.species),
+              name: node.species.name || "",
+              url: node.species.url
+            },
+            evolution_details: Array.isArray(node.evolution_details) ? node.evolution_details : [],
+            evolves_to: (node.evolves_to || []).map(build).filter(Boolean)
+          };
+        }
+        const tree = build(j.chain);
+        if (!tree) return null;
+        evoTreeMemoryCache.set(evoUrl, tree);
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(tree));
+        } catch (_) {}
+        return tree;
+      } catch (_) {
+        return null;
+      }
+    },
+
+    /**
      * 获取招式详情与战斗属性
      */
     async getMove(nameOrId) {
       if (!nameOrId) return null;
       const key = String(nameOrId).trim().toLowerCase();
+      if (moveMemoryCache.has(key)) return moveMemoryCache.get(key);
       const cacheKey = `${CACHE_PREFIX}move.${key}`;
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) return JSON.parse(cached);
-      } catch (_) {}
-      try {
-        const resp = await fetch(`${API_BASE}/move/${encodeURIComponent(key)}`);
-        if (!resp.ok) return null;
-        const data = await resp.json();
-        const move = {
-          id: data.id,
-          name: data.name,
-          type: data.type?.name || "",
-          category: data.damage_class?.name || "",
-          power: data.power,
-          accuracy: data.accuracy,
-          pp: data.pp,
-          priority: data.priority,
-          description: data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || ""
-        };
+      const request = (async () => {
         try {
-          localStorage.setItem(cacheKey, JSON.stringify(move));
+          const cached = localStorage.getItem(cacheKey);
+          if (cached) return JSON.parse(cached);
         } catch (_) {}
-        return move;
-      } catch (_) {
-        return null;
-      }
+        try {
+          const resp = await fetch(`${API_BASE}/move/${encodeURIComponent(key)}`);
+          if (!resp.ok) return null;
+          const data = await resp.json();
+          const move = {
+            id: data.id,
+            name: data.name,
+            type: data.type?.name || "",
+            category: data.damage_class?.name || "",
+            power: data.power,
+            accuracy: data.accuracy,
+            pp: data.pp,
+            priority: data.priority,
+            description: data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || ""
+          };
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify(move));
+          } catch (_) {}
+          return move;
+        } catch (_) {
+          return null;
+        }
+      })();
+      moveMemoryCache.set(key, request);
+      const move = await request;
+      if (!move) moveMemoryCache.delete(key);
+      return move;
     },
 
     /**
@@ -6107,32 +10544,39 @@ main li a:not([class]),
     async getAbility(nameOrId) {
       if (!nameOrId) return null;
       const key = String(nameOrId).trim().toLowerCase();
+      if (fullAbilityMemoryCache.has(key)) return fullAbilityMemoryCache.get(key);
       const cacheKey = `${CACHE_PREFIX}ability_full.${key}`;
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) return JSON.parse(cached);
-      } catch (_) {}
-      try {
-        const resp = await fetch(`${API_BASE}/ability/${encodeURIComponent(key)}`);
-        if (!resp.ok) return null;
-        const data = await resp.json();
-        const res = {
-          id: data.id,
-          name: data.name,
-          description: (data.effect_entries || []).find(x => x.language?.name === "en")?.short_effect ||
-            data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || "",
-          pokemon: (data.pokemon || []).map(x => ({
-            name: x.pokemon.name,
-            url: x.pokemon.url
-          }))
-        };
+      const request = (async () => {
         try {
-          localStorage.setItem(cacheKey, JSON.stringify(res));
+          const cached = localStorage.getItem(cacheKey);
+          if (cached) return JSON.parse(cached);
         } catch (_) {}
-        return res;
-      } catch (_) {
-        return null;
-      }
+        try {
+          const resp = await fetch(`${API_BASE}/ability/${encodeURIComponent(key)}`);
+          if (!resp.ok) return null;
+          const data = await resp.json();
+          const res = {
+            id: data.id,
+            name: data.name,
+            description: (data.effect_entries || []).find(x => x.language?.name === "en")?.short_effect ||
+              data.flavor_text_entries?.find(x => x.language?.name === "en")?.flavor_text || "",
+            pokemon: (data.pokemon || []).map(x => ({
+              name: x.pokemon.name,
+              url: x.pokemon.url
+            }))
+          };
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify(res));
+          } catch (_) {}
+          return res;
+        } catch (_) {
+          return null;
+        }
+      })();
+      fullAbilityMemoryCache.set(key, request);
+      const ability = await request;
+      if (!ability) fullAbilityMemoryCache.delete(key);
+      return ability;
     }
   };
 
@@ -6166,7 +10610,6 @@ main li a:not([class]),
     true
   );
 })(window);
-
 ```
 
 ---
@@ -6174,7 +10617,7 @@ main li a:not([class]),
 ### 3.2 `js/regions-data.js` (10 地区编号区间字典)
 
 - **文件路径**: `js/regions-data.js`  
-- **代码行数**: 1,216 行  
+- **代码行数**: 1,217 行  
 - **文件大小**: 46,745 字节  
 
 ```javascript
@@ -7394,7 +11837,6 @@ function getSpeciesById(id) {
 window.ALL_SPECIES = ALL_SPECIES;
 window.getRegionPokemon = getRegionPokemon;
 window.getSpeciesById = getSpeciesById;
-
 ```
 
 ---
@@ -7402,8 +11844,8 @@ window.getSpeciesById = getSpeciesById;
 ### 3.3 `js/regions.js` (地区实地探索地图与生态点位交互)
 
 - **文件路径**: `js/regions.js`  
-- **代码行数**: 170 行  
-- **文件大小**: 6,402 字节  
+- **代码行数**: 270 行  
+- **文件大小**: 10,910 字节  
 
 ```javascript
 /**
@@ -7419,6 +11861,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const titleEl = document.getElementById("current-region-title");
   const descEl = document.getElementById("current-region-desc");
   const dexBtn = document.getElementById("open-region-dex-btn");
+  const mapStage = document.getElementById("map-stage");
   const pinsLayer = document.getElementById("pins-layer");
   const popover = document.getElementById("recon-popover");
   const popoverClose = document.getElementById("recon-close-btn");
@@ -7426,12 +11869,80 @@ document.addEventListener("DOMContentLoaded", () => {
   const popoverName = document.getElementById("recon-name");
   const popoverDesc = document.getElementById("recon-desc");
   const popoverPokes = document.getElementById("recon-pokemons");
+  const mobileMapQuery = window.matchMedia("(max-width: 48rem)");
+  const mapLandmarkList = document.createElement("div");
+  mapLandmarkList.className = "map-landmark-list";
+  mapLandmarkList.setAttribute("role", "group");
+  mapLandmarkList.setAttribute("aria-label", "Map landmarks");
+  let activeLandmarkIndex = null;
+  let activeTrigger = null;
+  let activeRegionLandmarks = [];
 
   if (!window.REGIONS) return;
 
   function getSpeciesName(id) {
-    const item = (window.ALL_SPECIES_DATA || []).find(s => s[0] === id);
-    return item ? item[1] : `#${id}`;
+    return window.getSpeciesById?.(id)?.name || `#${id}`;
+  }
+
+  function syncPopoverPlacement() {
+    if (!mapStage || !popover) return;
+    if (mobileMapQuery.matches) {
+      if (mapStage.nextElementSibling !== mapLandmarkList) {
+        mapStage.insertAdjacentElement("afterend", mapLandmarkList);
+      }
+      popover.classList.add("is-below-map");
+      mapLandmarkList.insertAdjacentElement("afterend", popover);
+      ["left", "right", "top", "bottom"].forEach(side => popover.style.removeProperty(side));
+      return;
+    }
+
+    popover.classList.remove("is-below-map");
+    mapStage.appendChild(popover);
+    if (activeLandmarkIndex !== null) {
+      positionPopover(activeRegionLandmarks[activeLandmarkIndex]);
+    }
+  }
+
+  function positionPopover(lm) {
+    if (!mapStage || !popover || !lm || mobileMapQuery.matches) return;
+    const stageWidth = mapStage.clientWidth;
+    const stageHeight = mapStage.clientHeight;
+    const popoverWidth = popover.offsetWidth;
+    const popoverHeight = popover.offsetHeight;
+    const pinX = stageWidth * (lm.x / 100);
+    const pinY = stageHeight * (lm.y / 100);
+    const preferredLeft = pinX > stageWidth * 0.56
+      ? pinX - popoverWidth - 14
+      : pinX + 14;
+    const preferredTop = pinY > stageHeight * 0.58
+      ? pinY - popoverHeight - 14
+      : pinY + 10;
+
+    popover.style.right = "auto";
+    popover.style.bottom = "auto";
+    popover.style.left = `${Math.max(0, Math.min(preferredLeft, stageWidth - popoverWidth))}px`;
+    popover.style.top = `${Math.max(0, Math.min(preferredTop, stageHeight - popoverHeight))}px`;
+  }
+
+  function setExpandedLandmark(index) {
+    pinsLayer?.querySelectorAll(".map-pin").forEach(pin => {
+      pin.setAttribute("aria-expanded", String(Number(pin.dataset.idx) === index));
+    });
+    mapLandmarkList.querySelectorAll(".map-landmark-button").forEach(button => {
+      button.setAttribute("aria-expanded", String(Number(button.dataset.idx) === index));
+    });
+  }
+
+  function focusLandmarkControl(index, preferred) {
+    const isVisible = element => element?.isConnected && element.getClientRects().length > 0;
+    if (isVisible(preferred)) {
+      preferred.focus({ preventScroll: true });
+      return;
+    }
+    const fallback = mobileMapQuery.matches
+      ? mapLandmarkList.querySelector(`.map-landmark-button[data-idx="${index}"]`)
+      : pinsLayer?.querySelector(`.map-pin[data-idx="${index}"]`);
+    if (isVisible(fallback)) fallback.focus({ preventScroll: true });
   }
 
   if (selector) {
@@ -7456,9 +11967,10 @@ document.addEventListener("DOMContentLoaded", () => {
     closePopover();
 
     const landmarks = region.landmarks || [];
+    activeRegionLandmarks = landmarks;
     if (pinsLayer) {
       pinsLayer.innerHTML = landmarks.map((lm, idx) => `
-        <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}">
+        <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}" aria-controls="recon-popover" aria-expanded="false">
           <span class="map-pin-pulse"></span>
           <span class="map-pin-core"></span>
           <span class="map-pin-label">${lm.name}</span>
@@ -7471,14 +11983,29 @@ document.addEventListener("DOMContentLoaded", () => {
           const idx = Number(pinBtn.dataset.idx);
           const lm = landmarks[idx];
           if (!lm) return;
-          showPopover(lm);
+          showPopover(lm, pinBtn, idx);
         });
       });
     }
+
+    mapLandmarkList.innerHTML = landmarks.map((lm, idx) => `
+      <button class="map-landmark-button" type="button" data-idx="${idx}" aria-controls="recon-popover" aria-expanded="false">${lm.name}</button>
+    `).join("");
+    mapLandmarkList.querySelectorAll(".map-landmark-button").forEach(button => {
+      button.addEventListener("click", () => {
+        const idx = Number(button.dataset.idx);
+        const lm = landmarks[idx];
+        if (lm) showPopover(lm, button, idx);
+      });
+    });
+    syncPopoverPlacement();
   }
 
-  function showPopover(lm) {
+  function showPopover(lm, trigger, index) {
     if (!popover) return;
+    closePopover();
+    activeLandmarkIndex = index;
+    activeTrigger = trigger;
     if (popoverType) popoverType.textContent = lm.type || "Habitat";
     if (popoverName) popoverName.textContent = lm.name;
     if (popoverDesc) popoverDesc.textContent = lm.desc || "";
@@ -7497,40 +12024,53 @@ document.addEventListener("DOMContentLoaded", () => {
       }).join("");
     }
 
-    const pinLeft = lm.x;
-    const pinTop = lm.y;
-
-    if (pinLeft > 55) {
-      popover.style.right = `${100 - pinLeft + 3}%`;
-      popover.style.left = "auto";
-    } else {
-      popover.style.left = `${pinLeft + 3}%`;
-      popover.style.right = "auto";
-    }
-
-    if (pinTop > 60) {
-      popover.style.bottom = `${100 - pinTop}%`;
-      popover.style.top = "auto";
-    } else {
-      popover.style.top = `${Math.max(5, pinTop - 5)}%`;
-      popover.style.bottom = "auto";
-    }
-
     popover.hidden = false;
+    setExpandedLandmark(index);
+    positionPopover(lm);
+    popoverClose?.focus({ preventScroll: !mobileMapQuery.matches });
   }
 
-  function closePopover() {
+  function closePopover(restoreFocus = false) {
     if (popover) popover.hidden = true;
+    const closedIndex = activeLandmarkIndex;
+    const trigger = activeTrigger;
+    setExpandedLandmark(null);
+    activeLandmarkIndex = null;
+    activeTrigger = null;
+    if (restoreFocus && closedIndex !== null) focusLandmarkControl(closedIndex, trigger);
   }
 
   popoverClose?.addEventListener("click", (e) => {
     e.stopPropagation();
-    closePopover();
+    closePopover(true);
   });
 
-  document.getElementById("map-stage")?.addEventListener("click", (e) => {
+  mapStage?.addEventListener("click", (e) => {
     if (!e.target.closest(".recon-popover") && !e.target.closest(".map-pin")) {
       closePopover();
+    }
+  });
+
+  mapStage?.setAttribute("role", "group");
+  mapStage?.setAttribute("aria-label", "Interactive regional map");
+  popover?.setAttribute("role", "region");
+  popover?.setAttribute("aria-labelledby", "recon-name");
+  if (mapStage) mapStage.insertAdjacentElement("afterend", mapLandmarkList);
+  window.addEventListener("resize", () => {
+    if (activeLandmarkIndex !== null) {
+      positionPopover(activeRegionLandmarks[activeLandmarkIndex]);
+    }
+  });
+  const onMapBreakpointChange = () => syncPopoverPlacement();
+  if (mobileMapQuery.addEventListener) {
+    mobileMapQuery.addEventListener("change", onMapBreakpointChange);
+  } else {
+    mobileMapQuery.addListener(onMapBreakpointChange);
+  }
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && popover && !popover.hidden) {
+      e.preventDefault();
+      closePopover(true);
     }
   });
 
@@ -7542,7 +12082,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (atlasEl) {
     atlasEl.innerHTML = window.REGIONS.map(r => `
-      <div class="region-card" data-slug="${r.slug}" style="cursor:pointer;">
+      <a class="region-card" href="#interactive-map-section" data-slug="${r.slug}" aria-label="Inspect ${r.name} map, Pokédex numbers ${r.start} through ${r.end}" style="cursor:pointer;">
         <div class="map-thumb">
           <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
         </div>
@@ -7559,16 +12099,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">Inspect Recon Map ↗</span>
           </div>
         </div>
-      </div>
+      </a>
     `).join("");
 
     atlasEl.querySelectorAll(".region-card").forEach(card => {
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (e) => {
+        e.preventDefault();
         const slug = card.dataset.slug;
         const r = window.REGIONS.find(x => x.slug === slug);
         if (r) {
           renderInteractiveMap(r);
-          document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: "smooth" });
+          document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
     });
@@ -7576,7 +12117,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderInteractiveMap(window.REGIONS[0]);
 });
-
 ```
 
 ---
@@ -7584,7 +12124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.4 `js/types-chart.js` (18×18 属性克制常数矩阵)
 
 - **文件路径**: `js/types-chart.js`  
-- **代码行数**: 117 行  
+- **代码行数**: 118 行  
 - **文件大小**: 4,464 字节  
 
 ```javascript
@@ -7705,7 +12245,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.TYPES = TYPES;
   window.TYPE_COLORS = TYPE_COLORS;
 })(typeof window !== "undefined" ? window : global);
-
 ```
 
 ---
@@ -7713,7 +12252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.5 `js/pokeball.js` (精灵球开合音效与转场控制)
 
 - **文件路径**: `js/pokeball.js`  
-- **代码行数**: 137 行  
+- **代码行数**: 138 行  
 - **文件大小**: 4,724 字节  
 
 ```javascript
@@ -7854,7 +12393,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
 ```
 
 ---
@@ -7862,15 +12400,14 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.6 `js/pokedex.js` (名录+胶片双视图/全1025只图鉴渲染)
 
 - **文件路径**: `js/pokedex.js`  
-- **代码行数**: 551 行  
-- **文件大小**: 22,616 字节  
+- **代码行数**: 602 行  
+- **文件大小**: 24,036 字节  
 
 ```javascript
 /**
- * 151 FILE — Dex Page Logic (Spine + Ledger + Stage + Film & Visual Cards Grid)
+ * 151 FILE — Dex Page Logic (Spine + Ledger + Stage + Film)
  * 遵循 pokemon-web-project-plan.md §4.2 与 §7
- * 支持全部 1025 只宝可梦全局浏览与 10 官方地区切卷
- * 支持双展示模式：1. Ledger 档案台座模式  2. Grid 全景卡片网格模式
+ * 默认关都 151，只从 Regions 进入其他地区
  */
 
 // 地区预置数据引用
@@ -7882,19 +12419,18 @@ const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#
 
 // URL 查询参数
 const params = new URLSearchParams(location.search);
-const initialRegionSlug = params.get("region") || "all";
-const currentRegion = window.getRegionBySlug ? window.getRegionBySlug(initialRegionSlug) : { slug: "all", name: "National", start: 1, end: 1025, offset: 0, limit: 1025 };
+const requestedRegionSlug = (params.get("region") || "").trim().toLowerCase();
+const validRegionSlug = requestedRegionSlug === "all" || requestedRegionSlug === "national" ||
+  (window.REGIONS || []).some(region => region.slug === requestedRegionSlug);
+const initialRegionSlug = !requestedRegionSlug || validRegionSlug ? (requestedRegionSlug || "kanto") : "kanto";
+const currentRegion = window.getRegionBySlug ? window.getRegionBySlug(initialRegionSlug) : { slug: "kanto", name: "Kanto", start: 1, end: 151, offset: 0, limit: 151 };
 
 // 当前地区的 50 序号一段书脊分段
-let SPINES = window.getRegionSpines ? window.getRegionSpines(currentRegion.start, currentRegion.end) : [[1, 50], [51, 100], [101, 151]];
-
-// 记忆展示模式 (优先读 URL ?view=，其次 localStorage，默认 ledger)
-const savedView = typeof localStorage !== "undefined" ? localStorage.getItem("file151.dex_view") : null;
-const initialView = params.get("view") || savedView || "ledger";
+let SPINES = window.getRegionSpines ? window.getRegionSpines(currentRegion.start, currentRegion.end) : [[1, 50]];
 
 // 响应式应用状态
 const state = {
-  displayMode: (initialView === "grid") ? "grid" : "ledger",
+  displayMode: "ledger",
   region: currentRegion,
   type: params.get("type"),
   resist: params.get("resist"),
@@ -7903,7 +12439,8 @@ const state = {
   list: [],       // 经筛选后的当前展示名单
   i: 0,
   range: SPINES[0] || [1, 50],
-  listRev: 0      // 每次 state.list 重新计算就 +1，用来决定要不要重画胶片和网格
+  listRev: 0,
+  numberBuffer: ""
 };
 let filmRev = -1;
 let gridRev = -1;
@@ -7959,6 +12496,10 @@ function applyFilter() {
   state.listRev++;
   const keep = state.list.findIndex(p => p.id === keepId);
   state.i = keep >= 0 ? keep : 0;
+  const selectedId = current()?.id;
+  if (selectedId != null) {
+    state.range = SPINES.find(([a, b]) => selectedId >= a && selectedId <= b) || state.range;
+  }
 }
 
 // 切换选中的宝可梦索引
@@ -7971,6 +12512,39 @@ function selectIndex(i) {
   render();
 }
 
+function renderNumberBuffer() {
+  const bufferEl = document.getElementById("number-buffer");
+  if (!bufferEl) return;
+  bufferEl.hidden = !state.numberBuffer;
+  bufferEl.textContent = state.numberBuffer ? `_${state.numberBuffer}` : "";
+}
+
+function clearNumberBuffer() {
+  state.numberBuffer = "";
+  renderNumberBuffer();
+}
+
+function clearFilterAndSearch() {
+  state.q = "";
+  state.type = null;
+  state.resist = null;
+  const qInput = document.getElementById("q");
+  if (qInput) qInput.value = "";
+  applyFilter();
+  render();
+  syncUrl();
+}
+
+function selectBufferedNumber() {
+  if (!state.numberBuffer) return false;
+  const id = Number(state.numberBuffer);
+  const hit = state.list.findIndex(p => p.id === id);
+  clearNumberBuffer();
+  if (hit < 0) return false;
+  selectIndex(hit);
+  return true;
+}
+
 // 加入腰带 (最多 6 只)
 function addBelt(id) {
   if (!window.store.addBelt(id)) return;
@@ -7979,6 +12553,7 @@ function addBelt(id) {
 
 const pad3 = (n) => String(n).padStart(3, "0");
 const artOf = (id) => window.pokeApi.artUrl(id);
+const dexScrollBehavior = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 // 列表/网格只显示 ~96px：优先用本地 192px 缩略图（scripts/make-thumbs.mjs 生成），缺失时回退到远程大图
 const thumbOf = (id) => `assets/thumbs/${id}.webp`;
 // 注意：api.js 的全局兜底已占用 data-fallback，这里用 data-full；且只处理“缩略图”失败，别截断它的兜底链
@@ -8044,14 +12619,18 @@ function renderFilm(p) {
   if (p) {
     cell?.setAttribute("data-on", "");
     cell?.setAttribute("aria-current", "true");
-    cell?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    cell?.scrollIntoView({ inline: "center", block: "nearest", behavior: dexScrollBehavior() });
   }
 }
 
 function renderGrid(gridViewEl) {
   if (gridRev !== state.listRev) {
     if (!state.list.length) {
-      gridViewEl.innerHTML = `<p class="empty" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">No Pokémon found in this filter.</p>`;
+      gridViewEl.innerHTML = `
+        <div class="dex-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">
+          <p class="empty" style="margin-bottom: 1rem;">No Pokémon found matching the active search or filters.</p>
+          <button class="btn btn-paper dex-clear-btn" type="button">Clear filters and search</button>
+        </div>`;
     } else {
       const onBelt = new Set(belt());
       const saw = new Set(seen());
@@ -8086,22 +12665,21 @@ function render() {
   const onBelt = belt();
   const p = current();
 
-  // 1. 同步顶部工具栏状态 (地区下拉框、模式按键、数量标记、抗性芯片)
-  const regSelect = document.getElementById("region-select");
-  if (regSelect && regSelect.value !== state.region.slug) {
-    regSelect.value = state.region.slug;
+  // 1. 同步顶部工具栏状态（地区标签、数量标记、抗性芯片）
+  const regionLink = document.getElementById("region-link");
+  if (regionLink) {
+    regionLink.href = "regions.html";
+    regionLink.textContent = `${state.region.name} · #${pad3(state.region.start)}–#${pad3(state.region.end)}`;
+  }
+
+  const regionSelect = document.getElementById("region-select");
+  if (regionSelect && regionSelect.value !== state.region.slug) {
+    regionSelect.value = state.region.slug;
   }
 
   const countBadge = document.getElementById("count-badge");
   if (countBadge) {
     countBadge.textContent = `${state.list.length} files`;
-  }
-
-  const btnLedger = document.getElementById("btn-view-ledger");
-  const btnGrid = document.getElementById("btn-view-grid");
-  if (btnLedger && btnGrid) {
-    btnLedger.classList.toggle("is-active", state.displayMode === "ledger");
-    btnGrid.classList.toggle("is-active", state.displayMode === "grid");
   }
 
   const resistChip = document.getElementById("resist-chip");
@@ -8125,9 +12703,12 @@ function render() {
     const rows = state.list.filter(m => m.id >= a && m.id <= b);
 
     // 1.1 左脊 (Spines)
-    document.getElementById("spines").innerHTML = SPINES.map(([x, y]) => {
+    const spinesEl = document.getElementById("spines");
+    spinesEl.setAttribute("role", "group");
+    spinesEl.setAttribute("aria-label", "Select number range");
+    spinesEl.innerHTML = SPINES.map(([x, y]) => {
       const n = state.list.filter(m => m.id >= x && m.id <= y).length;
-      return `<button type="button" data-a="${x}" data-b="${y}" ${x === a ? 'data-on' : ''} ${n ? '' : 'disabled'}>${pad3(x)}–${y}</button>`;
+      return `<button type="button" data-a="${x}" data-b="${y}" ${x === a ? 'data-on aria-pressed="true"' : 'aria-pressed="false"'} ${n ? '' : 'disabled'}>${pad3(x)}–${y}</button>`;
     }).join("");
 
     // 1.2 中名录 (Ledger)
@@ -8139,7 +12720,7 @@ function render() {
           const typeNames = (m.types || []).join(" · ");
           return `<li class="${m.id === p?.id ? 'is-on' : ''} ${saw.includes(m.id) ? 'seen' : ''}" data-id="${m.id}" role="option" aria-selected="${m.id === p?.id}" aria-label="#${pad3(m.id)} ${m.name}${typeNames ? ", " + typeNames : ""}" tabindex="${m.id === tabStopId ? 0 : -1}"><span class="id">#${pad3(m.id)}</span><span class="ledger-name">${m.name}</span>${typeNames ? `<span class="ledger-types">${typeNames}</span>` : ""}</li>`;
         }).join("")
-      : `<li class="empty" role="option" aria-disabled="true">No file in this spine.</li>`;
+      : `<li class="empty" role="option" aria-disabled="true">No Pokémon found matching the active search or filters.</li>`;
     if (ledgerHadFocus) ledgerEl.querySelector('li[tabindex="0"]')?.focus();
     // 只滚名录自己，避免方向键把整页拽下去
     const onRow = ledgerEl.querySelector("li.is-on");
@@ -8153,14 +12734,18 @@ function render() {
     // 1.3 右台座 (Stage)
     const stageEl = document.getElementById("stage");
     if (!p) {
-      stageEl.innerHTML = `<p class="empty">No file in this filter.</p>`;
+      stageEl.innerHTML = `
+        <div class="stage-empty-state" style="text-align: center; padding: 3rem 1rem;">
+          <p class="empty" style="margin-bottom: 1rem;">No Pokémon found matching the active search or filters.</p>
+          <button class="btn btn-paper dex-clear-btn" type="button" style="margin: 0 auto;">Clear filters and search</button>
+        </div>`;
     } else {
       const full = onBelt.length >= window.store.MAX_BELT;
       const has = onBelt.includes(p.id);
 
       stageEl.innerHTML = `
-        <div class="stage-img-box" id="stageImgBox" title="Tap Pokémon to hear official Cry">
-          <img src="${artOf(p.id)}" alt="${p.name} 3D Model" width="240" height="240" />
+        <div class="stage-img-box" id="stageImgBox">
+          <img src="${artOf(p.id)}" alt="${p.name}" width="240" height="240" />
         </div>
         <p><span class="id">#${pad3(p.id)}</span></p>
         <p class="name">${p.name}</p>
@@ -8193,9 +12778,6 @@ function render() {
       })();
 
       document.getElementById("add")?.addEventListener("click", () => addBelt(p.id));
-      document.getElementById("stageImgBox")?.addEventListener("click", () => {
-        window.pokeApi.playCry(p.id); // 用户主动点击，不受声音开关限制
-      });
     }
 
     // 1.4 底胶片尺 (Film Strip)
@@ -8209,11 +12791,15 @@ function render() {
     renderGrid(gridViewEl);
   }
 
-  // 同步搜索框与属性芯片高亮
+  // 同步搜索框、属性芯片和编号缓冲
   const qEl = document.getElementById("q");
   if (qEl && qEl.value !== state.q) qEl.value = state.q;
+  renderNumberBuffer();
+  document.querySelector(".type-row")?.setAttribute("role", "group");
   document.querySelectorAll(".chip[data-type]").forEach(c => {
-    c.toggleAttribute("data-on", (c.dataset.type || "") === (state.type || ""));
+    const selected = (c.dataset.type || "") === (state.type || "");
+    c.toggleAttribute("data-on", selected);
+    c.setAttribute("aria-pressed", String(selected));
   });
 }
 
@@ -8256,22 +12842,7 @@ async function initDex() {
 
 // 事件委托与监听
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. 切换展示模式 (Ledger / Grid)
-  document.getElementById("btn-view-ledger")?.addEventListener("click", () => {
-    if (state.displayMode === "ledger") return;
-    state.displayMode = "ledger";
-    localStorage.setItem("file151.dex_view", "ledger");
-    render();
-  });
-
-  document.getElementById("btn-view-grid")?.addEventListener("click", () => {
-    if (state.displayMode === "grid") return;
-    state.displayMode = "grid";
-    localStorage.setItem("file151.dex_view", "grid");
-    render();
-  });
-
-  // 2. 地区选择下拉框切换
+  // 地区页是唯一地区入口；保留监听以兼容旧页面嵌入的选择器。
   document.getElementById("region-select")?.addEventListener("change", e => {
     const slug = e.target.value;
     state.region = window.getRegionBySlug ? window.getRegionBySlug(slug) : { slug, name: "National", start: 1, end: 1025 };
@@ -8310,7 +12881,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectIndex(state.list.findIndex(p => p.id === Number(cell.dataset.id)));
   });
 
-  // 6. 卡片网格点击委托 (卡片直达详情/播放叫声，按键加入腰带)
+  // 6. 兼容旧网格容器的点击委托
   document.getElementById("dex-grid-view")?.addEventListener("click", e => {
     const beltBtn = e.target.closest("[data-belt-id]");
     if (beltBtn) {
@@ -8335,12 +12906,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("q")?.addEventListener("keydown", e => {
     if (e.key === "Enter") {
-      if (state.list.length === 1) {
-        location.href = `pokemon.html?id=${state.list[0].id}`;
-      } else if (/^\d+$/.test(state.q)) {
-        const num = Number(state.q);
-        if (num >= 1 && num <= 1025) location.href = `pokemon.html?id=${num}`;
-      }
+      if (state.list.length === 1) selectIndex(0);
     }
   });
 
@@ -8363,7 +12929,14 @@ document.addEventListener("DOMContentLoaded", () => {
     syncUrl();
   });
 
-  // 8c. 键盘：名录行和网格卡片用 Enter / 空格触发，和点击一致
+  // 8b2. 清空筛选与搜索按钮
+  document.addEventListener("click", e => {
+    if (e.target.closest(".dex-clear-btn")) {
+      clearFilterAndSearch();
+    }
+  });
+
+  // 8c. 键盘：名录行和旧网格卡片用 Enter / 空格触发，和点击一致
   ["ledger", "dex-grid-view"].forEach(id => {
     document.getElementById(id)?.addEventListener("keydown", e => {
       if (e.key !== "Enter" && e.key !== " ") return;
@@ -8380,12 +12953,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!state.list.length) return;
     const randIdx = Math.floor(Math.random() * state.list.length);
     selectIndex(randIdx);
-    const picked = state.list[randIdx];
-    if (picked && window.pokeApi) window.pokeApi.playCryAuto(picked.id);
   });
 
   // 10. 全局快捷键导航
   document.addEventListener("keydown", e => {
+    const searchOverlay = document.getElementById("search-overlay");
+    if (e.defaultPrevented || (searchOverlay && !searchOverlay.hidden)) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return; // 不抢浏览器和系统快捷键（Cmd+R、Ctrl+C 等）
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) {
       if (e.key === "Escape") {
@@ -8395,6 +12968,21 @@ document.addEventListener("DOMContentLoaded", () => {
         syncUrl();
         document.getElementById("q")?.blur();
       }
+      return;
+    }
+    if (e.key === "Escape") {
+      clearNumberBuffer();
+      return;
+    }
+    if (/^\d$/.test(e.key)) {
+      state.numberBuffer = `${state.numberBuffer}${e.key}`.slice(-3);
+      renderNumberBuffer();
+      if (state.numberBuffer.length === 3) selectBufferedNumber();
+      return;
+    }
+    if (e.key === "Enter" && state.numberBuffer) {
+      e.preventDefault();
+      selectBufferedNumber();
       return;
     }
     if (e.key === "/") {
@@ -8417,7 +13005,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 启动执行
   initDex();
 });
-
 ```
 
 ---
@@ -8425,8 +13012,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.7 `js/pokemon.js` (详情页标本台/3D模型/Shiny切换)
 
 - **文件路径**: `js/pokemon.js`  
-- **代码行数**: 300 行  
-- **文件大小**: 13,019 字节  
+- **代码行数**: 1,101 行  
+- **文件大小**: 53,917 字节  
 
 ```javascript
 /**
@@ -8472,8 +13059,41 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const defaultArt = (id) => window.pokeApi.artUrl(id);
   const shinyArt = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${id}.png`;
+  const legacyAnimatedSpriteUrl = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${id}.gif`;
+  const staticModel3dUrl = (id) => `https://raw.githubusercontent.com/Pokemon-3D-api/assets/main/models/opt/regular/${id}.glb`;
+  const model3dUrl = (id) => {
+    if (id >= 1 && id <= 151) {
+      return `https://raw.githubusercontent.com/06wj/pokemon/master/public/models/${String(id).padStart(3, "0")}/model.glb`;
+    }
+    return staticModel3dUrl(id);
+  };
+
+  // Bulbagarden Archives lists these official animation files for every Kanto ID.
+  // The filenames follow the ID + species name + AG convention, with these archive spellings.
+  const animeNameOverrides = { 29: "Nidoran", 32: "Nidoran", 83: "Farfetch'd" };
+  const animeArtById = Object.fromEntries((window.ALL_SPECIES || [])
+    .filter(species => species.id >= 1 && species.id <= 151)
+    .map(({ id, name }) => {
+      const fileName = animeNameOverrides[id] || name;
+      const suffix = id === 52 ? " anime.png" : " AG anime.png";
+      return [id, {
+        file: `${String(id).padStart(3, "0")}${fileName}${suffix}`,
+        series: id === 52 ? "DP+XY" : id === 151 ? "AG+XY" : "AG"
+      }];
+    }));
+  const animeSeriesNames = {
+    AG: "Pokémon the Series: Ruby and Sapphire",
+    XY: "Pokémon the Series: XY",
+    "DP+XY": "Pokémon the Series: Diamond and Pearl · Pokémon the Series: XY",
+    "AG+XY": "Pokémon the Series: Ruby and Sapphire · Pokémon the Series: XY"
+  };
+  const animeArtUrl = (asset) => `https://archives.bulbagarden.net/wiki/Special:FilePath/${encodeURIComponent(asset.file)}`;
+  const animeFilePageUrl = (asset) => `https://archives.bulbagarden.net/wiki/File:${encodeURIComponent(asset.file).replace(/%20/g, "_")}`;
 
   let isShiny = false;
+  let isAnimeArt = false;
+  let isLegacySprite = false;
+  let stageModeController = null;
 
   // 腰带按钮区：加入后只刷新这一小块，不重画整页（否则开球动画会重播）
   function beltControl(mon) {
@@ -8492,22 +13112,192 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // 闪光切换：只换图片和文字
+  // 闪光切换：换图片和文字（如果是 3D 模式切到闪光 2D 图）
   function setShiny(mon, on) {
     isShiny = on;
+    isAnimeArt = false;
+    isLegacySprite = false;
     const art = document.getElementById("art");
-    const cap = document.getElementById("art-caption");
+    const poke3d = document.getElementById("poke-3d");
     const btn = document.getElementById("shiny");
-    if (art) art.src = on ? shinyArt(mon.id) : defaultArt(mon.id);
-    if (cap) cap.textContent = on ? "★ Shiny Form (HOME 3D)" : "Default Form (HOME 3D)";
+    const btn3d = document.getElementById("btn-mode-3d");
+    const btn2d = document.getElementById("btn-mode-2d");
+
+    if (art) {
+      art.src = on ? shinyArt(mon.id) : defaultArt(mon.id);
+      art.alt = `${mon.name} official artwork`;
+      if (on) {
+        art.style.display = "block";
+        if (poke3d) poke3d.style.display = "none";
+        btn2d?.classList.add("is-active");
+        btn3d?.classList.remove("is-active");
+      }
+    }
+    stageModeController?.("2d");
     if (btn) btn.textContent = on ? "Show default" : "Show shiny";
+  }
+
+  function formatEvoCondition(details) {
+    const choices = Array.isArray(details) ? details.filter(Boolean) : [];
+    const preferred = choices.filter(d => d.is_default !== false);
+    const rows = preferred.length ? preferred : choices;
+    if (!rows.length) return "xxx";
+    const refName = (ref) => ref?.name ? ref.name.replace(/-/g, " ") : "";
+    const times = { day: "Day", night: "Night", dusk: "Dusk", dawn: "Dawn" };
+    const relativeStats = { "-1": "Attack < Defense", "0": "Attack = Defense", "1": "Attack > Defense" };
+    const labels = rows.map(d => {
+      const parts = [];
+      const time = times[d.time_of_day] || refName({ name: d.time_of_day });
+      if (d.min_level != null) parts.push(`Lv. ${d.min_level}`);
+      if (d.item?.name) parts.push(`Use ${refName(d.item)}`);
+      if (d.trigger?.name === "trade") {
+        if (d.held_item?.name) parts.push(`Trade holding ${refName(d.held_item)}`);
+        else if (d.trade_species?.name) parts.push(`Trade with ${refName(d.trade_species)}`);
+        else parts.push("Trade");
+      }
+      if (d.held_item?.name && d.trigger?.name !== "trade") parts.push(`Hold ${refName(d.held_item)}`);
+      if (d.min_happiness != null) parts.push(time ? `Friendship (${time})` : "Friendship");
+      if (d.min_affection != null) parts.push("Affection");
+      if (d.min_beauty != null) parts.push(`Beauty ${d.min_beauty}`);
+      if (d.gender === 1) parts.push("Female");
+      if (d.gender === 2) parts.push("Male");
+      if (d.known_move?.name) parts.push(`Know ${refName(d.known_move)}`);
+      if (d.known_move_type?.name) parts.push(`${refName(d.known_move_type)} move`);
+      if (d.location?.name) parts.push(`At ${refName(d.location)}`);
+      if (d.party_species?.name) parts.push(`Party with ${refName(d.party_species)}`);
+      if (d.party_type?.name) parts.push(`Party type ${refName(d.party_type)}`);
+      if (relativeStats[String(d.relative_physical_stats)]) parts.push(relativeStats[String(d.relative_physical_stats)]);
+      if (time && d.min_happiness == null) parts.push(time);
+      if (d.needs_overworld_rain) parts.push("Rain");
+      if (d.turn_upside_down) parts.push("Upside down");
+      if (d.trigger?.name === "shed") parts.push("Empty slot");
+      if (!parts.length && d.trigger?.name && d.trigger.name !== "level-up") parts.push(refName(d.trigger));
+      return parts.join(", ") || "xxx";
+    });
+    return [...new Set(labels)].filter(Boolean).join(" OR ") || "xxx";
+  }
+
+  async function getEvoSteps(evoUrl) {
+    if (!evoUrl) return null;
+    const cacheKey = `file151.v3.evosteps_${encodeURIComponent(evoUrl)}`;
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    try {
+      const data = await window.pokeApi.getEvoTree(evoUrl);
+      if (!data) return null;
+      const steps = [];
+      function traverse(node) {
+        const parentId = node.species?.id || 0;
+        for (const child of (node.evolves_to || [])) {
+          const childId = child.species?.id || 0;
+          if (childId) {
+            steps.push({
+              fromId: parentId,
+              toId: childId,
+              condition: formatEvoCondition(child.evolution_details)
+            });
+          }
+          traverse(child);
+        }
+      }
+      traverse(data);
+      const result = { rootId: data.species?.id || 0, steps };
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify(result));
+      } catch (_) {}
+      return result;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function formatFormName(rawName) {
+    return rawName
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  function renderFormsHtml(forms, mon) {
+    return `
+      <div class="forms-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:0.75rem;">
+        ${forms.map(f => {
+          const total = (f.stats || []).reduce((sum, s) => sum + s.value, 0);
+          const isCurrent = f.id === mon.id || (f.isDefault && mon.id <= 1025);
+          return `
+            <div class="form-card" style="border:1px solid ${isCurrent ? 'var(--blue)' : 'var(--line)'}; border-radius:4px; padding:0.75rem; background:var(--paper); display:flex; flex-direction:column; gap:0.5rem; ${isCurrent ? 'box-shadow:0 0 0 1px var(--blue);' : ''}">
+              <div style="display:flex; align-items:center; gap:0.6rem;">
+                <img src="${defaultArt(f.id)}" alt="${esc(f.name)}" width="52" height="52" loading="lazy" style="object-fit:contain; flex-shrink:0;">
+                <div style="min-width:0;">
+                  <h4 style="margin:0 0 0.25rem; font-size:0.9rem; font-family:var(--font-ui); color:var(--ink); word-break:break-word;">${esc(formatFormName(f.name))}</h4>
+                  <div style="display:flex; gap:0.25rem; flex-wrap:wrap;">
+                    ${f.types.map(t => `<span class="chip" style="${typeStyle(t)} font-size:0.6875rem; padding:0.1rem 0.35rem;">${t}</span>`).join("")}
+                  </div>
+                </div>
+              </div>
+              <div style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); display:grid; grid-template-columns:repeat(3, 1fr); gap:0.2rem 0.4rem; padding-top:0.35rem; border-top:1px dashed var(--line);">
+                ${(f.stats || []).map(s => `
+                  <div><span style="color:var(--ink); font-weight:700;">${s.value}</span> <span style="font-size:0.6875rem;">${s.name.replace("special-", "sp.").replace("attack", "atk").replace("defense", "def")}</span></div>
+                `).join("")}
+                <div style="grid-column:1 / -1; margin-top:0.2rem; font-weight:700; color:var(--navy);">Total: ${total}</div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  async function getForms(varieties, defaultMon) {
+    if (!Array.isArray(varieties) || varieties.length <= 1) return [];
+    const speciesId = defaultMon?.id || varieties.find(v => v.id)?.id;
+    if (!speciesId) return [];
+    const cacheKey = `file151.v3.forms_${speciesId}`;
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) return JSON.parse(cached);
+    } catch (_) {}
+    try {
+      const loaded = await Promise.all(
+        varieties.map(async (v) => {
+          try {
+            const formMon = v.id === defaultMon?.id
+              ? defaultMon
+              : await window.pokeApi.getPokemon(v.id || v.name);
+            if (!formMon) return null;
+            return {
+              name: v.name || formMon.name,
+              isDefault: Boolean(v.isDefault),
+              id: formMon.id,
+              types: formMon.types || [],
+              stats: formMon.stats || []
+            };
+          } catch (_) {
+            return null;
+          }
+        })
+      );
+      const valid = loaded.filter(Boolean);
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify(valid));
+      } catch (_) {}
+      return valid;
+    } catch (_) {
+      return [];
+    }
   }
 
   async function render(mon) {
     const region = getRegion(mon.id);
     const spec = await window.pokeApi.getSpecies(mon.id).catch(() => null);
-    const abilityTexts = await Promise.all((mon.abilities || []).map(a => window.pokeApi.getAbilityText(a.name)));
-    const evoIds = spec?.evoUrl ? await window.pokeApi.getEvoIds(spec.evoUrl).catch(() => []) : [];
+    const [abilityTexts, evoSteps] = await Promise.all([
+      Promise.all((mon.abilities || []).map(a => window.pokeApi.getAbilityText(a.name))),
+      spec?.evoUrl ? getEvoSteps(spec.evoUrl).catch(() => null) : Promise.resolve(null)
+    ]);
+    const evoIds = evoSteps
+      ? [...new Set([evoSteps.rootId, ...evoSteps.steps.reduce((ids, step) => ids.concat(step.fromId, step.toId), [])].filter(Boolean))]
+      : [];
 
     const statFields = [
       { key: "hp", label: "HP" },
@@ -8518,18 +13308,80 @@ document.addEventListener("DOMContentLoaded", async () => {
       { key: "speed", label: "Speed" }
     ];
 
+    const has3D = mon.id >= 1 && mon.id <= 1025;
+    const animeArtwork = mon.id <= 151 ? animeArtById[mon.id] : null;
+    const hasLegacyAnimatedSprite = mon.id >= 1 && mon.id <= 649;
+
     root.innerHTML = `
       <div class="detail">
-        <div style="display:flex; flex-direction:column; align-items:center;">
-          <button class="detail-art-stage" id="well" type="button" aria-label="Play Cry" title="Tap to play official cry">
-            <img id="art" src="${defaultArt(mon.id)}" alt="${esc(mon.name)} 3D Model" />
-          </button>
-          <p id="art-caption" style="color:var(--ink-soft); font-size:0.75rem; font-family:var(--font-num); margin-top:0.75rem;">Default Form (HOME 3D)</p>
+        <div class="detail-stage-box" style="display:flex; flex-direction:column; align-items:center; width:100%;">
+          <div class="stage-ball is-open">
+            <div class="stage-viewer-wrap" id="stage-viewer-wrap" style="width:100%; height:100%; z-index:1;">
+            ${has3D ? `
+              <model-viewer
+                id="poke-3d"
+                src="${model3dUrl(mon.id)}"
+                alt="${esc(mon.name)} ${mon.id > 151 ? "Static 3D Preview" : "3D Model Preview"}"
+                camera-controls
+                touch-action="pan-y"
+                interaction-prompt="none"
+                shadow-intensity="1.0"
+                shadow-softness="0.8"
+                environment-image="neutral"
+                tone-mapping="neutral"
+                exposure="1.15"
+                camera-orbit="0deg 75deg 105%"
+                min-camera-orbit="auto auto 40%"
+                max-camera-orbit="auto auto 250%"
+                loading="eager"
+              >
+                <div slot="poster" style="display:flex; align-items:center; justify-content:center; width:100%; height:100%;">
+                  <img src="${defaultArt(mon.id)}" alt="${esc(mon.name)}" style="position:static; left:auto; top:auto; z-index:auto; width:85%; height:85%; object-fit:contain; filter:drop-shadow(0 12px 24px rgba(0,0,0,0.45));" />
+                </div>
+              </model-viewer>
+            ` : ""}
+              <img id="art" src="${isShiny ? shinyArt(mon.id) : defaultArt(mon.id)}" alt="${esc(mon.name)}" style="${has3D ? 'display:none;' : 'display:block;'} position:static; left:auto; top:auto; z-index:auto; width:76%; height:76%; object-fit:contain; filter:drop-shadow(0 12px 24px rgba(0,0,0,0.45));" />
+              <div id="heart-burst" class="stage-burst-container" aria-hidden="true"></div>
+            </div>
+            <span class="lid-t" aria-hidden="true"></span>
+            <span class="lid-b" aria-hidden="true"></span>
+            <span class="lid-band" aria-hidden="true"></span>
+            <button class="lid-btn" id="well" type="button" aria-label="Close Poké Ball" aria-expanded="true" aria-controls="stage-viewer-wrap" disabled aria-hidden="true"></button>
+          </div>
+
+          <div class="stage-controls" id="stage-controls">
+            <button class="btn btn-sm btn-paper btn-mode ${has3D ? "is-active" : ""}" id="btn-mode-3d" type="button" title="Switch to 3D Mode" aria-pressed="${has3D}" ${has3D ? "" : "disabled"}>3D</button>
+            <button class="btn btn-sm btn-paper btn-mode ${has3D ? "" : "is-active"}" id="btn-mode-2d" type="button" title="Switch to 2D Art" aria-pressed="${!has3D}">2D</button>
+            ${mon.id <= 151 ? `
+              <button class="btn btn-sm btn-paper btn-mode" id="btn-mode-anime" type="button" title="${animeArtwork ? "Show verified official animation artwork" : "No verified official animation artwork is mapped for this Pokémon"}" aria-label="Anime 2D mode${animeArtwork ? "" : " unavailable: no verified official animation artwork"}" aria-pressed="false" ${animeArtwork ? "" : "disabled"}>${animeArtwork ? "Anime 2D" : "Anime unavailable"}</button>
+            ` : ""}
+            ${hasLegacyAnimatedSprite ? `
+              <button class="btn btn-sm btn-paper btn-mode" id="btn-mode-pixel" type="button" title="Show Pokémon Black and White animated pixel sprite" aria-label="Pixel GIF mode" aria-pressed="false">Pixel GIF</button>
+            ` : ""}
+            <button class="btn btn-sm btn-paper" id="close-ball" type="button" disabled aria-hidden="true">Close Poké Ball</button>
+            ${has3D ? `
+              <span id="stage-camera-controls" style="display:inline-flex; gap:0.35rem; flex-wrap:wrap; align-items:center; border-left:1px solid var(--line); padding-left:0.5rem;">
+                <button class="btn btn-sm btn-paper" id="btn-rotate" type="button" title="${reduce ? "Automatic rotation is disabled by your reduced-motion preference" : "Toggle automatic rotation"}" aria-pressed="false" ${reduce ? "disabled" : ""}>Rotate</button>
+                <button class="btn btn-sm btn-paper" id="btn-zoom-in" type="button" title="Zoom in" aria-label="Zoom in" disabled>Zoom +</button>
+                <button class="btn btn-sm btn-paper" id="btn-zoom-out" type="button" title="Zoom out" aria-label="Zoom out" disabled>Zoom −</button>
+              </span>
+              <span id="stage-base-actions" style="display:inline-flex; gap:0.35rem; flex-wrap:wrap; align-items:center; border-left:1px solid var(--line); padding-left:0.5rem;">
+                <button class="btn btn-sm btn-paper" id="btn-cry-stage" type="button" title="Play cry">Cry</button>
+                <button class="btn btn-sm btn-paper" id="btn-react-stage" type="button" title="Show a reaction">React</button>
+                <span id="stage-feedback" role="status" aria-live="polite" style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark);"></span>
+              </span>
+            ` : ""}
+            <span id="stage-actions" aria-label="Optional model animations" style="display:none; gap:0.35rem; flex-basis:100%; flex-wrap:wrap; align-items:center; justify-content:center; border-top:1px solid var(--line); padding-top:0.5rem;"></span>
+          </div>
+
+          <p id="art-caption" style="color:var(--ink-soft); font-size:0.75rem; font-family:var(--font-num); margin-top:0.4rem; text-align:center;">
+            ${has3D ? (mon.id <= 151 ? "Loading 3D model…" : "Loading static 3D preview…") : "Default Form (2D Art)"}
+          </p>
         </div>
 
         <div class="fields">
           ${mon.isOffline ? `
-            <div style="margin-bottom:0.75rem; padding:0.5rem 0.75rem; background:rgba(238,21,21,0.08); border:1px solid rgba(238,21,21,0.25); border-radius:4px; font-size:0.75rem; color:var(--paper); display:flex; justify-content:space-between; align-items:center;">
+            <div style="margin-bottom:0.75rem; padding:0.5rem 0.75rem; background:rgba(238,21,21,0.08); border:1px solid rgba(238,21,21,0.25); border-radius:4px; font-size:0.75rem; color:var(--ink); display:flex; justify-content:space-between; align-items:center;">
               <span style="font-family:var(--font-num); font-weight:700; letter-spacing:0.04em;">[OFFLINE ARCHIVE] Live PokeAPI sync failed</span>
               <button class="btn btn-sm btn-paper" id="retry-sync" type="button">Retry sync</button>
             </div>
@@ -8541,19 +13393,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <span class="id-badge">#${String(mon.id).padStart(3, "0")}</span>
                 <h1 style="font-family:var(--font-ui); font-size:1.85rem; font-weight:700; margin:0.25rem 0 0.1rem; letter-spacing:-0.02em; color:var(--ink);">${esc(mon.name)}</h1>
                 ${spec?.genus ? `<span class="soft" style="font-size:0.875rem; color:var(--ink-soft);">${esc(spec.genus)}</span>` : ""}
-              </div>
-              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
-                <div>
-                  ${mon.types.map(t =>
-                    `<a class="chip" style="${typeStyle(t)} margin-left:0.4rem;" href="pokedex.html?type=${t}" title="Filter Dex by ${t}">${t}</a>`
-                  ).join("")}
-                </div>
-                <span style="font-family:var(--font-num); font-weight:700; font-size:0.875rem; color:var(--ink-soft);">
+                <span style="display:block; margin-top:0.35rem; font-family:var(--font-num); font-weight:700; font-size:0.875rem; color:var(--ink-soft);">
                   ${Number(mon.height).toFixed(1)} m · ${Number(mon.weight).toFixed(1)} kg
                 </span>
+                <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.45rem;">
+                  ${mon.types.map(t =>
+                    `<a class="chip" style="${typeStyle(t)}" href="pokedex.html?type=${t}" title="Filter Dex by ${t}">${t}</a>`
+                  ).join("")}
+                </div>
               </div>
             </div>
             ${spec?.flavor ? `<p class="flavor" style="margin:0; padding:0.4rem 0 0; border:0;">${esc(spec.flavor)}</p>` : ""}
+            <div class="detail-actions" style="margin-top:0.75rem;">
+              <span id="belt-ctl">${beltControl(mon)}</span>
+              <button class="btn btn-paper" id="favorite" type="button" aria-pressed="${store.isFavorite(mon.id)}">${store.isFavorite(mon.id) ? "★ Favorited" : "☆ Favorite"}</button>
+            </div>
           </div>
 
           <div class="fields-grid">
@@ -8567,7 +13421,54 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </ul>
               </div>
 
-              ${evoIds.length > 1 ? `
+              ${evoSteps && evoSteps.steps.length > 0 ? `
+                <div>
+                  <p class="field-title">Evolution Line &amp; Conditions</p>
+                  ${(() => {
+                    const isLinear = evoSteps.steps.every((s, i) => i === 0 || s.fromId === evoSteps.steps[i - 1].toId);
+                    if (isLinear) {
+                      return `
+                        <div class="evo-row" style="align-items:center; flex-wrap:wrap; gap:0.4rem;">
+                          <a class="evo-link ${evoSteps.rootId === mon.id ? 'current' : ''}" href="pokemon.html?id=${evoSteps.rootId}" title="#${evoSteps.rootId}">
+                            <img src="${defaultArt(evoSteps.rootId)}" alt="#${evoSteps.rootId}" width="44" height="44" loading="lazy">
+                            <span>#${String(evoSteps.rootId).padStart(3, "0")}</span>
+                          </a>
+                          ${evoSteps.steps.map(s => `
+                            <div style="display:inline-flex; flex-direction:column; align-items:center; padding:0 0.15rem; min-width:3.2rem;">
+                              <span style="font-family:var(--font-num); font-size:0.625rem; color:var(--mark); white-space:normal; max-width:18rem; text-align:center; overflow-wrap:anywhere; font-weight:700; background:rgba(238,21,21,0.08); padding:0.1rem 0.35rem; border-radius:3px; border:1px solid rgba(238,21,21,0.2);">${esc(s.condition)}</span>
+                              <span style="color:var(--ink-soft); font-size:0.875rem; line-height:1; margin-top:0.15rem;">&rarr;</span>
+                            </div>
+                            <a class="evo-link ${s.toId === mon.id ? 'current' : ''}" href="pokemon.html?id=${s.toId}" title="#${s.toId}">
+                              <img src="${defaultArt(s.toId)}" alt="#${s.toId}" width="44" height="44" loading="lazy">
+                              <span>#${String(s.toId).padStart(3, "0")}</span>
+                            </a>
+                          `).join("")}
+                        </div>
+                      `;
+                    }
+                    return `
+                      <div style="display:flex; flex-direction:column; gap:0.4rem; margin-top:0.35rem;">
+                        ${evoSteps.steps.map(s => `
+                          <div style="display:grid; grid-template-columns:max-content minmax(0,1fr) max-content; align-items:center; gap:0.45rem; width:100%;">
+                            <a class="evo-link ${s.fromId === mon.id ? 'current' : ''}" style="justify-self:center;" href="pokemon.html?id=${s.fromId}" title="#${s.fromId}">
+                              <img src="${defaultArt(s.fromId)}" alt="#${s.fromId}" width="38" height="38" loading="lazy">
+                              <span>#${String(s.fromId).padStart(3, "0")}</span>
+                            </a>
+                            <div style="display:inline-flex; flex-direction:column; align-items:center; justify-self:stretch; width:100%; padding:0 0.15rem; min-width:0;">
+                              <span style="font-family:var(--font-num); font-size:0.625rem; color:var(--mark); white-space:normal; max-width:18rem; text-align:center; overflow-wrap:anywhere; font-weight:700; background:rgba(238,21,21,0.08); padding:0.1rem 0.35rem; border-radius:3px; border:1px solid rgba(238,21,21,0.2);">${esc(s.condition)}</span>
+                              <span style="color:var(--ink-soft); font-size:0.875rem; line-height:1; margin-top:0.15rem;">&rarr;</span>
+                            </div>
+                            <a class="evo-link ${s.toId === mon.id ? 'current' : ''}" style="justify-self:center;" href="pokemon.html?id=${s.toId}" title="#${s.toId}">
+                              <img src="${defaultArt(s.toId)}" alt="#${s.toId}" width="38" height="38" loading="lazy">
+                              <span>#${String(s.toId).padStart(3, "0")}</span>
+                            </a>
+                          </div>
+                        `).join("")}
+                      </div>
+                    `;
+                  })()}
+                </div>
+              ` : (evoIds.length > 1 ? `
                 <div>
                   <p class="field-title">Evolution Line</p>
                   <div class="evo-row">
@@ -8579,7 +13480,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     `).join("")}
                   </div>
                 </div>
-              ` : ""}
+              ` : "")}
             </div>
 
             <div class="fields-col">
@@ -8600,30 +13501,462 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
           </div>
 
+          ${spec?.varieties?.length > 1 ? `
+            <details class="forms-comparison" id="forms-comparison" style="margin:1.25rem 0 0.5rem; padding-top:1rem; border-top:1px solid var(--line);">
+              <summary class="field-title" style="margin-bottom:0.75rem; cursor:pointer;">Available Forms &amp; Variations (${spec.varieties.length})</summary>
+              <div id="forms-content"><p class="soft">Open to load form comparison.</p></div>
+            </details>
+          ` : ""}
+
           <div class="fields-bottom">
             <p style="color:var(--ink-soft); font-family:var(--font-num); font-size:0.8125rem; margin:0 0 0.4rem 0; padding:0; border:0;">
               ${region.name} #${region.start}–${region.end}
             </p>
 
             <div class="detail-actions">
-              <span id="belt-ctl">${beltControl(mon)}</span>
-              <button class="btn btn-paper" id="favorite" type="button" aria-pressed="${store.isFavorite(mon.id)}">${store.isFavorite(mon.id) ? "★ Favorited" : "☆ Favorite"}</button>
               <button class="btn btn-paper" id="cry" type="button">Play cry</button>
-              <button class="btn btn-paper" id="shiny" type="button">Show shiny</button>
+              <button class="btn btn-paper" id="shiny" type="button">${isShiny ? "Show default" : "Show shiny"}</button>
               <a class="btn btn-paper" href="battle-lab.html?left=${mon.id}">Battle Lab</a>
               <a class="btn btn-paper" href="lineup.html?a=${mon.id}">Compare in lineup</a>
               <button class="btn btn-paper" id="copy" type="button">Copy link</button>
               <a class="btn btn-paper" href="pokedex.html?region=${region.slug}">Close file</a>
             </div>
+            <p id="copy-feedback" role="status" aria-live="polite" hidden style="margin:0.5rem 0; color:var(--ink-soft);"></p>
+            <label id="copy-fallback-wrap" hidden style="display:block; margin-top:0.5rem;">
+              Copy this link manually
+              <input id="copy-fallback" type="text" readonly value="${esc(location.href)}" aria-label="Link to copy manually" style="display:block; width:100%; margin-top:0.25rem;">
+            </label>
           </div>
         </div>
       </div>
     `;
 
-    const well = document.getElementById("well");
-    well?.addEventListener("click", () => {
-      window.pokeApi.playCry(mon.id);
+    const formsDisclosure = document.getElementById("forms-comparison");
+    formsDisclosure?.addEventListener("toggle", async () => {
+      if (!formsDisclosure.open || formsDisclosure.dataset.loaded === "true" || formsDisclosure.dataset.loading === "true") return;
+      const content = document.getElementById("forms-content");
+      if (!content) return;
+      formsDisclosure.dataset.loading = "true";
+      content.textContent = "Loading form comparison…";
+      const forms = await getForms(spec?.varieties, mon).catch(() => []);
+      content.innerHTML = forms.length > 1
+        ? renderFormsHtml(forms, mon)
+        : `<p class="soft" role="status">Form comparison is unavailable right now.</p>`;
+      formsDisclosure.dataset.loaded = "true";
+      formsDisclosure.dataset.loading = "false";
     });
+
+    if (has3D) {
+      const poke3d = document.getElementById("poke-3d");
+      const artImg = document.getElementById("art");
+      const btn3d = document.getElementById("btn-mode-3d");
+      const btn2d = document.getElementById("btn-mode-2d");
+      const animeBtn = document.getElementById("btn-mode-anime");
+      const legacyBtn = document.getElementById("btn-mode-pixel");
+      const caption = document.getElementById("art-caption");
+      const burst = document.getElementById("heart-burst");
+      const cameraControls = document.getElementById("stage-camera-controls");
+      const baseActions = document.getElementById("stage-base-actions");
+      const actionsBox = document.getElementById("stage-actions");
+      const rotateBtn = document.getElementById("btn-rotate");
+      const zoomInBtn = document.getElementById("btn-zoom-in");
+      const zoomOutBtn = document.getElementById("btn-zoom-out");
+      const feedback = document.getElementById("stage-feedback");
+
+      let animTimer = null;
+      let sourceReady = false;
+      let fallbackAttempted = false;
+      let usingFallback = false;
+      let modelFailed = false;
+      let activeMode = "3d";
+      let animeFailed = false;
+      let legacySpriteFailed = false;
+      let resolvedClips = new Map();
+
+      const isStaticSource = () => mon.id > 151 || usingFallback;
+
+      function syncStageMode(mode = activeMode) {
+        if (mode === "3d" && modelFailed) mode = "2d";
+        if (mode === "anime" && (!animeArtwork || animeFailed || isShiny)) mode = "2d";
+        if (mode === "legacy" && (!hasLegacyAnimatedSprite || legacySpriteFailed || isShiny)) mode = "2d";
+        activeMode = mode;
+        const show3d = mode === "3d" && !isShiny;
+        const showAnime = mode === "anime" && !isShiny;
+        const showLegacy = mode === "legacy" && !isShiny;
+        if (poke3d) poke3d.style.display = show3d ? "block" : "none";
+        if (artImg) artImg.style.display = show3d ? "none" : "block";
+        if (btn3d) {
+          btn3d.classList.toggle("is-active", show3d);
+          btn3d.setAttribute("aria-pressed", String(show3d));
+        }
+        if (btn2d) {
+          btn2d.classList.toggle("is-active", mode === "2d");
+          btn2d.setAttribute("aria-pressed", String(mode === "2d"));
+        }
+        if (animeBtn) {
+          animeBtn.classList.toggle("is-active", showAnime);
+          animeBtn.setAttribute("aria-pressed", String(showAnime));
+          animeBtn.disabled = isShiny || animeFailed || !animeArtwork;
+          animeBtn.textContent = animeFailed || !animeArtwork ? "Anime unavailable" : "Anime 2D";
+          if (isShiny && animeArtwork && !animeFailed) {
+            animeBtn.title = "Turn off Shiny to view official animation artwork";
+            animeBtn.setAttribute("aria-label", "Anime 2D mode unavailable while Shiny is on");
+          } else if (animeFailed) {
+            animeBtn.title = "Official animation artwork could not be loaded for this Pokémon";
+            animeBtn.setAttribute("aria-label", "Anime 2D mode unavailable: official animation artwork could not be loaded");
+          } else if (animeArtwork) {
+            animeBtn.title = "Show verified official animation artwork";
+            animeBtn.setAttribute("aria-label", "Anime 2D mode");
+          }
+        }
+        if (legacyBtn) {
+          legacyBtn.classList.toggle("is-active", showLegacy);
+          legacyBtn.setAttribute("aria-pressed", String(showLegacy));
+          legacyBtn.disabled = isShiny || legacySpriteFailed;
+          legacyBtn.textContent = legacySpriteFailed ? "Pixel unavailable" : "Pixel GIF";
+          if (isShiny && !legacySpriteFailed) {
+            legacyBtn.title = "Turn off Shiny to view the animated pixel sprite";
+            legacyBtn.setAttribute("aria-label", "Pixel GIF mode unavailable while Shiny is on");
+          } else if (legacySpriteFailed) {
+            legacyBtn.title = "The animated pixel sprite could not be loaded for this Pokémon";
+            legacyBtn.setAttribute("aria-label", "Pixel GIF mode unavailable: sprite could not be loaded");
+          } else {
+            legacyBtn.title = "Show Pokémon Black and White animated pixel sprite";
+            legacyBtn.setAttribute("aria-label", "Pixel GIF mode");
+          }
+        }
+        if (cameraControls) cameraControls.style.display = show3d ? "inline-flex" : "none";
+        if (baseActions) baseActions.style.display = "inline-flex";
+        if (actionsBox) actionsBox.style.display = show3d && !isStaticSource() && resolvedClips.size ? "inline-flex" : "none";
+        if (zoomInBtn) zoomInBtn.disabled = !sourceReady || modelFailed;
+        if (zoomOutBtn) zoomOutBtn.disabled = !sourceReady || modelFailed;
+        if (rotateBtn) rotateBtn.disabled = reduce || !sourceReady || modelFailed;
+        if (!show3d) {
+          clearTimeout(animTimer);
+          poke3d?.removeAttribute("auto-rotate");
+          rotateBtn?.setAttribute("aria-pressed", "false");
+          poke3d?.pause?.();
+          if (burst) burst.replaceChildren();
+          if (feedback) feedback.textContent = "";
+        }
+        if (caption) {
+          if (show3d) {
+            caption.textContent = !sourceReady
+              ? (usingFallback ? "Loading static 3D fallback preview…" : mon.id > 151 ? "Loading static 3D preview…" : "Loading 3D model…")
+              : usingFallback ? "Static 3D Preview (fallback) · Drag to rotate · Scroll/pinch to zoom" : mon.id > 151 ? "Static 3D Preview · Drag to rotate · Scroll/pinch to zoom" : "3D Model · Drag to rotate · Scroll/pinch to zoom";
+          } else if (showAnime) {
+            caption.textContent = `Official animation artwork · ${animeSeriesNames[animeArtwork.series] || "Pokémon animation"} · `;
+            const source = document.createElement("a");
+            source.href = animeFilePageUrl(animeArtwork);
+            source.target = "_blank";
+            source.rel = "noopener noreferrer";
+            source.textContent = "Bulbagarden Archives source";
+            caption.append(source);
+          } else if (showLegacy) {
+            caption.textContent = "Pokémon Black and White animated pixel sprite (Gen V)";
+          } else {
+            caption.textContent = isShiny
+              ? "Shiny Form (standard 2D art) · Turn Shiny off to use Anime 2D"
+              : animeFailed && mode === "2d"
+                ? "Official anime art could not be loaded. Showing standard 2D art."
+                : modelFailed ? "Default Form (2D Fallback)" : "Default Form (2D Art)";
+          }
+        }
+      }
+
+      stageModeController = syncStageMode;
+
+      function getMatchingClip(pattern) {
+        const available = poke3d?.availableAnimations || [];
+        return available.find(a => pattern.test(a)) || null;
+      }
+
+      function getIdleClip() {
+        return resolvedClips.get("idle") || null;
+      }
+
+      function playAction(actionName, duration = 2000) {
+        if (!poke3d) return;
+        clearTimeout(animTimer);
+        const available = poke3d.availableAnimations || [];
+        const clipKey = actionName === "pet" || actionName === "react" ? "happy" : actionName;
+        const clip = resolvedClips.get(clipKey);
+        if (!clip || !available.includes(clip) || isStaticSource() || activeMode !== "3d" || isShiny || modelFailed) return;
+        const oneShot = ["attack", "happy", "pet", "react"].includes(actionName);
+        if (clip) {
+          try {
+            poke3d.animationName = clip;
+            poke3d.currentTime = 0;
+            if (oneShot || reduce) poke3d.play({ repetitions: 1 });
+            else poke3d.play();
+          } catch (_) {}
+        }
+        if (oneShot && !reduce) {
+          const idle = getIdleClip();
+          if (!idle) return;
+          animTimer = setTimeout(() => {
+            if (activeMode !== "3d" || isShiny || modelFailed) return;
+            try {
+              poke3d.animationName = idle;
+              poke3d.play();
+            } catch (_) {}
+          }, duration);
+        }
+      }
+
+      function triggerHearts(e) {
+        if (feedback) feedback.textContent = "Reacted ♥";
+        if (reduce) return;
+        if (!burst) return;
+        const rect = burst.getBoundingClientRect();
+        const x = e && e.clientX ? e.clientX - rect.left : rect.width / 2;
+        const y = e && e.clientY ? e.clientY - rect.top : rect.height / 2;
+        for (let i = 0; i < 4; i++) {
+          const h = document.createElement("span");
+          h.className = "heart-particle";
+          h.style.left = `${x + (Math.random() * 60 - 30)}px`;
+          h.style.top = `${y + (Math.random() * 40 - 20)}px`;
+          burst.appendChild(h);
+          setTimeout(() => h.remove(), 1200);
+        }
+      }
+
+      function updateActionButtons() {
+        const actionsBox = document.getElementById("stage-actions");
+        if (!actionsBox || !poke3d) return;
+        const available = poke3d.availableAnimations || [];
+        if (available.length === 0) {
+          actionsBox.replaceChildren();
+          resolvedClips.clear();
+          syncStageMode();
+          return;
+        }
+        if (isStaticSource()) {
+          resolvedClips.clear();
+          actionsBox.replaceChildren();
+          syncStageMode();
+          return;
+        }
+
+        // Standard action set. Match each available clip once and retain its exact full name.
+        const standardActions = [
+          { key: "attack", label: "Attack", pattern: /attack|fight|strike|roar/i },
+          { key: "happy", label: "Pet", pattern: /happy|glad|refresh|notice/i },
+          { key: "walk", label: "Walk", pattern: /walk/i },
+          { key: "run", label: "Run", pattern: /run/i },
+          { key: "sleep", label: "Sleep", pattern: /sleep/i },
+          { key: "idle", label: "Idle", pattern: /idle|wait|stand|loop/i }
+        ];
+
+        const matched = standardActions.filter(act => available.some(a => act.pattern.test(a)));
+        resolvedClips = new Map(matched.map(act => [act.key, getMatchingClip(act.pattern)]));
+        const idle = getIdleClip();
+        if (!reduce && idle && activeMode === "3d" && !isShiny) {
+          try {
+            poke3d.animationName = idle;
+            poke3d.play();
+          } catch (_) {}
+        }
+        if (matched.length > 0) {
+          actionsBox.innerHTML = `<span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft);">Animations</span>${matched.map(act =>
+            `<button class="btn btn-sm btn-paper btn-action" data-action="${act.key}" type="button">${act.label}</button>`
+          ).join("")}`;
+        } else {
+          actionsBox.innerHTML = "";
+        }
+
+        actionsBox.querySelectorAll(".btn-action").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            const act = btn.dataset.action;
+            if (act === "happy") triggerHearts(e);
+            playAction(act, 2000);
+          });
+        });
+        if (btn2d?.classList.contains("is-active")) {
+          actionsBox.style.display = "none";
+        }
+        syncStageMode();
+      }
+
+      function handleModelLoad() {
+        sourceReady = true;
+        modelFailed = false;
+        if (isStaticSource()) {
+          resolvedClips.clear();
+          if (actionsBox) actionsBox.replaceChildren();
+          poke3d?.pause?.();
+        }
+        syncStageMode();
+      }
+
+      poke3d?.addEventListener("load", updateActionButtons);
+      poke3d?.addEventListener("load", handleModelLoad);
+      if (poke3d?.loaded) {
+        updateActionButtons();
+        handleModelLoad();
+      }
+
+      document.getElementById("btn-cry-stage")?.addEventListener("click", () => window.pokeApi.playCry(mon.id));
+      document.getElementById("btn-react-stage")?.addEventListener("click", () => {
+        triggerHearts();
+        playAction("react", 1800);
+      });
+      rotateBtn?.addEventListener("click", () => {
+        const rotating = rotateBtn.getAttribute("aria-pressed") !== "true";
+        rotateBtn.setAttribute("aria-pressed", String(rotating));
+        if (rotating) poke3d?.setAttribute("auto-rotate", "");
+        else poke3d?.removeAttribute("auto-rotate");
+      });
+
+      function adjustZoom(direction) {
+        if (!sourceReady || modelFailed || !poke3d?.getCameraOrbit) return;
+        const { theta, phi, radius } = poke3d.getCameraOrbit();
+        if (![theta, phi, radius].every(Number.isFinite) || radius <= 0) return;
+        const nextRadius = radius * (direction < 0 ? 1.2 : 1 / 1.2);
+        poke3d.cameraOrbit = `${theta}rad ${phi}rad ${nextRadius}m`;
+        poke3d.jumpCameraToGoal?.();
+      }
+      zoomInBtn?.addEventListener("click", () => adjustZoom(1));
+      zoomOutBtn?.addEventListener("click", () => adjustZoom(-1));
+
+      // 切换 3D / 2D
+      btn3d?.addEventListener("click", () => {
+        if (isShiny) setShiny(mon, false);
+        isAnimeArt = false;
+        isLegacySprite = false;
+        if (artImg) {
+          artImg.src = defaultArt(mon.id);
+          artImg.alt = `${mon.name} official artwork`;
+        }
+        if (poke3d) poke3d.style.display = "block";
+        if (artImg) artImg.style.display = "none";
+        btn3d.classList.add("is-active");
+        btn2d?.classList.remove("is-active");
+        const actionsBox = document.getElementById("stage-actions");
+        if (actionsBox) actionsBox.style.display = "inline-flex";
+        syncStageMode("3d");
+      });
+
+      btn2d?.addEventListener("click", () => {
+        isAnimeArt = false;
+        isLegacySprite = false;
+        if (artImg) {
+          artImg.src = isShiny ? shinyArt(mon.id) : defaultArt(mon.id);
+          artImg.alt = `${mon.name} official artwork`;
+        }
+        syncStageMode("2d");
+      });
+
+      animeBtn?.addEventListener("click", () => {
+        if (!animeArtwork || animeFailed || isShiny || !artImg) return;
+        isAnimeArt = true;
+        isLegacySprite = false;
+        artImg.alt = `${mon.name} official animation artwork`;
+        artImg.src = animeArtUrl(animeArtwork);
+        syncStageMode("anime");
+      });
+
+      legacyBtn?.addEventListener("click", () => {
+        if (!hasLegacyAnimatedSprite || legacySpriteFailed || isShiny || !artImg) return;
+        isAnimeArt = false;
+        isLegacySprite = true;
+        artImg.alt = `${mon.name} animated pixel sprite from Pokémon Black and White`;
+        artImg.src = legacyAnimatedSpriteUrl(mon.id);
+        syncStageMode("legacy");
+      });
+
+      artImg?.addEventListener("error", () => {
+        if (isAnimeArt && artImg.src === animeArtUrl(animeArtwork)) {
+          isAnimeArt = false;
+          animeFailed = true;
+          animeBtn.disabled = true;
+          animeBtn.title = "Official animation artwork could not be loaded for this Pokémon";
+          animeBtn.setAttribute("aria-label", "Anime 2D mode unavailable: official animation artwork could not be loaded");
+          animeBtn.setAttribute("aria-pressed", "false");
+          artImg.alt = `${mon.name} official artwork`;
+          artImg.src = defaultArt(mon.id);
+          syncStageMode("2d");
+          return;
+        }
+        if (isLegacySprite && artImg.src === legacyAnimatedSpriteUrl(mon.id)) {
+          isLegacySprite = false;
+          legacySpriteFailed = true;
+          artImg.alt = `${mon.name} official artwork`;
+          artImg.src = defaultArt(mon.id);
+          syncStageMode("2d");
+        }
+      });
+
+      // Fall back once to a static preview for Kanto, then keep the 2D art available.
+      poke3d?.addEventListener("error", () => {
+        sourceReady = false;
+        clearTimeout(animTimer);
+        poke3d.pause?.();
+        poke3d.removeAttribute("auto-rotate");
+        rotateBtn?.setAttribute("aria-pressed", "false");
+        if (burst) burst.replaceChildren();
+        if (feedback) feedback.textContent = "";
+        resolvedClips.clear();
+        if (actionsBox) {
+          actionsBox.replaceChildren();
+          actionsBox.style.display = "none";
+        }
+        if (mon.id <= 151 && !fallbackAttempted) {
+          fallbackAttempted = true;
+          usingFallback = true;
+          poke3d.alt = `${mon.name} Static 3D Preview (fallback)`;
+          poke3d.removeAttribute("autoplay");
+          poke3d.removeAttribute("animation-name");
+          poke3d.src = staticModel3dUrl(mon.id);
+          syncStageMode();
+          return;
+        }
+        modelFailed = true;
+        if (poke3d) poke3d.style.display = "none";
+        if (artImg) artImg.style.display = "block";
+        if (btn3d) btn3d.disabled = true;
+        btn2d?.classList.add("is-active");
+        if (actionsBox) actionsBox.style.display = "none";
+        syncStageMode("2d");
+      });
+
+      syncStageMode();
+    }
+
+    const well = document.getElementById("well");
+    const closeBall = document.getElementById("close-ball");
+    function setBallOpen(isOpen, isUserAction = false) {
+      if (!well || well.disabled) return;
+      const ball = well.closest(".stage-ball");
+      const viewer = document.getElementById("stage-viewer-wrap");
+      ball?.classList.toggle("is-open", isOpen);
+      well.setAttribute("aria-expanded", String(isOpen));
+      well.setAttribute("aria-label", isOpen ? "Close Poké Ball" : "Open Poké Ball");
+      viewer?.toggleAttribute("inert", !isOpen);
+      viewer?.setAttribute("aria-hidden", String(!isOpen));
+      if (closeBall) closeBall.hidden = !isOpen;
+      if (isOpen) {
+        if (isUserAction) window.pokeApi.playCry(mon.id);
+        else window.pokeApi.playCryAuto(mon.id);
+      } else {
+        well.focus();
+      }
+    }
+
+    well?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setBallOpen(well.getAttribute("aria-expanded") !== "true", true);
+    });
+    const ballContainer = well?.closest(".stage-ball");
+    ballContainer?.addEventListener("click", () => {
+      if (!ballContainer.classList.contains("is-open")) {
+        setBallOpen(true, true);
+      }
+    });
+    closeBall?.addEventListener("click", () => setBallOpen(false, true));
+
+    // Keep the plain viewer open; the disabled, hidden well makes this a no-op.
+    setBallOpen(true, false);
 
     bindBeltControl(mon);
 
@@ -8652,12 +13985,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("copy")?.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(location.href);
+        const feedback = document.getElementById("copy-feedback");
+        const fallback = document.getElementById("copy-fallback-wrap");
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = "Page link copied.";
+        }
+        if (fallback) fallback.hidden = true;
         const copyBtn = document.getElementById("copy");
         if (copyBtn) {
           copyBtn.textContent = "Copied!";
           setTimeout(() => { copyBtn.textContent = "Copy link"; }, 1500);
         }
-      } catch (_) {}
+      } catch (_) {
+        const feedback = document.getElementById("copy-feedback");
+        const fallback = document.getElementById("copy-fallback-wrap");
+        const input = document.getElementById("copy-fallback");
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = "Clipboard access is unavailable. Copy the link below.";
+        }
+        if (fallback) fallback.hidden = false;
+        if (input) {
+          input.value = location.href;
+          input.focus();
+          input.select();
+        }
+      }
     });
 
     document.getElementById("retry-sync")?.addEventListener("click", () => {
@@ -8678,12 +14032,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function showMessage(html) {
-    root.innerHTML = `<h1 class="sr-only">Pokémon file</h1><p class="empty" role="alert" style="text-align:center; padding:4rem;">${html}</p>`;
+    root.innerHTML = `
+      <h1 class="sr-only">Pokémon file</h1>
+      <div style="text-align:center; padding:4rem 1rem;">
+        <p class="empty" role="alert" style="margin-bottom:1rem;">${html}</p>
+      </div>`;
   }
 
   // 页面主入口
   if (!key) {
-    showMessage(`No Pokémon file specified. <a class="link-action" href="pokedex.html">Open the dex</a>.`);
+    showMessage(`No Pokémon file specified. <a class="link-action" href="pokedex.html">Return to Dex</a>.`);
     return;
   }
 
@@ -8700,8 +14058,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? window.getSpeciesById && window.getSpeciesById(Number(key))
       : (window.ALL_SPECIES || []).some(s => s.name.toLowerCase() === key.toLowerCase());
     showMessage(known
-      ? `PokeAPI did not answer. <a class="link-action" href="${esc(location.href)}">Open this page again</a>.`
-      : `No file matches that name or number. <a class="link-action" href="pokedex.html">Open the dex</a>.`);
+      ? `Could not load Pokémon file from PokeAPI. <a class="link-action" href="${esc(location.href)}">Retry loading</a> or <a class="link-action" href="pokedex.html">Return to Dex</a>.`
+      : `No Pokémon matches that number or name (valid range is 1 to 1025). <a class="link-action" href="pokedex.html">Return to Dex</a>.`);
     return;
   }
 
@@ -8716,20 +14074,48 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 键盘快捷导航 (左右切换编号，Esc 返回图鉴)
   document.addEventListener("keydown", e => {
-    if (e.metaKey || e.ctrlKey || e.altKey) return;
-    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
-    if (e.key === "ArrowRight" && mon.id < 1025) {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+    const activeDialog = Array.from(document.querySelectorAll("dialog[open], [role='dialog'][aria-modal='true']"))
+      .some(dialog => !dialog.closest("[hidden]"));
+    if (activeDialog) return;
+
+    const region = getRegion(mon.id);
+    if (e.key === "Escape") {
+      e.preventDefault();
+      const openBall = document.querySelector(".stage-ball.is-open");
+      if (openBall && !document.getElementById("well")?.disabled) {
+        const closeButton = document.getElementById("close-ball");
+        if (closeButton && !closeButton.hidden && !closeButton.disabled) {
+          closeButton.click();
+        } else {
+          const well = document.getElementById("well");
+          if (well) {
+            well.disabled = false;
+            well.click();
+          }
+        }
+        return;
+      }
+      location.href = `pokedex.html?region=${region.slug}`;
+      return;
+    }
+
+    const target = e.target;
+    if (target?.isContentEditable || target?.closest?.("input, textarea, select, button, a, [contenteditable='true'], [role='button'], [role='textbox'], [role='combobox']")) return;
+    if (e.key === "ArrowRight" && mon.id < region.end) {
+      e.preventDefault();
       location.href = `pokemon.html?id=${mon.id + 1}`;
     }
-    if (e.key === "ArrowLeft" && mon.id > 1) {
+    if (e.key === "ArrowLeft" && mon.id > region.start) {
+      e.preventDefault();
       location.href = `pokemon.html?id=${mon.id - 1}`;
     }
-    if (e.key === "Escape") {
-      location.href = `pokedex.html?region=${getRegion(mon.id).slug}`;
+    if (e.key.toLowerCase() === "f") {
+      e.preventDefault();
+      document.getElementById("copy")?.click();
     }
   });
 });
-
 ```
 
 ---
@@ -8737,8 +14123,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 ### 3.8 `js/types.js` (属性色票与矩阵交互)
 
 - **文件路径**: `js/types.js`  
-- **代码行数**: 109 行  
-- **文件大小**: 4,925 字节  
+- **代码行数**: 84 行  
+- **文件大小**: 3,116 字节  
 
 ```javascript
 /**
@@ -8764,15 +14150,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. 渲染 18×18 攻击/防御克制表
   if (chartEl) {
-    let html = `<thead><tr><th><span class="sr-only">Attacking type (rows) against defending type (columns)</span></th>${tc.TYPES.map((t, j) => `<th data-c="${j}" title="Defending: ${t}">${t.slice(0, 3)}</th>`).join("")}</tr></thead><tbody>`;
+    let html = `<thead><tr><th><span class="sr-only">Attacking type (rows) against defending type (columns)</span></th>${tc.TYPES.map((t, j) => `<th data-c="${j}" title="Defending: ${t}"><a href="pokedex.html?type=${t}" aria-label="Filter Dex by defending type ${t}">${t.slice(0, 3)}</a></th>`).join("")}</tr></thead><tbody>`;
 
     tc.TYPES.forEach((atk, i) => {
-      html += `<tr data-r="${i}"><th data-r="${i}" title="Attacking: ${atk}">${atk.slice(0, 3)}</th>`;
+      html += `<tr data-r="${i}"><th data-r="${i}" title="Attacking: ${atk}"><a href="pokedex.html?type=${atk}" aria-label="Filter Dex by attacking type ${atk}">${atk.slice(0, 3)}</a></th>`;
       tc.TYPES.forEach((def, j) => {
         const m = tc.getEffectiveness(atk, def);
         const cls = tc.getMultiplierClass(m);
         const lbl = tc.getMultiplierLabel(m);
-        html += `<td class="${cls}" data-r="${i}" data-c="${j}"><a href="pokedex.html?type=${def}" title="${atk} -> ${def}: ${m}×">${lbl}</a></td>`;
+        html += `<td class="${cls}" data-r="${i}" data-c="${j}"><a href="pokedex.html?type=${def}" title="${atk} -> ${def}: ${m}×" aria-label="${atk} attacking ${def}: ${m}× effectiveness">${lbl}</a></td>`;
       });
       html += `</tr>`;
     });
@@ -8781,10 +14167,11 @@ document.addEventListener("DOMContentLoaded", () => {
     chartEl.innerHTML = html;
 
     // 3. 十字聚焦高亮交互 (行与列)
-    chartEl.addEventListener("mouseover", e => {
-      const cell = e.target.closest("[data-r],[data-c]");
-      if (!cell) return;
+    let hoveredCell = null;
+    let focusedCell = null;
+    const highlightCross = cell => {
       chartEl.querySelectorAll(".hi").forEach(n => n.classList.remove("hi"));
+      if (!cell) return;
       const r = cell.dataset.r;
       const c = cell.dataset.c;
       if (r !== undefined) {
@@ -8794,63 +14181,35 @@ document.addEventListener("DOMContentLoaded", () => {
       if (c !== undefined) {
         chartEl.querySelectorAll(`[data-c="${c}"]`).forEach(n => n.classList.add("hi"));
       }
+    };
+
+    chartEl.addEventListener("mouseover", e => {
+      const cell = e.target.closest("[data-r],[data-c]");
+      if (!cell) return;
+      hoveredCell = cell;
+      highlightCross(cell);
+    });
+
+    chartEl.addEventListener("focusin", e => {
+      const cell = e.target.closest("[data-r],[data-c]");
+      if (!cell) return;
+      focusedCell = cell;
+      highlightCross(cell);
+    });
+
+    chartEl.addEventListener("focusout", e => {
+      if (chartEl.contains(e.relatedTarget)) return;
+      focusedCell = null;
+      highlightCross(hoveredCell);
     });
 
     chartEl.addEventListener("mouseleave", () => {
-      chartEl.querySelectorAll(".hi").forEach(n => n.classList.remove("hi"));
+      hoveredCell = null;
+      highlightCross(focusedCell);
     });
 
-    // 4. 点击行/列头触发 Belt vs Type 推演
-    chartEl.addEventListener("click", e => {
-      const th = e.target.closest("th[data-r], th[data-c]");
-      if (th) {
-        const r = th.dataset.r;
-        const c = th.dataset.c;
-        const t = r !== undefined ? tc.TYPES[Number(r)] : tc.TYPES[Number(c)];
-        if (t) beltVsType(t);
-      }
-    });
-  }
-
-  // 5. 点击属性色票触发 Belt vs Type 推演
-  if (wallEl) {
-    wallEl.addEventListener("click", e => {
-      const chip = e.target.closest(".chip");
-      if (!chip) return;
-      e.preventDefault();
-      const t = chip.textContent.trim().toLowerCase();
-      beltVsType(t);
-    });
-  }
-
-  // 计算本站腰带对目标属性的克制与弱点 (Belt vs Type)
-  async function beltVsType(atk) {
-    const box = document.getElementById("belt-vs-box");
-    if (!box) return;
-    const ids = window.store ? window.store.belt() : [];
-    if (!ids.length) {
-      box.innerHTML = `<div class="belt-vs-card"><p class="soft">Belt empty. <a class="link-action" href="pokedex.html">Open the dex</a> to add Pokémon to your belt.</p></div>`;
-      return;
-    }
-    box.innerHTML = `<div class="belt-vs-card"><p class="soft">Checking belt vs ${atk}…</p></div>`;
-    const mons = await Promise.all(ids.map(id => window.pokeApi ? window.pokeApi.getPokemon(id).catch(() => null) : null));
-    const validMons = mons.filter(Boolean);
-    const beats = validMons.filter(m => m.types.some(t => tc.getEffectiveness(t, atk) === 2));
-    const fears = validMons.filter(m => tc.getDefensiveMultiplier(atk, m.types) >= 2);
-    box.innerHTML = `
-      <div class="belt-vs-card">
-        <h3 style="margin:0 0 0.5rem; font-size:1rem; font-family:var(--font-ui); color:var(--ink);">
-          Belt vs <span style="text-transform:capitalize;">${atk}</span>
-          <a class="chip" style="${tc.getTypeStyle ? tc.getTypeStyle(atk) : ''} font-size:0.75rem; margin-left:0.5rem; text-decoration:none;" href="pokedex.html?type=${atk}">Dex: ${atk}</a>
-        </h3>
-        <p style="margin:0.25rem 0; font-size:0.875rem;">Hits ${atk} for 2×: ${beats.map(m => `<a href="pokemon.html?id=${m.id}" style="color:var(--ink); font-weight:700;">${m.name}</a>`).join(", ") || "None"}</p>
-        <p style="margin:0.25rem 0; font-size:0.875rem; color:var(--ink-soft);">Takes 2× or more from ${atk}: ${fears.map(m => `<a href="pokemon.html?id=${m.id}" style="color:var(--ink); font-weight:700;">${m.name}</a>`).join(", ") || "None"}</p>
-      </div>
-    `;
-    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 });
-
 ```
 
 ---
@@ -8858,7 +14217,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.9 `js/team.js` (腰带存储与拖拽排序)
 
 - **文件路径**: `js/team.js`  
-- **代码行数**: 297 行  
+- **代码行数**: 298 行  
 - **文件大小**: 10,585 字节  
 
 ```javascript
@@ -9159,7 +14518,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
-
 ```
 
 ---
@@ -9167,8 +14525,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.10 `js/lineup.js` (弱点缺口计算与两只对比)
 
 - **文件路径**: `js/lineup.js`  
-- **代码行数**: 336 行  
-- **文件大小**: 12,737 字节  
+- **代码行数**: 420 行  
+- **文件大小**: 16,919 字节  
 
 ```javascript
 /**
@@ -9268,9 +14626,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const msg = requested
         ? "No data for that Pokémon. Check the name or number, or try again if PokeAPI is down."
         : "Empty side. Search above or tap a Pokémon on the belt.";
+      const errorId = `${side}-search-error`;
       return `
-        <input data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" />
-        <p class="lineup-empty" ${requested ? 'role="alert"' : ""} style="text-align:center; padding: 2rem 0;">${msg}</p>
+        <input id="${side}-search" data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" ${requested ? `aria-invalid="true" aria-describedby="${errorId}"` : ""} />
+        <p class="lineup-search-error" id="${errorId}" role="status" aria-live="polite" ${requested ? "" : "hidden"} style="color:var(--ball); margin:0.35rem 0;">${requested ? msg : ""}</p>
       `;
     }
 
@@ -9286,7 +14645,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const typesText = (mon.types || []).join(" · ");
 
     return `
-      <input data-side="${side}" value="${mon.name} (#${mon.id})" aria-label="${side} Pokemon: ${mon.name}" />
+      <input id="${side}-search" data-side="${side}" value="${mon.name} (#${mon.id})" aria-label="${side} Pokemon: ${mon.name}" />
+      <p class="lineup-search-error" id="${side}-search-error" role="status" aria-live="polite" hidden style="color:var(--ball); margin:0.35rem 0;"></p>
       <img src="${mon.art}" alt="${mon.name} 3D Model" />
       <p class="types-tag">${typesText}</p>
       <div class="lineup-stats">
@@ -9309,6 +14669,44 @@ document.addEventListener("DOMContentLoaded", () => {
         }).join("")}
       </div>
     `;
+  }
+
+  function clearSearchError(input) {
+    const error = document.getElementById(`${input.dataset.side}-search-error`);
+    input.removeAttribute("aria-invalid");
+    input.removeAttribute("aria-describedby");
+    if (error) {
+      error.hidden = true;
+      error.textContent = "";
+    }
+  }
+
+  function showSearchError(input, message) {
+    const error = document.getElementById(`${input.dataset.side}-search-error`);
+    input.setAttribute("aria-invalid", "true");
+    input.setAttribute("aria-describedby", `${input.dataset.side}-search-error`);
+    if (error) {
+      error.hidden = false;
+      error.textContent = message;
+    }
+  }
+
+  function hasOpenDialog() {
+    const overlay = document.getElementById("search-overlay");
+    if (overlay && !overlay.hidden) return true;
+    return Array.from(document.querySelectorAll("dialog[open], [role='dialog'][aria-modal='true']"))
+      .some(dialog => !dialog.closest("[hidden]"));
+  }
+
+  function isControlTarget(target) {
+    return Boolean(target?.isContentEditable || target?.closest?.("input, textarea, select, button, a, [contenteditable='true'], [role='button'], [role='textbox'], [role='combobox']"));
+  }
+
+  function isEditableTarget(target) {
+    const field = target?.closest?.("input, textarea, select, [contenteditable='true'], [role='textbox'], [role='combobox']");
+    if (!field || field.disabled || field.readOnly) return false;
+    if (field.tagName !== "INPUT") return true;
+    return !["button", "submit", "reset", "checkbox", "radio", "hidden", "range", "color", "file", "image"].includes((field.type || "text").toLowerCase());
   }
 
   // 全量渲染主函数
@@ -9335,7 +14733,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const validBelt = beltMons.filter(Boolean);
       if (validBelt.length < beltIds.length && emptyBox) {
         emptyBox.hidden = false;
-        emptyBox.textContent = "Some belt Pokémon could not load. Coverage below only counts the ones that did.";
+        if (!validBelt.length) {
+          emptyBox.innerHTML = `Could not load data for belt Pokémon. <button class="btn btn-paper" id="belt-retry" type="button" style="padding:0.25rem 0.5rem; font-size:0.8125rem; margin-left:0.5rem;">Retry loading</button> or <a class="link-action" href="pokedex.html">pick replacements in Dex</a>.`;
+        } else {
+          emptyBox.innerHTML = `Could not load data for some belt members. <button class="btn btn-paper" id="belt-retry" type="button" style="padding:0.25rem 0.5rem; font-size:0.8125rem; margin-left:0.5rem;">Retry</button>. Analysis below only includes loaded Pokémon.`;
+        }
+        document.getElementById("belt-retry")?.addEventListener("click", () => render());
       }
 
       // 渲染腰带缩略图
@@ -9444,10 +14847,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. 左右两侧搜索输入 (Enter 确认)
     document.querySelector(".lineup-pair")?.addEventListener("keydown", async e => {
-      if (e.key !== "Enter") return;
+      if (e.defaultPrevented || e.key !== "Enter" || hasOpenDialog()) return;
       const targetInput = e.target;
       const side = targetInput.dataset.side;
-      if (!side) return;
+      if (!side || targetInput.tagName !== "INPUT") return;
 
       const val = targetInput.value.replace(/^#/, "").replace(/\(.*?\)/, "").trim();
       if (!val) return;
@@ -9458,9 +14861,12 @@ document.addEventListener("DOMContentLoaded", () => {
         else rightId = found.id;
         render();
       } else {
-        targetInput.style.borderColor = "var(--ball)";
-        setTimeout(() => { targetInput.style.borderColor = ""; }, 1200);
+        showSearchError(targetInput, "No Pokémon was found. Check the name or number, or retry if data is temporarily unavailable.");
       }
+    });
+
+    document.querySelector(".lineup-pair")?.addEventListener("input", e => {
+      if (e.target?.dataset?.side) clearSearchError(e.target);
     });
 
     // 3. 交换两侧
@@ -9486,12 +14892,32 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("copy")?.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(location.href);
+        const feedback = document.getElementById("copy-feedback");
+        const fallback = document.getElementById("copy-fallback");
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = "Lineup link copied.";
+        }
+        if (fallback) fallback.hidden = true;
         const copyBtn = document.getElementById("copy");
         if (copyBtn) {
           copyBtn.textContent = "Copied!";
           setTimeout(() => { copyBtn.textContent = "Copy link"; }, 1500);
         }
-      } catch (_) {}
+      } catch (_) {
+        const feedback = document.getElementById("copy-feedback");
+        const fallback = document.getElementById("copy-fallback");
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = "Clipboard access is unavailable. Copy the link below.";
+        }
+        if (fallback) {
+          fallback.value = location.href;
+          fallback.hidden = false;
+          fallback.focus();
+          fallback.select();
+        }
+      }
     });
 
     // 6. 点击对比攻击属性
@@ -9503,11 +14929,25 @@ document.addEventListener("DOMContentLoaded", () => {
       renderVerdict();
     });
 
+    document.addEventListener("keydown", e => {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey || hasOpenDialog()) return;
+      if (e.key === "/") {
+        if (isEditableTarget(e.target)) return;
+        const input = document.querySelector('.lineup-pair input[data-side="left"]');
+        if (!input) return;
+        e.preventDefault();
+        input.focus();
+      } else if (e.key.toLowerCase() === "f") {
+        if (isControlTarget(e.target)) return;
+        e.preventDefault();
+        document.getElementById("copy")?.click();
+      }
+    }, true);
+
     // 初始化渲染
     render();
   });
 })();
-
 ```
 
 ---
@@ -9515,8 +14955,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.11 `js/moves.js` (招式库检索与分页渲染)
 
 - **文件路径**: `js/moves.js`  
-- **代码行数**: 154 行  
-- **文件大小**: 5,933 字节  
+- **代码行数**: 224 行  
+- **文件大小**: 8,635 字节  
 
 ```javascript
 document.addEventListener("DOMContentLoaded", async () => {
@@ -9527,8 +14967,55 @@ document.addEventListener("DOMContentLoaded", async () => {
   const statusEl = document.getElementById("move-status");
   const paginationEl = document.getElementById("move-pagination");
   const tc = window.TYPES_CHART;
+  statusEl?.setAttribute("aria-live", "polite");
+
+  function setStatus(message, retryAction = null) {
+    statusEl.replaceChildren(document.createTextNode(message));
+    if (!retryAction) return;
+    const retry = document.createElement("button");
+    retry.className = "btn btn-paper";
+    retry.type = "button";
+    retry.textContent = "Retry";
+    retry.addEventListener("click", retryAction, { once: true });
+    statusEl.append(" ", retry);
+  }
 
   const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
+  const htmlEntities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => htmlEntities[char]);
+  const filterMoveCache = new Map();
+  function getMoveNames(resource, name) {
+    const key = `${resource}/${name}`;
+    if (!filterMoveCache.has(key)) {
+      const request = fetch(`https://pokeapi.co/api/v2/${resource}/${encodeURIComponent(name)}`)
+        .then(resp => {
+          if (!resp.ok) throw new Error("Move filter unavailable");
+          return resp.json();
+        })
+        .then(data => new Set((data.moves || []).map(move => move.name)))
+        .catch(err => {
+          filterMoveCache.delete(key);
+          throw err;
+        });
+      filterMoveCache.set(key, request);
+    }
+    return filterMoveCache.get(key);
+  }
+  const categoryIcons = {
+    physical: '<svg viewBox="0 0 24 24"><path d="M5 19 19 5M11 5h8v8"/></svg>',
+    special: '<svg viewBox="0 0 24 24"><path d="m12 2 2.5 7.2L22 12l-7.5 2.8L12 22l-2.5-7.2L2 12l7.5-2.8L12 2Z"/></svg>',
+    status: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>'
+  };
+  const statMeter = (label, value, max, suffix = "") => {
+    const percent = Number.isFinite(value) ? Math.min(100, Math.max(0, value) / max * 100) : 0;
+    const displayValue = value == null ? "—" : escapeHTML(value);
+    return `
+      <div class="move-meter">
+        <div class="move-meter-label"><span>${label}</span><strong>${displayValue}${value == null ? "" : suffix}</strong></div>
+        <div class="move-meter-track" aria-hidden="true"><span style="width:${percent}%"></span></div>
+      </div>
+    `;
+  };
 
   const TYPES = [
     "normal", "fire", "water", "grass", "electric", "ice",
@@ -9545,35 +15032,50 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let allMoveEntries = [];
   let currentPage = 1;
-  const PAGE_SIZE = 36;
+  let renderRevision = 0;
+  const PAGE_SIZE = 18;
 
   try {
     const listResp = await fetch("https://pokeapi.co/api/v2/move?limit=950");
     if (!listResp.ok) throw new Error("Failed to load moves list");
     const data = await listResp.json();
     allMoveEntries = data.results || [];
-    statusEl.textContent = `Indexed ${allMoveEntries.length} moves.`;
 
     const urlQ = new URLSearchParams(location.search).get("q");
     if (urlQ && search) search.value = urlQ;
   } catch (err) {
-    statusEl.textContent = "Unable to load moves list. Please check your network.";
+    setStatus("Moves unavailable.", () => location.reload());
     return;
   }
 
   async function render() {
-    statusEl.textContent = "Filtering and loading move details...";
+    const revision = ++renderRevision;
+    setStatus("Loading…");
     const q = search.value.trim().toLowerCase();
     const selectedType = typeSelect.value;
     const selectedCat = categorySelect.value;
 
-    let matched = allMoveEntries.filter(m => {
-      if (q && !m.name.includes(q)) return false;
-      return true;
-    });
+    let typeMoveNames = null;
+    let categoryMoveNames = null;
+    try {
+      [typeMoveNames, categoryMoveNames] = await Promise.all([
+        selectedType ? getMoveNames("type", selectedType) : null,
+        selectedCat ? getMoveNames("move-damage-class", selectedCat) : null
+      ]);
+    } catch (_) {
+      if (revision !== renderRevision) return;
+      setStatus("Filters unavailable.", () => render());
+      return;
+    }
+    if (revision !== renderRevision) return;
 
-    const totalMatched = matched.length;
-    const totalPages = Math.ceil(totalMatched / PAGE_SIZE) || 1;
+    const matched = allMoveEntries.filter(m =>
+      (!q || m.name.includes(q)) &&
+      (!typeMoveNames || typeMoveNames.has(m.name)) &&
+      (!categoryMoveNames || categoryMoveNames.has(m.name))
+    );
+
+    const totalPages = Math.ceil(matched.length / PAGE_SIZE) || 1;
     if (currentPage > totalPages) currentPage = 1;
 
     const pageSlice = matched.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
@@ -9582,54 +15084,61 @@ document.addEventListener("DOMContentLoaded", async () => {
     const moveDetails = await Promise.all(
       pageSlice.map(item => window.pokeApi.getMove(item.name))
     );
+    if (revision !== renderRevision) return;
+    const successCount = moveDetails.filter(Boolean).length;
+    const failedCount = moveDetails.length - successCount;
 
-    // Filter by type / category if selected
-    let displayed = moveDetails.filter(m => {
+    const displayed = moveDetails.filter(m => {
       if (!m) return false;
       if (selectedType && m.type !== selectedType) return false;
       if (selectedCat && m.category !== selectedCat) return false;
       return true;
     });
 
-    statusEl.textContent = `Showing ${displayed.length} of ${totalMatched} moves (Page ${currentPage}/${totalPages}).`;
+    if (failedCount === pageSlice.length && failedCount > 0) {
+      setStatus(`All ${pageSlice.length} move details on this page failed to load. ${matched.length} moves match.`, () => render());
+    } else if (failedCount > 0) {
+      setStatus(`${displayed.length} shown; ${successCount} loaded; ${failedCount} failed. ${matched.length} moves match.`, () => render());
+    } else {
+      setStatus(displayed.length ? `${displayed.length} shown` : "No matches");
+    }
 
-    grid.innerHTML = displayed.map(m => `
-      <article class="dex-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:12rem;">
-        <div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-            <span class="id-badge">#${String(m.id).padStart(3, "0")}</span>
-            <span class="chip" style="${typeStyle(m.type)} font-size:0.75rem;">${m.type}</span>
+    grid.innerHTML = displayed.map(m => {
+      const category = m.category || "status";
+      const icon = categoryIcons[category] || categoryIcons.status;
+      const categoryText = escapeHTML(category);
+      const description = escapeHTML(m.description ? m.description.replace(/\n/g, " ") : "No description available.");
+      return `
+        <article class="dex-card move-card">
+          <div class="move-visual" data-category="${categoryText}" style="${typeStyle(m.type)}" aria-hidden="true">
+            <span class="move-visual-emblem">${icon}</span>
+            <span class="move-visual-label">${categoryText}</span>
           </div>
-
-          <h3 style="font-family:var(--font-ui); font-size:1.1rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.35rem;">
-            ${m.name.replace(/-/g, " ")}
-          </h3>
-
-          <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem; font-size:0.75rem;">
-            <span style="background:var(--sky-deep); color:var(--ink-soft); padding:0.1rem 0.35rem; border-radius:2px; text-transform:capitalize; border:1px solid var(--line);">
-              ${m.category || "status"}
-            </span>
+          <div class="move-card-body">
+            <div class="move-card-heading">
+              <h2 class="move-name">${escapeHTML(m.name.replace(/-/g, " "))}</h2>
+              <span class="chip move-type" style="${typeStyle(m.type)}">${escapeHTML(m.type)}</span>
+            </div>
+            <div class="move-stats">
+              ${statMeter("PWR", m.power, 250)}
+              ${statMeter("ACC", m.accuracy, 100, "%")}
+              ${statMeter("PP", m.pp, 40)}
+            </div>
           </div>
-
-          <p class="soft" style="font-size:0.8125rem; line-height:1.4; color:var(--ink-soft); margin-bottom:0.5rem;">
-            ${m.description ? m.description.replace(/\n/g, " ") : "No description available."}
-          </p>
-        </div>
-
-        <div style="font-family:var(--font-num); font-size:0.8125rem; color:var(--ink); padding-top:0.4rem; border-top:1px solid var(--line); display:flex; justify-content:space-between;">
-          <span>PWR: <strong>${m.power ?? "—"}</strong></span>
-          <span>ACC: <strong>${m.accuracy ? m.accuracy + "%" : "—"}</strong></span>
-          <span>PP: <strong>${m.pp ?? "—"}</strong></span>
-        </div>
-      </article>
-    `).join("");
+          <details class="move-details">
+            <summary>Details</summary>
+            <p>${description}</p>
+          </details>
+        </article>
+      `;
+    }).join("");
 
     // Render pagination buttons
     if (totalPages > 1) {
       paginationEl.innerHTML = `
-        <div style="display:inline-flex; gap:0.5rem; align-items:center;">
+        <div class="move-pagination-inner">
           <button class="btn btn-paper" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
-          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Page ${currentPage} of ${totalPages}</span>
+          <span>Page ${currentPage} / ${totalPages}</span>
           <button class="btn btn-paper" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
         </div>
       `;
@@ -9637,14 +15146,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentPage > 1) {
           currentPage--;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
       document.getElementById("next-page")?.addEventListener("click", () => {
         if (currentPage < totalPages) {
           currentPage++;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
     } else {
@@ -9673,7 +15182,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   render();
 });
-
 ```
 
 ---
@@ -9681,8 +15189,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 ### 3.12 `js/abilities.js` (特性库检索与宝可梦索引)
 
 - **文件路径**: `js/abilities.js`  
-- **代码行数**: 133 行  
-- **文件大小**: 5,316 字节  
+- **代码行数**: 187 行  
+- **文件大小**: 7,584 字节  
 
 ```javascript
 document.addEventListener("DOMContentLoaded", async () => {
@@ -9690,22 +15198,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   const search = document.getElementById("ability-search");
   const statusEl = document.getElementById("ability-status");
   const paginationEl = document.getElementById("ability-pagination");
+  statusEl.setAttribute("aria-live", "polite");
+  const htmlEntities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => htmlEntities[char]);
+
+  function setStatus(message, retryAction = null) {
+    statusEl.replaceChildren(document.createTextNode(message));
+    if (!retryAction) return;
+    const retry = document.createElement("button");
+    retry.className = "btn btn-paper";
+    retry.type = "button";
+    retry.textContent = "Retry";
+    retry.addEventListener("click", retryAction, { once: true });
+    statusEl.append(" ", retry);
+  }
 
   let allAbilities = [];
   let currentPage = 1;
-  const PAGE_SIZE = 24;
+  let renderRevision = 0;
+  const PAGE_SIZE = 18;
 
   try {
     const listResp = await fetch("https://pokeapi.co/api/v2/ability?limit=400");
     if (!listResp.ok) throw new Error("Failed to load abilities");
     const data = await listResp.json();
     allAbilities = data.results || [];
-    statusEl.textContent = `Indexed ${allAbilities.length} abilities.`;
 
     const urlQ = new URLSearchParams(location.search).get("q");
     if (urlQ && search) search.value = urlQ;
   } catch (err) {
-    statusEl.textContent = "Unable to load abilities list. Please check your network.";
+    setStatus("Abilities unavailable.", () => location.reload());
     return;
   }
 
@@ -9715,7 +15237,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function render() {
-    statusEl.textContent = "Filtering and loading ability details...";
+    const revision = ++renderRevision;
+    setStatus("Loading…");
     const q = search.value.trim().toLowerCase();
 
     const matched = allAbilities.filter(a => {
@@ -9732,48 +15255,86 @@ document.addEventListener("DOMContentLoaded", async () => {
     const details = await Promise.all(
       pageSlice.map(item => window.pokeApi.getAbility(item.name))
     );
+    if (revision !== renderRevision) return;
 
-    statusEl.textContent = `Showing ${details.filter(Boolean).length} of ${totalMatched} abilities (Page ${currentPage}/${totalPages}).`;
+    const availableDetails = details.filter(Boolean);
+    const successCount = availableDetails.length;
+    const failedCount = details.length - successCount;
+    if (failedCount === details.length && failedCount > 0) {
+      setStatus(`All ${details.length} ability details on this page failed to load. ${totalMatched} abilities match.`, () => render());
+    } else if (failedCount > 0) {
+      setStatus(`${availableDetails.length} shown; ${successCount} loaded; ${failedCount} failed. ${totalMatched} abilities match.`, () => render());
+    } else {
+      setStatus(availableDetails.length ? `${availableDetails.length} shown` : "No matches");
+    }
 
-    grid.innerHTML = details.filter(Boolean).map(a => {
+    grid.innerHTML = availableDetails.map(a => {
       const pokeList = a.pokemon || [];
-      const previewList = pokeList.slice(0, 12);
-      const remaining = pokeList.length - previewList.length;
+      const previewList = pokeList.slice(0, 3);
+      const remainingList = pokeList.slice(previewList.length);
+      const description = a.description ? a.description.replace(/\n/g, " ") : "No description available.";
+      const excerptLimit = 132;
+      const excerptEnd = description.length > excerptLimit
+        ? description.lastIndexOf(" ", excerptLimit)
+        : description.length;
+      const excerpt = description.length > excerptLimit
+        ? `${description.slice(0, excerptEnd > 0 ? excerptEnd : excerptLimit).trim()}…`
+        : description;
+      const safeDescription = escapeHTML(description);
+      const safeExcerpt = escapeHTML(excerpt);
+      const visualPokemon = pokeList.find(p => {
+        const id = Number(getPokemonIdFromUrl(p.url));
+        return id > 0 && id <= 1025;
+      });
+      const visualId = visualPokemon ? getPokemonIdFromUrl(visualPokemon.url) : null;
+      const specimenLink = p => {
+        const pId = getPokemonIdFromUrl(p.url);
+        const href = pId ? `pokemon.html?id=${pId}` : `pokemon.html?name=${encodeURIComponent(p.name)}`;
+        return `
+          <a href="${escapeHTML(href)}"
+             class="ability-specimen-chip"
+             title="${escapeHTML(p.name)}">
+            ${escapeHTML(p.name.replace(/-/g, " "))}
+          </a>
+        `;
+      };
 
       return `
-        <article class="dex-card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:14rem;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-              <span class="id-badge">#${String(a.id).padStart(3, "0")}</span>
-              <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.75rem;">${pokeList.length} Pokémon</span>
-            </div>
-
-            <h3 style="font-family:var(--font-ui); font-size:1.15rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.4rem;">
-              ${a.name.replace(/-/g, " ")}
-            </h3>
-
-            <p class="soft" style="font-size:0.8125rem; line-height:1.45; color:var(--ink-soft); margin-bottom:0.75rem;">
-              ${a.description ? a.description.replace(/\n/g, " ") : "No description available."}
-            </p>
+        <article class="dex-card ability-card">
+          <div class="ability-visual" aria-hidden="true">
+            ${visualId
+              ? `<img class="ability-visual-pokemon" src="assets/thumbs/${visualId}.webp" alt="" loading="lazy" decoding="async">`
+              : `<span class="ability-visual-placeholder">✦</span>`}
+            <span class="ability-visual-label">Specimen</span>
           </div>
-
-          <div>
-            <p style="font-family:var(--font-ui); font-size:0.75rem; font-weight:700; color:var(--ink); margin:0 0 0.35rem; text-transform:uppercase; letter-spacing:0.04em;">
-              Specimens
-            </p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
-              ${previewList.map(p => {
-                const pId = getPokemonIdFromUrl(p.url);
-                return `
-                  <a href="pokemon.html?${pId ? 'id=' + pId : 'name=' + p.name}"
-                     class="chip"
-                     style="font-size:0.75rem; text-decoration:none; text-transform:capitalize; padding:0.15rem 0.4rem;"
-                     title="${p.name}">
-                    ${p.name.replace(/-/g, " ")}
-                  </a>
-                `;
-              }).join("")}
-              ${remaining > 0 ? `<span style="font-size:0.75rem; color:var(--ink-soft); align-self:center;">+${remaining} more</span>` : ""}
+          <div class="ability-card-body">
+            <div class="ability-meta">
+              <span class="id-badge">#${escapeHTML(String(a.id).padStart(3, "0"))}</span>
+              <span class="ability-count">${pokeList.length} Pokémon</span>
+            </div>
+            <h2 class="ability-name">${escapeHTML(a.name.replace(/-/g, " "))}</h2>
+            <p class="ability-effect">${safeExcerpt}</p>
+            ${description.length > excerpt.length ? `
+              <details class="ability-full-effect">
+                <summary>Full effect</summary>
+                <p>${safeDescription}</p>
+              </details>
+            ` : ""}
+            <div class="ability-roster">
+              <p class="ability-roster-heading">Specimens</p>
+              <div class="ability-specimen-list">
+                ${previewList.length
+                  ? previewList.map(specimenLink).join("")
+                  : `<span class="ability-no-specimens">No linked Pokémon</span>`}
+              </div>
+              ${remainingList.length ? `
+                <details class="ability-more-specimens">
+                  <summary>${remainingList.length} more Pokémon</summary>
+                  <div class="ability-specimen-list ability-specimen-list-extra">
+                    ${remainingList.map(specimenLink).join("")}
+                  </div>
+                </details>
+              ` : ""}
             </div>
           </div>
         </article>
@@ -9782,9 +15343,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (totalPages > 1) {
       paginationEl.innerHTML = `
-        <div style="display:inline-flex; gap:0.5rem; align-items:center;">
+        <div class="ability-pagination-inner">
           <button class="btn btn-paper" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
-          <span style="font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Page ${currentPage} of ${totalPages}</span>
+          <span>Page ${currentPage} of ${totalPages}</span>
           <button class="btn btn-paper" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
         </div>
       `;
@@ -9792,14 +15353,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentPage > 1) {
           currentPage--;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
       document.getElementById("next-page")?.addEventListener("click", () => {
         if (currentPage < totalPages) {
           currentPage++;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
     } else {
@@ -9818,7 +15379,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   render();
 });
-
 ```
 
 ---
@@ -9826,14 +15386,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 ### 3.13 `js/collection.js` (图鉴与地区收集度统计)
 
 - **文件路径**: `js/collection.js`  
-- **代码行数**: 172 行  
-- **文件大小**: 5,669 字节  
+- **代码行数**: 269 行  
+- **文件大小**: 10,476 字节  
 
 ```javascript
 document.addEventListener("DOMContentLoaded", () => {
   const seen = window.store?.seen?.() || [];
   const favorites = window.store?.favoriteIds?.() || [];
   const belt = window.store?.belt?.() || [];
+  const seenTypes = new Set(seen.flatMap(id => window.getSpeciesById?.(id)?.types || []));
 
   const seenCount = seen.length;
 
@@ -9857,109 +15418,200 @@ document.addEventListener("DOMContentLoaded", () => {
   const regionRoot = document.getElementById("region-progress");
   if (!regionRoot || !window.REGIONS) return;
 
-  regionRoot.innerHTML = window.REGIONS.map(region => {
+  const REGION_CODES = ["KTO-01", "JTO-02", "HOE-03", "SIN-04", "UNV-05", "KAL-06", "ALO-07", "GAL-08", "HIS-09", "PAL-10"];
+
+  regionRoot.innerHTML = window.REGIONS.map((region, idx) => {
     const count = seen.filter(id => id >= region.start && id <= region.end).length;
     const percentage = region.count ? Math.min(100, (count / region.count) * 100).toFixed(1) : 0;
+    const code = REGION_CODES[idx] || `REG-${idx + 1}`;
+    const mascotUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${region.preview}.png`;
+    const spec = window.getSpeciesById ? window.getSpeciesById(region.preview) : null;
+    const mascotName = spec ? spec.name : region.name;
 
     return `
       <article class="collection-region">
-        <div class="region-head">
-          <a href="pokedex.html?region=${region.slug}" style="color:var(--ink); font-weight:700; text-decoration:none;">${region.name}</a>
-          <span style="color:var(--mark); font-variant-numeric: tabular-nums;">
-            ${count} / ${region.count} (${percentage}%)
-          </span>
+        <div class="region-card-top">
+          <div>
+            <span class="region-meta-tag">${code}</span>
+            <h3 class="region-title"><a href="pokedex.html?region=${region.slug}" class="region-title-link">${region.name}</a></h3>
+          </div>
+          <img src="${mascotUrl}" alt="${mascotName}" class="region-mascot-art" loading="lazy" width="50" height="50">
         </div>
-        <div class="progress">
+        <div class="region-data-row">
+          <span class="region-stat">${count} / ${region.count}</span>
+          <span class="region-rate">${percentage}% LOGGED</span>
+        </div>
+        <div class="progress calibrated-gauge" style="height:6px;">
           <div style="width:${percentage}%"></div>
         </div>
       </article>
     `;
   }).join("");
 
-  // Achievements Badge System
+  // Belt Expedition Squad Showcase
+  const beltGrid = document.getElementById("belt-roster-grid");
+  if (beltGrid) {
+    const beltCells = [];
+    for (let i = 0; i < 6; i++) {
+      const id = belt[i];
+      if (id) {
+        const spec = window.getSpeciesById ? window.getSpeciesById(id) : null;
+        const name = spec ? spec.name : `#${id}`;
+        const types = spec && spec.types ? spec.types.join(" · ") : "";
+        const art = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+        beltCells.push(`
+          <a href="pokemon.html?id=${id}" class="belt-specimen-card" title="Open #${id} ${name}">
+            <span class="belt-slot-tag">SLOT 0${i + 1}</span>
+            <div class="belt-art-wrap">
+              <img src="${art}" alt="${name}" loading="lazy" class="belt-art">
+            </div>
+            <strong class="belt-specimen-name">${name}</strong>
+            <span class="belt-specimen-num">#${String(id).padStart(3, "0")}</span>
+            <span class="belt-specimen-type">${types}</span>
+          </a>
+        `);
+      } else {
+        beltCells.push(`
+          <a href="pokedex.html" class="belt-specimen-card empty-slot" title="Deploy specimen from Dex">
+            <span class="belt-slot-tag">SLOT 0${i + 1}</span>
+            <div class="belt-art-wrap">
+              <img src="assets/pokeball.png" alt="" class="empty-ball-ghost">
+            </div>
+            <strong class="belt-empty-title">+ Empty</strong>
+            <span class="belt-empty-sub">Open Dex</span>
+          </a>
+        `);
+      }
+    }
+    beltGrid.innerHTML = beltCells.join("");
+  }
+
+  // Priority Field Favorites Gallery
+  const favGrid = document.getElementById("favorites-specimen-gallery");
+  const favIndicator = document.getElementById("fav-count-indicator");
+  if (favGrid) {
+    if (favIndicator) {
+      favIndicator.textContent = `${favorites.length} PINNED`;
+    }
+    if (favorites.length === 0) {
+      favGrid.innerHTML = `
+        <div class="favorites-empty-shelf">
+          <div class="empty-shelf-ghosts">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png" alt="" class="ghost-mascot">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/6.png" alt="" class="ghost-mascot">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/150.png" alt="" class="ghost-mascot">
+          </div>
+          <div class="empty-shelf-copy">
+            <strong>No Priority Specimens Flagged</strong>
+            <p>Star key specimens in the Pokédex to pin them onto this master research board.</p>
+          </div>
+          <a href="pokedex.html" class="btn btn-primary" style="text-decoration:none;">Open Dex Archive</a>
+        </div>
+      `;
+    } else {
+      favGrid.innerHTML = favorites.map(id => {
+        const spec = window.getSpeciesById ? window.getSpeciesById(id) : null;
+        const name = spec ? spec.name : `#${id}`;
+        const art = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+        return `
+          <a href="pokemon.html?id=${id}" class="fav-specimen-card" title="Open #${id} ${name}">
+            <div class="fav-art-wrap">
+              <img src="${art}" alt="${name}" loading="lazy" class="fav-art">
+            </div>
+            <strong class="fav-specimen-name">${name}</strong>
+            <span class="fav-specimen-num">#${String(id).padStart(3, "0")}</span>
+          </a>
+        `;
+      }).join("");
+    }
+  }
+
+  // Field Proficiency Seals System (Dossier Technical Seals)
   const BADGES = [
     {
       id: "first_seen",
+      code: "SEAL-01",
       name: "First Contact",
-      icon: "👁",
-      desc: "Register your first specimen in the seen archive.",
+      desc: "Log first observed specimen in the archive ledger.",
       test: (c) => c.seen >= 1
     },
     {
       id: "ten_seen",
-      name: "Curious Researcher",
-      icon: "🔬",
-      desc: "Observe and register 10 unique Pokémon specimens.",
+      code: "SEAL-10",
+      name: "Field Surveyor",
+      desc: "Catalog 10 distinct specimens in wild observation.",
       test: (c) => c.seen >= 10
     },
     {
       id: "fifty_seen",
-      name: "Field Biologist",
-      icon: "📋",
-      desc: "Expand your catalog to 50 observed specimens.",
+      code: "SEAL-50",
+      name: "Ecology Biologist",
+      desc: "Record 50 specimen entries into the archive ledger.",
       test: (c) => c.seen >= 50
     },
     {
       id: "hundred_seen",
-      name: "Centurion",
-      icon: "💯",
-      desc: "Catalog 100 Pokémon across any regional territories.",
+      code: "SEAL-100",
+      name: "Centurion Scout",
+      desc: "Catalog 100 specimens across surveyed territories.",
       test: (c) => c.seen >= 100
     },
     {
       id: "kanto_complete",
-      name: "Kanto Master",
-      icon: "🏆",
-      desc: "Catalog all original 151 Kanto specimens (#001–#151).",
+      code: "SEAL-KTO",
+      name: "Kanto Complete",
+      desc: "Register all 151 original Kanto specimens (#001–#151).",
       test: (c) => c.kantoSeen >= 151
     },
     {
       id: "all_seen",
-      name: "National Archivist",
-      icon: "🌟",
-      desc: "Complete the master national archive of 1,025 specimens.",
+      code: "SEAL-NAT",
+      name: "Grand Archivist",
+      desc: "Complete master record of 1,025 cataloged specimens.",
       test: (c) => c.seen >= 1025
     },
     {
       id: "first_fav",
-      name: "First Favorite",
-      icon: "⭐",
-      desc: "Star your very first favorite specimen.",
+      code: "SEAL-FAV1",
+      name: "Field Marker",
+      desc: "Star first priority specimen for targeted monitoring.",
       test: (c) => c.favorites >= 1
     },
     {
       id: "ten_favs",
-      name: "Curator",
-      icon: "🎖",
-      desc: "Curate a showcase of 10 or more favorited specimens.",
+      code: "SEAL-FAV10",
+      name: "Archive Curator",
+      desc: "Maintain 10 active priority specimens in the showcase.",
       test: (c) => c.favorites >= 10
     },
     {
       id: "belt_full",
-      name: "Full Belt",
-      icon: "🎒",
-      desc: "Equip a full team of 6 battle-ready specimens on your belt.",
+      code: "SEAL-BLT6",
+      name: "Equipped Squad",
+      desc: "Prepare 6 active specimens on the tactical field belt.",
       test: (c) => c.belt >= 6
     },
     {
       id: "all_types_seen",
-      name: "Type Collector",
-      icon: "🌈",
-      desc: "Encounter and register at least 18 diverse specimens.",
-      test: (c) => c.seen >= 18
+      code: "SEAL-TYP18",
+      name: "Elemental Scope",
+      desc: "Encounter specimens across all 18 elemental affinities.",
+      test: (c) => c.seenTypes >= 18
     },
     {
       id: "quiz_streak_5",
-      name: "Quiz Ace",
-      icon: "🧠",
-      desc: "Achieve a silhouette quiz streak of 5 correct guesses.",
+      code: "SEAL-SIL5",
+      name: "Silhouette Adept",
+      desc: "Archived: preserves the best score from the former silhouette quiz. This challenge is no longer active.",
+      archived: true,
       test: (c) => c.quizBest >= 5
     },
     {
       id: "quiz_streak_10",
-      name: "Quiz Master",
-      icon: "👑",
-      desc: "Achieve a silhouette quiz streak of 10 correct guesses.",
+      code: "SEAL-SIL10",
+      name: "Master Examiner",
+      desc: "Archived: preserves the best score from the former silhouette quiz. This challenge is no longer active.",
+      archived: true,
       test: (c) => c.quizBest >= 10
     }
   ];
@@ -9974,35 +15626,38 @@ document.addEventListener("DOMContentLoaded", () => {
       favorites: favorites.length,
       belt: belt.length,
       kantoSeen: kantoCount,
+      seenTypes: seenTypes.size,
       quizBest: quizBest
     };
 
     let unlockedCount = 0;
+    const activeBadgeCount = BADGES.filter(b => !b.archived).length;
+    const archivedBadgeCount = BADGES.length - activeBadgeCount;
     badgeGrid.innerHTML = BADGES.map(b => {
       const unlocked = b.test(ctx);
-      if (unlocked) unlockedCount++;
+      if (unlocked && !b.archived) unlockedCount++;
       return `
-        <article class="badge-card ${unlocked ? 'earned' : 'locked'}">
-          <div style="font-size:2rem; line-height:1; margin-bottom:0.5rem;">${unlocked ? b.icon : '🔒'}</div>
-          <h4 style="font-family:var(--font-ui); font-size:1rem; font-weight:700; color:${unlocked ? 'var(--ink)' : 'var(--ink-soft)'}; margin:0 0 0.25rem;">
-            ${unlocked ? b.name : 'Locked Badge'}
-          </h4>
-          <p style="font-size:0.8125rem; color:var(--ink-soft); margin:0; line-height:1.4;">
-            ${b.desc}
-          </p>
-          <div style="margin-top:0.6rem; font-family:var(--font-num); font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.04em; color:${unlocked ? 'var(--mark)' : 'var(--line)'}; font-weight:700;">
-            ${unlocked ? '✓ UNLOCKED' : 'LOCKED'}
+        <article class="seal-card ${unlocked ? 'sealed' : 'unsealed'}">
+          <div class="seal-mark">
+            <span class="seal-serial">${b.code}</span>
+            <span class="seal-status-icon">${unlocked ? '★' : '○'}</span>
+          </div>
+          <div class="seal-content">
+            <h4 class="seal-title">${b.name}${b.archived ? " (Archived)" : ""}</h4>
+            <p class="seal-desc">${b.desc}</p>
+          </div>
+          <div class="seal-verdict">
+            ${b.archived ? `ARCHIVED · ${unlocked ? "LEGACY RECORD PRESERVED" : "NO LEGACY RECORD"}` : (unlocked ? 'VALIDATED & SEALED' : 'PENDING FIELD RECORD')}
           </div>
         </article>
       `;
     }).join("");
 
     if (summaryBadgeEl) {
-      summaryBadgeEl.textContent = `${unlockedCount} / ${BADGES.length} UNLOCKED`;
+      summaryBadgeEl.textContent = `${unlockedCount} / ${activeBadgeCount} ACTIVE · ${archivedBadgeCount} ARCHIVED`;
     }
   }
 });
-
 ```
 
 ---
@@ -10010,8 +15665,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.14 `js/battle-lab.js` (对战实验室与克制比对)
 
 - **文件路径**: `js/battle-lab.js`  
-- **代码行数**: 218 行  
-- **文件大小**: 10,177 字节  
+- **代码行数**: 239 行  
+- **文件大小**: 10,692 字节  
 
 ```javascript
 document.addEventListener("DOMContentLoaded", () => {
@@ -10022,6 +15677,16 @@ document.addEventListener("DOMContentLoaded", () => {
     left: null,
     right: null
   };
+  const requestRevisions = { left: 0, right: 0 };
+
+  function setCardMessage(cardEl, message, color = "var(--ink-soft)") {
+    if (!cardEl) return;
+    const note = document.createElement("p");
+    note.className = "soft";
+    note.style.cssText = `font-size:0.875rem; color:${color}; padding:1rem 0;`;
+    note.textContent = message;
+    cardEl.replaceChildren(note);
+  }
 
   function stat(mon, name) {
     if (!mon || !mon.stats) return 0;
@@ -10035,22 +15700,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadPokemon(side, value) {
-    if (!value) return;
+    const revision = ++requestRevisions[side];
+    const query = String(value || "").trim();
     const cardEl = document.getElementById(`battle-${side}-card`);
-    if (cardEl) {
-      cardEl.innerHTML = `<p class="soft" style="font-size:0.875rem; color:var(--ink-soft); padding:1rem 0;">Loading specimen #${value}...</p>`;
+    state[side] = null;
+    if (!query) {
+      render();
+      return;
     }
+    renderResult();
+    setCardMessage(cardEl, `Loading specimen #${query}...`);
 
     try {
-      const mon = await window.pokeApi.getPokemon(value);
+      const mon = await window.pokeApi.getPokemon(query);
+      if (revision !== requestRevisions[side]) return;
       if (!mon) {
-        if (cardEl) cardEl.innerHTML = `<p class="soft" style="color:var(--mark); padding:1rem 0;">Specimen not found: "${value}".</p>`;
+        setCardMessage(cardEl, `Specimen not found: "${query}".`, "var(--mark)");
+        renderResult();
         return;
       }
       state[side] = mon;
       render();
     } catch (_) {
-      if (cardEl) cardEl.innerHTML = `<p class="soft" style="color:var(--mark); padding:1rem 0;">Error loading specimen.</p>`;
+      if (revision !== requestRevisions[side]) return;
+      state[side] = null;
+      setCardMessage(cardEl, "Error loading specimen.", "var(--mark)");
+      renderResult();
     }
   }
 
@@ -10151,7 +15826,7 @@ document.addEventListener("DOMContentLoaded", () => {
             STAB Type Advantage
           </h3>
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(18rem, 1fr)); gap:1.25rem;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap:1.25rem;">
             <!-- A attacking B -->
             <div style="background:var(--sky-deep); border:1px solid var(--line); padding:1rem; border-radius:4px;">
               <p style="font-family:var(--font-ui); font-size:0.9375rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.5rem;">
@@ -10232,7 +15907,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadPokemon("left", paramLeft);
   loadPokemon("right", paramRight);
 });
-
 ```
 
 ---
@@ -10240,7 +15914,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.15 `js/store.js` (本地存储与安全缓存管理)
 
 - **文件路径**: `js/store.js`  
-- **代码行数**: 103 行  
+- **代码行数**: 104 行  
 - **文件大小**: 2,989 字节  
 
 ```javascript
@@ -10347,7 +16021,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.store = store;
 })(window);
-
 ```
 
 ---
@@ -10355,12 +16028,12 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.16 `js/quiz.js` (TCG 卡包实验室/实体开包/去重算法/卡册收藏)
 
 - **文件路径**: `js/quiz.js`  
-- **代码行数**: 766 行  
-- **文件大小**: 27,460 字节  
+- **代码行数**: 913 行  
+- **文件大小**: 34,275 字节  
 
 ```javascript
 // ==========================================================================
-// TCG BOOSTER PACK LAB (Physical 10-card pack simulator & collection binder)
+// TCG BOOSTER PACK LAB (Expansion-specific pack simulator & collection binder)
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10374,6 +16047,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardsGrid = document.getElementById("pack-cards-grid");
   const loadingOverlay = document.getElementById("pack-loading-overlay");
   const loadingMsg = document.getElementById("pack-loading-msg");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const statPacksOpened = document.getElementById("stat-packs-opened");
   const statCardsCollected = document.getElementById("stat-cards-collected");
@@ -10403,6 +16077,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const tcgModalName = document.getElementById("tcg-modal-name");
   const tcgModalMeta = document.getElementById("tcg-modal-meta");
   const tcgModalCloseBtn = document.getElementById("tcg-modal-close-btn");
+  let modalTrigger = null;
+  let inertBeforeModal = [];
 
   // In-memory cache for fetched card sets
   const cardSetCache = new Map();
@@ -10616,23 +16292,12 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(timeoutId);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const cards = await res.json();
+      if (!Array.isArray(cards) || cards.length === 0) throw new Error("Empty card ledger");
       cardSetCache.set(setId, cards);
       return cards;
     } catch (err) {
       console.warn("Failed to load set data:", err);
-      // Minimal fallback so app never breaks
-      const dummyCards = Array.from({ length: 50 }, (_, i) => ({
-        id: `${setId}-${i + 1}`,
-        number: String(i + 1),
-        name: `Specimen #${i + 1}`,
-        rarity: i < 30 ? "Common" : i < 45 ? "Uncommon" : "Rare",
-        images: {
-          small: `https://images.pokemontcg.io/${setId}/${i + 1}.png`,
-          large: `https://images.pokemontcg.io/${setId}/${i + 1}_hires.png`
-        }
-      }));
-      cardSetCache.set(setId, dummyCards);
-      return dummyCards;
+      throw err;
     } finally {
       if (!isBackground && loadingOverlay) {
         loadingOverlay.classList.remove("is-active");
@@ -10712,8 +16377,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#pack-featured-chips .chip").forEach(btn => {
       if (btn.dataset.setId === setId) {
         btn.setAttribute("data-on", "");
+        btn.setAttribute("aria-pressed", "true");
       } else {
         btn.removeAttribute("data-on");
+        btn.setAttribute("aria-pressed", "false");
       }
     });
 
@@ -10722,39 +16389,55 @@ document.addEventListener("DOMContentLoaded", () => {
     if (statTotal) statTotal.textContent = preset.total;
     if (statName) statName.textContent = preset.name.toUpperCase();
 
+    const cardCount = setId === "me55c" ? 3 : setId === "me55" ? 5
+      : /^(base[1235]|gym1)$/.test(setId) ? 11 : 10;
+    const packHint = sealedView?.querySelector("p");
+    if (packHint) {
+      packHint.textContent = `Tap the foil pack or press Tear pack to reveal ${cardCount} expansion cards.`
+        + (setId === "me55" ? " The pack also contains a foil Basic Energy, not shown."
+          : cardCount === 10 ? " Separately packed Energy and code cards are not shown." : "")
+        + " Rarity odds are simulated.";
+    }
+
     renderBinderGrid();
     // Prefetch set data silently in background
     loadSetData(setId, true).catch(() => {});
   }
 
-  // Physical 10-card slot distribution algorithm
+  // Expansion-specific pack slots
   function generatePack(cards) {
-    if (!cards || cards.length === 0) return [];
+    if (!cards || cards.length === 0) throw new Error("No cards available for this pack");
 
     // Bucket cards by rarity category
     const buckets = {
       common: [],
       uncommon: [],
+      energy: [],
       rare: [],
       holoDouble: [],
       illustration: [],
       ultra: [],
       sar: [],
-      hyper: []
+      hyper: [],
+      special: []
     };
 
     cards.forEach(card => {
       const r = (card.rarity || "").toLowerCase();
-      if (r.includes("special illustration") || r.includes("sar")) {
+      if (card.supertype === "Energy" && !card.rarity) {
+        buckets.energy.push(card);
+      } else if (r.includes("special illustration") || r.includes("sar")) {
         buckets.sar.push(card);
-      } else if (r.includes("hyper") || r.includes("futuristic") || r.includes("gold")) {
+      } else if (r.includes("hyper") || r.includes("futuristic") || r.includes("gold") || r.includes("rainbow") || r.includes("secret")) {
         buckets.hyper.push(card);
-      } else if (r.includes("ultra") || r.includes("secret") || r.includes("ex") || r.includes("vmax") || r.includes("vstar")) {
+      } else if (r.includes("ultra") || r.includes("ex") || r.includes("vmax") || r.includes("vstar")) {
         buckets.ultra.push(card);
       } else if (r.includes("illustration rare")) {
         buckets.illustration.push(card);
-      } else if (r.includes("double rare") || r.includes("pikachu rare") || r.includes("holo")) {
+      } else if (r.includes("double rare") || r.includes("holo")) {
         buckets.holoDouble.push(card);
+      } else if (r.includes("shiny") || r.includes("radiant") || r.includes("amazing") || r.includes("ace spec") || r.includes("legend") || r.includes("prime") || r.includes("break")) {
+        buckets.special.push(card);
       } else if (r.includes("rare")) {
         buckets.rare.push(card);
       } else if (r.includes("uncommon")) {
@@ -10764,113 +16447,161 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Track card appearances to prevent excessive duplicates (max 2 copies per card)
-    const cardCountMap = new Map();
-
-    function pickCapped(pool, fallbackPool = cards, maxCap = 2) {
-      const primary = (pool && pool.length > 0) ? pool : fallbackPool;
-      const eligible = primary.filter(c => (cardCountMap.get(c.id) || 0) < maxCap);
-
-      let chosen = null;
-      if (eligible.length > 0) {
-        chosen = eligible[Math.floor(Math.random() * eligible.length)];
-      } else {
-        const fallbackEligible = fallbackPool.filter(c => (cardCountMap.get(c.id) || 0) < maxCap);
-        if (fallbackEligible.length > 0) {
-          chosen = fallbackEligible[Math.floor(Math.random() * fallbackEligible.length)];
-        } else {
-          chosen = primary[Math.floor(Math.random() * primary.length)];
-        }
-      }
-
-      if (chosen && chosen.id) {
-        cardCountMap.set(chosen.id, (cardCountMap.get(chosen.id) || 0) + 1);
-      }
-      return chosen;
-    }
-
+    // Card counts and guaranteed slots follow the printed packs. Chase weights are estimates.
+    const used = new Set();
     const pack = [];
-
-    // Slot 1-5: 5 Common Cards
-    for (let i = 0; i < 5; i++) {
-      pack.push({ card: pickCapped(buckets.common, cards), foilType: "normal", slot: i + 1 });
+    function add(pool, foilType = "normal") {
+      const available = pool.filter(card => card?.id && !used.has(card.id));
+      if (!available.length) throw new Error(`Incomplete ${currentSetId} card pool`);
+      const card = available[Math.floor(Math.random() * available.length)];
+      used.add(card.id);
+      pack.push({ card, foilType, slot: pack.length + 1 });
     }
 
-    // Slot 6-8: 3 Uncommon Cards
-    for (let i = 0; i < 3; i++) {
-      pack.push({ card: pickCapped(buckets.uncommon, buckets.common), foilType: "normal", slot: i + 6 });
+    function addWeighted(choices) {
+      const available = choices.filter(choice => choice.pool.some(card => card?.id && !used.has(card.id)));
+      if (!available.length) throw new Error(`No eligible ${currentSetId} cards for this slot`);
+      let roll = Math.random() * available.reduce((sum, choice) => sum + choice.weight, 0);
+      const choice = available.find(option => (roll -= option.weight) < 0) || available[available.length - 1];
+      add(choice.pool, choice.foilType);
     }
 
-    // Slot 9: Reverse Holo / Foil Slot (70% UC foil, 25% Rare foil, 5% Illustration Rare)
-    const roll9 = Math.random() * 100;
-    if (roll9 < 70) {
-      pack.push({ card: pickCapped(buckets.uncommon, cards), foilType: "reverse-foil", slot: 9 });
-    } else if (roll9 < 95) {
-      pack.push({ card: pickCapped(buckets.rare, buckets.uncommon), foilType: "reverse-foil", slot: 9 });
-    } else {
-      pack.push({ card: pickCapped(buckets.illustration, buckets.rare), foilType: "illustration", slot: 9 });
+    if (currentSetId === "me55c") {
+      for (let i = 0; i < 3; i++) add(cards, "holo");
+      return pack;
     }
 
-    // Slot 10: HIT SLOT (Guaranteed Rare / Ultra / SAR)
-    const roll10 = Math.random() * 100;
-    let hitCard = null;
-    let hitFoil = "rare";
-
-    if (roll10 < 50 && buckets.rare.length > 0) {
-      hitCard = pickCapped(buckets.rare);
-      hitFoil = "rare";
-    } else if (roll10 < 70 && (buckets.holoDouble.length > 0 || buckets.rare.length > 0)) {
-      hitCard = pickCapped(buckets.holoDouble, buckets.rare);
-      hitFoil = "holo";
-    } else if (roll10 < 85 && (buckets.illustration.length > 0 || buckets.rare.length > 0)) {
-      hitCard = pickCapped(buckets.illustration, buckets.rare);
-      hitFoil = "illustration";
-    } else if (roll10 < 95 && (buckets.ultra.length > 0 || buckets.rare.length > 0)) {
-      hitCard = pickCapped(buckets.ultra, buckets.rare);
-      hitFoil = "ultra";
-    } else if (roll10 < 99 && (buckets.sar.length > 0 || buckets.ultra.length > 0)) {
-      hitCard = pickCapped(buckets.sar, buckets.ultra);
-      hitFoil = "sar";
-    } else {
-      // Hyper Rare / Jackpot
-      hitCard = pickCapped(buckets.hyper, buckets.sar);
-      hitFoil = "hyper";
+    if (currentSetId === "me55") {
+      const others = [
+        { pool: buckets.common, weight: 65, foilType: "holo" },
+        { pool: buckets.rare.filter(card => card.rarity !== "Pikachu Rare"), weight: 23, foilType: "holo" },
+        { pool: buckets.holoDouble, weight: 5, foilType: "holo" },
+        { pool: buckets.illustration, weight: 4, foilType: "illustration" },
+        { pool: buckets.sar, weight: 2, foilType: "sar" },
+        { pool: buckets.hyper, weight: 1, foilType: "hyper" }
+      ];
+      for (let i = 0; i < 4; i++) addWeighted(others);
+      add(cards.filter(card => card.rarity === "Pikachu Rare"), "holo");
+      return pack;
     }
 
-    pack.push({ card: hitCard || pickCapped(cards), foilType: hitFoil, slot: 10 });
+    if (/^(base[1235]|gym1)$/.test(currentSetId)) {
+      const energyCount = currentSetId === "base1" ? 2 : currentSetId === "gym1" ? 1 : 0;
+      for (let i = 0; i < 7 - energyCount; i++) add(buckets.common);
+      for (let i = 0; i < energyCount; i++) add(buckets.energy);
+      for (let i = 0; i < 3; i++) add(buckets.uncommon);
+      addWeighted([
+        { pool: buckets.rare, weight: 2, foilType: "rare" },
+        { pool: buckets.holoDouble, weight: 1, foilType: "holo" },
+        { pool: buckets.hyper, weight: 0.02, foilType: "hyper" }
+      ]);
+      return pack;
+    }
 
+    const modern = /^(sv|me)/.test(currentSetId);
+    for (let i = 0; i < (modern ? 4 : 5); i++) add(buckets.common);
+    for (let i = 0; i < 3; i++) add(buckets.uncommon);
+    const foilChoices = [
+      { pool: buckets.common, weight: 55, foilType: "reverse-foil" },
+      { pool: buckets.uncommon, weight: 35, foilType: "reverse-foil" },
+      { pool: buckets.rare, weight: 5, foilType: "reverse-foil" },
+      { pool: buckets.special, weight: 3, foilType: "holo" },
+      { pool: buckets.illustration, weight: 2, foilType: "illustration" }
+    ];
+    for (let i = 0; i < (modern ? 2 : 1); i++) addWeighted(foilChoices);
+    addWeighted([
+      { pool: buckets.rare, weight: 55, foilType: "rare" },
+      { pool: buckets.holoDouble, weight: 25, foilType: "holo" },
+      { pool: buckets.special, weight: 3, foilType: "holo" },
+      { pool: buckets.illustration, weight: 8, foilType: "illustration" },
+      { pool: buckets.ultra, weight: 7, foilType: "ultra" },
+      { pool: buckets.sar, weight: 1.5, foilType: "sar" },
+      { pool: buckets.hyper, weight: 0.5, foilType: "hyper" }
+    ]);
     return pack;
+  }
+
+  function clearTearState() {
+    if (!foilPack) return;
+    window.gsap?.killTweensOf(foilPack);
+    window.gsap?.set(foilPack, { clearProps: "transform,opacity,filter" });
+    foilPack.classList.remove("is-tearing", "is-gsap-tearing");
+  }
+
+  function playPackTearAnimation() {
+    if (!foilPack) return Promise.resolve();
+    foilPack.classList.add("is-tearing");
+    if (!window.gsap) return new Promise(resolve => setTimeout(resolve, 600));
+
+    foilPack.classList.add("is-gsap-tearing");
+    return new Promise(resolve => {
+      const timeline = window.gsap.timeline({ onComplete: resolve });
+      if (prefersReducedMotion) {
+        timeline.to(foilPack, { opacity: 0, duration: 0.18, ease: "power2.out" });
+        return;
+      }
+      timeline
+        .to(foilPack, { scale: 0.97, y: -8, rotation: -1, duration: 0.16, ease: "power2.out" })
+        .to(foilPack, { scale: 0.94, y: -24, rotation: 1.2, opacity: 0.72, duration: 0.2, ease: "power2.inOut" })
+        .to(foilPack, { scale: 0.91, y: -40, rotation: 0, opacity: 0, duration: 0.18, ease: "power3.out" });
+    });
+  }
+
+  function animatePackCards() {
+    const cardEls = cardsGrid?.querySelectorAll(".tcg-card-item");
+    if (!window.gsap || !cardEls?.length || prefersReducedMotion) return;
+    window.gsap.set(cardEls, { opacity: 0, y: 28, rotation: -2 });
+    window.gsap.to(cardEls, {
+      opacity: 1,
+      y: 0,
+      rotation: 0,
+      duration: 0.36,
+      ease: "power3.out",
+      stagger: 0.055,
+      clearProps: "transform,opacity"
+    });
   }
 
   // Tearing and opening flow
   async function openBoosterPack() {
     if (isTearing) return;
     isTearing = true;
+    const selectedSetId = currentSetId;
 
-    // Start tear animation on the pack
-    if (foilPack) {
-      foilPack.classList.add("is-tearing");
-      playSynthSound("tear");
-    }
+    const tearAnimation = playPackTearAnimation();
+    playSynthSound("tear");
 
-    // Load cards in parallel
-    const cards = await loadSetData(currentSetId);
-    currentPackCards = generatePack(cards);
+    try {
+      const cards = await loadSetData(selectedSetId);
+      if (selectedSetId !== currentSetId) {
+        clearTearState();
+        isTearing = false;
+        return;
+      }
+      currentPackCards = generatePack(cards);
+      incrementPacksOpened();
 
-    incrementPacksOpened();
-
-    // After tear animation finishes, switch views
-    setTimeout(() => {
+      await tearAnimation;
+      if (selectedSetId !== currentSetId) {
+        clearTearState();
+        isTearing = false;
+        return;
+      }
       if (sealedView) sealedView.style.display = "none";
       if (openedView) openedView.style.display = "block";
-      if (foilPack) foilPack.classList.remove("is-tearing");
+      clearTearState();
       isTearing = false;
-
       renderCardsGrid(currentPackCards);
-    }, 600);
+    } catch (err) {
+      console.warn("Could not open pack:", err);
+      clearTearState();
+      isTearing = false;
+      const packHint = sealedView?.querySelector("p");
+      if (packHint) packHint.textContent = "Card data unavailable. Check your connection and try again.";
+    }
   }
 
-  // Render the 10 cards in grid
+  // Render the opened cards in grid
   function renderCardsGrid(packItems) {
     if (!cardsGrid) return;
     cardsGrid.innerHTML = "";
@@ -10879,9 +16610,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = item.card;
       const foilType = item.foilType;
 
-      const cardEl = document.createElement("div");
+      const cardEl = document.createElement("button");
+      cardEl.type = "button";
       cardEl.className = "tcg-card-item";
       cardEl.dataset.index = index;
+      cardEl.setAttribute("aria-pressed", "false");
+      cardEl.setAttribute("aria-label", `Reveal card slot ${item.slot}`);
 
       // Glow highlights for big hits
       if (foilType === "sar" || foilType === "hyper") {
@@ -10906,16 +16640,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const imgUrl = getCardImage(card, "small");
 
       cardEl.innerHTML = `
-        <div class="tcg-card-inner">
-          <div class="tcg-card-back">
+        <span class="tcg-card-inner">
+          <span class="tcg-card-back">
             <img src="assets/card-back.jpg" class="card-back-img" alt="Pokémon Card Back">
             <span class="card-slot-num">#${item.slot}</span>
-          </div>
-          <div class="tcg-card-front">
+          </span>
+          <span class="tcg-card-front" aria-hidden="true" inert>
             ${badgeHtml}
             <img src="${imgUrl}" alt="${card.name}" loading="lazy">
-          </div>
-        </div>
+            <span class="tcg-card-hit-flash" aria-hidden="true"></span>
+          </span>
+        </span>
       `;
 
       // Flip on click
@@ -10925,21 +16660,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
       cardsGrid.appendChild(cardEl);
     });
+    animatePackCards();
   }
 
   // Flip an individual card
   function flipCard(cardEl, item) {
     if (cardEl.classList.contains("is-flipped")) {
       // If already flipped, clicking opens high-res preview modal
-      openCardModal(item.card);
+      openCardModal(item.card, cardEl);
       return;
     }
 
     cardEl.classList.add("is-flipped");
+    cardEl.setAttribute("aria-pressed", "true");
+    cardEl.setAttribute("aria-label", `Open high-resolution preview of ${item.card.name}, card #${item.card.number}`);
+    const cardBack = cardEl.querySelector(".tcg-card-back");
+    const cardFront = cardEl.querySelector(".tcg-card-front");
+    if (cardBack) {
+      cardBack.setAttribute("aria-hidden", "true");
+      cardBack.inert = true;
+    }
+    if (cardFront) {
+      cardFront.removeAttribute("aria-hidden");
+      cardFront.inert = false;
+    }
     playSynthSound("flip");
 
     if (item.foilType === "sar" || item.foilType === "hyper" || item.foilType === "ultra") {
       playSynthSound("hit");
+      const hitFlash = cardEl.querySelector(".tcg-card-hit-flash");
+      if (window.gsap && hitFlash && !prefersReducedMotion) {
+        window.gsap.fromTo(hitFlash, { opacity: 0, xPercent: -140 }, {
+          opacity: 0.7,
+          xPercent: 140,
+          duration: 0.48,
+          ease: "power2.out",
+          clearProps: "transform,opacity"
+        });
+      }
     }
 
     // Save to collection binder
@@ -10963,6 +16721,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Reset stage to sealed pack view
   function resetToSealedPack() {
+    clearTearState();
     if (openedView) openedView.style.display = "none";
     if (sealedView) sealedView.style.display = "flex";
     if (cardsGrid) cardsGrid.innerHTML = "";
@@ -10970,8 +16729,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Card detail high-res modal
-  function openCardModal(card) {
+  function openCardModal(card, trigger = document.activeElement) {
     if (!tcgModal || !card) return;
+    if (!tcgModal.classList.contains("is-active")) {
+      modalTrigger = trigger;
+      inertBeforeModal = Array.from(document.body.children)
+        .filter(element => element !== tcgModal)
+        .map(element => [element, element.inert]);
+      inertBeforeModal.forEach(([element]) => { element.inert = true; });
+    }
     const hiresUrl = getCardImage(card, "large");
     if (tcgModalImg) {
       tcgModalImg.src = hiresUrl;
@@ -10981,11 +16747,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tcgModalMeta) {
       tcgModalMeta.textContent = `#${card.number} · ${card.rarity || "Standard"} · ${card.artist || "Official"}`;
     }
+    tcgModal.hidden = false;
+    tcgModal.setAttribute("aria-hidden", "false");
+    tcgModal.style.display = "flex";
     tcgModal.classList.add("is-active");
+    tcgModalCloseBtn?.focus({ preventScroll: true });
   }
 
   function closeCardModal() {
-    if (tcgModal) tcgModal.classList.remove("is-active");
+    if (!tcgModal || !tcgModal.classList.contains("is-active")) return;
+    tcgModal.classList.remove("is-active");
+    tcgModal.hidden = true;
+    tcgModal.setAttribute("aria-hidden", "true");
+    tcgModal.style.display = "none";
+    inertBeforeModal.forEach(([element, wasInert]) => {
+      if (element.isConnected) element.inert = wasInert;
+    });
+    inertBeforeModal = [];
+    const trigger = modalTrigger;
+    modalTrigger = null;
+    if (trigger?.isConnected && !trigger.disabled) {
+      trigger.focus({ preventScroll: true });
+    }
   }
 
   // Binder Grid rendering with filters
@@ -11017,15 +16800,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     filtered.forEach(c => {
-      const itemEl = document.createElement("div");
+      const itemEl = document.createElement("button");
+      itemEl.type = "button";
       itemEl.className = "binder-thumb-item";
       itemEl.title = `${c.name} (#${c.number}) - Owned: x${c.count || 1}`;
+      itemEl.setAttribute("aria-label", `Open ${c.name}, card #${c.number}, owned ${c.count || 1}`);
       itemEl.innerHTML = `
-        <img src="${c.imageSmall || getCardImage(c, 'small')}" alt="${c.name}" loading="lazy">
+        <img src="${c.imageSmall || getCardImage(c, 'small')}" alt="" loading="lazy">
         <span class="binder-thumb-count">x${c.count || 1}</span>
       `;
       itemEl.addEventListener("click", () => {
-        openCardModal(c);
+        openCardModal(c, itemEl);
       });
       binderGrid.appendChild(itemEl);
     });
@@ -11055,7 +16840,8 @@ document.addEventListener("DOMContentLoaded", () => {
     packToggleBinderBtn.addEventListener("click", () => {
       if (binderSection) {
         binderSection.classList.add("is-open");
-        binderSection.scrollIntoView({ behavior: "smooth" });
+        binderHeader?.setAttribute("aria-expanded", "true");
+        binderSection.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         renderBinderGrid();
       }
     });
@@ -11065,6 +16851,7 @@ document.addEventListener("DOMContentLoaded", () => {
     binderHeader.addEventListener("click", () => {
       if (binderSection) {
         binderSection.classList.toggle("is-open");
+        binderHeader.setAttribute("aria-expanded", String(binderSection.classList.contains("is-open")));
         if (binderSection.classList.contains("is-open")) {
           renderBinderGrid();
         }
@@ -11075,8 +16862,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Filter chips in binder
   binderFilters.forEach(chip => {
     chip.addEventListener("click", () => {
-      binderFilters.forEach(c => c.removeAttribute("data-on"));
+      binderFilters.forEach(c => {
+        c.removeAttribute("data-on");
+        c.setAttribute("aria-pressed", "false");
+      });
       chip.setAttribute("data-on", "");
+      chip.setAttribute("aria-pressed", "true");
       renderBinderGrid(chip.dataset.filter);
     });
   });
@@ -11115,17 +16906,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && tcgModal?.classList.contains("is-active")) {
+    if (!tcgModal?.classList.contains("is-active")) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
       closeCardModal();
+      e.stopImmediatePropagation();
+      return;
     }
-  });
+    if (e.key !== "Tab") {
+      e.stopImmediatePropagation();
+      return;
+    }
+
+    const focusable = Array.from(tcgModal.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )).filter(element => element.getClientRects().length > 0 && !element.closest("[hidden], [inert]"));
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first) {
+      e.preventDefault();
+      tcgModal.focus();
+    } else if (!tcgModal.contains(document.activeElement)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus();
+    } else if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+    e.stopImmediatePropagation();
+  }, true);
 
   // Initial Load
   updateStatsDisplay();
   updatePackAppearance(currentSetId);
   loadSetData(currentSetId, true).catch(() => {});
 });
-
 ```
 
 ---
@@ -11133,8 +16951,8 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 3.17 `js/global-search.js` (全局命令面板快捷检索)
 
 - **文件路径**: `js/global-search.js`  
-- **代码行数**: 236 行  
-- **文件大小**: 7,181 字节  
+- **代码行数**: 383 行  
+- **文件大小**: 13,410 字节  
 
 ```javascript
 /**
@@ -11148,6 +16966,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let abilitiesCache = null;
   let activeIndex = -1;
   let currentResults = [];
+  let dataLoadPromise = null;
+  let dataLoadState = "idle";
+  let dataLoadFailures = [];
+  let returnFocusTo = null;
+  let backgroundInertState = [];
 
   function createSearchDOM() {
     if (document.getElementById("search-overlay")) return;
@@ -11161,10 +16984,14 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="search-panel" role="dialog" aria-modal="true" aria-label="Global Search">
         <div class="search-panel-header">
           <span style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:1.1rem; padding-left:0.5rem;">/</span>
-          <input id="global-search-input" type="search" placeholder="Search Pokémon, moves, abilities..." autocomplete="off">
+          <label class="search-field">
+            <span class="search-input-label">Search</span>
+            <input id="global-search-input" type="search" placeholder="Search Pokémon, moves, abilities..." autocomplete="off" aria-describedby="global-search-status">
+          </label>
           <button class="search-close-btn" id="search-close-btn" type="button" aria-label="Close search">✕</button>
         </div>
         <ul id="global-search-results" class="search-results-list"></ul>
+        <p id="global-search-status" class="search-empty" role="status" aria-live="polite"></p>
         <div class="search-panel-footer">
           <span><kbd>/</kbd> Open · <kbd>Esc</kbd> Close · <kbd>↑</kbd><kbd>↓</kbd> Select · <kbd>Enter</kbd> Jump</span>
         </div>
@@ -11184,42 +17011,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
     input.addEventListener("input", handleSearch);
     input.addEventListener("keydown", handleKeyNavigation);
+    overlay.addEventListener("keydown", handleDialogKeydown);
+    overlay.querySelector("#global-search-status").addEventListener("click", e => {
+      if (e.target.closest("#global-search-retry")) {
+        input.focus();
+        loadData();
+        renderSearchQuery();
+      }
+    });
   }
 
-  async function loadData() {
-    if (!pokemonCache) {
-      if (window.ALL_SPECIES && window.ALL_SPECIES.length === 1025) {
-        pokemonCache = window.ALL_SPECIES;
-      } else {
-        try {
-          const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
-          const data = await resp.json();
-          pokemonCache = (data.results || []).map((p, idx) => ({ id: idx + 1, name: p.name }));
-        } catch (_) {
-          pokemonCache = [];
-        }
-      }
+  function showSearchStatus(message, retry = false) {
+    const status = document.getElementById("global-search-status");
+    if (!status) return;
+    status.replaceChildren(document.createTextNode(message));
+    if (retry) {
+      const button = document.createElement("button");
+      button.id = "global-search-retry";
+      button.className = "btn btn-paper";
+      button.type = "button";
+      button.textContent = "Retry";
+      status.append(" ", button);
     }
+  }
 
-    if (!movesCache) {
-      try {
+  function loadData() {
+    if (dataLoadPromise) return dataLoadPromise;
+    if (dataLoadState === "ready") return Promise.resolve([]);
+
+    dataLoadState = "loading";
+    const loaders = [
+      async () => {
+        if (pokemonCache) return;
+        if (window.ALL_SPECIES && window.ALL_SPECIES.length === 1025) {
+          pokemonCache = window.ALL_SPECIES;
+          return;
+        }
+        const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
+        if (!resp.ok) throw new Error("Pokémon index unavailable");
+        const data = await resp.json();
+        pokemonCache = (data.results || []).map((p, idx) => ({ id: idx + 1, name: p.name }));
+      },
+      async () => {
+        if (movesCache) return;
         const resp = await fetch("https://pokeapi.co/api/v2/move?limit=950");
+        if (!resp.ok) throw new Error("Move index unavailable");
         const data = await resp.json();
         movesCache = (data.results || []).map(m => m.name);
-      } catch (_) {
-        movesCache = [];
-      }
-    }
-
-    if (!abilitiesCache) {
-      try {
+      },
+      async () => {
+        if (abilitiesCache) return;
         const resp = await fetch("https://pokeapi.co/api/v2/ability?limit=400");
+        if (!resp.ok) throw new Error("Ability index unavailable");
         const data = await resp.json();
         abilitiesCache = (data.results || []).map(a => a.name);
-      } catch (_) {
-        abilitiesCache = [];
       }
-    }
+    ];
+
+    showSearchStatus("Loading search records…");
+    dataLoadPromise = Promise.all(loaders.map(async (loader, idx) => {
+      try {
+        await loader();
+        return null;
+      } catch (_) {
+        return ["Pokémon", "moves", "abilities"][idx];
+      }
+    })).then(failures => {
+      dataLoadFailures = failures.filter(Boolean);
+      dataLoadState = dataLoadFailures.length ? "partial" : "ready";
+      if (document.getElementById("search-overlay") && !document.getElementById("search-overlay").hidden) {
+        renderSearchQuery();
+      }
+      return dataLoadFailures;
+    }).finally(() => {
+      dataLoadPromise = null;
+    });
+    return dataLoadPromise;
   }
 
   function openSearch() {
@@ -11228,23 +17095,85 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("global-search-input");
     if (!overlay || !input) return;
 
+    if (!overlay.hidden) return;
+    returnFocusTo = document.activeElement;
     overlay.hidden = false;
+    setBackgroundInert(true);
     input.value = "";
     input.focus();
     renderResults([]);
     loadData();
+    renderSearchQuery();
   }
 
   function closeSearch() {
     const overlay = document.getElementById("search-overlay");
-    if (overlay) overlay.hidden = true;
+    if (!overlay || overlay.hidden) return;
+    overlay.hidden = true;
     activeIndex = -1;
+    currentResults = [];
+    setBackgroundInert(false);
+    const focusTarget = returnFocusTo;
+    returnFocusTo = null;
+    if (focusTarget?.isConnected && typeof focusTarget.focus === "function") focusTarget.focus();
   }
 
-  function handleSearch(e) {
-    const q = e.target.value.trim().toLowerCase();
+  function setBackgroundInert(inert) {
+    const overlay = document.getElementById("search-overlay");
+    if (inert) {
+      backgroundInertState = [...document.body.children]
+        .filter(node => node !== overlay)
+        .map(node => ({ node, wasInert: node.inert }));
+      backgroundInertState.forEach(({ node }) => { node.inert = true; });
+      return;
+    }
+    backgroundInertState.forEach(({ node, wasInert }) => {
+      if (node.isConnected) node.inert = wasInert;
+    });
+    backgroundInertState = [];
+  }
+
+  function handleDialogKeydown(e) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      closeSearch();
+      return;
+    }
+    if (e.key !== "Tab") return;
+
+    const overlay = document.getElementById("search-overlay");
+    const focusable = [...overlay.querySelectorAll('input:not([disabled]), button:not([disabled]), a[href]')];
+    if (!focusable.length) {
+      e.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !overlay.contains(document.activeElement))) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && (document.activeElement === last || !overlay.contains(document.activeElement))) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function handleSearch() {
+    renderSearchQuery();
+  }
+
+  function renderSearchQuery() {
+    const q = document.getElementById("global-search-input")?.value.trim().toLowerCase() || "";
     if (q.length < 2) {
       renderResults([]);
+      showSearchStatus("Enter at least 2 characters to search.");
+      return;
+    }
+
+    if (dataLoadState === "loading" || dataLoadState === "idle") {
+      renderResults([]);
+      showSearchStatus("Loading search records…");
       return;
     }
 
@@ -11294,6 +17223,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderResults(results);
+    if (results.length) {
+      showSearchStatus(
+        `${results.length} results. ${dataLoadFailures.length ? "Some search records could not be loaded." : ""}`.trim(),
+        dataLoadFailures.length > 0
+      );
+    } else if (dataLoadFailures.length) {
+      showSearchStatus("Search is incomplete because some records could not be loaded.", true);
+    } else {
+      showSearchStatus("No matching records found.");
+    }
   }
 
   function renderResults(results) {
@@ -11301,33 +17240,19 @@ document.addEventListener("DOMContentLoaded", () => {
     activeIndex = results.length > 0 ? 0 : -1;
     const list = document.getElementById("global-search-results");
     if (!list) return;
-
-    if (results.length === 0) {
-      list.innerHTML = `<li class="search-empty">No matching records found.</li>`;
-      return;
+    if (list.contains(document.activeElement)) {
+      document.getElementById("global-search-input")?.focus();
     }
 
     list.innerHTML = results.map((item, idx) => `
-      <li class="search-item ${idx === activeIndex ? 'active' : ''}" data-idx="${idx}">
+      <li><a class="search-item ${idx === activeIndex ? 'active' : ''}" data-idx="${idx}" href="${item.url}" ${idx === activeIndex ? 'aria-current="true"' : ""}>
         <span class="search-item-title">${item.title}</span>
         <span class="search-item-tag ${item.type.toLowerCase()}">${item.tag}</span>
-      </li>
+      </a></li>
     `).join("");
-
-    list.querySelectorAll(".search-item").forEach(el => {
-      el.addEventListener("click", () => {
-        const idx = Number(el.dataset.idx);
-        navigate(currentResults[idx]);
-      });
-    });
   }
 
   function handleKeyNavigation(e) {
-    if (e.key === "Escape") {
-      closeSearch();
-      return;
-    }
-
     if (currentResults.length === 0) return;
 
     if (e.key === "ArrowDown") {
@@ -11352,8 +17277,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const items = list.querySelectorAll(".search-item");
     items.forEach((el, idx) => {
       el.classList.toggle("active", idx === activeIndex);
-      if (idx === activeIndex) el.scrollIntoView({ block: "nearest" });
+      if (idx === activeIndex) {
+        el.setAttribute("aria-current", "true");
+        const listBox = list.getBoundingClientRect();
+        const itemBox = el.getBoundingClientRect();
+        if (itemBox.top < listBox.top) list.scrollTop -= listBox.top - itemBox.top;
+        else if (itemBox.bottom > listBox.bottom) list.scrollTop += itemBox.bottom - listBox.bottom;
+      } else {
+        el.removeAttribute("aria-current");
+      }
     });
+    const active = currentResults[activeIndex];
+    if (active) {
+      const notice = `Result ${activeIndex + 1} of ${currentResults.length}: ${active.title}.`;
+      showSearchStatus(
+        `${notice} ${dataLoadFailures.length ? "Some search records could not be loaded." : ""}`.trim(),
+        dataLoadFailures.length > 0
+      );
+    }
   }
 
   function navigate(item) {
@@ -11364,16 +17305,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Global hotkey
   document.addEventListener("keydown", (e) => {
+    if (e.defaultPrevented) return;
+    const overlay = document.getElementById("search-overlay");
+    if (overlay && !overlay.hidden) return;
+    const otherModalOpen = [...document.querySelectorAll('dialog[open], [role="dialog"][aria-modal="true"]')]
+      .some(modal => modal !== overlay && !modal.hidden && modal.getAttribute("aria-hidden") !== "true");
+    if (otherModalOpen) return;
+    if (/(?:^|\/)(?:pokedex|lineup)\.html$/.test(location.pathname)) return;
     if (e.key === "/" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) {
       e.preventDefault();
       openSearch();
     }
   });
 
+  function revealCurrentNavLink() {
+    const current = document.querySelector(".site-bar nav [aria-current='page']");
+    const nav = current?.closest("nav");
+    if (!current || !nav) return;
+    const navBox = nav.getBoundingClientRect();
+    const linkBox = current.getBoundingClientRect();
+    if (linkBox.left < navBox.left) nav.scrollLeft -= navBox.left - linkBox.left;
+    else if (linkBox.right > navBox.right) nav.scrollLeft += linkBox.right - navBox.right;
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", revealCurrentNavLink, { once: true });
+  } else {
+    revealCurrentNavLink();
+  }
+
   window.openGlobalSearch = openSearch;
   window.closeGlobalSearch = closeSearch;
 })();
-
 ```
 
 ---
@@ -11383,7 +17346,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ### 4.1 `scripts/make-thumbs.mjs` (缩略图离线生成脚本)
 
 - **文件路径**: `scripts/make-thumbs.mjs`  
-- **代码行数**: 89 行  
+- **代码行数**: 90 行  
 - **文件大小**: 2,877 字节  
 
 ```javascript
@@ -11476,15 +17439,305 @@ if (stats.failed.length) {
   console.log("failed ids:", stats.failed.join(", "));
   process.exitCode = 1;
 }
-
 ```
 
 ---
 
-### 4.2 `assets/favicon.svg` (精灵球矢量图标)
+### 4.2 `scripts/make-posters.mjs` (海报图离线生成脚本)
+
+- **文件路径**: `scripts/make-posters.mjs`  
+- **代码行数**: 87 行  
+- **文件大小**: 4,394 字节  
+
+```javascript
+import { mkdir, writeFile } from "node:fs/promises";
+import sharp from "sharp";
+
+const POSTERS = [
+  // 8 Animated Series
+  { id: "series-01", url: "https://media.kitsu.app/anime/486/poster_image/medium-25e3d01f2d2f0a81dc139e4993ed74d8.jpeg" },
+  { id: "series-02", url: "https://media.kitsu.app/anime/poster_images/1404/medium.jpg" },
+  { id: "series-03", url: "https://media.kitsu.app/anime/poster_images/1405/medium.jpg" },
+  { id: "series-04", url: "https://media.kitsu.app/anime/poster_images/5605/medium.jpg" },
+  { id: "series-05", url: "https://media.kitsu.app/anime/poster_images/7850/medium.jpg" },
+  { id: "series-06", url: "https://media.kitsu.app/anime/poster_images/12533/medium.jpg" },
+  { id: "series-07", url: "https://media.kitsu.app/anime/poster_images/42534/medium.jpg" },
+  { id: "series-08", url: "https://media.kitsu.app/anime/46859/poster_image/medium-2d23c0195d27ee7308bb6f0e83b2b808.jpeg" },
+
+  // 23 Theatrical Movies
+  { id: "movie-01", url: "https://media.kitsu.app/anime/poster_images/487/original.jpg" },
+  { id: "movie-02", url: "https://media.kitsu.app/anime/poster_images/1001/original.jpg" },
+  { id: "movie-03", url: "https://media.kitsu.app/anime/poster_images/1002/original.jpg" },
+  { id: "movie-04", url: "https://media.kitsu.app/anime/poster_images/1003/original.jpg" },
+  { id: "movie-05", url: "https://media.kitsu.app/anime/poster_images/1004/original.jpg" },
+  { id: "movie-06", url: "https://media.kitsu.app/anime/poster_images/1005/original.jpg" },
+  { id: "movie-07", url: "https://media.kitsu.app/anime/poster_images/1006/original.jpg" },
+  { id: "movie-08", url: "https://media.kitsu.app/anime/poster_images/1368/original.jpg" },
+  { id: "movie-09", url: "https://media.kitsu.app/anime/poster_images/1992/original.jpg" },
+  { id: "movie-10", url: "https://media.kitsu.app/anime/poster_images/2597/original.jpg" },
+  { id: "movie-11", url: "https://media.kitsu.app/anime/poster_images/3419/original.jpg" },
+  { id: "movie-12", url: "https://media.kitsu.app/anime/poster_images/4460/original.jpg" },
+  { id: "movie-13", url: "https://media.kitsu.app/anime/poster_images/5083/original.jpg" },
+  { id: "movie-14", url: "https://media.kitsu.app/anime/poster_images/6327/original.jpg" },
+  { id: "movie-15", url: "https://media.kitsu.app/anime/poster_images/6786/original.jpg" },
+  { id: "movie-16", url: "https://media.kitsu.app/anime/poster_images/7489/original.jpg" },
+  { id: "movie-17", url: "https://media.kitsu.app/anime/poster_images/8149/original.jpg" },
+  { id: "movie-18", url: "https://media.kitsu.app/anime/poster_images/8903/original.png" },
+  { id: "movie-19", url: "https://media.kitsu.app/anime/poster_images/11202/large.jpg" },
+  { id: "movie-20", url: "https://media.kitsu.app/anime/poster_images/12941/original.jpg" },
+  { id: "movie-21", url: "https://media.kitsu.app/anime/poster_images/41413/original.jpg" },
+  { id: "movie-22", url: "https://media.kitsu.app/anime/41871/poster_image/3eadcf949282d8782ed3a60922f91760.png" },
+  { id: "movie-23", url: "https://media.kitsu.app/anime/poster_images/43025/original.jpg" }
+];
+
+const OUT_DIR = "assets/posters/";
+const WIDTH = 480;
+const HEIGHT = 720;
+const QUALITY = 82;
+
+await mkdir(OUT_DIR, { recursive: true });
+
+async function fetchBuffer(url) {
+  for (let i = 0; i < 3; i++) {
+    try {
+      const res = await fetch(url, {
+        headers: {
+          "User-Agent": "151File/1.0 (Fan Archive; https://github.com/eugeneeeee1123/Pokemon)"
+        }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return Buffer.from(await res.arrayBuffer());
+    } catch (err) {
+      if (i === 2) throw err;
+      await new Promise(r => setTimeout(r, 600 * (i + 1)));
+    }
+  }
+}
+
+let done = 0;
+let errors = [];
+
+for (const item of POSTERS) {
+  const target = `${OUT_DIR}${item.id}.webp`;
+  try {
+    const raw = await fetchBuffer(item.url);
+    const webp = await sharp(raw)
+      .resize(WIDTH, HEIGHT, { fit: "cover", position: "center" })
+      .webp({ quality: QUALITY, effort: 6 })
+      .toBuffer();
+    await writeFile(target, webp);
+    done++;
+    console.log(`[${done}/${POSTERS.length}] saved ${target} (${(webp.length / 1024).toFixed(1)} KB)`);
+  } catch (err) {
+    console.error(`Failed ${item.id}:`, err.message);
+    errors.push(item.id);
+  }
+}
+
+console.log(`Finished: ${done} succeeded, ${errors.length} failed.`);
+if (errors.length) process.exit(1);
+```
+
+---
+
+### 4.3 `scripts/make-game-posters.mjs` (游戏正作海报离线生成脚本)
+
+- **文件路径**: `scripts/make-game-posters.mjs`  
+- **代码行数**: 62 行  
+- **文件大小**: 2,410 字节  
+
+```javascript
+import { mkdir, writeFile } from "node:fs/promises";
+import sharp from "sharp";
+
+const POSTERS = [
+  { id: "game-kanto", url: "https://upload.wikimedia.org/wikipedia/en/a/af/Pok%C3%A9mon_Red_and_Blue_cover_art.webp" },
+  { id: "game-johto", url: "https://upload.wikimedia.org/wikipedia/en/4/4c/Pok%C3%A9mon_box_art_-_Gold_Version.png" },
+  { id: "game-hoenn", url: "https://upload.wikimedia.org/wikipedia/en/b/be/PokemonRubySapphireBox.jpg" },
+  { id: "game-sinnoh", url: "https://upload.wikimedia.org/wikipedia/en/2/2e/PokemonDiamondPearlBoxArt.jpg" },
+  { id: "game-unova", url: "https://upload.wikimedia.org/wikipedia/en/e/e1/Pokemon_Black_Box_Artwork.jpg" },
+  { id: "game-kalos", url: "https://upload.wikimedia.org/wikipedia/en/d/dc/Pokemon_X_and_Y_box_art.jpg" },
+  { id: "game-alola", url: "https://upload.wikimedia.org/wikipedia/en/b/ba/Pokemon_Sun_Boxart.jpg" },
+  { id: "game-galar", url: "https://upload.wikimedia.org/wikipedia/en/f/fa/Pok%C3%A9mon_Sword_and_Shield.jpg" },
+  { id: "game-paldea", url: "https://upload.wikimedia.org/wikipedia/en/0/00/Pok%C3%A9mon_Scarlet_and_Violet_banner.png" }
+];
+
+const OUT_DIR = "assets/posters/";
+const WIDTH = 600;
+const HEIGHT = 300;
+const QUALITY = 85;
+
+await mkdir(OUT_DIR, { recursive: true });
+
+async function fetchBuffer(url) {
+  for (let i = 0; i < 3; i++) {
+    try {
+      const res = await fetch(url, {
+        headers: {
+          "User-Agent": "151FileArchive/1.0 (Fan Archive; contact: yijuntee@gmail.com)"
+        }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return Buffer.from(await res.arrayBuffer());
+    } catch (err) {
+      if (i === 2) throw err;
+      await new Promise(r => setTimeout(r, 600 * (i + 1)));
+    }
+  }
+}
+
+let done = 0;
+let errors = [];
+
+for (const item of POSTERS) {
+  const target = `${OUT_DIR}${item.id}.webp`;
+  try {
+    const raw = await fetchBuffer(item.url);
+    const webp = await sharp(raw)
+      .resize(WIDTH, HEIGHT, { fit: "cover", position: "center" })
+      .webp({ quality: QUALITY, effort: 6 })
+      .toBuffer();
+    await writeFile(target, webp);
+    done++;
+    console.log(`[${done}/${POSTERS.length}] saved ${target} (${(webp.length / 1024).toFixed(1)} KB)`);
+  } catch (err) {
+    console.error(`Failed ${item.id}:`, err.message);
+    errors.push(item.id);
+  }
+}
+
+console.log(`Finished: ${done} succeeded, ${errors.length} failed.`);
+if (errors.length) process.exit(1);
+```
+
+---
+
+### 4.4 `scripts/generate-chatlog.mjs` (项目对话与开发日志生成脚本)
+
+- **文件路径**: `scripts/generate-chatlog.mjs`  
+- **代码行数**: 112 行  
+- **文件大小**: 5,836 字节  
+
+```javascript
+import fs from "node:fs";
+import path from "node:path";
+
+const brainDir = "/Users/eugebe/.gemini/antigravity/brain";
+
+const pokemonSessions = [
+  { id: "aafd67a1-fd35-4ed3-a18b-cb8f85952b10", title: "Git Pull 与初始仓库同步" },
+  { id: "1da4741a-0199-4bcc-97f1-d5a8163fc454", title: "高分辨率图库资源整理 (assets/images/gallery)" },
+  { id: "1fb2c653-01bd-4214-b6bc-7325f7fdaf35", title: "图鉴布局、3D 标本台与仓库提交" },
+  { id: "a67110fb-6a37-4951-bd3a-1888be12324f", title: "图鉴双视图渲染、胶片排版与深色档案风格" },
+  { id: "fbbc6b9d-2090-4e1c-9c6f-775464074b7c", title: "TCG 实体卡包拆包实验室开发与去重算法" },
+  { id: "d54e9137-b666-4dd4-a500-db9f789dec4a", title: "Git 代码拉取同步" },
+  { id: "7fc45237-ff43-4d38-b892-9b604094c5e3", title: "Git 变更提交与远程推送" },
+  { id: "8445cff0-40f4-4a0e-86ab-591c1eb3f2a5", title: "About 页面世界观、时空背景与排版填充" },
+  { id: "bfb5e824-bd9b-4105-80e4-a959a7e345f7", title: "世界观文案本地化与自然语言重写" },
+  { id: "6bf16f7c-e7af-484d-bc05-58a1f66d3c65", title: "Types 页面优化方案与 Characters 馆主文案" },
+  { id: "f293347f-a792-408d-b9bc-8845450ec71f", title: "历代动画与剧场版大纲规划" },
+  { id: "da2ee182-f01b-4c0a-a42f-936ce6fa1581", title: "首页视觉丰富化与解决方案探讨" },
+  { id: "1919eb30-9847-47fd-bea9-6a0aa8479e76", title: "底部页脚独立与全站 Footer 布局修复" },
+  { id: "9cb0db4f-e864-4d52-8251-6ae4ac38f17f", title: "About 页面海报压制（720p WebP）与占位清理" },
+  { id: "1fc53583-42cd-4779-beec-9f361537a53d", title: "全代码打包 allinone.md 文档全量更新" },
+  { id: "a625d2a7-c7a6-4ee8-af2f-cba478f3dad7", title: "动画电影文案精简与自然语言优化" },
+  { id: "ab15aa3f-7543-4f11-9013-dda0e8470add", title: "宝可梦 3D 模型互动与 152-1025 全世代模型接驳" },
+  { id: "7235df5f-49db-493a-93a3-61f00916ef31", title: "属性画廊 Image Gallery 方案探讨与规格设计" },
+  { id: "74ad8fd4-d923-4097-bea2-9ee97de41129", title: "Games 页面正作介绍与各世代文案补齐" },
+  { id: "be0464a1-35f0-4060-bdfe-b4a54d3ed4d2", title: "Games 页面官方海报接入、横向卡片布局与 Git 提交归档" }
+];
+
+function cleanUserContent(raw) {
+  if (!raw) return "";
+  let text = raw.replace(/<ADDITIONAL_METADATA>[\s\S]*$/, "").trim();
+  text = text.replace(/<USER_REQUEST>/g, "").replace(/<\/USER_REQUEST>/g, "").trim();
+  return text;
+}
+
+function formatSession(s, idx) {
+  const p = path.join(brainDir, s.id, ".system_generated/logs/transcript_full.jsonl");
+  if (!fs.existsSync(p)) return { out: "", turnsCount: 0, dateStr: "未知" };
+  const lines = fs.readFileSync(p, "utf8").split("\n").filter(Boolean);
+  
+  const turns = [];
+  let currentTurn = null;
+
+  for (const line of lines) {
+    try {
+      const item = JSON.parse(line);
+      if (item.type === "USER_INPUT") {
+        if (currentTurn) turns.push(currentTurn);
+        const text = cleanUserContent(item.content);
+        currentTurn = {
+          userText: text,
+          userTime: item.created_at,
+          assistantReplies: [],
+          toolsUsed: []
+        };
+      } else if (item.type === "PLANNER_RESPONSE") {
+        if (!currentTurn) continue;
+        if (item.content && item.content.trim()) {
+          currentTurn.assistantReplies.push(item.content.trim());
+        }
+        if (item.tool_calls && Array.isArray(item.tool_calls)) {
+          item.tool_calls.forEach(tc => {
+            const sum = tc.args && (tc.args.toolSummary || tc.name);
+            if (sum && !currentTurn.toolsUsed.includes(sum)) currentTurn.toolsUsed.push(sum);
+          });
+        }
+      }
+    } catch(e) {}
+  }
+  if (currentTurn) turns.push(currentTurn);
+
+  let firstTime = turns[0] ? turns[0].userTime : "";
+  let dateStr = firstTime ? firstTime.slice(0, 10) : "未知日期";
+
+  let out = `### 会话 ${String(idx + 1).padStart(2, "0")}: ${s.title}\n\n`;
+  out += `- **会话 ID**: \`${s.id}\`\n`;
+  out += `- **记录日期**: ${dateStr}\n`;
+  out += `- **交互轮数**: ${turns.length} 轮对话\n\n`;
+
+  turns.forEach((t, tIdx) => {
+    out += `#### Turn ${tIdx + 1} (${t.userTime ? t.userTime.slice(11, 19) + " UTC" : ""})\n\n`;
+    out += `**User**:\n> ${t.userText.split("\n").join("\n> ")}\n\n`;
+    
+    if (t.assistantReplies.length > 0) {
+      out += `**Assistant**:\n\n${t.assistantReplies.join("\n\n---\n\n")}\n\n`;
+    } else {
+      let toolsDesc = t.toolsUsed.length > 0 ? ` (执行操作: ${t.toolsUsed.slice(0, 5).join(", ")}${t.toolsUsed.length > 5 ? " 等" : ""})` : "";
+      out += `**Assistant**:\n\n*[处理中/执行指令${toolsDesc}]*\n\n`;
+    }
+  });
+
+  out += "---\n\n";
+  return { out, turnsCount: turns.length, dateStr };
+}
+
+let allText = "# 151 FILE — 项目完整对话与开发日志 (Chat & Development Logs)\n\n";
+allText += "> 本文档汇集记录了 **151 File**（宝可梦纯原生全世代 Web 档案站点）从架构规划、功能演进、页面打磨到资源制作的完整会话记录。\n\n---\n\n## 目录 (Table of Contents)\n\n";
+allText += "| 序号 | 日期 | 会话 ID | 主要议题 / 开发模块 | 轮数 |\n| :--- | :--- | :--- | :--- | :---: |\n";
+
+const sessionOutputs = [];
+pokemonSessions.forEach((s, idx) => {
+  const { out, turnsCount, dateStr } = formatSession(s, idx);
+  allText += `| ${idx + 1} | ${dateStr} | \`${s.id.slice(0, 8)}...\` | [${s.title}](#会话-${String(idx + 1).padStart(2, "0")}-${s.title.toLowerCase().replace(/[\s\(\)\/]/g, "-")}) | ${turnsCount} |\n`;
+  sessionOutputs.push(out);
+});
+
+allText += "\n---\n\n## 详细会话记录 (Session Logs)\n\n";
+allText += sessionOutputs.join("");
+
+fs.writeFileSync("CHATLOG.md", allText, "utf8");
+console.log("CHATLOG.md written successfully!");
+```
+
+---
+
+### 4.5 `assets/favicon.svg` (精灵球矢量图标)
 
 - **文件路径**: `assets/favicon.svg`  
-- **代码行数**: 14 行  
+- **代码行数**: 15 行  
 - **文件大小**: 541 字节  
 
 ```xml
@@ -11502,15 +17755,14 @@ if (stats.failed.length) {
     <circle cx="16" cy="16" r="2.8" fill="#FFFFFF" />
   </g>
 </svg>
-
 ```
 
 ---
 
-### 4.3 `.gitignore` (版本控制忽略文件)
+### 4.6 `.gitignore` (版本控制忽略文件)
 
 - **文件路径**: `.gitignore`  
-- **代码行数**: 8 行  
+- **代码行数**: 9 行  
 - **文件大小**: 79 字节  
 
 ```gitignore
@@ -11522,7 +17774,6 @@ Icon\r
 node_modules/
 files/
 files.zip
-
 ```
 
 ---
@@ -11532,7 +17783,7 @@ files.zip
 ### 5.1 `demo-interactive.html` (交互组件演示样板)
 
 - **文件路径**: `demo-interactive.html`  
-- **代码行数**: 888 行  
+- **代码行数**: 889 行  
 - **文件大小**: 27,724 字节  
 
 ```html
@@ -12424,7 +18675,6 @@ files.zip
   </script>
 </body>
 </html>
-
 ```
 
 ---
@@ -12432,7 +18682,7 @@ files.zip
 ### 5.2 `ui-template.html` (原始设计参考模板)
 
 - **文件路径**: `ui-template.html`  
-- **代码行数**: 680 行  
+- **代码行数**: 681 行  
 - **文件大小**: 20,283 字节  
 
 ```html
@@ -13116,5 +19366,219 @@ files.zip
   </main>
 </body>
 </html>
-
 ```
+
+---
+
+## 6. 项目规范与产品档案 (Specifications & Guidelines)
+
+### 6.1 `PRODUCT.md` (产品愿景与功能架构规范)
+
+- **文件路径**: `PRODUCT.md`  
+- **代码行数**: 34 行  
+- **文件大小**: 1,738 字节  
+
+```markdown
+# Product
+
+## Register
+
+product
+
+## Users
+
+People looking up Pokémon, including readers who may not know the franchise well. They need to find a specimen by name, number, type, or region, understand its reference data, and assemble a six-Pokémon belt.
+
+## Product Purpose
+
+151 FILE is a static, multi-page Pokédex and team-reference site. It opens on the Kanto 151, supports browsing other National Dex regions on demand, and lets users inspect species data, type matchups, and six-member team coverage without requiring an account.
+
+## Brand Personality
+
+Archival, clear, lightly playful. The site should feel like a handheld field archive under a night sky; the Poké Ball supplies the small moment of play.
+
+## Anti-references
+
+Avoid generic SaaS dashboards, marketing-page scaffolding, unexplained franchise jargon, a red-and-white theme across the whole interface, and decorative multi-column footer links.
+
+## Design Principles
+
+- Make core reference tasks understandable without prior Pokémon knowledge.
+- Keep the Kanto 151 as the default and fetch broader data only when the user asks for it.
+- Keep browsing, species details, type reference, and the six-slot belt in clear page-level routes.
+- Use the night-archive visual language for structure and reserve playful motion for the Poké Ball and meaningful interactions.
+- Make navigation and controls work with a keyboard, visible focus, and reduced-motion preferences.
+
+## Accessibility & Inclusion
+
+No formal WCAG conformance level is specified in the project docs. Preserve semantic landmarks and the skip link, keep keyboard focus visible, avoid conveying meaning through color alone, and honor reduced-motion, increased-contrast, and reduced-transparency preferences.
+```
+
+---
+
+### 6.2 `AGENTS.md` (Agent 操作红线与工程约束规范)
+
+- **文件路径**: `AGENTS.md`  
+- **代码行数**: 158 行  
+- **文件大小**: 5,365 字节  
+
+```markdown
+# AGENTS.md
+
+修订：2026-09-22。交互以 `interactions.md` 与计划 §4.9 为准。
+
+对本仓库动手的模型、IDE agent、Gemini、Antigravity、Cursor、Claude、Grok，全部受这份文件约束。  
+用户口头允许只覆盖他当轮点名的文件。未点名的文件视为禁止区。
+
+权威顺序（冲突时按此执行，不得自行调和）：
+
+1. 用户本轮原话
+2. 本文件
+3. `interactions.md`
+4. `pokemon-web-project-plan.md`
+5. `design.md`
+6. 现有代码
+
+禁止用「为了更好」「清理一下」「顺手重构」覆盖上面任何一层。
+
+---
+
+## 0. 默认姿态
+
+- 先读，再改，改完停。
+- 一次只做用户要的那一件事。
+- 发现可改进项：写在回复里，等下一句指令。不要直接改。
+- 不确定就停。问一句，等回复。不要猜着删。
+
+---
+
+## 1. 禁止清单（无白名单许可一律违规）
+
+1. 删除文件、清空文件、把文件改成空壳。
+2. `rm`、`git reset --hard`、`git checkout --`、`git clean`、覆盖式重写整个文件（除非用户写明「整文件重写」）。
+3. 改名、移动、合并、拆分已有文件。
+4. 改 `AGENTS.md`、`pokemon-web-project-plan.md`、`design.md`，除非用户本轮明确点名该文件。
+5. 删注释、删未使用函数、删 CSS 规则、删 HTML 区块，理由是「没用到」。
+6. 升级、降级、更换依赖、加打包器、加框架、改目录结构。
+7. 把 8 页合成 SPA、引入 React/Vue/Tailwind/组件库。
+8. 扩大 API 范围、加对战伤害公式、加用户没点名的第 9 页。
+9. 改视觉 token、字体、按钮文案，使其偏离 `design.md`。
+10. 格式化整仓库、全文件 Prettier、统一引号/分号风格，作为「顺手」。
+11. 提交 git、push、force push、改 remote。
+12. 把密钥、账号、localStorage 以外的数据传到第三方。
+
+违规处理：停下，列出你本想做的操作，等用户说「可以」或「改某某文件」。
+
+---
+
+## 2. 必须先通知、等允许
+
+以下操作即使你认为正确，也必须先用一条消息列出路径和原因，得到明确同意后再执行：
+
+- 删除任何路径
+- 重写超过约 80 行的已有文件
+- 新增计划里没有的文件
+- 改顶栏信息架构、路由文件名、`file151.belt` 键名
+- 改 Regions 编号表、克制表数值
+- 把已完成页面的 DOM 结构推倒重来
+
+同意的有效形式（必须针对本轮具体文件）：
+
+- 「可以删 `css/old.css`」
+- 「整文件重写 `lineup.js`」
+- 「按 design.md 改 `buttons.css`」
+
+无效同意：
+
+- 「帮我优化一下」
+- 「看着办」
+- 「弄好就行」
+- 上一轮对其他文件的允许
+
+---
+
+## 3. 允许的工作方式
+
+用户点名任务时：
+
+1. 列出将要改的文件路径（最多本轮需要的那些）。
+2. 用补丁改，不要无故整文件覆盖。
+3. 能小改就小改。新增函数优于改旧函数行为。
+4. 改完在回复里给变更清单：路径 + 各一行。
+5. 不做清单外的第二件事。
+
+新建文件仅限 `pokemon-web-project-plan.md` 第 3 节已写明的路径。计划里没有的路径 = 先问。
+
+---
+
+## 4. 范围锁
+
+| 用户说的 | 你能动 |
+|---|---|
+| 修 Dex 筛选 | `pokedex.html` / `pokedex.js` / 必要时 `api.js` |
+| 改按钮样式 | `buttons.css` / `tokens.css` |
+| 加 Lineup 计算 | `lineup.js` / `types-chart.js` / `lineup.html` |
+| 改文案规划 | 被点名的那一份 md |
+
+禁止「修筛选顺便把 About 重写」。  
+禁止「改 CSS 顺便把 class 名全局替换」。
+
+页面与界面名不得擅自改：
+
+Home, Dex, Detail, Types, Belt, Lineup, Regions, File  
+文件名：`index.html` `pokedex.html` `pokemon.html` `types.html` `team.html` `lineup.html` `regions.html` `about.html`
+
+---
+
+## 5. 数据与产品锁
+
+- 腰带键名固定：`file151.belt`，值为 id 数组，最长 6。
+- 看过：`file151.seen`。声音：`file151.sound`，默认 `"off"`。
+- Dex 呈现只准 Well + Film，外加 K 转盘、L 编号键、M 书签齿、N 剪影。禁止改回砖网格。
+- Dex 禁止拖砖进腰带、双击 Add、长按预览。尺拖与井环转盘只换当前只。井心 tap 才开合。
+- Holes 跳转用 `?resist=`，禁止复用 `?type=`。
+- Lineup 只读种族 type + `types-chart.js`。不加招式伤害。
+- Regions 用 `regions-data.js` 写死区间。不改表除非用户改计划。
+- 默认列表 Kanto 1–151。切地区才换 offset。
+- 不一次拉取 1025 条详情。
+
+---
+
+## 6. 回复格式
+
+改代码后的回复只含：
+
+1. 做了什么（短句）
+2. 改了哪些路径
+3. 没做但发现的问题（可选，不自动修）
+
+禁止：
+
+- 静默改完不提文件名
+- 用「小清理」「轻微调整」掩盖删除
+- 在用户没要预览时大段重贴无关文件
+
+---
+
+## 7. 冲突与幻觉
+
+- 计划与 design 冲突：停，引用两处原文，等用户裁断。不要自己选。
+- API 字段不确定：先查 PokeAPI 或现有 `api.js`。不要编字段。
+- 用户纠正你：下一轮按纠正后的事实做，不要把旧改动再改回去，除非他要求回滚。
+
+---
+
+## 8. 回滚
+
+用户说「撤」「还原」「谁让你删」：
+
+1. 立刻停止新改动。
+2. 用本轮 diff 能还原的部分还原。
+3. 列无法还原的路径，等指示。
+4. 不辩解，不借机再重构。
+
+---
+
+完。没有许可就当不允许。
+```
+

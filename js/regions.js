@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const titleEl = document.getElementById("current-region-title");
   const descEl = document.getElementById("current-region-desc");
   const dexBtn = document.getElementById("open-region-dex-btn");
+  const mapStage = document.getElementById("map-stage");
   const pinsLayer = document.getElementById("pins-layer");
   const popover = document.getElementById("recon-popover");
   const popoverClose = document.getElementById("recon-close-btn");
@@ -18,12 +19,80 @@ document.addEventListener("DOMContentLoaded", () => {
   const popoverName = document.getElementById("recon-name");
   const popoverDesc = document.getElementById("recon-desc");
   const popoverPokes = document.getElementById("recon-pokemons");
+  const mobileMapQuery = window.matchMedia("(max-width: 48rem)");
+  const mapLandmarkList = document.createElement("div");
+  mapLandmarkList.className = "map-landmark-list";
+  mapLandmarkList.setAttribute("role", "group");
+  mapLandmarkList.setAttribute("aria-label", "Map landmarks");
+  let activeLandmarkIndex = null;
+  let activeTrigger = null;
+  let activeRegionLandmarks = [];
 
   if (!window.REGIONS) return;
 
   function getSpeciesName(id) {
-    const item = (window.ALL_SPECIES_DATA || []).find(s => s[0] === id);
-    return item ? item[1] : `#${id}`;
+    return window.getSpeciesById?.(id)?.name || `#${id}`;
+  }
+
+  function syncPopoverPlacement() {
+    if (!mapStage || !popover) return;
+    if (mobileMapQuery.matches) {
+      if (mapStage.nextElementSibling !== mapLandmarkList) {
+        mapStage.insertAdjacentElement("afterend", mapLandmarkList);
+      }
+      popover.classList.add("is-below-map");
+      mapLandmarkList.insertAdjacentElement("afterend", popover);
+      ["left", "right", "top", "bottom"].forEach(side => popover.style.removeProperty(side));
+      return;
+    }
+
+    popover.classList.remove("is-below-map");
+    mapStage.appendChild(popover);
+    if (activeLandmarkIndex !== null) {
+      positionPopover(activeRegionLandmarks[activeLandmarkIndex]);
+    }
+  }
+
+  function positionPopover(lm) {
+    if (!mapStage || !popover || !lm || mobileMapQuery.matches) return;
+    const stageWidth = mapStage.clientWidth;
+    const stageHeight = mapStage.clientHeight;
+    const popoverWidth = popover.offsetWidth;
+    const popoverHeight = popover.offsetHeight;
+    const pinX = stageWidth * (lm.x / 100);
+    const pinY = stageHeight * (lm.y / 100);
+    const preferredLeft = pinX > stageWidth * 0.56
+      ? pinX - popoverWidth - 14
+      : pinX + 14;
+    const preferredTop = pinY > stageHeight * 0.58
+      ? pinY - popoverHeight - 14
+      : pinY + 10;
+
+    popover.style.right = "auto";
+    popover.style.bottom = "auto";
+    popover.style.left = `${Math.max(0, Math.min(preferredLeft, stageWidth - popoverWidth))}px`;
+    popover.style.top = `${Math.max(0, Math.min(preferredTop, stageHeight - popoverHeight))}px`;
+  }
+
+  function setExpandedLandmark(index) {
+    pinsLayer?.querySelectorAll(".map-pin").forEach(pin => {
+      pin.setAttribute("aria-expanded", String(Number(pin.dataset.idx) === index));
+    });
+    mapLandmarkList.querySelectorAll(".map-landmark-button").forEach(button => {
+      button.setAttribute("aria-expanded", String(Number(button.dataset.idx) === index));
+    });
+  }
+
+  function focusLandmarkControl(index, preferred) {
+    const isVisible = element => element?.isConnected && element.getClientRects().length > 0;
+    if (isVisible(preferred)) {
+      preferred.focus({ preventScroll: true });
+      return;
+    }
+    const fallback = mobileMapQuery.matches
+      ? mapLandmarkList.querySelector(`.map-landmark-button[data-idx="${index}"]`)
+      : pinsLayer?.querySelector(`.map-pin[data-idx="${index}"]`);
+    if (isVisible(fallback)) fallback.focus({ preventScroll: true });
   }
 
   if (selector) {
@@ -48,9 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
     closePopover();
 
     const landmarks = region.landmarks || [];
+    activeRegionLandmarks = landmarks;
     if (pinsLayer) {
       pinsLayer.innerHTML = landmarks.map((lm, idx) => `
-        <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}">
+        <button class="map-pin" type="button" data-idx="${idx}" style="left: ${lm.x}%; top: ${lm.y}%;" aria-label="${lm.name}" aria-controls="recon-popover" aria-expanded="false">
           <span class="map-pin-pulse"></span>
           <span class="map-pin-core"></span>
           <span class="map-pin-label">${lm.name}</span>
@@ -63,14 +133,29 @@ document.addEventListener("DOMContentLoaded", () => {
           const idx = Number(pinBtn.dataset.idx);
           const lm = landmarks[idx];
           if (!lm) return;
-          showPopover(lm);
+          showPopover(lm, pinBtn, idx);
         });
       });
     }
+
+    mapLandmarkList.innerHTML = landmarks.map((lm, idx) => `
+      <button class="map-landmark-button" type="button" data-idx="${idx}" aria-controls="recon-popover" aria-expanded="false">${lm.name}</button>
+    `).join("");
+    mapLandmarkList.querySelectorAll(".map-landmark-button").forEach(button => {
+      button.addEventListener("click", () => {
+        const idx = Number(button.dataset.idx);
+        const lm = landmarks[idx];
+        if (lm) showPopover(lm, button, idx);
+      });
+    });
+    syncPopoverPlacement();
   }
 
-  function showPopover(lm) {
+  function showPopover(lm, trigger, index) {
     if (!popover) return;
+    closePopover();
+    activeLandmarkIndex = index;
+    activeTrigger = trigger;
     if (popoverType) popoverType.textContent = lm.type || "Habitat";
     if (popoverName) popoverName.textContent = lm.name;
     if (popoverDesc) popoverDesc.textContent = lm.desc || "";
@@ -89,40 +174,53 @@ document.addEventListener("DOMContentLoaded", () => {
       }).join("");
     }
 
-    const pinLeft = lm.x;
-    const pinTop = lm.y;
-
-    if (pinLeft > 55) {
-      popover.style.right = `${100 - pinLeft + 3}%`;
-      popover.style.left = "auto";
-    } else {
-      popover.style.left = `${pinLeft + 3}%`;
-      popover.style.right = "auto";
-    }
-
-    if (pinTop > 60) {
-      popover.style.bottom = `${100 - pinTop}%`;
-      popover.style.top = "auto";
-    } else {
-      popover.style.top = `${Math.max(5, pinTop - 5)}%`;
-      popover.style.bottom = "auto";
-    }
-
     popover.hidden = false;
+    setExpandedLandmark(index);
+    positionPopover(lm);
+    popoverClose?.focus({ preventScroll: !mobileMapQuery.matches });
   }
 
-  function closePopover() {
+  function closePopover(restoreFocus = false) {
     if (popover) popover.hidden = true;
+    const closedIndex = activeLandmarkIndex;
+    const trigger = activeTrigger;
+    setExpandedLandmark(null);
+    activeLandmarkIndex = null;
+    activeTrigger = null;
+    if (restoreFocus && closedIndex !== null) focusLandmarkControl(closedIndex, trigger);
   }
 
   popoverClose?.addEventListener("click", (e) => {
     e.stopPropagation();
-    closePopover();
+    closePopover(true);
   });
 
-  document.getElementById("map-stage")?.addEventListener("click", (e) => {
+  mapStage?.addEventListener("click", (e) => {
     if (!e.target.closest(".recon-popover") && !e.target.closest(".map-pin")) {
       closePopover();
+    }
+  });
+
+  mapStage?.setAttribute("role", "group");
+  mapStage?.setAttribute("aria-label", "Interactive regional map");
+  popover?.setAttribute("role", "region");
+  popover?.setAttribute("aria-labelledby", "recon-name");
+  if (mapStage) mapStage.insertAdjacentElement("afterend", mapLandmarkList);
+  window.addEventListener("resize", () => {
+    if (activeLandmarkIndex !== null) {
+      positionPopover(activeRegionLandmarks[activeLandmarkIndex]);
+    }
+  });
+  const onMapBreakpointChange = () => syncPopoverPlacement();
+  if (mobileMapQuery.addEventListener) {
+    mobileMapQuery.addEventListener("change", onMapBreakpointChange);
+  } else {
+    mobileMapQuery.addListener(onMapBreakpointChange);
+  }
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && popover && !popover.hidden) {
+      e.preventDefault();
+      closePopover(true);
     }
   });
 
@@ -134,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (atlasEl) {
     atlasEl.innerHTML = window.REGIONS.map(r => `
-      <div class="region-card" data-slug="${r.slug}" style="cursor:pointer;">
+      <a class="region-card" href="#interactive-map-section" data-slug="${r.slug}" aria-label="Inspect ${r.name} map, Pokédex numbers ${r.start} through ${r.end}" style="cursor:pointer;">
         <div class="map-thumb">
           <img src="assets/maps/${r.slug}.webp" alt="${r.name} Official Map" loading="lazy" width="272" height="185">
         </div>
@@ -151,16 +249,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--mark); font-weight:700;">Inspect Recon Map ↗</span>
           </div>
         </div>
-      </div>
+      </a>
     `).join("");
 
     atlasEl.querySelectorAll(".region-card").forEach(card => {
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (e) => {
+        e.preventDefault();
         const slug = card.dataset.slug;
         const r = window.REGIONS.find(x => x.slug === slug);
         if (r) {
           renderInteractiveMap(r);
-          document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: "smooth" });
+          document.getElementById("interactive-map-section")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
     });

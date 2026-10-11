@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokémon Games — 151 File</title>
+  <meta name="description" content="Pokémon game titles grouped by region.">
+  <meta name="theme-color" content="#071422">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Oxanium:wght@500;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/pokeball.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .games-page {
+      max-width: 76rem;
+    }
+    .game-region-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-5);
+      margin: var(--s-6) 0;
+    }
+    .game-region {
+      min-width: 0;
+      padding: var(--s-5);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      box-shadow: var(--shadow-file);
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      grid-template-rows: auto auto 1fr;
+      column-gap: var(--s-5);
+      row-gap: var(--s-2);
+      align-items: start;
+    }
+    .game-poster-wrap {
+      grid-column: 1;
+      grid-row: 1 / span 4;
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.25);
+      aspect-ratio: 2 / 1;
+      margin-bottom: 0;
+      height: 100%;
+    }
+    .game-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+    .game-region:hover .game-poster {
+      transform: scale(1.02);
+    }
+    .game-region h2 {
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0;
+      color: var(--ink);
+      font: 700 1.35rem/1.2 var(--font-ui);
+    }
+    .game-region p {
+      grid-column: 2;
+      grid-row: 2;
+      margin: var(--s-1) 0 var(--s-3);
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+    .game-title-list {
+      grid-column: 2;
+      grid-row: 3;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .game-title-list li {
+      min-width: 0;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--ink);
+      font-size: 0.875rem;
+      line-height: 1.35;
+      font-family: var(--font-ui);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .game-title-list li:hover {
+      border-color: var(--navy);
+      background: rgba(126, 182, 217, 0.08);
+    }
+    @media (max-width: 54rem) {
+      .game-region {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .game-poster-wrap {
+        grid-column: 1;
+        grid-row: auto;
+        margin-bottom: var(--s-3);
+      }
+      .game-region h2,
+      .game-region p,
+      .game-title-list {
+        grid-column: 1;
+        grid-row: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-bar">
+    <div class="site-bar-inner">
+      <a class="site-bar-brand" href="index.html" aria-label="151 File home">
+        <img src="assets/pokeball.png" alt="" width="32" height="32" class="nav-ball-img">
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="pokedex.html">Dex</a>
+        <a href="regions.html">Regions</a>
+        <a href="types.html">Types</a>
+        <a href="moves.html">Moves</a>
+        <a href="abilities.html">Abilities</a>
+        <a href="collection.html">Collection</a>
+        <a href="team.html">Belt</a>
+        <a href="battle-lab.html">Lab</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="characters.html">Characters</a>
+        <a href="games.html" aria-current="page">Games</a>
+        <a href="about.html">File</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap games-page">
+    <h1 class="page-title">Pokémon Games</h1>
+    <p class="page-desc">Core series releases, remakes, and regional expansions catalogued across nine generations of adventures.</p>
+    <p><a class="link-action" href="about.html">Back to File</a></p>
+
+    <section class="game-region-grid" aria-label="Pokémon games by region">
+      <section class="game-region" id="kanto" aria-labelledby="kanto-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-kanto.webp" alt="Pokémon Red and Blue official cover art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="kanto-heading">Kanto</h2>
+        <p>The foundational territory where the journey began, spanning the original Game Boy generation through modern Kanto returns.</p>
+        <ul class="game-title-list">
+          <li>Red</li>
+          <li>Blue</li>
+          <li>Yellow</li>
+          <li>FireRed</li>
+          <li>LeafGreen</li>
+          <li>Let's Go, Pikachu! / Eevee!</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="johto" aria-labelledby="johto-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-johto.webp" alt="Pokémon Gold and Silver official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="johto-heading">Johto</h2>
+        <p>A tradition-rich land directly connected to Kanto, featuring the Bell Tower, Whirl Islands, and a path back across the border.</p>
+        <ul class="game-title-list">
+          <li>Gold</li>
+          <li>Silver</li>
+          <li>Crystal</li>
+          <li>HeartGold</li>
+          <li>SoulSilver</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="hoenn" aria-labelledby="hoenn-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-hoenn.webp" alt="Pokémon Ruby and Sapphire official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="hoenn-heading">Hoenn</h2>
+        <p>A tropical maritime expanse shaped by active volcanoes, oceanic trenches, and the awakening of super-ancient titans.</p>
+        <ul class="game-title-list">
+          <li>Ruby</li>
+          <li>Sapphire</li>
+          <li>Emerald</li>
+          <li>Omega Ruby</li>
+          <li>Alpha Sapphire</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="sinnoh" aria-labelledby="sinnoh-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-sinnoh.webp" alt="Pokémon Diamond and Pearl official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="sinnoh-heading">Sinnoh</h2>
+        <p>A northern realm divided by Mount Coronet, steeped in space-time creation myths and the ancestral frontier of Hisui.</p>
+        <ul class="game-title-list">
+          <li>Diamond</li>
+          <li>Pearl</li>
+          <li>Platinum</li>
+          <li>Brilliant Diamond</li>
+          <li>Shining Pearl</li>
+          <li>Legends: Arceus</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="unova" aria-labelledby="unova-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-unova.webp" alt="Pokémon Black and White official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="unova-heading">Unova</h2>
+        <p>A modern metropolitan landscape framed by suspension bridges and an enduring struggle between truth and ideals.</p>
+        <ul class="game-title-list">
+          <li>Black</li>
+          <li>White</li>
+          <li>Black 2</li>
+          <li>White 2</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="kalos" aria-labelledby="kalos-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-kalos.webp" alt="Pokémon X and Y official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="kalos-heading">Kalos</h2>
+        <p>A star-shaped cultural capital radiating from Lumiose City, where the mysteries of Mega Evolution were first uncovered.</p>
+        <ul class="game-title-list">
+          <li>X</li>
+          <li>Y</li>
+          <li>Legends: Z-A</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="alola" aria-labelledby="alola-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-alola.webp" alt="Pokémon Sun and Moon official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="alola-heading">Alola</h2>
+        <p>A sun-drenched archipelago of four natural islands and an artificial reef, defined by island trials and Ultra Space rifts.</p>
+        <ul class="game-title-list">
+          <li>Sun</li>
+          <li>Moon</li>
+          <li>Ultra Sun</li>
+          <li>Ultra Moon</li>
+          <li>Pokémon GO</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="galar" aria-labelledby="galar-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-galar.webp" alt="Pokémon Sword and Shield official box art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="galar-heading">Galar</h2>
+        <p>An industrial kingdom bordered by open Wild Areas, celebrated for stadium-scale league tournaments and Dynamax energy.</p>
+        <ul class="game-title-list">
+          <li>Sword</li>
+          <li>Shield</li>
+          <li>The Isle of Armor</li>
+          <li>The Crown Tundra</li>
+        </ul>
+      </section>
+
+      <section class="game-region" id="paldea" aria-labelledby="paldea-heading">
+        <div class="game-poster-wrap">
+          <img src="assets/posters/game-paldea.webp" alt="Pokémon Scarlet and Violet official cover art" width="600" height="300" loading="lazy" decoding="async" class="game-poster">
+        </div>
+        <h2 id="paldea-heading">Paldea</h2>
+        <p>A vast open continent surrounding the Great Crater, driven by academy treasure hunts and Terastal crystal phenomena.</p>
+        <ul class="game-title-list">
+          <li>Scarlet</li>
+          <li>Violet</li>
+          <li>The Teal Mask</li>
+          <li>The Indigo Disk</li>
+        </ul>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+</body>
+</html>

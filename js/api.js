@@ -11,7 +11,7 @@
   const API_BASE = "https://pokeapi.co/api/v2";
 
   // localStorage 缓存版本。以后详情数据加字段时把 v2 改成 v3，旧缓存自动作废。
-  const CACHE_PREFIX = "file151.v2.";
+  const CACHE_PREFIX = "file151.v3.";
 
   // 一次性清掉没有版本号的旧缓存
   try {
@@ -26,6 +26,7 @@
   const speciesMemoryCache = new Map();
   const abilityMemoryCache = new Map();
   const evoMemoryCache = new Map();
+  const evoTreeMemoryCache = new Map();
   const moveMemoryCache = new Map();
   const fullAbilityMemoryCache = new Map();
 
@@ -43,6 +44,11 @@
       if (hit) return String(hit.id);
     }
     return raw;
+  }
+
+  function refId(ref) {
+    const match = String(ref?.url || "").match(/\/(\d+)\/?$/);
+    return match ? Number(match[1]) : null;
   }
 
   const api = {
@@ -192,6 +198,11 @@
         const result = {
           id: data.id,
           name: local ? local.name : data.name.charAt(0).toUpperCase() + data.name.slice(1),
+          forms: (data.forms || []).map((form) => ({
+            id: refId(form),
+            name: form.name || "",
+            url: form.url || null
+          })).filter((form) => form.id || form.name),
           types: (data.types || []).sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
           height: (data.height || 0) / 10, // 分米转米
           weight: (data.weight || 0) / 10, // 百克转千克
@@ -224,6 +235,7 @@
         const fallback = {
           id: localSpec.id,
           name: localSpec.name,
+          forms: [],
           types: localSpec.types || [],
           height: 1.0,
           weight: 10.0,
@@ -245,7 +257,7 @@
     },
 
     /**
-     * 获取种族元数据：英文种属、100字以内 flavor、进化链 URL
+     * 获取种族元数据：英文种属、100字以内 flavor、进化链 URL、varieties 引用
      */
     async getSpecies(id) {
       if (!id) return null;
@@ -271,7 +283,17 @@
           id: j.id,
           genus: genus ? genus.genus : "",
           flavor: flavor ? flavor.flavor_text.replace(/\s+/g, " ").trim() : "",
-          evoUrl: j.evolution_chain?.url || null
+          evoUrl: j.evolution_chain?.url || null,
+          // ponytail: keep variety refs shallow; fetch a form only when a caller needs full data.
+          varieties: (j.varieties || []).map((v) => {
+            const pokemon = v?.pokemon || {};
+            return {
+              id: refId(pokemon),
+              name: pokemon.name || "",
+              url: pokemon.url || null,
+              isDefault: Boolean(v?.is_default)
+            };
+          }).filter((v) => v.id || v.name)
         };
         speciesMemoryCache.set(num, row);
         try {
@@ -338,6 +360,52 @@
         return ids;
       } catch (_) {
         return [];
+      }
+    },
+
+    /**
+     * 获取结构化进化树：保留所有分支，以及每条演化边的 evolution_details 条件。
+     * 节点形状：{ species: { id, name, url }, evolution_details, evolves_to }
+     */
+    async getEvoTree(evoUrl) {
+      if (!evoUrl) return null;
+      if (evoTreeMemoryCache.has(evoUrl)) return evoTreeMemoryCache.get(evoUrl);
+      const cacheKey = `${CACHE_PREFIX}evo_tree_${encodeURIComponent(evoUrl)}`;
+      try {
+        const local = localStorage.getItem(cacheKey);
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (parsed && parsed.species && Array.isArray(parsed.evolves_to)) {
+            evoTreeMemoryCache.set(evoUrl, parsed);
+            return parsed;
+          }
+        }
+      } catch (_) {}
+      try {
+        const resp = await fetch(evoUrl);
+        if (!resp.ok) return null;
+        const j = await resp.json();
+        function build(node) {
+          if (!node?.species?.url) return null;
+          return {
+            species: {
+              id: refId(node.species),
+              name: node.species.name || "",
+              url: node.species.url
+            },
+            evolution_details: Array.isArray(node.evolution_details) ? node.evolution_details : [],
+            evolves_to: (node.evolves_to || []).map(build).filter(Boolean)
+          };
+        }
+        const tree = build(j.chain);
+        if (!tree) return null;
+        evoTreeMemoryCache.set(evoUrl, tree);
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(tree));
+        } catch (_) {}
+        return tree;
+      } catch (_) {
+        return null;
       }
     },
 

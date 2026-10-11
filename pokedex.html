@@ -40,6 +40,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -51,7 +52,19 @@
     <!-- 控制条：地区从 Regions 进入，搜索与属性只作用于当前地区 -->
     <div class="tools">
       <div class="tools-bar">
-        <a class="region" id="region-link" href="regions.html">Kanto · #001–#151</a>
+        <select id="region-select" class="region-select" aria-label="Select Region" style="font-family:var(--font-num); background:var(--paper); color:var(--ink); border:1px solid var(--line); border-radius:var(--r-btn); padding:0.25rem 0.5rem; font-size:0.8125rem;">
+          <option value="all">National (#001–#1025)</option>
+          <option value="kanto">Kanto (#001–#151)</option>
+          <option value="johto">Johto (#152–#251)</option>
+          <option value="hoenn">Hoenn (#252–#386)</option>
+          <option value="sinnoh">Sinnoh (#387–#493)</option>
+          <option value="unova">Unova (#494–#649)</option>
+          <option value="kalos">Kalos (#650–#721)</option>
+          <option value="alola">Alola (#722–#809)</option>
+          <option value="galar">Galar (#810–#898)</option>
+          <option value="hisui">Hisui (#899–#905)</option>
+          <option value="paldea">Paldea (#906–#1025)</option>
+        </select>
         <span class="count-badge" id="count-badge" aria-live="polite"></span>
         <input id="q" type="search" placeholder="Find a name or number" autocomplete="off" aria-label="Search the current region by name or number">
         <button class="chip" id="draw" type="button">Draw one</button>
@@ -95,14 +108,32 @@
       <!-- 底胶片尺：整份过滤列表滚动条，支持吸格对齐 -->
       <div class="film" id="film"></div>
     </div>
-
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#1025</span> National Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/api.js"></script>
-  <script src="js/pokedex.js?v=20261003a"></script>
+  <script src="js/pokedex.js?v=20261009b"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>

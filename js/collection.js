@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const seen = window.store?.seen?.() || [];
   const favorites = window.store?.favoriteIds?.() || [];
   const belt = window.store?.belt?.() || [];
+  const seenTypes = new Set(seen.flatMap(id => window.getSpeciesById?.(id)?.types || []));
 
   const seenCount = seen.length;
 
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <strong>No Priority Specimens Flagged</strong>
             <p>Star key specimens in the Pokédex to pin them onto this master research board.</p>
           </div>
-          <a href="pokedex.html" class="button" style="text-decoration:none;">Open Dex Archive</a>
+          <a href="pokedex.html" class="btn btn-primary" style="text-decoration:none;">Open Dex Archive</a>
         </div>
       `;
     } else {
@@ -203,20 +204,22 @@ document.addEventListener("DOMContentLoaded", () => {
       code: "SEAL-TYP18",
       name: "Elemental Scope",
       desc: "Encounter specimens across all 18 elemental affinities.",
-      test: (c) => c.seen >= 18
+      test: (c) => c.seenTypes >= 18
     },
     {
       id: "quiz_streak_5",
       code: "SEAL-SIL5",
       name: "Silhouette Adept",
-      desc: "Identify 5 consecutive silhouette specimens in field quiz.",
+      desc: "Archived: preserves the best score from the former silhouette quiz. This challenge is no longer active.",
+      archived: true,
       test: (c) => c.quizBest >= 5
     },
     {
       id: "quiz_streak_10",
       code: "SEAL-SIL10",
       name: "Master Examiner",
-      desc: "Identify 10 consecutive silhouette specimens in field quiz.",
+      desc: "Archived: preserves the best score from the former silhouette quiz. This challenge is no longer active.",
+      archived: true,
       test: (c) => c.quizBest >= 10
     }
   ];
@@ -231,13 +234,16 @@ document.addEventListener("DOMContentLoaded", () => {
       favorites: favorites.length,
       belt: belt.length,
       kantoSeen: kantoCount,
+      seenTypes: seenTypes.size,
       quizBest: quizBest
     };
 
     let unlockedCount = 0;
+    const activeBadgeCount = BADGES.filter(b => !b.archived).length;
+    const archivedBadgeCount = BADGES.length - activeBadgeCount;
     badgeGrid.innerHTML = BADGES.map(b => {
       const unlocked = b.test(ctx);
-      if (unlocked) unlockedCount++;
+      if (unlocked && !b.archived) unlockedCount++;
       return `
         <article class="seal-card ${unlocked ? 'sealed' : 'unsealed'}">
           <div class="seal-mark">
@@ -245,18 +251,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="seal-status-icon">${unlocked ? '★' : '○'}</span>
           </div>
           <div class="seal-content">
-            <h4 class="seal-title">${b.name}</h4>
+            <h4 class="seal-title">${b.name}${b.archived ? " (Archived)" : ""}</h4>
             <p class="seal-desc">${b.desc}</p>
           </div>
           <div class="seal-verdict">
-            ${unlocked ? 'VALIDATED & SEALED' : 'PENDING FIELD RECORD'}
+            ${b.archived ? `ARCHIVED · ${unlocked ? "LEGACY RECORD PRESERVED" : "NO LEGACY RECORD"}` : (unlocked ? 'VALIDATED & SEALED' : 'PENDING FIELD RECORD')}
           </div>
         </article>
       `;
     }).join("");
 
     if (summaryBadgeEl) {
-      summaryBadgeEl.textContent = `${unlockedCount} / ${BADGES.length} VALIDATED`;
+      summaryBadgeEl.textContent = `${unlockedCount} / ${activeBadgeCount} ACTIVE · ${archivedBadgeCount} ARCHIVED`;
     }
   }
 });

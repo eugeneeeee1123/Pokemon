@@ -73,7 +73,7 @@
 
 .btn-paper:hover {
   border-color: var(--blue);
-  color: var(--blue);
+  color: var(--ink);
 }
 
 .btn-paper:active {
@@ -120,4 +120,127 @@
 
 .link-action:hover {
   color: var(--ink);
+}
+
+/* Detail viewer: keep modes, camera/actions and animation rows aligned. */
+#stage-controls {
+  width: min(100%, 24rem);
+  gap: var(--s-3) var(--s-2);
+  margin-top: var(--s-4);
+  align-items: flex-start;
+}
+
+#stage-controls .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 2.75rem;
+  padding-inline: var(--s-2);
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+#stage-controls > .btn-mode {
+  flex-basis: calc((100% - var(--s-4)) / 3);
+}
+
+#stage-controls .btn-mode.is-active,
+#stage-controls #btn-rotate[aria-pressed="true"] {
+  background: var(--navy-key);
+  color: var(--navy-key-ink);
+  border-color: var(--navy-key);
+}
+
+#stage-controls :is(#stage-camera-controls, #stage-base-actions) {
+  gap: var(--s-2) !important;
+  border-left: 0 !important;
+  padding-left: 0 !important;
+  min-width: 0;
+}
+
+#stage-controls :is(#stage-camera-controls, #stage-base-actions) .btn {
+  padding-inline: var(--s-1);
+  white-space: nowrap;
+}
+
+#stage-camera-controls { flex: 3 1 13rem; flex-wrap: nowrap !important; }
+#stage-base-actions { flex: 2 1 8rem; }
+#stage-feedback { flex-basis: 100%; text-align: center; }
+#stage-feedback:empty { display: none; }
+
+#stage-actions {
+  gap: var(--s-2) !important;
+  padding-top: var(--s-3) !important;
+}
+
+/* Keep the visibility state set by the existing 2D/3D controls. */
+#stage-actions:not([style*="display: none"]):not([style*="display:none"]) {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#stage-actions > span { grid-column: 1 / -1; text-align: left; }
+
+#stage-controls .btn:disabled {
+  background: var(--line);
+  border-color: var(--line);
+  color: var(--ink-soft);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
+@media (pointer: coarse) {
+  #stage-controls .btn { height: var(--s-12); }
+}
+
+@media (max-width: 24rem) {
+  .detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="] {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    color: var(--ink-soft);
+  }
+
+  .detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]:is(:hover, :focus-visible) {
+    background: var(--line);
+    color: var(--ink);
+  }
+}
+
+/* ponytail: reuse the native return link; draw the close mark as decoration. */
+body:has(.detail) .detail .fields {
+  position: relative;
+  padding-block-start: 4rem;
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="] {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  z-index: 1;
+  width: 2.75rem;
+  min-width: 44px;
+  height: 2.75rem;
+  min-height: 44px;
+  padding: 0;
+  font-size: 0;
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::before,
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  width: 1rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.detail .fields-bottom .detail-actions > a[href^="pokedex.html?region="]::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }

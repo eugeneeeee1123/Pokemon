@@ -130,6 +130,7 @@
     }
     .gauge-milestones {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.85rem;
     }
@@ -311,7 +312,7 @@
       transition: transform 160ms ease;
     }
     .collection-region:hover .region-mascot-art {
-      transform: scale(1.1);
+      transform: none;
     }
     .region-data-row {
       display: flex;
@@ -385,13 +386,14 @@
       color: var(--mark);
     }
     .favorites-empty-shelf {
+      grid-column: 1 / -1;
       background: var(--paper);
       border: 1px solid var(--line);
       border-radius: 4px;
       padding: 1.5rem 1.75rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 1.5rem;
       flex-wrap: wrap;
     }
@@ -569,6 +571,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -594,10 +597,10 @@
       </div>
 
       <div class="ledger-cell">
-        <span class="ledger-label">Field Favorites</span>
+        <span class="ledger-label">Priority Specimens</span>
         <div class="ledger-num-row">
           <span id="favorite-count" class="ledger-num">0</span>
-          <span class="ledger-denom">MARKED</span>
+          <span class="ledger-denom">PINNED</span>
         </div>
       </div>
 
@@ -666,13 +669,32 @@
       <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
         <div>
           <h2 style="font-size:1.15rem; margin:0 0 0.25rem;">Field Proficiency Seals</h2>
-          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Commemorative field seals validated upon verifiable ecological discovery milestones.</p>
+          <p style="font-size:0.875rem; color:var(--ink-soft); margin:0;">Earn seals as you log Pokémon and complete challenges.</p>
         </div>
-        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 12 VALIDATED</span>
+        <span id="badge-unlocked-summary" style="font-family:var(--font-num); color:var(--mark); font-weight:700; font-size:0.875rem;">0 / 10 ACTIVE · 2 ARCHIVED</span>
       </div>
       <div class="badge-grid" id="badge-grid"></div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>

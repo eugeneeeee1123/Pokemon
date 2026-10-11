@@ -44,6 +44,235 @@
         grid-template-columns: 1fr;
       }
     }
+    .timeline-map-block {
+      margin-top: var(--s-6);
+    }
+    .timeline-map-intro {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+    .timeline-map-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .timeline-track {
+      position: relative;
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .timeline-item {
+      position: relative;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: calc(-1.25rem - 5px);
+      top: 0.35rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px var(--navy);
+    }
+    .timeline-item-title {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      color: var(--ink);
+      margin: 0 0 0.2rem;
+    }
+    .timeline-item-source {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.75rem;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+      margin: 0 0 0.35rem;
+    }
+    .timeline-item-desc {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .timeline-map-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .timeline-map-frame {
+      border: 1px solid var(--line);
+      border-radius: var(--r-file);
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .timeline-map-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 16 / 10;
+    }
+    .timeline-map-caption {
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      padding: 0.5rem 0.75rem;
+      margin: 0;
+      border-top: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.15);
+    }
+    .timeline-map-btn {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    @media (max-width: 64rem) {
+      .timeline-map-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+    .media-card {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .media-poster-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--r-card, 4px);
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      aspect-ratio: 2 / 3;
+      width: 100px;
+    }
+    .media-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .media-content {
+      min-width: 0;
+    }
+    @media (max-width: 40rem) {
+      .media-card {
+        grid-template-columns: 80px minmax(0, 1fr);
+        gap: 0.85rem;
+      }
+      .media-poster-wrap {
+        width: 80px;
+      }
+    }
+    .media-guide-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-7) var(--s-4);
+      margin-top: var(--s-3);
+    }
+    .media-guide-list .media-card {
+      grid-template-columns: 11.25rem minmax(0, 1fr);
+      gap: var(--s-4);
+    }
+    .media-guide-list .media-poster-wrap {
+      width: 11.25rem;
+    }
+    @media (max-width: 72rem) {
+      .media-guide-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 40rem) {
+      .media-guide-list .media-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    /* File：地图与可展开笔记，说明区使用分隔线代替卡片。 */
+    .about-page .file-block {
+      background: transparent; border: 0; border-radius: 0; box-shadow: none;
+      padding: 0; transition: none;
+    }
+    .about-page .page-desc { max-width: 42rem; }
+    .about-page .timeline-map-block {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+      grid-template-rows: auto auto 1fr;
+      column-gap: var(--s-12); align-items: start; margin-block: var(--s-12);
+    }
+    .about-page #timeline-map-heading { font-size: 2rem; margin-bottom: var(--s-3); }
+    .about-page .timeline-map-intro { max-width: 34ch; margin-bottom: var(--s-6); }
+    .about-page .timeline-map-layout, .about-page .about-col { display: contents; }
+    .about-page .timeline-track { padding: 0; border: 0; gap: 0; }
+    .about-page .timeline-dot { display: none; }
+    .about-page .timeline-item { border-top: 1px solid var(--line); }
+    .about-page summary {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+      min-height: 2.75rem; padding-block: var(--s-3); cursor: pointer; color: var(--ink);
+    }
+    .about-page summary::-webkit-details-marker { display: none; }
+    .about-page summary::after { content: "+"; color: var(--navy); font-size: 1.25rem; }
+    .about-page details[open] > summary::after { content: "−"; }
+    .about-page summary:hover { color: var(--navy); }
+    .about-page summary h3 { margin: 0; color: inherit; }
+    .about-page .timeline-item-source { font-family: var(--font-ui); letter-spacing: 0; }
+    .about-page .timeline-item-desc { padding-bottom: var(--s-5); }
+    .about-page .timeline-map-side { grid-column: 2; grid-row: 1 / span 3; gap: var(--s-3); }
+    .about-page .timeline-map-img { aspect-ratio: 16 / 10; object-fit: cover; }
+    .about-page .timeline-map-caption { background: var(--sky); padding: var(--s-3); }
+    .about-page .timeline-map-btn { min-height: 2.75rem; }
+    .about-page .about-grid { gap: var(--s-8) var(--s-12); }
+    .about-page .about-grid .file-block {
+      grid-column: 1; margin: 0; border-top: 1px solid var(--line); padding-top: var(--s-5);
+    }
+    .about-page .file-block:has(#sound-heading) { grid-column: 2; grid-row: 1; }
+    .about-page .file-block:has(#keys-heading) { grid-column: 2; grid-row: 2 / span 2; }
+    .about-page .soft { font-family: var(--font-ui); font-size: 1rem; }
+    .about-page .keys-table td:first-child { width: 28%; }
+    #legendary-mythical > div { gap: var(--s-5) !important; margin-top: var(--s-4) !important; }
+    #legendary-mythical > div > article {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      column-gap: var(--s-6); row-gap: var(--s-2); padding-block: var(--s-5);
+      border-top: 1px solid var(--line);
+    }
+    #legendary-mythical > div > article > h3,
+    #legendary-mythical > div > article > p:not(.legendary-roster) { grid-column: 1; }
+    #legendary-mythical .legendary-roster {
+      grid-column: 2; grid-row: 1 / span 4; display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+      gap: var(--s-2); align-content: start; margin: 0; font-size: 0;
+    }
+    #legendary-mythical .legendary-roster > b {
+      grid-column: 1 / -1; color: var(--ink-soft); font-size: 0.8125rem;
+    }
+    #legendary-mythical .legendary-specimen {
+      display: flex; min-width: 0; flex-direction: column; align-items: center;
+      gap: var(--s-1); color: var(--navy); font-size: 0.8125rem;
+      line-height: 1.2; text-align: center;
+    }
+    #legendary-mythical .legendary-specimen img {
+      width: 6rem; height: 6rem; max-width: 100%; object-fit: contain; display: block;
+    }
+    #legendary-mythical .legendary-separator { display: none; }
+    @media (max-width: 48rem) {
+      #legendary-mythical > div > article { grid-template-columns: minmax(0, 1fr); }
+      #legendary-mythical .legendary-roster { grid-column: 1; grid-row: auto; }
+    }
+    body:has(.about-page) .site-bar nav {
+      min-width: 0; overflow-x: auto; white-space: nowrap; scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+    body:has(.about-page) .site-bar nav a { flex: 0 0 auto; min-height: 2.75rem; display: inline-flex; align-items: center; }
+    @media (max-width: 64rem) {
+      .about-page .timeline-map-block, .about-page .about-grid { grid-template-columns: minmax(0, 1fr); }
+      .about-page .timeline-map-side, .about-page .about-grid .file-block { grid-column: 1; grid-row: auto; }
+      .about-page .file-block:has(#sound-heading), .about-page .file-block:has(#keys-heading) { grid-column: 1; grid-row: auto; }
+      .about-page .timeline-map-side { margin-top: var(--s-6); }
+    }
   </style>
 </head>
 <body>
@@ -65,6 +294,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html" aria-current="page">File</a>
       </nav>
     </div>
@@ -74,20 +304,586 @@
   <main id="main" class="wrap about-page">
     <h1 class="page-title">File</h1>
     <p class="page-desc">Unofficial Kanto-first dex. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    <p><a class="link-action" href="games.html">Browse Pokémon game titles →</a></p>
+
+    <!-- 独立档案区块：正作时空脉络与地区地图 -->
+    <section class="file-block timeline-map-block" id="timeline-map" aria-labelledby="timeline-map-heading">
+      <h2 id="timeline-map-heading">World atlas</h2>
+      <p class="timeline-map-intro">
+        Four notes from the core games, alongside a map of Kanto. Open a note to read more.
+      </p>
+
+      <div class="timeline-map-layout">
+        <!-- 左侧：纵向时间节点 -->
+        <div class="timeline-track" role="list">
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Ancient Hisui and Kalos</h3></summary>
+              <p class="timeline-item-source">Source: Legends: Arceus, X and Y</p>
+              <p class="timeline-item-desc">Early hand-crafted Poké Balls are documented in Hisui. Three thousand years before modern leagues, AZ fired the ultimate weapon in Kalos, establishing an event that later split the series into two branches.</p>
+            </details>
+          </div>
+
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Kanto and Hoenn beginnings</h3></summary>
+              <p class="timeline-item-source">Source: Red, Green, Blue, Ruby, Sapphire</p>
+              <p class="timeline-item-desc">The original Kanto expedition and the Hoenn journey occur roughly concurrently. Team Rocket disbands in Kanto as ancient legendary Pokémon awaken in Hoenn.</p>
+            </details>
+          </div>
+
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Johto and Sinnoh league era</h3></summary>
+              <p class="timeline-item-source">Source: Gold, Silver, Diamond, Pearl</p>
+              <p class="timeline-item-desc">Set three years after events in Kanto. The Johto journey deals with Rocket remnants while Team Galactic provokes space-time disturbances across Sinnoh.</p>
+            </details>
+          </div>
+
+          <div class="timeline-item" role="listitem">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <details class="timeline-item-content">
+              <summary><h3 class="timeline-item-title">Mega Evolution timeline split</h3></summary>
+              <p class="timeline-item-source">Source: Omega Ruby, Alpha Sapphire Delta Episode</p>
+              <p class="timeline-item-desc">Dialogue during the Delta Episode establishes two distinct continuities: one where Mega Evolution was unlocked by the ultimate weapon, and an earlier branch where it never existed.</p>
+            </details>
+          </div>
+        </div>
+
+        <!-- 右侧：地图预览与 Regions 链接 -->
+        <div class="timeline-map-side">
+          <div class="timeline-map-frame">
+            <img src="assets/maps/kanto.webp" alt="Kanto region survey map" width="800" height="500" loading="lazy" class="timeline-map-img">
+            <p class="timeline-map-caption">Kanto field survey map (Generation I)</p>
+          </div>
+          <a href="regions.html" class="link-action timeline-map-btn">Open Regions atlas &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="file-block" id="animation-guide" aria-labelledby="animation-guide-heading">
+      <h2 id="animation-guide-heading">Animation &amp; film guide</h2>
+      <p class="soft">Overview of the TV series and films.</p>
+
+      <details>
+        <summary>Animated series</summary>
+        <div class="media-guide-list">
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-01.webp" alt="Poster: The Beginning &amp; Gold-Silver" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">The Beginning &amp; Gold-Silver (1997–2002)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 1–5 (Indigo League, Orange Islands, Johto Journeys, Johto League Champions, Master Quest)</p>
+              <p style="margin:0 0 0.4rem;">Ash and Pikachu leave Pallet Town to challenge Gyms across Kanto, the Orange Islands, and Johto with Misty and Brock.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Pokémon - I Choose You!", "Showdown at Dark City", "Gotta Catch Ya Later!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#travelers">Misty</a>, <a href="characters.html#travelers">Brock</a>, <a href="characters.html#adversaries">Jessie &amp; James</a>, <a href="characters.html#kanto">Professor Oak</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=1">Bulbasaur · #001</a>, <a href="pokemon.html?id=4">Charmander · #004</a>, <a href="pokemon.html?id=7">Squirtle · #007</a>, <a href="pokemon.html?id=6">Charizard · #006</a>, <a href="pokemon.html?id=52">Meowth · #052</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-02.webp" alt="Poster: Advanced Generation" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Advanced Generation (2002–2006)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 6–9 (Advanced, Advanced Challenge, Advanced Battle, Battle Frontier)</p>
+              <p style="margin:0 0 0.4rem;">Ash travels through Hoenn with Brock, May, and Max, then returns to Kanto to tackle the Battle Frontier.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Get the Show on the Road!", "The Bicker the Better", "Pace - The Final Frontier!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#travelers">Brock</a>, May, Max</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=252">Treecko · #252</a>, <a href="pokemon.html?id=254">Sceptile · #254</a>, <a href="pokemon.html?id=255">Torchic · #255</a>, <a href="pokemon.html?id=258">Mudkip · #258</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-03.webp" alt="Poster: Diamond &amp; Pearl" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Diamond &amp; Pearl (2006–2010)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 10–13 (Diamond and Pearl, Battle Dimension, Galactic Battles, Sinnoh League Victors)</p>
+              <p style="margin:0 0 0.4rem;">Ash, Brock, and Dawn travel through Sinnoh, facing rival Paul and stopping Team Galactic.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Following a Maiden's Voyage!", "Tears for Fears!", "Battling a Thaw in Relations!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Dawn, <a href="characters.html#travelers">Brock</a>, <a href="characters.html#champions">Cynthia</a>, Paul</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=390">Chimchar · #390</a>, <a href="pokemon.html?id=392">Infernape · #392</a>, <a href="pokemon.html?id=393">Piplup · #393</a>, <a href="pokemon.html?id=445">Garchomp · #445</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-04.webp" alt="Poster: Black &amp; White" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Black &amp; White (2010–2013)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 14–16 (Black &amp; White, Rival Destinies, Adventures in Unova)</p>
+              <p style="margin:0 0 0.4rem;">Ash travels across Unova with Iris and Cilan, challenging the League and opposing Team Plasma.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "In The Shadow of Zekrom!", "Battling for the Love of Bug-Types!", "Survival of the Striaton Gym!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Iris, Cilan, N</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=495">Snivy · #495</a>, <a href="pokemon.html?id=498">Tepig · #498</a>, <a href="pokemon.html?id=501">Oshawott · #501</a>, <a href="pokemon.html?id=612">Haxorus · #612</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-05.webp" alt="Poster: XY" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">XY (2013–2016)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 17–19 (XY, Kalos Quest, XYZ)</p>
+              <p style="margin:0 0 0.4rem;">In Kalos, Ash travels with Serena, Clemont, and Bonnie, mastering Battle Bond with Greninja and fighting Team Flare.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Kalos, Where Dreams and Adventures Begin!", "A Frenzied Factory Fiasco!", "Down to the Fiery Finish!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Serena, Clemont, Bonnie, Alain</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=658">Greninja · #658</a>, <a href="pokemon.html?id=663">Talonflame · #663</a>, <a href="pokemon.html?id=706">Goodra · #706</a>, <a href="pokemon.html?id=448">Lucario · #448</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-06.webp" alt="Poster: Sun &amp; Moon" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Sun &amp; Moon (2016–2019)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 20–22 (Sun &amp; Moon, Ultra Adventures, Ultra Legends)</p>
+              <p style="margin:0 0 0.4rem;">Ash attends the Pokémon School in Alola, learns Z-Moves, and wins the region's first League.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Alola to New Adventure!", "The Professors' New PBNJ!", "Enter the Champion!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Lillie, Gladion, Professor Kukui</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=722">Rowlet · #722</a>, <a href="pokemon.html?id=724">Decidueye · #724</a>, <a href="pokemon.html?id=745">Lycanroc · #745</a>, <a href="pokemon.html?id=727">Incineroar · #727</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-07.webp" alt="Poster: Journeys" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Journeys (2019–2023)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Seasons 23–25 (Journeys, Master Journeys, Ultimate Journeys)</p>
+              <p style="margin:0 0 0.4rem;">Ash and Goh travel across all eight regions as Ash works toward the World Coronation Series title.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "Enter Pikachu!", "The Climax of the World Coronation Series!", "The Rainbow and the Pokémon Master!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Goh, Chloe, Leon, <a href="characters.html#champions">Cynthia</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=448">Lucario · #448</a>, <a href="pokemon.html?id=94">Gengar · #094</a>, <a href="pokemon.html?id=815">Cinderace · #815</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/series-08.webp" alt="Poster: Horizons" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.35rem; color:var(--navy);">Horizons (2023–present)</h3>
+              <p class="soft" style="margin:0 0 0.4rem;">Season 26+ (The Sparkling of Terapagos, Terastal Debut)</p>
+              <p style="margin:0 0 0.4rem;">New trainers Liko and Roy travel with the Rising Volt Tacklers to solve the mystery of an ancient pendant.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Representative episodes:</b> "The Pendant That Starts It All", "The Door That Never Opens", "How Terrastallizing!"</p>
+              <p style="font-size:0.875rem; margin:0 0 0.3rem;"><b>Characters:</b> Liko, Roy, Friede, Dot</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=906">Sprigatito · #906</a>, <a href="pokemon.html?id=909">Fuecoco · #909</a>, <a href="pokemon.html?id=912">Quaxly · #912</a>, <a href="pokemon.html?id=1024">Terapagos · #1024</a>, <a href="pokemon.html?id=25">Pikachu · #025</a></p>
+            </div>
+          </article>
+        </div>
+      </details>
+
+      <details>
+        <summary>Theatrical films</summary>
+        <div class="media-guide-list">
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-01.webp" alt="Poster: Mewtwo Strikes Back" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">1. Pokémon: The First Movie - Mewtwo Strikes Back (1998)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 1998</p>
+              <p style="margin:0 0 0.35rem;">Cloned from Mew, Mewtwo rebels against humans and invites Ash to battle on New Island.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#travelers">Misty</a>, <a href="characters.html#travelers">Brock</a>, <a href="characters.html#adversaries">Giovanni</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=150">Mewtwo · #150</a>, <a href="pokemon.html?id=151">Mew · #151</a>, <a href="pokemon.html?id=25">Pikachu · #025</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-02.webp" alt="Poster: The Power of One" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">2. Pokémon the Movie 2000: The Power of One (1999)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 1999</p>
+              <p style="margin:0 0 0.35rem;">A collector captures the legendary birds, and Ash helps Lugia restore the weather.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Melody, Lawrence III</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=249">Lugia · #249</a>, <a href="pokemon.html?id=144">Articuno · #144</a>, <a href="pokemon.html?id=145">Zapdos · #145</a>, <a href="pokemon.html?id=146">Moltres · #146</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-03.webp" alt="Poster: Spell of the Unown" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">3. Pokémon 3: The Movie - Spell of the Unown (2000)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2000</p>
+              <p style="margin:0 0 0.35rem;">A young girl uses the Unown to create an illusionary Entei, crystallizing Greenfield and taking Ash's mother.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Molly Hale, Delia Ketchum</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=244">Entei · #244</a>, <a href="pokemon.html?id=201">Unown · #201</a>, <a href="pokemon.html?id=6">Charizard · #006</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-04.webp" alt="Poster: Celebi - Voice of the Forest" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">4. Pokémon 4Ever: Celebi - Voice of the Forest (2001)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2001</p>
+              <p style="margin:0 0 0.35rem;">Ash and a time-traveling trainer named Sam protect Celebi from a Team Rocket hunter.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Sam (<a href="characters.html#kanto">Professor Oak</a>), Iron-Masked Marauder</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=251">Celebi · #251</a>, <a href="pokemon.html?id=245">Suicune · #245</a>, <a href="pokemon.html?id=248">Tyranitar · #248</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-05.webp" alt="Poster: Heroes: Latios and Latias" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">5. Pokémon Heroes: Latios and Latias (2002)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2002</p>
+              <p style="margin:0 0 0.35rem;">In Alto Mare, Ash defends Latios and Latias from thieves trying to steal the Soul Dew.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Bianca, Lorenzo, Annie &amp; Oakley</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=380">Latias · #380</a>, <a href="pokemon.html?id=381">Latios · #381</a>, <a href="pokemon.html?id=196">Espeon · #196</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-06.webp" alt="Poster: Jirachi - Wish Maker" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">6. Pokémon: Jirachi - Wish Maker (2003)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2003</p>
+              <p style="margin:0 0 0.35rem;">Max befriends the mythical Jirachi as an ex-Team Magma scientist tries to harness it to revive Groudon.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Max, Butler, Diane</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=385">Jirachi · #385</a>, <a href="pokemon.html?id=383">Groudon · #383</a>, <a href="pokemon.html?id=359">Absol · #359</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-07.webp" alt="Poster: Destiny Deoxys" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">7. Pokémon: Destiny Deoxys (2004)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2004</p>
+              <p style="margin:0 0 0.35rem;">Deoxys lands in LaRousse City searching for its counterpart, triggering a battle with Rayquaza.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Tory Lund, Professor Lund</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=386">Deoxys · #386</a>, <a href="pokemon.html?id=384">Rayquaza · #384</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-08.webp" alt="Poster: Lucario and the Mystery of Mew" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">8. Pokémon: Lucario and the Mystery of Mew (2005)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2005</p>
+              <p style="margin:0 0 0.35rem;">Ash teams up with an awakened Lucario to rescue Pikachu from the Tree of Beginning.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Sir Aaron, Lady Eileen, Kidd Summers</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=448">Lucario · #448</a>, <a href="pokemon.html?id=151">Mew · #151</a>, <a href="pokemon.html?id=377">Regirock · #377</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-09.webp" alt="Poster: Pokémon Ranger and the Temple of the Sea" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">9. Pokémon Ranger and the Temple of the Sea (2006)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2006</p>
+              <p style="margin:0 0 0.35rem;">Ash and a Pokémon Ranger escort newly hatched Manaphy to an underwater temple ahead of pirates.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Jack Walker, Phantom</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=490">Manaphy · #490</a>, <a href="pokemon.html?id=382">Kyogre · #382</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-10.webp" alt="Poster: The Rise of Darkrai" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">10. Pokémon: The Rise of Darkrai (2007)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2007</p>
+              <p style="margin:0 0 0.35rem;">Dialga and Palkia clash over Alamos Town while Darkrai fights to hold them back.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Alice, Tonio, Baron Alberto</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=491">Darkrai · #491</a>, <a href="pokemon.html?id=483">Dialga · #483</a>, <a href="pokemon.html?id=484">Palkia · #484</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-11.webp" alt="Poster: Giratina and the Sky Warrior" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">11. Pokémon: Giratina and the Sky Warrior (2008)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2008</p>
+              <p style="margin:0 0 0.35rem;">Shaymin draws Ash into the Reverse World, where an inventor plots to harness Giratina's power.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Newton Graceland, Zero</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=492">Shaymin · #492</a>, <a href="pokemon.html?id=487">Giratina · #487</a>, <a href="pokemon.html?id=483">Dialga · #483</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-12.webp" alt="Poster: Arceus and the Jewel of Life" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">12. Pokémon: Arceus and the Jewel of Life (2009)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2009</p>
+              <p style="margin:0 0 0.35rem;">Ash travels back in time to stop a betrayal against Arceus before the Pokémon destroys the present.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Damos, Sheena, Marcus</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=493">Arceus · #493</a>, <a href="pokemon.html?id=483">Dialga · #483</a>, <a href="pokemon.html?id=484">Palkia · #484</a>, <a href="pokemon.html?id=487">Giratina · #487</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-13.webp" alt="Poster: Zoroark: Master of Illusions" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">13. Pokémon: Zoroark: Master of Illusions (2010)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2010</p>
+              <p style="margin:0 0 0.35rem;">Ash helps Zorua find its mother while stopping a corrupt businessman from controlling Zoroark.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Grings Kodai, Zorua, Karl</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=571">Zoroark · #571</a>, <a href="pokemon.html?id=570">Zorua · #570</a>, <a href="pokemon.html?id=251">Celebi · #251</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-14.webp" alt="Poster: Victini and Reshiram / Zekrom" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">14. Pokémon the Movie: Black / White - Victini and Reshiram / Zekrom (2011)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2011</p>
+              <p style="margin:0 0 0.35rem;">A man captures Victini and awakens a legendary dragon to relocate an ancient castle.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Damon, Carlita, Juanita</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=494">Victini · #494</a>, <a href="pokemon.html?id=643">Reshiram · #643</a>, <a href="pokemon.html?id=644">Zekrom · #644</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-15.webp" alt="Poster: Kyurem vs. The Sword of Justice" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">15. Pokémon the Movie: Kyurem vs. The Sword of Justice (2012)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2012</p>
+              <p style="margin:0 0 0.35rem;">Keldeo challenges Kyurem too soon and turns to Ash after freezing its mentors in battle.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Keldeo, Swords of Justice</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=647">Keldeo · #647</a>, <a href="pokemon.html?id=646">Kyurem · #646</a>, <a href="pokemon.html?id=638">Cobalion · #638</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-16.webp" alt="Poster: Genesect and the Legend Awakened" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">16. Pokémon the Movie: Genesect and the Legend Awakened (2013)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2013</p>
+              <p style="margin:0 0 0.35rem;">A group of revived Genesect threatens New Tork City, leading Mewtwo to step in.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Eric, Red Genesect</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=649">Genesect · #649</a>, <a href="pokemon.html?id=150">Mewtwo · #150</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-17.webp" alt="Poster: Diancie and the Cocoon of Destruction" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">17. Pokémon the Movie: Diancie and the Cocoon of Destruction (2014)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2014</p>
+              <p style="margin:0 0 0.35rem;">Diancie searches for Xerneas to save her home, but thieves accidentally awaken Yveltal.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Diancie, Millis Steel, Argus Steel</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=719">Diancie · #719</a>, <a href="pokemon.html?id=716">Xerneas · #716</a>, <a href="pokemon.html?id=717">Yveltal · #717</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-18.webp" alt="Poster: Hoopa and the Clash of Ages" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">18. Pokémon the Movie: Hoopa and the Clash of Ages (2015)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2015</p>
+              <p style="margin:0 0 0.35rem;">Hoopa's released shadow power summons past legendary Pokémon into a battle across Dahara City.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Baraz, Meray, Hoopa</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=720">Hoopa · #720</a>, <a href="pokemon.html?id=384">Rayquaza · #384</a>, <a href="pokemon.html?id=493">Arceus · #493</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-19.webp" alt="Poster: Volcanion and the Mechanical Marvel" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">19. Pokémon the Movie: Volcanion and the Mechanical Marvel (2016)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2016</p>
+              <p style="margin:0 0 0.35rem;">Bound to Volcanion by a magnetic ring, Ash helps rescue the artificial Pokémon Magearna from Azoth Kingdom.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Alva, Kimia, Raleigh</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=721">Volcanion · #721</a>, <a href="pokemon.html?id=801">Magearna · #801</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-20.webp" alt="Poster: I Choose You!" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">20. Pokémon the Movie: I Choose You! (2017)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2017</p>
+              <p style="margin:0 0 0.35rem;">An alternate retelling of Ash and Pikachu's first days and their journey toward Mount Tensei.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Verity, Sorrel, Cross</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=25">Pikachu · #025</a>, <a href="pokemon.html?id=250">Ho-Oh · #250</a>, <a href="pokemon.html?id=802">Marshadow · #802</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-21.webp" alt="Poster: The Power of Us" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">21. Pokémon the Movie: The Power of Us (2018)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2018</p>
+              <p style="margin:0 0 0.35rem;">Ash and five strangers work together when a festival fire threatens Fula City and Zeraora.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Risa, Margo, Callahan</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=249">Lugia · #249</a>, <a href="pokemon.html?id=807">Zeraora · #807</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-22.webp" alt="Poster: Mewtwo Strikes Back - Evolution" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">22. Pokémon: Mewtwo Strikes Back - Evolution (2019)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2019</p>
+              <p style="margin:0 0 0.35rem;">A 3D CGI remake of the 1998 film, following Mewtwo's revolt and the battle on New Island.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, <a href="characters.html#adversaries">Giovanni</a></p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=150">Mewtwo · #150</a>, <a href="pokemon.html?id=151">Mew · #151</a></p>
+            </div>
+          </article>
+
+          <article class="media-card">
+            <div class="media-poster-wrap">
+              <img src="assets/posters/movie-23.webp" alt="Poster: Secrets of the Jungle" width="480" height="720" loading="lazy" decoding="async" class="media-poster">
+            </div>
+            <div class="media-content">
+              <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">23. Pokémon the Movie: Secrets of the Jungle (2020)</h3>
+              <p class="soft" style="margin:0 0 0.35rem;">Year: 2020</p>
+              <p style="margin:0 0 0.35rem;">Ash meets Koko, a boy raised by a Zarude, and helps protect the Great Tree from a researcher.</p>
+              <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Characters:</b> <a href="characters.html#travelers">Ash Ketchum</a>, Koko, Dada Zarude, Dr. Zed</p>
+              <p style="font-size:0.875rem; margin:0;"><b>Pokémon:</b> <a href="pokemon.html?id=893">Zarude · #893</a>, <a href="pokemon.html?id=251">Celebi · #251</a></p>
+            </div>
+          </article>
+        </div>
+      </details>
+    </section>
+
+    <section class="file-block" id="legendary-mythical" aria-labelledby="legendary-mythical-heading">
+      <h2 id="legendary-mythical-heading">Legendary &amp; Mythical Pokémon</h2>
+      <p class="soft">Regional catalogue of Legendary and Mythical species across all nine generations, with canonical appearances across the mainline games and theatrical releases.</p>
+
+      <div style="display:flex; flex-direction:column; gap:1.25rem; margin-top:1rem;">
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Kanto (Generation I)</h3>
+          <p style="margin:0 0 0.4rem;">Kanto established the first legendary trio with the elemental winged mirages Articuno, Zapdos, and Moltres, roosting in remote wilderness across the region. Genetic research conducted on Faraway Island led Team Rocket scientists to clone Mew into the psychic powerhouse Mewtwo in the Cinnabar Island laboratory.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=144">Articuno · #144</a>, <a href="pokemon.html?id=145">Zapdos · #145</a>, <a href="pokemon.html?id=146">Moltres · #146</a>, <a href="pokemon.html?id=150">Mewtwo · #150</a>, <a href="pokemon.html?id=151">Mew · #151</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Red, Blue, Yellow, FireRed, LeafGreen, Let's Go, Pikachu! / Eevee!</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Mewtwo Strikes Back, The Power of One, Mewtwo Returns</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Johto (Generation II)</h3>
+          <p style="margin:0 0 0.4rem;">Johto folklore centers on the destruction of Ecruteak City's Brass Tower, where three unnamed Pokémon perished in the flames and were resurrected by Ho-Oh as the legendary beasts Raikou, Entei, and Suicune. Sky guardian Lugia nested in the Whirl Islands, while time-traveling guardian Celebi protects the ancient shrine deep inside Ilex Forest.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=243">Raikou · #243</a>, <a href="pokemon.html?id=244">Entei · #244</a>, <a href="pokemon.html?id=245">Suicune · #245</a>, <a href="pokemon.html?id=249">Lugia · #249</a>, <a href="pokemon.html?id=250">Ho-Oh · #250</a>, <a href="pokemon.html?id=251">Celebi · #251</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Gold, Silver, Crystal, HeartGold, SoulSilver</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> The Power of One, Spell of the Unown, Celebi: Voice of the Forest, Zoroark: Master of Illusions</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Hoenn (Generation III)</h3>
+          <p style="margin:0 0 0.4rem;">Hoenn's geography was shaped by primeval titan clashes between ancient ocean ruler Kyogre and landmass creator Groudon, kept in check by ozone layer sovereign Rayquaza. Sealed away in ancient stone ruins are the sealed titan trio Regirock, Regice, and Registeel, alongside roaming twin guardians Latias and Latios, wish-granting Jirachi, and extraterrestrial mutation Deoxys.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=377">Regirock · #377</a>, <a href="pokemon.html?id=378">Regice · #378</a>, <a href="pokemon.html?id=379">Registeel · #379</a>, <a href="pokemon.html?id=380">Latias · #380</a>, <a href="pokemon.html?id=381">Latios · #381</a>, <a href="pokemon.html?id=382">Kyogre · #382</a>, <a href="pokemon.html?id=383">Groudon · #383</a>, <a href="pokemon.html?id=384">Rayquaza · #384</a>, <a href="pokemon.html?id=385">Jirachi · #385</a>, <a href="pokemon.html?id=386">Deoxys · #386</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Ruby, Sapphire, Emerald, Omega Ruby, Alpha Sapphire</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Pokémon Heroes, Jirachi: Wish Maker, Destiny Deoxys</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Sinnoh &amp; Hisui (Generation IV &amp; Legends)</h3>
+          <p style="margin:0 0 0.4rem;">Sinnoh cosmology recounts the creation of the cosmos by the original deity Arceus at the Spear Pillar atop Mount Coronet. Arceus brought forth Dialga to rule time, Palkia to govern space, and banished Giratina to the Distortion World, while the lake guardians Uxie, Mesprit, and Azelf brought forth knowledge, emotion, and willpower.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=480">Uxie · #480</a>, <a href="pokemon.html?id=481">Mesprit · #481</a>, <a href="pokemon.html?id=482">Azelf · #482</a>, <a href="pokemon.html?id=483">Dialga · #483</a>, <a href="pokemon.html?id=484">Palkia · #484</a>, <a href="pokemon.html?id=485">Heatran · #485</a>, <a href="pokemon.html?id=486">Regigigas · #486</a>, <a href="pokemon.html?id=487">Giratina · #487</a>, <a href="pokemon.html?id=488">Cresselia · #488</a>, <a href="pokemon.html?id=489">Phione · #489</a>, <a href="pokemon.html?id=490">Manaphy · #490</a>, <a href="pokemon.html?id=491">Darkrai · #491</a>, <a href="pokemon.html?id=492">Shaymin · #492</a>, <a href="pokemon.html?id=493">Arceus · #493</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Diamond, Pearl, Platinum, Brilliant Diamond, Shining Pearl, Legends: Arceus</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> The Rise of Darkrai, Giratina and the Sky Warrior, Arceus and the Jewel of Life</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Unova (Generation V)</h3>
+          <p style="margin:0 0 0.4rem;">Unova history tells of an original dragon that split in two during a civil war between twin hero princes, dividing into Reshiram, dragon of truth, and Zekrom, dragon of ideals, with the frozen husk Kyurem remaining in the Giant Chasm. Defending the wild habitats are the Swords of Justice led by Cobalion, the Forces of Nature trio, and mythical guardians Victini, Meloetta, and Genesect.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=494">Victini · #494</a>, <a href="pokemon.html?id=638">Cobalion · #638</a>, <a href="pokemon.html?id=639">Terrakion · #639</a>, <a href="pokemon.html?id=640">Virizion · #640</a>, <a href="pokemon.html?id=641">Tornadus · #641</a>, <a href="pokemon.html?id=642">Thundurus · #642</a>, <a href="pokemon.html?id=643">Reshiram · #643</a>, <a href="pokemon.html?id=644">Zekrom · #644</a>, <a href="pokemon.html?id=645">Landorus · #645</a>, <a href="pokemon.html?id=646">Kyurem · #646</a>, <a href="pokemon.html?id=647">Keldeo · #647</a>, <a href="pokemon.html?id=648">Meloetta · #648</a>, <a href="pokemon.html?id=649">Genesect · #649</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Black, White, Black 2, White 2</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Victini and Reshiram / Zekrom, Kyurem vs. The Sword of Justice, Genesect and the Legend Awakened</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Kalos (Generation VI)</h3>
+          <p style="margin:0 0 0.4rem;">Kalos myth revolves around the cycle of life and destruction embodied by the life-giving stag Xerneas and the death cocoon Yveltal, both tied to the energy of an ancient ultimate weapon. Maintaining ecological equilibrium beneath the surface is order custodian Zygarde, accompanied by underground jewel ruler Diancie, dimension-hopping djinn Hoopa, and steam-driven Volcanion.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=716">Xerneas · #716</a>, <a href="pokemon.html?id=717">Yveltal · #717</a>, <a href="pokemon.html?id=718">Zygarde · #718</a>, <a href="pokemon.html?id=719">Diancie · #719</a>, <a href="pokemon.html?id=720">Hoopa · #720</a>, <a href="pokemon.html?id=721">Volcanion · #721</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> X, Y, Legends: Z-A</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Diancie and the Cocoon of Destruction, Hoopa and the Clash of Ages, Volcanion and the Mechanical Marvel</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Alola (Generation VII)</h3>
+          <p style="margin:0 0 0.4rem;">Alola's tropical islands are guarded by the four natural land spirits known as the Tapu. Planetary balance depends on Cosmog evolving into the radiant emissaries Solgaleo or Lunala to cross Ultra Wormholes, defending the world's light from the prism parasite Necrozma that once consumed Ultra Megalopolis.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=785">Tapu Koko · #785</a>, <a href="pokemon.html?id=786">Tapu Lele · #786</a>, <a href="pokemon.html?id=787">Tapu Bulu · #787</a>, <a href="pokemon.html?id=788">Tapu Fini · #788</a>, <a href="pokemon.html?id=789">Cosmog · #789</a>, <a href="pokemon.html?id=790">Cosmoem · #790</a>, <a href="pokemon.html?id=791">Solgaleo · #791</a>, <a href="pokemon.html?id=792">Lunala · #792</a>, <a href="pokemon.html?id=800">Necrozma · #800</a>, <a href="pokemon.html?id=801">Magearna · #801</a>, <a href="pokemon.html?id=802">Marshadow · #802</a>, <a href="pokemon.html?id=807">Zeraora · #807</a>, <a href="pokemon.html?id=808">Meltan · #808</a>, <a href="pokemon.html?id=809">Melmetal · #809</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Sun, Moon, Ultra Sun, Ultra Moon, Pokémon GO</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Sun &amp; Moon animated series, I Choose You!, The Power of Us</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Galar (Generation VIII)</h3>
+          <p style="margin:0 0 0.4rem;">Galar ancient history recounts the Darkest Day, an energy cataclysm brought on by alien poison titan Eternatus that was stopped by heroic warrior wolves Zacian and Zamazenta wielding legendary arms. The Crown Tundra preserves ancient king Calyrex and its loyal steed, along with elder elemental regis and master martial bear Urshifu.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=888">Zacian · #888</a>, <a href="pokemon.html?id=889">Zamazenta · #889</a>, <a href="pokemon.html?id=890">Eternatus · #890</a>, <a href="pokemon.html?id=891">Kubfu · #891</a>, <a href="pokemon.html?id=892">Urshifu · #892</a>, <a href="pokemon.html?id=893">Zarude · #893</a>, <a href="pokemon.html?id=894">Regieleki · #894</a>, <a href="pokemon.html?id=895">Regidrago · #895</a>, <a href="pokemon.html?id=896">Glastrier · #896</a>, <a href="pokemon.html?id=897">Spectrier · #897</a>, <a href="pokemon.html?id=898">Calyrex · #898</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Sword, Shield, The Isle of Armor, The Crown Tundra</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Pokémon: Twilight Wings, Journeys series, Secrets of the Jungle</p>
+        </article>
+
+        <article>
+          <h3 style="font-size:1.05rem; margin:0 0 0.25rem; color:var(--navy);">Paldea (Generation IX)</h3>
+          <p style="margin:0 0 0.4rem;">Paldea holds ancient Paradox beasts brought through a temporal rift in Area Zero, alongside winged apex reptiles Koraidon and Miraidon. Buried across the provinces are the four cursed Treasures of Ruin awakened by royal greed, with the crystal turtle Terapagos fueling the Terastal crystallization phenomenon and mythical puppeteer Pecharunt manipulating Kitakami.</p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Pokémon:</b> <a href="pokemon.html?id=1001">Wo-Chien · #1001</a>, <a href="pokemon.html?id=1002">Chien-Pao · #1002</a>, <a href="pokemon.html?id=1003">Ting-Lu · #1003</a>, <a href="pokemon.html?id=1004">Chi-Yu · #1004</a>, <a href="pokemon.html?id=1007">Koraidon · #1007</a>, <a href="pokemon.html?id=1008">Miraidon · #1008</a>, <a href="pokemon.html?id=1014">Okidogi · #1014</a>, <a href="pokemon.html?id=1015">Munkidori · #1015</a>, <a href="pokemon.html?id=1016">Fezandipiti · #1016</a>, <a href="pokemon.html?id=1017">Ogerpon · #1017</a>, <a href="pokemon.html?id=1024">Terapagos · #1024</a>, <a href="pokemon.html?id=1025">Pecharunt · #1025</a></p>
+          <p style="font-size:0.875rem; margin:0 0 0.25rem;"><b>Games:</b> Scarlet, Violet, The Teal Mask, The Indigo Disk</p>
+          <p style="font-size:0.875rem; margin:0;"><b>Film &amp; Media:</b> Pokémon: Paldean Winds, Horizons series</p>
+        </article>
+      </div>
+    </section>
 
     <div class="about-grid">
       <!-- 左栏：游戏正作世界观与时空脉络 -->
       <div class="about-col">
         <section class="file-block" id="world-canon" aria-labelledby="world-heading">
-          <h2 id="world-heading">世界观与时空背景 / World Setting & Chronology</h2>
+          <h2 id="world-heading">Game notes</h2>
+          <details>
+          <summary>Regions, timelines &amp; spacetime</summary>
           <p style="margin-bottom:1rem; line-height:1.6; color:var(--ink-soft);">
-            A background reference for how Pokémon regions, history, and spacetime fit together. This guide separates in-game lore from real-world release history, and notes canon sources to prevent mixing game and anime storylines.
+            Detailed regional geography, chronological sequences, and spacetime phenomena recorded across the main series.
           </p>
 
           <div style="border-top:1px solid var(--line); padding-top:1rem; margin-top:1rem;">
             <h3 style="font-family:var(--font-ui); font-size:1.1rem; color:var(--ink); margin:0 0 0.5rem;">In-Universe Game Canon</h3>
             <p style="font-size:0.875rem; color:var(--ink-soft); line-height:1.5; margin-bottom:0.75rem;">
-              Source: Core video games developed by Game Freak. This continuity does not follow the animated television series, which uses an unaging floating timeline where Ash Ketchum remains ten years old across twenty-five seasons.
+              Source: Core series dialogue, trainer histories, and official geography maps from Game Freak releases.
             </p>
 
             <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Regions and Spatial Geography</h4>
@@ -95,14 +891,14 @@
               The first four regions (Kanto, Johto, Hoenn, and Sinnoh) sit in close geographic proximity, based on the real-world Japanese regions of Kanto, Kansai, Kyushu, and Hokkaido. Kanto and Johto share a contiguous land border connected by Route 27, Tohjo Falls, and the Magnet Train between Saffron City and Goldenrod City. Later titles moved to overseas territories: Unova is based on the New York metropolitan area, Kalos on northern France, Alola on Hawaii, Galar on the United Kingdom, and Paldea on the Iberian Peninsula. For regional borders, native dex slices, and field survey maps from Kanto #001 to Paldea #1025, see the <a href="regions.html">Regions</a> index.
             </p>
 
-            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Chronology from Ancient Eras to Modern Leagues</h4>
+            <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Main Series Event Cross-Referencing</h4>
             <p style="line-height:1.6; margin-bottom:0.5rem;">
-              The core series establishes chronological milestones through in-game history and NPC dialogue:
+              How different regional adventures correlate across the core continuity:
             </p>
             <ul style="margin-bottom:0.75rem;">
-              <li><strong>Ancient history:</strong> <em>Pokémon Legends: Arceus</em> documents the settlement of ancient Sinnoh (Hisui) and the earliest hand-crafted wooden apricorn Poké Balls. Three thousand years before modern events, an ancient war in Kalos ended when the king AZ fired the ultimate weapon powered by Pokémon life energy.</li>
-              <li><strong>Timeline split:</strong> Dialogue during the Delta Episode in <em>Omega Ruby</em> and <em>Alpha Sapphire</em> confirmed that AZ firing the ultimate weapon split the games into two separate branches: an original timeline without Mega Evolution (Generation I to Generation V), and an alternate timeline where Mega Evolution exists.</li>
-              <li><strong>Modern league era:</strong> Generation I (<em>Red, Green, Blue</em>) and Generation III (<em>Ruby, Sapphire</em>) happen at roughly the same point in time. Three years later, Generation II (<em>Gold, Silver</em>) and Generation IV (<em>Diamond, Pearl</em>) run concurrently. Generation V (<em>Black and White</em>) takes place several years later, with <em>Black 2 and White 2</em> and Generation VI (<em>X and Y</em>) occurring two years after that. Later adventures in Alola, Galar, and Paldea proceed forward in modern sequence.</li>
+              <li><strong>Kanto and Hoenn:</strong> Red disbands Team Rocket in Kanto at roughly the same time Brendan or May confronts Team Magma and Team Aqua across Hoenn.</li>
+              <li><strong>Johto and Sinnoh:</strong> Three years later, Red trains atop Mt. Silver during the Johto league challenge, while Lucas or Dawn resolves the space-time rift created by Team Galactic in Sinnoh.</li>
+              <li><strong>Unova through Paldea:</strong> Several years elapse before Black and White, followed two years later by Black 2 and White 2. Subsequent journeys across Kalos, Alola, Galar, and Paldea unfold chronologically forward in modern sequence.</li>
             </ul>
 
             <h4 style="font-family:var(--font-ui); font-size:0.95rem; color:var(--navy); margin:0.85rem 0 0.25rem;">Anomalous Spacetime Phenomena</h4>
@@ -116,13 +912,16 @@
               <li><strong>Area Zero and Paradox Pokémon:</strong> The Great Crater of Paldea houses a functioning time machine built by Professor Sada or Professor Turo. The machine extracted ancient past or distant future Paradox specimens into the present day.</li>
             </ul>
           </div>
+          </details>
         </section>
       </div>
 
       <!-- 右栏：现实发布演进、地区直达、系统设置与快捷键 -->
       <div class="about-col">
         <section class="file-block" id="franchise-history" aria-labelledby="history-heading">
-          <h2 id="history-heading">现实系列演进 / Franchise Milestones</h2>
+          <h2 id="history-heading">Release history</h2>
+          <details>
+          <summary>From Game Boy to Switch</summary>
           <p style="line-height:1.6; color:var(--ink-soft); margin-bottom:0.75rem;">
             The real-world development of the franchise spans thirty years of hardware changes:
           </p>
@@ -132,20 +931,21 @@
             <li><strong>Hardware generations:</strong> The series transitioned across Game Boy Color (1999, Gen II), Game Boy Advance (2002, Gen III), Nintendo DS (2006, Gen IV), Nintendo 3DS (2013, Gen VI), and Nintendo Switch (2019, Gen VIII).</li>
             <li><strong>Data compatibility:</strong> The 2002 release of <em>Ruby and Sapphire</em> rebuilt the core internal data structures for individual Pokémon (introducing 31-point Individual Values and personality values). Because of this unified structure, a Pokémon caught on a Game Boy Advance cartridge in 2002 can still be transferred upward through the DS, 3DS, and Pokémon Bank into Pokémon HOME on the Nintendo Switch today.</li>
           </ul>
+          </details>
         </section>
 
         <section class="file-block" id="regions-shortcut" aria-labelledby="regions-shortcut-heading">
-          <h2 id="regions-shortcut-heading">地区索引直达 / Regional Field Index</h2>
+          <h2 id="regions-shortcut-heading">Regional index</h2>
           <p style="line-height:1.6; color:var(--ink-soft); margin-bottom:1rem;">
-            Looking to explore specific territories? The Regions catalog contains official regional maps, habitat markers, and National Dex bounds for all 9 generations.
+            Maps and National Dex ranges, region by region.
           </p>
-          <a href="regions.html" class="btn btn-primary">Open Regions Atlas →</a>
+          <a href="regions.html" class="link-action timeline-map-btn">Open Regions Atlas →</a>
         </section>
 
         <!-- 精灵球音效开关 -->
         <section class="file-block" aria-labelledby="sound-heading">
           <h2 id="sound-heading">Sound</h2>
-          <p class="soft" style="margin-bottom: 1rem;">Off by default. Writes <code>file151.sound</code>. When on, a cry plays once as a file opens or when you press Draw one. Tapping a Pokémon always plays its cry.</p>
+          <p class="soft" style="margin-bottom: 1rem;">Off by default. Turn on cries when opening a file or drawing a Pokémon. Taps always play a cry.</p>
           <button class="btn btn-paper" id="sound" type="button">Sound off</button>
         </section>
 
@@ -154,9 +954,10 @@
           <h2 id="keys-heading">Keys</h2>
           <table class="keys-table">
             <tbody>
-              <tr><td><kbd>/</kbd></td><td>Focus search on Dex / Lineup</td></tr>
-              <tr><td><kbd>Esc</kbd></td><td>Close file or clear search</td></tr>
-              <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next number on Detail; Film on Dex</td></tr>
+              <tr><td><kbd>/</kbd></td><td>Focus local search on Dex / Lineup; open global search elsewhere</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Close the Detail Poké Ball, then Detail; clear the Dex search or number buffer</td></tr>
+              <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Prev / next Pokémon in its region on Detail; Film on Dex</td></tr>
+              <tr><td><kbd>F</kbd></td><td>Copy the current Detail or Lineup link</td></tr>
               <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Move in Ledger</td></tr>
               <tr><td><kbd>a</kbd>–<kbd>z</kbd></td><td>Jump Ledger name in the open spine</td></tr>
             </tbody>
@@ -166,8 +967,52 @@
     </div>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/store.js"></script>
   <script src="js/pokeball.js"></script>
+  <script>
+    document.querySelectorAll("#legendary-mythical > div > article").forEach((article) => {
+      const roster = [...article.querySelectorAll("p")].find((p) => p.querySelector('a[href*="pokemon.html?id="]'));
+      if (!roster) return;
+      roster.classList.add("legendary-roster");
+      [...roster.childNodes].forEach((node) => {
+        if (node.nodeType !== Node.TEXT_NODE || !node.textContent.includes(",")) return;
+        const separator = document.createElement("span");
+        separator.className = "legendary-separator";
+        separator.textContent = node.textContent;
+        separator.setAttribute("aria-hidden", "true");
+        node.replaceWith(separator);
+      });
+      roster.querySelectorAll('a[href*="pokemon.html?id="]').forEach((link) => {
+        const id = link.getAttribute("href").match(/[?&]id=(\d+)/)?.[1];
+        if (!id) return;
+        const image = document.createElement("img");
+        image.src = `assets/thumbs/${id}.webp`;
+        image.alt = ""; image.width = 192; image.height = 192;
+        image.loading = "lazy"; image.decoding = "async";
+        link.classList.add("legendary-specimen");
+        link.prepend(image);
+      });
+    });
+  </script>
   <script>
     // file151.sound 开关控制逻辑
     const soundBtn = document.getElementById("sound");

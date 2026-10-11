@@ -36,6 +36,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -48,19 +49,41 @@
     </p>
 
     <div class="tools-bar">
-      <input
-        id="ability-search"
-        type="search"
-        placeholder="Search ability name..."
-        autocomplete="off"
-        style="min-width: 14rem;"
-      >
+      <label class="tool-field">
+        <span>Search abilities</span>
+        <input
+          id="ability-search"
+          type="search"
+          placeholder="Search ability name..."
+          autocomplete="off"
+          style="min-width: 14rem;"
+        >
+      </label>
     </div>
 
     <div id="ability-status" style="margin-bottom:1rem; font-family:var(--font-num); color:var(--ink-soft); font-size:0.875rem;">Loading abilities index...</div>
     <div id="ability-grid" class="dex-grid"></div>
-    <div id="ability-pagination" style="margin-top:1.5rem; text-align:center;"></div>
+    <div id="ability-pagination" style="margin-top:1.5rem; margin-bottom:var(--s-8); text-align:center;"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/api.js"></script>
   <script src="js/abilities.js"></script>

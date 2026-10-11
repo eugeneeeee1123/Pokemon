@@ -13,11 +13,14 @@ const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#
 
 // URL 查询参数
 const params = new URLSearchParams(location.search);
-const initialRegionSlug = params.get("region") || "kanto";
+const requestedRegionSlug = (params.get("region") || "").trim().toLowerCase();
+const validRegionSlug = requestedRegionSlug === "all" || requestedRegionSlug === "national" ||
+  (window.REGIONS || []).some(region => region.slug === requestedRegionSlug);
+const initialRegionSlug = !requestedRegionSlug || validRegionSlug ? (requestedRegionSlug || "kanto") : "kanto";
 const currentRegion = window.getRegionBySlug ? window.getRegionBySlug(initialRegionSlug) : { slug: "kanto", name: "Kanto", start: 1, end: 151, offset: 0, limit: 151 };
 
 // 当前地区的 50 序号一段书脊分段
-let SPINES = window.getRegionSpines ? window.getRegionSpines(currentRegion.start, currentRegion.end) : [[1, 50], [51, 100], [101, 151]];
+let SPINES = window.getRegionSpines ? window.getRegionSpines(currentRegion.start, currentRegion.end) : [[1, 50]];
 
 // 响应式应用状态
 const state = {
@@ -87,6 +90,10 @@ function applyFilter() {
   state.listRev++;
   const keep = state.list.findIndex(p => p.id === keepId);
   state.i = keep >= 0 ? keep : 0;
+  const selectedId = current()?.id;
+  if (selectedId != null) {
+    state.range = SPINES.find(([a, b]) => selectedId >= a && selectedId <= b) || state.range;
+  }
 }
 
 // 切换选中的宝可梦索引
@@ -111,6 +118,17 @@ function clearNumberBuffer() {
   renderNumberBuffer();
 }
 
+function clearFilterAndSearch() {
+  state.q = "";
+  state.type = null;
+  state.resist = null;
+  const qInput = document.getElementById("q");
+  if (qInput) qInput.value = "";
+  applyFilter();
+  render();
+  syncUrl();
+}
+
 function selectBufferedNumber() {
   if (!state.numberBuffer) return false;
   const id = Number(state.numberBuffer);
@@ -129,6 +147,7 @@ function addBelt(id) {
 
 const pad3 = (n) => String(n).padStart(3, "0");
 const artOf = (id) => window.pokeApi.artUrl(id);
+const dexScrollBehavior = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 // 列表/网格只显示 ~96px：优先用本地 192px 缩略图（scripts/make-thumbs.mjs 生成），缺失时回退到远程大图
 const thumbOf = (id) => `assets/thumbs/${id}.webp`;
 // 注意：api.js 的全局兜底已占用 data-fallback，这里用 data-full；且只处理“缩略图”失败，别截断它的兜底链
@@ -194,14 +213,18 @@ function renderFilm(p) {
   if (p) {
     cell?.setAttribute("data-on", "");
     cell?.setAttribute("aria-current", "true");
-    cell?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    cell?.scrollIntoView({ inline: "center", block: "nearest", behavior: dexScrollBehavior() });
   }
 }
 
 function renderGrid(gridViewEl) {
   if (gridRev !== state.listRev) {
     if (!state.list.length) {
-      gridViewEl.innerHTML = `<p class="empty" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">No Pokémon found in this filter.</p>`;
+      gridViewEl.innerHTML = `
+        <div class="dex-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;">
+          <p class="empty" style="margin-bottom: 1rem;">No Pokémon found matching the active search or filters.</p>
+          <button class="btn btn-paper dex-clear-btn" type="button">Clear filters and search</button>
+        </div>`;
     } else {
       const onBelt = new Set(belt());
       const saw = new Set(seen());
@@ -243,6 +266,11 @@ function render() {
     regionLink.textContent = `${state.region.name} · #${pad3(state.region.start)}–#${pad3(state.region.end)}`;
   }
 
+  const regionSelect = document.getElementById("region-select");
+  if (regionSelect && regionSelect.value !== state.region.slug) {
+    regionSelect.value = state.region.slug;
+  }
+
   const countBadge = document.getElementById("count-badge");
   if (countBadge) {
     countBadge.textContent = `${state.list.length} files`;
@@ -269,9 +297,12 @@ function render() {
     const rows = state.list.filter(m => m.id >= a && m.id <= b);
 
     // 1.1 左脊 (Spines)
-    document.getElementById("spines").innerHTML = SPINES.map(([x, y]) => {
+    const spinesEl = document.getElementById("spines");
+    spinesEl.setAttribute("role", "group");
+    spinesEl.setAttribute("aria-label", "Select number range");
+    spinesEl.innerHTML = SPINES.map(([x, y]) => {
       const n = state.list.filter(m => m.id >= x && m.id <= y).length;
-      return `<button type="button" data-a="${x}" data-b="${y}" ${x === a ? 'data-on' : ''} ${n ? '' : 'disabled'}>${pad3(x)}–${y}</button>`;
+      return `<button type="button" data-a="${x}" data-b="${y}" ${x === a ? 'data-on aria-pressed="true"' : 'aria-pressed="false"'} ${n ? '' : 'disabled'}>${pad3(x)}–${y}</button>`;
     }).join("");
 
     // 1.2 中名录 (Ledger)
@@ -283,7 +314,7 @@ function render() {
           const typeNames = (m.types || []).join(" · ");
           return `<li class="${m.id === p?.id ? 'is-on' : ''} ${saw.includes(m.id) ? 'seen' : ''}" data-id="${m.id}" role="option" aria-selected="${m.id === p?.id}" aria-label="#${pad3(m.id)} ${m.name}${typeNames ? ", " + typeNames : ""}" tabindex="${m.id === tabStopId ? 0 : -1}"><span class="id">#${pad3(m.id)}</span><span class="ledger-name">${m.name}</span>${typeNames ? `<span class="ledger-types">${typeNames}</span>` : ""}</li>`;
         }).join("")
-      : `<li class="empty" role="option" aria-disabled="true">No file in this spine.</li>`;
+      : `<li class="empty" role="option" aria-disabled="true">No Pokémon found matching the active search or filters.</li>`;
     if (ledgerHadFocus) ledgerEl.querySelector('li[tabindex="0"]')?.focus();
     // 只滚名录自己，避免方向键把整页拽下去
     const onRow = ledgerEl.querySelector("li.is-on");
@@ -297,7 +328,11 @@ function render() {
     // 1.3 右台座 (Stage)
     const stageEl = document.getElementById("stage");
     if (!p) {
-      stageEl.innerHTML = `<p class="empty">No file in this filter.</p>`;
+      stageEl.innerHTML = `
+        <div class="stage-empty-state" style="text-align: center; padding: 3rem 1rem;">
+          <p class="empty" style="margin-bottom: 1rem;">No Pokémon found matching the active search or filters.</p>
+          <button class="btn btn-paper dex-clear-btn" type="button" style="margin: 0 auto;">Clear filters and search</button>
+        </div>`;
     } else {
       const full = onBelt.length >= window.store.MAX_BELT;
       const has = onBelt.includes(p.id);
@@ -354,8 +389,11 @@ function render() {
   const qEl = document.getElementById("q");
   if (qEl && qEl.value !== state.q) qEl.value = state.q;
   renderNumberBuffer();
+  document.querySelector(".type-row")?.setAttribute("role", "group");
   document.querySelectorAll(".chip[data-type]").forEach(c => {
-    c.toggleAttribute("data-on", (c.dataset.type || "") === (state.type || ""));
+    const selected = (c.dataset.type || "") === (state.type || "");
+    c.toggleAttribute("data-on", selected);
+    c.setAttribute("aria-pressed", String(selected));
   });
 }
 
@@ -485,6 +523,13 @@ document.addEventListener("DOMContentLoaded", () => {
     syncUrl();
   });
 
+  // 8b2. 清空筛选与搜索按钮
+  document.addEventListener("click", e => {
+    if (e.target.closest(".dex-clear-btn")) {
+      clearFilterAndSearch();
+    }
+  });
+
   // 8c. 键盘：名录行和旧网格卡片用 Enter / 空格触发，和点击一致
   ["ledger", "dex-grid-view"].forEach(id => {
     document.getElementById(id)?.addEventListener("keydown", e => {
@@ -506,6 +551,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 10. 全局快捷键导航
   document.addEventListener("keydown", e => {
+    const searchOverlay = document.getElementById("search-overlay");
+    if (e.defaultPrevented || (searchOverlay && !searchOverlay.hidden)) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return; // 不抢浏览器和系统快捷键（Cmd+R、Ctrl+C 等）
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) {
       if (e.key === "Escape") {

@@ -214,11 +214,13 @@
 }
 
 .stage-ball.is-open .lid-t {
-  transform: translateY(-58%);
+  transform: translateY(-100%);
+  pointer-events: none;
 }
 
 .stage-ball.is-open .lid-b {
-  transform: translateY(58%);
+  transform: translateY(100%);
+  pointer-events: none;
 }
 
 .stage-ball.is-open .lid-band,

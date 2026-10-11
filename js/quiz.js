@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const tcgModalName = document.getElementById("tcg-modal-name");
   const tcgModalMeta = document.getElementById("tcg-modal-meta");
   const tcgModalCloseBtn = document.getElementById("tcg-modal-close-btn");
+  let modalTrigger = null;
+  let inertBeforeModal = [];
 
   // In-memory cache for fetched card sets
   const cardSetCache = new Map();
@@ -341,8 +343,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#pack-featured-chips .chip").forEach(btn => {
       if (btn.dataset.setId === setId) {
         btn.setAttribute("data-on", "");
+        btn.setAttribute("aria-pressed", "true");
       } else {
         btn.removeAttribute("data-on");
+        btn.setAttribute("aria-pressed", "false");
       }
     });
 
@@ -572,9 +576,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = item.card;
       const foilType = item.foilType;
 
-      const cardEl = document.createElement("div");
+      const cardEl = document.createElement("button");
+      cardEl.type = "button";
       cardEl.className = "tcg-card-item";
       cardEl.dataset.index = index;
+      cardEl.setAttribute("aria-pressed", "false");
+      cardEl.setAttribute("aria-label", `Reveal card slot ${item.slot}`);
 
       // Glow highlights for big hits
       if (foilType === "sar" || foilType === "hyper") {
@@ -599,17 +606,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const imgUrl = getCardImage(card, "small");
 
       cardEl.innerHTML = `
-        <div class="tcg-card-inner">
-          <div class="tcg-card-back">
+        <span class="tcg-card-inner">
+          <span class="tcg-card-back">
             <img src="assets/card-back.jpg" class="card-back-img" alt="Pokémon Card Back">
             <span class="card-slot-num">#${item.slot}</span>
-          </div>
-          <div class="tcg-card-front">
+          </span>
+          <span class="tcg-card-front" aria-hidden="true" inert>
             ${badgeHtml}
             <img src="${imgUrl}" alt="${card.name}" loading="lazy">
             <span class="tcg-card-hit-flash" aria-hidden="true"></span>
-          </div>
-        </div>
+          </span>
+        </span>
       `;
 
       // Flip on click
@@ -626,11 +633,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function flipCard(cardEl, item) {
     if (cardEl.classList.contains("is-flipped")) {
       // If already flipped, clicking opens high-res preview modal
-      openCardModal(item.card);
+      openCardModal(item.card, cardEl);
       return;
     }
 
     cardEl.classList.add("is-flipped");
+    cardEl.setAttribute("aria-pressed", "true");
+    cardEl.setAttribute("aria-label", `Open high-resolution preview of ${item.card.name}, card #${item.card.number}`);
+    const cardBack = cardEl.querySelector(".tcg-card-back");
+    const cardFront = cardEl.querySelector(".tcg-card-front");
+    if (cardBack) {
+      cardBack.setAttribute("aria-hidden", "true");
+      cardBack.inert = true;
+    }
+    if (cardFront) {
+      cardFront.removeAttribute("aria-hidden");
+      cardFront.inert = false;
+    }
     playSynthSound("flip");
 
     if (item.foilType === "sar" || item.foilType === "hyper" || item.foilType === "ultra") {
@@ -676,8 +695,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Card detail high-res modal
-  function openCardModal(card) {
+  function openCardModal(card, trigger = document.activeElement) {
     if (!tcgModal || !card) return;
+    if (!tcgModal.classList.contains("is-active")) {
+      modalTrigger = trigger;
+      inertBeforeModal = Array.from(document.body.children)
+        .filter(element => element !== tcgModal)
+        .map(element => [element, element.inert]);
+      inertBeforeModal.forEach(([element]) => { element.inert = true; });
+    }
     const hiresUrl = getCardImage(card, "large");
     if (tcgModalImg) {
       tcgModalImg.src = hiresUrl;
@@ -687,11 +713,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tcgModalMeta) {
       tcgModalMeta.textContent = `#${card.number} · ${card.rarity || "Standard"} · ${card.artist || "Official"}`;
     }
+    tcgModal.hidden = false;
+    tcgModal.setAttribute("aria-hidden", "false");
+    tcgModal.style.display = "flex";
     tcgModal.classList.add("is-active");
+    tcgModalCloseBtn?.focus({ preventScroll: true });
   }
 
   function closeCardModal() {
-    if (tcgModal) tcgModal.classList.remove("is-active");
+    if (!tcgModal || !tcgModal.classList.contains("is-active")) return;
+    tcgModal.classList.remove("is-active");
+    tcgModal.hidden = true;
+    tcgModal.setAttribute("aria-hidden", "true");
+    tcgModal.style.display = "none";
+    inertBeforeModal.forEach(([element, wasInert]) => {
+      if (element.isConnected) element.inert = wasInert;
+    });
+    inertBeforeModal = [];
+    const trigger = modalTrigger;
+    modalTrigger = null;
+    if (trigger?.isConnected && !trigger.disabled) {
+      trigger.focus({ preventScroll: true });
+    }
   }
 
   // Binder Grid rendering with filters
@@ -723,15 +766,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     filtered.forEach(c => {
-      const itemEl = document.createElement("div");
+      const itemEl = document.createElement("button");
+      itemEl.type = "button";
       itemEl.className = "binder-thumb-item";
       itemEl.title = `${c.name} (#${c.number}) - Owned: x${c.count || 1}`;
+      itemEl.setAttribute("aria-label", `Open ${c.name}, card #${c.number}, owned ${c.count || 1}`);
       itemEl.innerHTML = `
-        <img src="${c.imageSmall || getCardImage(c, 'small')}" alt="${c.name}" loading="lazy">
+        <img src="${c.imageSmall || getCardImage(c, 'small')}" alt="" loading="lazy">
         <span class="binder-thumb-count">x${c.count || 1}</span>
       `;
       itemEl.addEventListener("click", () => {
-        openCardModal(c);
+        openCardModal(c, itemEl);
       });
       binderGrid.appendChild(itemEl);
     });
@@ -761,7 +806,8 @@ document.addEventListener("DOMContentLoaded", () => {
     packToggleBinderBtn.addEventListener("click", () => {
       if (binderSection) {
         binderSection.classList.add("is-open");
-        binderSection.scrollIntoView({ behavior: "smooth" });
+        binderHeader?.setAttribute("aria-expanded", "true");
+        binderSection.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         renderBinderGrid();
       }
     });
@@ -771,6 +817,7 @@ document.addEventListener("DOMContentLoaded", () => {
     binderHeader.addEventListener("click", () => {
       if (binderSection) {
         binderSection.classList.toggle("is-open");
+        binderHeader.setAttribute("aria-expanded", String(binderSection.classList.contains("is-open")));
         if (binderSection.classList.contains("is-open")) {
           renderBinderGrid();
         }
@@ -781,8 +828,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Filter chips in binder
   binderFilters.forEach(chip => {
     chip.addEventListener("click", () => {
-      binderFilters.forEach(c => c.removeAttribute("data-on"));
+      binderFilters.forEach(c => {
+        c.removeAttribute("data-on");
+        c.setAttribute("aria-pressed", "false");
+      });
       chip.setAttribute("data-on", "");
+      chip.setAttribute("aria-pressed", "true");
       renderBinderGrid(chip.dataset.filter);
     });
   });
@@ -821,10 +872,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && tcgModal?.classList.contains("is-active")) {
+    if (!tcgModal?.classList.contains("is-active")) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
       closeCardModal();
+      e.stopImmediatePropagation();
+      return;
     }
-  });
+    if (e.key !== "Tab") {
+      e.stopImmediatePropagation();
+      return;
+    }
+
+    const focusable = Array.from(tcgModal.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )).filter(element => element.getClientRects().length > 0 && !element.closest("[hidden], [inert]"));
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first) {
+      e.preventDefault();
+      tcgModal.focus();
+    } else if (!tcgModal.contains(document.activeElement)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus();
+    } else if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+    e.stopImmediatePropagation();
+  }, true);
 
   // Initial Load
   updateStatsDisplay();

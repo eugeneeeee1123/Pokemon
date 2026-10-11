@@ -7,6 +7,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const htmlEntities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
   const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => htmlEntities[char]);
 
+  function setStatus(message, retryAction = null) {
+    statusEl.replaceChildren(document.createTextNode(message));
+    if (!retryAction) return;
+    const retry = document.createElement("button");
+    retry.className = "btn btn-paper";
+    retry.type = "button";
+    retry.textContent = "Retry";
+    retry.addEventListener("click", retryAction, { once: true });
+    statusEl.append(" ", retry);
+  }
+
   let allAbilities = [];
   let currentPage = 1;
   let renderRevision = 0;
@@ -21,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const urlQ = new URLSearchParams(location.search).get("q");
     if (urlQ && search) search.value = urlQ;
   } catch (err) {
-    statusEl.textContent = "Abilities unavailable.";
+    setStatus("Abilities unavailable.", () => location.reload());
     return;
   }
 
@@ -32,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function render() {
     const revision = ++renderRevision;
-    statusEl.textContent = "Loading…";
+    setStatus("Loading…");
     const q = search.value.trim().toLowerCase();
 
     const matched = allAbilities.filter(a => {
@@ -52,7 +63,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (revision !== renderRevision) return;
 
     const availableDetails = details.filter(Boolean);
-    statusEl.textContent = availableDetails.length ? `${availableDetails.length} shown` : "No matches";
+    const successCount = availableDetails.length;
+    const failedCount = details.length - successCount;
+    if (failedCount === details.length && failedCount > 0) {
+      setStatus(`All ${details.length} ability details on this page failed to load. ${totalMatched} abilities match.`, () => render());
+    } else if (failedCount > 0) {
+      setStatus(`${availableDetails.length} shown; ${successCount} loaded; ${failedCount} failed. ${totalMatched} abilities match.`, () => render());
+    } else {
+      setStatus(availableDetails.length ? `${availableDetails.length} shown` : "No matches");
+    }
 
     grid.innerHTML = availableDetails.map(a => {
       const pokeList = a.pokemon || [];
@@ -139,14 +158,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentPage > 1) {
           currentPage--;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
       document.getElementById("next-page")?.addEventListener("click", () => {
         if (currentPage < totalPages) {
           currentPage++;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
     } else {

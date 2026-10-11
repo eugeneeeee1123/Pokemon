@@ -6,6 +6,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const statusEl = document.getElementById("move-status");
   const paginationEl = document.getElementById("move-pagination");
   const tc = window.TYPES_CHART;
+  statusEl?.setAttribute("aria-live", "polite");
+
+  function setStatus(message, retryAction = null) {
+    statusEl.replaceChildren(document.createTextNode(message));
+    if (!retryAction) return;
+    const retry = document.createElement("button");
+    retry.className = "btn btn-paper";
+    retry.type = "button";
+    retry.textContent = "Retry";
+    retry.addEventListener("click", retryAction, { once: true });
+    statusEl.append(" ", retry);
+  }
 
   const typeStyle = (t) => (tc ? tc.getTypeStyle(t) : "background:#3A6A88; color:#ffffff;");
   const htmlEntities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -71,13 +83,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const urlQ = new URLSearchParams(location.search).get("q");
     if (urlQ && search) search.value = urlQ;
   } catch (err) {
-    statusEl.textContent = "Moves unavailable.";
+    setStatus("Moves unavailable.", () => location.reload());
     return;
   }
 
   async function render() {
     const revision = ++renderRevision;
-    statusEl.textContent = "Loading…";
+    setStatus("Loading…");
     const q = search.value.trim().toLowerCase();
     const selectedType = typeSelect.value;
     const selectedCat = categorySelect.value;
@@ -91,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ]);
     } catch (_) {
       if (revision !== renderRevision) return;
-      statusEl.textContent = "Filters unavailable.";
+      setStatus("Filters unavailable.", () => render());
       return;
     }
     if (revision !== renderRevision) return;
@@ -112,6 +124,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       pageSlice.map(item => window.pokeApi.getMove(item.name))
     );
     if (revision !== renderRevision) return;
+    const successCount = moveDetails.filter(Boolean).length;
+    const failedCount = moveDetails.length - successCount;
 
     const displayed = moveDetails.filter(m => {
       if (!m) return false;
@@ -120,7 +134,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       return true;
     });
 
-    statusEl.textContent = displayed.length ? `${displayed.length} shown` : "No matches";
+    if (failedCount === pageSlice.length && failedCount > 0) {
+      setStatus(`All ${pageSlice.length} move details on this page failed to load. ${matched.length} moves match.`, () => render());
+    } else if (failedCount > 0) {
+      setStatus(`${displayed.length} shown; ${successCount} loaded; ${failedCount} failed. ${matched.length} moves match.`, () => render());
+    } else {
+      setStatus(displayed.length ? `${displayed.length} shown` : "No matches");
+    }
 
     grid.innerHTML = displayed.map(m => {
       const category = m.category || "status";
@@ -165,14 +185,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (currentPage > 1) {
           currentPage--;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
       document.getElementById("next-page")?.addEventListener("click", () => {
         if (currentPage < totalPages) {
           currentPage++;
           render();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
         }
       });
     } else {

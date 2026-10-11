@@ -40,6 +40,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -47,6 +48,11 @@
 
   <!-- 页面主体容器 -->
   <main id="main" class="wrap">
+    <nav aria-label="Breadcrumb" style="margin-bottom:0.5rem;">
+      <a class="link-action" href="team.html">Belt</a>
+      <span aria-hidden="true"> → </span>
+      <span aria-current="page">Lineup</span>
+    </nav>
     <h1 class="page-title">Lineup</h1>
     <p class="lead">Typed as the species types, not moves. Coverage chips open Dex by attack type. Holes open Dex by <code>resist</code>.</p>
 
@@ -57,10 +63,12 @@
 
     <!-- 打击面覆盖 (Coverage) -->
     <h2 class="lineup-subheading">Coverage</h2>
+    <p class="lineup-note">Calculated from species types only. Shows opposing types that receive super-effective damage from at least one belt member's primary or secondary type. Does not account for moves, abilities, or stats.</p>
     <div class="wall" id="coverage"></div>
 
     <!-- 防御盲点 (Holes) -->
     <h2 class="lineup-subheading">Holes</h2>
+    <p class="lineup-note">Shows attack types that deal super-effective damage to at least one current belt member. Based on species types and the type chart; abilities, held items, and moves are not included.</p>
     <div class="wall" id="holes"></div>
 
     <!-- 属性抵抗 (Resists) -->
@@ -77,6 +85,8 @@
         <button class="btn btn-paper" id="cl" type="button">Clear left</button>
         <button class="btn btn-paper" id="cr" type="button">Clear right</button>
         <button class="btn btn-paper" id="copy" type="button">Copy link</button>
+        <p id="copy-feedback" class="lineup-note" role="status" aria-live="polite" hidden></p>
+        <input id="copy-fallback" type="text" readonly hidden aria-label="Lineup link to copy manually" style="width:100%;">
       </div>
       <div class="lineup-pane" id="right"></div>
     </div>
@@ -84,6 +94,25 @@
     <!-- 文字比对结论 (Verdict) -->
     <div class="lineup-verdict" id="lineup-verdict" hidden aria-live="polite"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <!-- 脚本依赖 -->
   <script src="js/store.js"></script>

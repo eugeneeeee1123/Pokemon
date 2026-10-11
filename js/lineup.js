@@ -95,9 +95,10 @@
       const msg = requested
         ? "No data for that Pokémon. Check the name or number, or try again if PokeAPI is down."
         : "Empty side. Search above or tap a Pokémon on the belt.";
+      const errorId = `${side}-search-error`;
       return `
-        <input data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" />
-        <p class="lineup-empty" ${requested ? 'role="alert"' : ""} style="text-align:center; padding: 2rem 0;">${msg}</p>
+        <input id="${side}-search" data-side="${side}" placeholder="Search name or #..." aria-label="${side} Pokemon search" ${requested ? `aria-invalid="true" aria-describedby="${errorId}"` : ""} />
+        <p class="lineup-search-error" id="${errorId}" role="status" aria-live="polite" ${requested ? "" : "hidden"} style="color:var(--ball); margin:0.35rem 0;">${requested ? msg : ""}</p>
       `;
     }
 
@@ -113,7 +114,8 @@
     const typesText = (mon.types || []).join(" · ");
 
     return `
-      <input data-side="${side}" value="${mon.name} (#${mon.id})" aria-label="${side} Pokemon: ${mon.name}" />
+      <input id="${side}-search" data-side="${side}" value="${mon.name} (#${mon.id})" aria-label="${side} Pokemon: ${mon.name}" />
+      <p class="lineup-search-error" id="${side}-search-error" role="status" aria-live="polite" hidden style="color:var(--ball); margin:0.35rem 0;"></p>
       <img src="${mon.art}" alt="${mon.name} 3D Model" />
       <p class="types-tag">${typesText}</p>
       <div class="lineup-stats">
@@ -136,6 +138,44 @@
         }).join("")}
       </div>
     `;
+  }
+
+  function clearSearchError(input) {
+    const error = document.getElementById(`${input.dataset.side}-search-error`);
+    input.removeAttribute("aria-invalid");
+    input.removeAttribute("aria-describedby");
+    if (error) {
+      error.hidden = true;
+      error.textContent = "";
+    }
+  }
+
+  function showSearchError(input, message) {
+    const error = document.getElementById(`${input.dataset.side}-search-error`);
+    input.setAttribute("aria-invalid", "true");
+    input.setAttribute("aria-describedby", `${input.dataset.side}-search-error`);
+    if (error) {
+      error.hidden = false;
+      error.textContent = message;
+    }
+  }
+
+  function hasOpenDialog() {
+    const overlay = document.getElementById("search-overlay");
+    if (overlay && !overlay.hidden) return true;
+    return Array.from(document.querySelectorAll("dialog[open], [role='dialog'][aria-modal='true']"))
+      .some(dialog => !dialog.closest("[hidden]"));
+  }
+
+  function isControlTarget(target) {
+    return Boolean(target?.isContentEditable || target?.closest?.("input, textarea, select, button, a, [contenteditable='true'], [role='button'], [role='textbox'], [role='combobox']"));
+  }
+
+  function isEditableTarget(target) {
+    const field = target?.closest?.("input, textarea, select, [contenteditable='true'], [role='textbox'], [role='combobox']");
+    if (!field || field.disabled || field.readOnly) return false;
+    if (field.tagName !== "INPUT") return true;
+    return !["button", "submit", "reset", "checkbox", "radio", "hidden", "range", "color", "file", "image"].includes((field.type || "text").toLowerCase());
   }
 
   // 全量渲染主函数
@@ -162,7 +202,12 @@
       const validBelt = beltMons.filter(Boolean);
       if (validBelt.length < beltIds.length && emptyBox) {
         emptyBox.hidden = false;
-        emptyBox.textContent = "Some belt Pokémon could not load. Coverage below only counts the ones that did.";
+        if (!validBelt.length) {
+          emptyBox.innerHTML = `Could not load data for belt Pokémon. <button class="btn btn-paper" id="belt-retry" type="button" style="padding:0.25rem 0.5rem; font-size:0.8125rem; margin-left:0.5rem;">Retry loading</button> or <a class="link-action" href="pokedex.html">pick replacements in Dex</a>.`;
+        } else {
+          emptyBox.innerHTML = `Could not load data for some belt members. <button class="btn btn-paper" id="belt-retry" type="button" style="padding:0.25rem 0.5rem; font-size:0.8125rem; margin-left:0.5rem;">Retry</button>. Analysis below only includes loaded Pokémon.`;
+        }
+        document.getElementById("belt-retry")?.addEventListener("click", () => render());
       }
 
       // 渲染腰带缩略图
@@ -271,10 +316,10 @@
 
     // 2. 左右两侧搜索输入 (Enter 确认)
     document.querySelector(".lineup-pair")?.addEventListener("keydown", async e => {
-      if (e.key !== "Enter") return;
+      if (e.defaultPrevented || e.key !== "Enter" || hasOpenDialog()) return;
       const targetInput = e.target;
       const side = targetInput.dataset.side;
-      if (!side) return;
+      if (!side || targetInput.tagName !== "INPUT") return;
 
       const val = targetInput.value.replace(/^#/, "").replace(/\(.*?\)/, "").trim();
       if (!val) return;
@@ -285,9 +330,12 @@
         else rightId = found.id;
         render();
       } else {
-        targetInput.style.borderColor = "var(--ball)";
-        setTimeout(() => { targetInput.style.borderColor = ""; }, 1200);
+        showSearchError(targetInput, "No Pokémon was found. Check the name or number, or retry if data is temporarily unavailable.");
       }
+    });
+
+    document.querySelector(".lineup-pair")?.addEventListener("input", e => {
+      if (e.target?.dataset?.side) clearSearchError(e.target);
     });
 
     // 3. 交换两侧
@@ -313,12 +361,32 @@
     document.getElementById("copy")?.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(location.href);
+        const feedback = document.getElementById("copy-feedback");
+        const fallback = document.getElementById("copy-fallback");
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = "Lineup link copied.";
+        }
+        if (fallback) fallback.hidden = true;
         const copyBtn = document.getElementById("copy");
         if (copyBtn) {
           copyBtn.textContent = "Copied!";
           setTimeout(() => { copyBtn.textContent = "Copy link"; }, 1500);
         }
-      } catch (_) {}
+      } catch (_) {
+        const feedback = document.getElementById("copy-feedback");
+        const fallback = document.getElementById("copy-fallback");
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = "Clipboard access is unavailable. Copy the link below.";
+        }
+        if (fallback) {
+          fallback.value = location.href;
+          fallback.hidden = false;
+          fallback.focus();
+          fallback.select();
+        }
+      }
     });
 
     // 6. 点击对比攻击属性
@@ -329,6 +397,21 @@
       focusType = (focusType === t) ? null : t;
       renderVerdict();
     });
+
+    document.addEventListener("keydown", e => {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey || hasOpenDialog()) return;
+      if (e.key === "/") {
+        if (isEditableTarget(e.target)) return;
+        const input = document.querySelector('.lineup-pair input[data-side="left"]');
+        if (!input) return;
+        e.preventDefault();
+        input.focus();
+      } else if (e.key.toLowerCase() === "f") {
+        if (isControlTarget(e.target)) return;
+        e.preventDefault();
+        document.getElementById("copy")?.click();
+      }
+    }, true);
 
     // 初始化渲染
     render();

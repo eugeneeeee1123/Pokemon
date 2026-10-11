@@ -83,6 +83,7 @@ a:hover {
 
 .site-bar-brand {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 0.75rem;
   text-decoration: none;
@@ -116,9 +117,17 @@ a:hover {
   display: flex;
   gap: 1.25rem;
   font-size: 0.9375rem;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-block: var(--s-1);
 }
 
 .site-bar nav a {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 2.75rem;
   position: relative;
   text-decoration: none;
   color: var(--ink);
@@ -135,6 +144,15 @@ a:hover {
 }
 
 /* Accessibility Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media (prefers-reduced-transparency: reduce) {
   .site-bar, .site-bar.is-over-content {
     background: var(--paper);
@@ -156,6 +174,14 @@ a:hover {
   .site-bar nav {
     gap: 0.75rem;
     font-size: 0.875rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .site-bar nav::-webkit-scrollbar {
+    display: none;
   }
 }
 

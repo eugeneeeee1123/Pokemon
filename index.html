@@ -40,13 +40,14 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
   </header>
 
   <!-- 页面主体容器 -->
-  <main id="main" class="wrap">
+  <main id="main" class="wrap home-page">
     <!-- Hero 区块：左文本与动作，右侧大型精灵球 CTA -->
     <section class="hero">
       <div>
@@ -73,7 +74,7 @@
     </section>
 
     <!-- Daily Specimen 今日标本 -->
-    <section class="daily-specimen-section" id="daily-specimen" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1.25rem 1.5rem; margin-top:1.5rem;">
+    <section class="daily-specimen-section" id="daily-specimen" style="background:var(--paper); border:1px solid var(--line); border-radius:4px; padding:1rem 1.5rem; margin-top:1rem;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; border-bottom:1px solid var(--line); padding-bottom:0.5rem; margin-bottom:1rem;">
         <div class="meta-eyebrow" style="margin:0;">
           <span>TODAY'S SPECIMEN</span>
@@ -103,7 +104,7 @@
     </section>
 
     <!-- Archive Status 概览 -->
-    <section class="collection-summary" style="margin-top:1.5rem; margin-bottom:1.5rem;">
+    <section class="collection-summary" style="margin-top:0.75rem; margin-bottom:0.25rem;">
       <div>
         <span id="home-seen-count">0</span>
         <small>/ 1025 SEEN</small>
@@ -243,6 +244,25 @@
       </div>
     </section>
   </main>
+
+  <footer class="home-footer site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>

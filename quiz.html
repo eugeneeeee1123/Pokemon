@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pack Lab — 151 File</title>
+  <title>Quiz — 151 File</title>
   <meta name="description" content="Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.">
   <meta name="theme-color" content="#071422">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -36,6 +36,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html" aria-current="page">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -43,9 +44,9 @@
 
   <main id="main" class="wrap pack-lab-wrap">
     <div style="margin-bottom:1.5rem;">
-      <h1 class="page-title">Booster Pack Lab</h1>
+      <h1 class="page-title">Quiz</h1>
       <p class="lead" style="color:var(--ink-soft); margin-bottom:1.25rem;">
-        Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.
+        <strong>Booster Pack Lab</strong> · Physical specimen expansion archive. Tear open field packs to catalogue official specimen prints into your local binder.
       </p>
 
       <!-- 记分看板：采用全站统一结构与Oxanium等宽数字 -->
@@ -77,12 +78,12 @@
       </div>
 
       <!-- 快速预设按钮组：使用全站原生 .type-row 与 .chip 样式规范 -->
-      <div class="type-row" id="pack-featured-chips">
-        <button class="chip" data-set-id="me55" data-on>30th Celebration · 2026</button>
-        <button class="chip" data-set-id="sv3pt5">Pokémon 151 · 2023</button>
-        <button class="chip" data-set-id="base1">Base Set · 1999</button>
-        <button class="chip" data-set-id="sv8pt5">Prismatic Evolutions · 2025</button>
-        <button class="chip" data-set-id="swsh7">Evolving Skies · 2021</button>
+      <div class="type-row" id="pack-featured-chips" role="group" aria-label="Featured expansions">
+        <button class="chip" type="button" data-set-id="me55" data-on aria-pressed="true">30th Celebration · 2026</button>
+        <button class="chip" type="button" data-set-id="sv3pt5" aria-pressed="false">Pokémon 151 · 2023</button>
+        <button class="chip" type="button" data-set-id="base1" aria-pressed="false">Base Set · 1999</button>
+        <button class="chip" type="button" data-set-id="sv8pt5" aria-pressed="false">Prismatic Evolutions · 2025</button>
+        <button class="chip" type="button" data-set-id="swsh7" aria-pressed="false">Evolving Skies · 2021</button>
       </div>
 
       <!-- 全系列下拉框 -->
@@ -168,27 +169,29 @@
 
     <!-- 卡册抽屉（Binder Section，默认可折叠） -->
     <section class="pack-binder-section" id="pack-binder-section">
-      <div class="pack-binder-header" id="pack-binder-header">
+      <div class="pack-binder-header">
         <h2>
-          <span>Specimen Binder</span>
-          <span id="binder-count-badge" style="font-family:var(--font-num); font-size:0.75rem; background:var(--sky); color:var(--mark); padding:0.15rem 0.5rem; border-radius:2px; font-weight:700;">
-            0 Cards
-          </span>
+          <button class="pack-binder-header-toggle" id="pack-binder-header" type="button" aria-expanded="false" aria-controls="pack-binder-body">
+            <span>Specimen Binder</span>
+            <span id="binder-count-badge" style="font-family:var(--font-num); font-size:0.75rem; background:var(--sky); color:var(--mark); padding:0.15rem 0.5rem; border-radius:2px; font-weight:700;">
+              0 Cards
+            </span>
+            <span class="pack-binder-toggle-icon" aria-hidden="true">▼</span>
+          </button>
         </h2>
-        <span class="pack-binder-toggle-icon">▼</span>
       </div>
 
-      <div class="pack-binder-body">
-        <div class="pack-binder-filters">
+      <div class="pack-binder-body" id="pack-binder-body">
+        <div class="pack-binder-filters" role="group" aria-label="Filter binder cards by rarity">
           <span style="font-family:var(--font-num); font-size:0.75rem; color:var(--ink-soft); font-weight:700; margin-right:0.25rem;">
             FILTER:
           </span>
-          <button class="chip" data-filter="all" data-on>All Cards</button>
-          <button class="chip" data-filter="sar">Special Illustration</button>
-          <button class="chip" data-filter="ultra">Ultra Rare / ex</button>
-          <button class="chip" data-filter="rare">Rare / Holo</button>
-          <button class="chip" data-filter="uncommon">Uncommon</button>
-          <button class="chip" data-filter="common">Common</button>
+          <button class="chip" type="button" data-filter="all" data-on aria-pressed="true">All Cards</button>
+          <button class="chip" type="button" data-filter="sar" aria-pressed="false">Special Illustration</button>
+          <button class="chip" type="button" data-filter="ultra" aria-pressed="false">Ultra Rare / ex</button>
+          <button class="chip" type="button" data-filter="rare" aria-pressed="false">Rare / Holo</button>
+          <button class="chip" type="button" data-filter="uncommon" aria-pressed="false">Uncommon</button>
+          <button class="chip" type="button" data-filter="common" aria-pressed="false">Common</button>
         </div>
 
         <div class="pack-binder-grid" id="pack-binder-grid">
@@ -198,8 +201,27 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <!-- 高清大卡预览 Modal -->
-  <div class="tcg-modal-backdrop" id="tcg-modal">
+  <div class="tcg-modal-backdrop" id="tcg-modal" role="dialog" aria-modal="true" aria-labelledby="tcg-modal-name" aria-describedby="tcg-modal-meta" aria-hidden="true" tabindex="-1" hidden style="display:none;">
     <div class="tcg-modal-card-wrap">
       <img id="tcg-modal-img" class="tcg-modal-card-img" src="" alt="High resolution card preview">
       <div class="tcg-modal-info">

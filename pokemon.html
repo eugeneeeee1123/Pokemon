@@ -20,6 +20,27 @@
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/pokeball.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* The detail viewer uses a plain model stage, without the Poké Ball shell. */
+    .detail-stage-box .stage-ball {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+      cursor: default;
+    }
+
+    .detail-stage-box .stage-ball .lid-t,
+    .detail-stage-box .stage-ball .lid-b,
+    .detail-stage-box .stage-ball .lid-band,
+    .detail-stage-box .stage-ball .lid-btn,
+    .detail-stage-box #close-ball {
+      display: none !important;
+    }
+  </style>
+  <!-- 3D 渲染组件 (Google model-viewer) -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -40,6 +61,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -50,11 +72,30 @@
     <div id="file"></div>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
+
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
   <script src="js/types-chart.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/pokemon.js"></script>
+  <script src="js/api.js?v=3"></script>
+  <script src="js/pokemon.js?v=9"></script>
   <script src="js/global-search.js"></script>
 </body>
 </html>

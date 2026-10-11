@@ -109,6 +109,43 @@
       text-transform: uppercase;
     }
 
+    .gym-region-block {
+      margin-top: 1.5rem;
+    }
+
+    .gym-region-title {
+      font-size: 1.15rem;
+      margin: 0 0 0.5rem;
+      color: var(--navy);
+    }
+
+    .gym-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .gym-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .gym-table th,
+    .gym-table td {
+      padding: 0.5rem 0.65rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .gym-table th {
+      font-family: var(--font-num);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: color-mix(in srgb, var(--sky) 25%, transparent);
+    }
+
     @media (max-width: 42rem) {
       .character-record {
         grid-template-columns: 1fr;
@@ -135,6 +172,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html" aria-current="page">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -145,11 +183,13 @@
     <h1 class="page-title">Characters</h1>
     <p class="characters-lede">A field guide to the Trainers, Gym Leaders, researchers, Champions, and rivals who make the Pokémon world feel lived in. Each entry points to an official source and, where relevant, back to a Pokémon in the Dex.</p>
 
-    <nav class="character-index" aria-label="Character groups">
+    <nav class="character-index" aria-label="Page sections">
       <a href="#travelers">Travelers</a>
       <a href="#kanto">Kanto figures</a>
+      <a href="#gyms">Gyms</a>
       <a href="#champions">Champions</a>
       <a href="#adversaries">Adversaries</a>
+      <a href="#battle-mechanics">Battle mechanics</a>
     </nav>
 
     <section class="character-section" id="travelers" aria-labelledby="travelers-title">
@@ -249,6 +289,623 @@
       </article>
     </section>
 
+    <section class="character-section" id="gyms" aria-labelledby="gyms-title">
+      <h2 id="gyms-title">Gyms</h2>
+      <div class="character-copy">
+        <p>Gyms are regional testing facilities run by type specialists. Each Gym tests whether a challenger understands type matchups and team balance instead of relying on a single favorite Pokémon.</p>
+        <p>Defeating a Gym Leader earns an official Badge. Collecting eight Badges qualifies a Trainer for the regional Pokémon League and keeps traded Pokémon obedient in battle.</p>
+        <p>Content in preparation.</p>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Kanto Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Pewter City</td>
+                <td>Brock</td>
+                <td>Rock</td>
+                <td>Boulder Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=95">Onix · #095</a></td>
+              </tr>
+              <tr>
+                <td>Cerulean City</td>
+                <td>Misty</td>
+                <td>Water</td>
+                <td>Cascade Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=121">Starmie · #121</a></td>
+              </tr>
+              <tr>
+                <td>Vermilion City</td>
+                <td>Lt. Surge</td>
+                <td>Electric</td>
+                <td>Thunder Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=26">Raichu · #026</a></td>
+              </tr>
+              <tr>
+                <td>Celadon City</td>
+                <td>Erika</td>
+                <td>Grass</td>
+                <td>Rainbow Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=45">Vileplume · #045</a></td>
+              </tr>
+              <tr>
+                <td>Fuchsia City</td>
+                <td>Koga / Janine</td>
+                <td>Poison</td>
+                <td>Soul Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=110">Weezing · #110</a></td>
+              </tr>
+              <tr>
+                <td>Saffron City</td>
+                <td>Sabrina</td>
+                <td>Psychic</td>
+                <td>Marsh Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=65">Alakazam · #065</a></td>
+              </tr>
+              <tr>
+                <td>Cinnabar Island</td>
+                <td>Blaine</td>
+                <td>Fire</td>
+                <td>Volcano Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=126">Magmar · #126</a></td>
+              </tr>
+              <tr>
+                <td>Viridian City</td>
+                <td>Giovanni / Blue</td>
+                <td>Ground</td>
+                <td>Earth Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=112">Rhydon · #112</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Johto Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Violet City</td>
+                <td>Falkner</td>
+                <td>Flying</td>
+                <td>Zephyr Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=17">Pidgeotto · #017</a></td>
+              </tr>
+              <tr>
+                <td>Azalea Town</td>
+                <td>Bugsy</td>
+                <td>Bug</td>
+                <td>Hive Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=123">Scyther · #123</a></td>
+              </tr>
+              <tr>
+                <td>Goldenrod City</td>
+                <td>Whitney</td>
+                <td>Normal</td>
+                <td>Plain Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=241">Miltank · #241</a></td>
+              </tr>
+              <tr>
+                <td>Ecruteak City</td>
+                <td>Morty</td>
+                <td>Ghost</td>
+                <td>Fog Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=94">Gengar · #094</a></td>
+              </tr>
+              <tr>
+                <td>Cianwood City</td>
+                <td>Chuck</td>
+                <td>Fighting</td>
+                <td>Storm Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=62">Poliwrath · #062</a></td>
+              </tr>
+              <tr>
+                <td>Olivine City</td>
+                <td>Jasmine</td>
+                <td>Steel</td>
+                <td>Mineral Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=208">Steelix · #208</a></td>
+              </tr>
+              <tr>
+                <td>Mahogany Town</td>
+                <td>Pryce</td>
+                <td>Ice</td>
+                <td>Glacier Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=221">Piloswine · #221</a></td>
+              </tr>
+              <tr>
+                <td>Blackthorn City</td>
+                <td>Clair</td>
+                <td>Dragon</td>
+                <td>Rising Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=230">Kingdra · #230</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Hoenn Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rustboro City</td>
+                <td>Roxanne</td>
+                <td>Rock</td>
+                <td>Stone Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=299">Nosepass · #299</a></td>
+              </tr>
+              <tr>
+                <td>Dewford Town</td>
+                <td>Brawly</td>
+                <td>Fighting</td>
+                <td>Knuckle Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=297">Hariyama · #297</a></td>
+              </tr>
+              <tr>
+                <td>Mauville City</td>
+                <td>Wattson</td>
+                <td>Electric</td>
+                <td>Dynamo Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=310">Manectric · #310</a></td>
+              </tr>
+              <tr>
+                <td>Lavaridge Town</td>
+                <td>Flannery</td>
+                <td>Fire</td>
+                <td>Heat Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=324">Torkoal · #324</a></td>
+              </tr>
+              <tr>
+                <td>Petalburg City</td>
+                <td>Norman</td>
+                <td>Normal</td>
+                <td>Balance Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=289">Slaking · #289</a></td>
+              </tr>
+              <tr>
+                <td>Fortree City</td>
+                <td>Winona</td>
+                <td>Flying</td>
+                <td>Feather Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=334">Altaria · #334</a></td>
+              </tr>
+              <tr>
+                <td>Mossdeep City</td>
+                <td>Tate &amp; Liza</td>
+                <td>Psychic</td>
+                <td>Mind Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=338">Solrock · #338</a></td>
+              </tr>
+              <tr>
+                <td>Sootopolis City</td>
+                <td>Wallace / Juan</td>
+                <td>Water</td>
+                <td>Rain Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=350">Milotic · #350</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Sinnoh Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oreburgh City</td>
+                <td>Roark</td>
+                <td>Rock</td>
+                <td>Coal Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=408">Cranidos · #408</a></td>
+              </tr>
+              <tr>
+                <td>Eterna City</td>
+                <td>Gardenia</td>
+                <td>Grass</td>
+                <td>Forest Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=407">Roserade · #407</a></td>
+              </tr>
+              <tr>
+                <td>Veilstone City</td>
+                <td>Maylene</td>
+                <td>Fighting</td>
+                <td>Cobble Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=448">Lucario · #448</a></td>
+              </tr>
+              <tr>
+                <td>Pastoria City</td>
+                <td>Crasher Wake</td>
+                <td>Water</td>
+                <td>Fen Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=419">Floatzel · #419</a></td>
+              </tr>
+              <tr>
+                <td>Hearthome City</td>
+                <td>Fantina</td>
+                <td>Ghost</td>
+                <td>Relic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=429">Mismagius · #429</a></td>
+              </tr>
+              <tr>
+                <td>Canalave City</td>
+                <td>Byron</td>
+                <td>Steel</td>
+                <td>Mine Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=411">Bastiodon · #411</a></td>
+              </tr>
+              <tr>
+                <td>Snowpoint City</td>
+                <td>Candice</td>
+                <td>Ice</td>
+                <td>Icicle Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=478">Froslass · #478</a></td>
+              </tr>
+              <tr>
+                <td>Sunyshore City</td>
+                <td>Volkner</td>
+                <td>Electric</td>
+                <td>Beacon Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=466">Electivire · #466</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Unova Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Striaton City</td>
+                <td>Cilan, Chili &amp; Cress</td>
+                <td>Grass / Fire / Water</td>
+                <td>Trio Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=512">Simisage · #512</a></td>
+              </tr>
+              <tr>
+                <td>Nacrene City</td>
+                <td>Lenora</td>
+                <td>Normal</td>
+                <td>Basic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=505">Watchog · #505</a></td>
+              </tr>
+              <tr>
+                <td>Castelia City</td>
+                <td>Burgh</td>
+                <td>Bug</td>
+                <td>Insect Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=542">Leavanny · #542</a></td>
+              </tr>
+              <tr>
+                <td>Nimbasa City</td>
+                <td>Elesa</td>
+                <td>Electric</td>
+                <td>Bolt Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=523">Zebstrika · #523</a></td>
+              </tr>
+              <tr>
+                <td>Driftveil City</td>
+                <td>Clay</td>
+                <td>Ground</td>
+                <td>Quake Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=530">Excadrill · #530</a></td>
+              </tr>
+              <tr>
+                <td>Mistralton City</td>
+                <td>Skyla</td>
+                <td>Flying</td>
+                <td>Jet Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=581">Swanna · #581</a></td>
+              </tr>
+              <tr>
+                <td>Icirrus City</td>
+                <td>Brycen</td>
+                <td>Ice</td>
+                <td>Freeze Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=615">Cryogonal · #615</a></td>
+              </tr>
+              <tr>
+                <td>Opelucid City</td>
+                <td>Drayden / Iris</td>
+                <td>Dragon</td>
+                <td>Legend Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=612">Haxorus · #612</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Kalos Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Santalune City</td>
+                <td>Viola</td>
+                <td>Bug</td>
+                <td>Bug Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=666">Vivillon · #666</a></td>
+              </tr>
+              <tr>
+                <td>Cyllage City</td>
+                <td>Grant</td>
+                <td>Rock</td>
+                <td>Cliff Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=696">Tyrunt · #696</a></td>
+              </tr>
+              <tr>
+                <td>Shalour City</td>
+                <td>Korrina</td>
+                <td>Fighting</td>
+                <td>Rumble Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=448">Lucario · #448</a></td>
+              </tr>
+              <tr>
+                <td>Courmarine City</td>
+                <td>Ramos</td>
+                <td>Grass</td>
+                <td>Plant Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=673">Gogoat · #673</a></td>
+              </tr>
+              <tr>
+                <td>Lumiose City</td>
+                <td>Clemont</td>
+                <td>Electric</td>
+                <td>Voltage Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=695">Heliolisk · #695</a></td>
+              </tr>
+              <tr>
+                <td>Laverre City</td>
+                <td>Valerie</td>
+                <td>Fairy</td>
+                <td>Fairy Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=700">Sylveon · #700</a></td>
+              </tr>
+              <tr>
+                <td>Anistar City</td>
+                <td>Olympia</td>
+                <td>Psychic</td>
+                <td>Psychic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=678">Meowstic · #678</a></td>
+              </tr>
+              <tr>
+                <td>Snowbelle City</td>
+                <td>Wulfric</td>
+                <td>Ice</td>
+                <td>Iceberg Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=713">Avalugg · #713</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Galar Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Turffield</td>
+                <td>Milo</td>
+                <td>Grass</td>
+                <td>Grass Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=830">Eldegoss · #830</a></td>
+              </tr>
+              <tr>
+                <td>Hulbury</td>
+                <td>Nessa</td>
+                <td>Water</td>
+                <td>Water Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=834">Drednaw · #834</a></td>
+              </tr>
+              <tr>
+                <td>Motostoke</td>
+                <td>Kabu</td>
+                <td>Fire</td>
+                <td>Fire Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=851">Centiskorch · #851</a></td>
+              </tr>
+              <tr>
+                <td>Stow-on-Side</td>
+                <td>Bea / Allister</td>
+                <td>Fighting / Ghost</td>
+                <td>Fighting / Ghost Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=68">Machamp · #068</a></td>
+              </tr>
+              <tr>
+                <td>Ballonlea</td>
+                <td>Opal</td>
+                <td>Fairy</td>
+                <td>Fairy Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=869">Alcremie · #869</a></td>
+              </tr>
+              <tr>
+                <td>Circhester</td>
+                <td>Gordie / Melony</td>
+                <td>Rock / Ice</td>
+                <td>Rock / Ice Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=839">Coalossal · #839</a></td>
+              </tr>
+              <tr>
+                <td>Spikemuth</td>
+                <td>Piers / Marnie</td>
+                <td>Dark</td>
+                <td>Dark Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=862">Obstagoon · #862</a></td>
+              </tr>
+              <tr>
+                <td>Hammerlocke</td>
+                <td>Raihan</td>
+                <td>Dragon</td>
+                <td>Dragon Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=884">Duraludon · #884</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="gym-region-block">
+        <h3 class="gym-region-title">Paldea Gyms</h3>
+        <p class="character-meta" style="margin-bottom:0.5rem;">Content in preparation.</p>
+        <div class="gym-table-wrap">
+          <table class="gym-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>Gym Leader</th>
+                <th>Type</th>
+                <th>Badge</th>
+                <th>Signature Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cortondo</td>
+                <td>Katy</td>
+                <td>Bug</td>
+                <td>Bug Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=920">Lokix · #920</a></td>
+              </tr>
+              <tr>
+                <td>Artazon</td>
+                <td>Brassius</td>
+                <td>Grass</td>
+                <td>Grass Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=185">Sudowoodo · #185</a></td>
+              </tr>
+              <tr>
+                <td>Levincia</td>
+                <td>Iono</td>
+                <td>Electric</td>
+                <td>Electric Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=939">Bellibolt · #939</a></td>
+              </tr>
+              <tr>
+                <td>Cascarrafa</td>
+                <td>Kofu</td>
+                <td>Water</td>
+                <td>Water Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=740">Crabominable · #740</a></td>
+              </tr>
+              <tr>
+                <td>Medali</td>
+                <td>Larry</td>
+                <td>Normal</td>
+                <td>Normal Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=398">Staraptor · #398</a></td>
+              </tr>
+              <tr>
+                <td>Montenevera</td>
+                <td>Ryme</td>
+                <td>Ghost</td>
+                <td>Ghost Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=972">Houndstone · #972</a></td>
+              </tr>
+              <tr>
+                <td>Alfornada</td>
+                <td>Tulip</td>
+                <td>Psychic</td>
+                <td>Psychic Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=671">Florges · #671</a></td>
+              </tr>
+              <tr>
+                <td>Glaseado</td>
+                <td>Grusha</td>
+                <td>Ice</td>
+                <td>Ice Badge</td>
+                <td><a class="character-pokemon-link" href="pokemon.html?id=975">Cetitan · #975</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <section class="character-section" id="champions" aria-labelledby="champions-title">
       <h2 id="champions-title">Champions</h2>
       <article class="character-record">
@@ -285,7 +942,194 @@
           </div>
         </div>
       </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 001</span>
+          <h3 class="character-name">Team Rocket</h3>
+          <p class="character-meta">Syndicate · Kanto &amp; Johto</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Giovanni</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=53">Persian · #053</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=112">Rhydon · #112</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 002</span>
+          <h3 class="character-name">Team Magma</h3>
+          <p class="character-meta">Eco-syndicate · Hoenn</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Maxie</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=323">Camerupt · #323</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=383">Groudon · #383</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 003</span>
+          <h3 class="character-name">Team Aqua</h3>
+          <p class="character-meta">Eco-syndicate · Hoenn</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Archie</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=319">Sharpedo · #319</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=382">Kyogre · #382</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 004</span>
+          <h3 class="character-name">Team Galactic</h3>
+          <p class="character-meta">Cosmological cult · Sinnoh</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Cyrus</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=461">Weavile · #461</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=430">Honchkrow · #430</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 005</span>
+          <h3 class="character-name">Team Plasma</h3>
+          <p class="character-meta">Liberation movement · Unova</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leaders</span>
+            <span>Ghetsis, N</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=635">Hydreigon · #635</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=644">Zekrom · #644</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=643">Reshiram · #643</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 006</span>
+          <h3 class="character-name">Team Flare</h3>
+          <p class="character-meta">Secret society · Kalos</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Lysandre</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=668">Pyroar · #668</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=130">Gyarados · #130</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 007</span>
+          <h3 class="character-name">Team Skull &amp; Aether Foundation</h3>
+          <p class="character-meta">Street crew &amp; Research foundation · Alola</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leaders</span>
+            <span>Guzma, Lusamine</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=768">Golisopod · #768</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=36">Clefable · #036</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=793">Nihilego · #793</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 008</span>
+          <h3 class="character-name">Macro Cosmos &amp; Team Yell</h3>
+          <p class="character-meta">Corporate conglomerate &amp; Fan club · Galar</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leaders</span>
+            <span>Chairman Rose, Piers</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=879">Copperajah · #879</a>
+            <a class="character-pokemon-link" href="pokemon.html?id=862">Obstagoon · #862</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="character-record">
+        <div>
+          <span class="character-id">ORG / 009</span>
+          <h3 class="character-name">Team Star</h3>
+          <p class="character-meta">Academy rebellious squads · Paldea</p>
+        </div>
+        <div class="character-copy">
+          <p>Content in preparation.</p>
+          <div class="character-links">
+            <span class="character-links-label">Leader</span>
+            <span>Penny</span>
+            <span class="character-links-label">Associated Pokémon</span>
+            <a class="character-pokemon-link" href="pokemon.html?id=700">Sylveon · #700</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="character-section" id="battle-mechanics" aria-labelledby="battle-mechanics-title">
+      <h2 id="battle-mechanics-title">Battle mechanics</h2>
+      <div class="character-copy"><p>Content in preparation.</p></div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 </body>
 </html>

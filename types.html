@@ -40,6 +40,7 @@
         <a href="battle-lab.html">Lab</a>
         <a href="quiz.html">Quiz</a>
         <a href="characters.html">Characters</a>
+        <a href="games.html">Games</a>
         <a href="about.html">File</a>
       </nav>
     </div>
@@ -48,7 +49,7 @@
   <!-- 页面主体容器 -->
   <main id="main" class="wrap">
     <h1 class="page-title">Types</h1>
-    <p class="lead">Attack down the left, defense across the top. Dual defense is multiplied on Lineup, not here. Click a type or a cell to open the dex filtered by the defending type.</p>
+    <p class="lead">Rows show attacking types; columns show defending types. Select a type label to filter the Dex, or a cell to browse by its defending type. Lineup handles dual-type defense.</p>
 
     <!-- 18 属性色票墙 -->
     <div class="wall" id="wall"></div>
@@ -61,17 +62,33 @@
     <!-- 图例说明 -->
     <div class="types-legend">
       <span><i class="dot" style="background:#3D7DCA"></i> 2× Super effective</span>
+      <span><i class="dot" style="background:var(--paper); border:1px solid var(--line)"></i> 1× Normal effectiveness (blank cells)</span>
       <span><i class="dot" style="background:#1E3A55"></i> ½ Not very effective</span>
       <span><i class="dot" style="background:#071422; border:1px solid #1E3A55"></i> 0 Immune</span>
     </div>
-
-    <!-- 当前选中属性与腰带克制推演 (Belt vs Type) -->
-    <div id="belt-vs-box" class="belt-vs-box" aria-live="polite"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-range"><span>#001–#151</span> Kanto-first Pokémon archive</div>
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">151 FILE</div>
+        <p class="site-footer-lead">Keep a little of Kanto with you.</p>
+      </div>
+      <div class="site-footer-seal" aria-hidden="true">
+        <span>Kanto</span>
+        <img src="assets/favicon.svg" alt="" width="112" height="112" loading="lazy">
+        <span>Pokémon archive</span>
+      </div>
+    </div>
+    <div class="site-footer-bottom">
+      <span>Pokémon data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a></span>
+      <p>Unofficial fan archive. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
+    </div>
+  </footer>
 
   <script src="js/store.js"></script>
   <script src="js/regions-data.js"></script>
-  <script src="js/api.js"></script>
   <script src="js/types-chart.js"></script>
   <script src="js/types.js"></script>
   <script src="js/global-search.js"></script>

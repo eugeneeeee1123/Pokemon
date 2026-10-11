@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
     left: null,
     right: null
   };
+  const requestRevisions = { left: 0, right: 0 };
+
+  function setCardMessage(cardEl, message, color = "var(--ink-soft)") {
+    if (!cardEl) return;
+    const note = document.createElement("p");
+    note.className = "soft";
+    note.style.cssText = `font-size:0.875rem; color:${color}; padding:1rem 0;`;
+    note.textContent = message;
+    cardEl.replaceChildren(note);
+  }
 
   function stat(mon, name) {
     if (!mon || !mon.stats) return 0;
@@ -19,22 +29,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function loadPokemon(side, value) {
-    if (!value) return;
+    const revision = ++requestRevisions[side];
+    const query = String(value || "").trim();
     const cardEl = document.getElementById(`battle-${side}-card`);
-    if (cardEl) {
-      cardEl.innerHTML = `<p class="soft" style="font-size:0.875rem; color:var(--ink-soft); padding:1rem 0;">Loading specimen #${value}...</p>`;
+    state[side] = null;
+    if (!query) {
+      render();
+      return;
     }
+    renderResult();
+    setCardMessage(cardEl, `Loading specimen #${query}...`);
 
     try {
-      const mon = await window.pokeApi.getPokemon(value);
+      const mon = await window.pokeApi.getPokemon(query);
+      if (revision !== requestRevisions[side]) return;
       if (!mon) {
-        if (cardEl) cardEl.innerHTML = `<p class="soft" style="color:var(--mark); padding:1rem 0;">Specimen not found: "${value}".</p>`;
+        setCardMessage(cardEl, `Specimen not found: "${query}".`, "var(--mark)");
+        renderResult();
         return;
       }
       state[side] = mon;
       render();
     } catch (_) {
-      if (cardEl) cardEl.innerHTML = `<p class="soft" style="color:var(--mark); padding:1rem 0;">Error loading specimen.</p>`;
+      if (revision !== requestRevisions[side]) return;
+      state[side] = null;
+      setCardMessage(cardEl, "Error loading specimen.", "var(--mark)");
+      renderResult();
     }
   }
 
@@ -135,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
             STAB Type Advantage
           </h3>
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(18rem, 1fr)); gap:1.25rem;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap:1.25rem;">
             <!-- A attacking B -->
             <div style="background:var(--sky-deep); border:1px solid var(--line); padding:1rem; border-radius:4px;">
               <p style="font-family:var(--font-ui); font-size:0.9375rem; font-weight:700; color:var(--ink); text-transform:capitalize; margin:0 0 0.5rem;">
